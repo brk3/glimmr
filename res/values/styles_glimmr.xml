@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File created by the Android Action Bar Style Generator
+
+     Copyright (C) 2012 readyState Software Ltd
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+
+    <style name="Theme.glimmr" parent="@style/Theme.Sherlock.Light">
+        <item name="actionBarItemBackground">@drawable/selectable_background_glimmr</item>
+        <item name="popupMenuStyle">@style/glimmr_PopupMenu</item>
+        <item name="dropDownListViewStyle">@style/glimmr_DropDownListView</item>
+        <item name="actionBarTabStyle">@style/glimmr_ActionBarTabStyle</item>
+        <item name="actionDropDownStyle">@style/glimmr_DropDownNav</item>
+        <item name="actionBarStyle">@style/glimmr_solid_ActionBar</item>
+
+        <item name="android:selectableItemBackground">@drawable/selectable_background_glimmr</item>
+        <item name="android:popupMenuStyle">@style/glimmr_PopupMenu</item>
+        <item name="android:dropDownListViewStyle">@style/glimmr_DropDownListView</item>
+        <item name="android:actionBarTabStyle">@style/glimmr_ActionBarTabStyle</item>
+        <item name="android:actionDropDownStyle">@style/glimmr_DropDownNav</item>
+        <item name="android:actionBarStyle">@style/glimmr_solid_ActionBar</item>
+        <item name="android:panelBackground">@drawable/menu_hardkey_panel_glimmr</item>
+
+        <!-- Style the TabPageIndicator -->
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator
+        </item>
+        <!--<item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text</item>-->
+    </style>
+
+    <style name="glimmr_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
+        <item name="background">@drawable/ab_solid_glimmr</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_glimmr</item>
+        <item name="backgroundSplit">@drawable/ab_bottom_solid_glimmr</item>
+        <item name="progressBarStyle">@style/glimmr_ProgressBar</item>
+
+        <item name="android:background">@drawable/ab_solid_glimmr</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_glimmr</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_glimmr</item>
+        <item name="android:progressBarStyle">@style/glimmr_ProgressBar</item>
+    </style>
+
+    <style name="glimmr_transparent_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar">
+        <item name="background">@drawable/ab_transparent_glimmr</item>
+        <item name="progressBarStyle">@style/glimmr_ProgressBar</item>
+        
+        <item name="android:background">@drawable/ab_transparent_glimmr</item>
+        <item name="android:progressBarStyle">@style/glimmr_ProgressBar</item>
+    </style>
+	
+    <style name="glimmr_PopupMenu" parent="@android:style/Widget.Holo.Light.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_glimmr</item>	
+    </style>
+	
+    <style name="glimmr_DropDownListView" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_glimmr</item>
+    </style>
+
+    <style name="glimmr_ActionBarTabStyle" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
+        <item name="background">@drawable/tab_indicator_ab_glimmr</item>
+
+        <item name="android:background">@drawable/tab_indicator_ab_glimmr</item>
+    </style>
+	
+    <style name="glimmr_DropDownNav" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
+        <item name="background">@drawable/spinner_background_ab_glimmr</item>
+
+        <item name="android:background">@drawable/spinner_background_ab_glimmr</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_glimmr</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_glimmr</item>
+    </style>
+    
+    <style name="glimmr_ProgressBar" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_glimmr</item>
+    </style>
+
+    <style name="Widget.TabPageIndicator" parent="Widget">
+        <item name="android:background">@drawable/tab_indicator_ab_glimmr</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
+    </style>
+
+</resources>
