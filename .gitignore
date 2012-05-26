@@ -1,0 +1,10 @@
+*~
+*.apk
+tags
+default.properties
+local.properties
+proguard-project.txt
+proguard.cfg
+gen/
+bin/
+debug.sh
