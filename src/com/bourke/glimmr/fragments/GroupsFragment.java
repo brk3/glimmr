@@ -8,12 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import android.widget.RelativeLayout;
+
+import com.actionbarsherlock.app.SherlockFragment;
 
 public class GroupsFragment extends SherlockFragment {
 
-    protected String TAG = "Glimmr/FriendsFragment";
+    protected String TAG = "Glimmr/GroupsFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

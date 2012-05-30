@@ -29,19 +29,25 @@ public class OAuthTask extends AsyncTask<Void, Integer, String> {
 	private static final Uri OAUTH_CALLBACK_URI = Uri.parse(
             Constants.CALLBACK_SCHEME + "://oauth");
 
-	private Context mContext;
+    private PhotoStreamFragment mFragment;
 
 	private ProgressDialog mProgressDialog;
 
-	public OAuthTask(Context context) {
+    private MainActivity mActivity;
+
+    private Context mContext;
+
+	public OAuthTask(PhotoStreamFragment fragment) {
 		super();
-		this.mContext = context;
+        mFragment = fragment;
+		mActivity = (MainActivity)fragment.getSherlockActivity();
+        mContext = mActivity.getApplicationContext();
 	}
 
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		mProgressDialog = ProgressDialog.show(mContext, "",
+		mProgressDialog = ProgressDialog.show(mActivity, "",
                 "Generating the authorization request...");
 		mProgressDialog.setCanceledOnTouchOutside(true);
 		mProgressDialog.setCancelable(true);
@@ -76,8 +82,7 @@ public class OAuthTask extends AsyncTask<Void, Integer, String> {
 	 */
 	private void saveTokenSecrent(String tokenSecret) {
 		logger.debug("request token: " + tokenSecret);
-		MainActivity act = (MainActivity) mContext;
-		act.saveOAuthToken(null, null, null, tokenSecret);
+		mFragment.saveOAuthToken(null, null, null, tokenSecret);
 		logger.debug("oauth token secret saved: {}", tokenSecret);
 	}
 
@@ -87,10 +92,10 @@ public class OAuthTask extends AsyncTask<Void, Integer, String> {
 			mProgressDialog.dismiss();
 		}
 		if (result != null && !result.startsWith("error") ) {
-			mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri
+			mActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri
 					.parse(result)));
 		} else {
-			Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+			Toast.makeText(mActivity, result, Toast.LENGTH_LONG).show();
 		}
 	}
 }

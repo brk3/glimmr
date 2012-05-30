@@ -10,13 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GetOAuthTokenTask extends AsyncTask<String, Integer, OAuth> {
+
 	private static final Logger logger = LoggerFactory.getLogger(
             GetOAuthTokenTask.class);
 
-	private MainActivity activity;
+	private PhotoStreamFragment mFragment;
 
-	public GetOAuthTokenTask(MainActivity context) {
-		this.activity = context;
+	public GetOAuthTokenTask(PhotoStreamFragment fragment) {
+        mFragment = fragment;
 	}
 
 	@Override
@@ -38,8 +39,8 @@ public class GetOAuthTokenTask extends AsyncTask<String, Integer, OAuth> {
 
 	@Override
 	protected void onPostExecute(OAuth result) {
-		if (activity != null) {
-			activity.onOAuthDone(result);
+		if (mFragment != null) {
+			mFragment.onOAuthDone(result);
 		}
 	}
 }

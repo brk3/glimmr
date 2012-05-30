@@ -1,14 +1,14 @@
 package com.bourke.glimmr;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import com.gmail.yuyang226.flickr.Flickr;
-import com.gmail.yuyang226.flickr.REST;
-import com.gmail.yuyang226.flickr.RequestContext;
 import com.gmail.yuyang226.flickr.interestingness.InterestingnessInterface;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.photos.PhotosInterface;
+import com.gmail.yuyang226.flickr.RequestContext;
+import com.gmail.yuyang226.flickr.REST;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 public final class FlickrHelper {
 

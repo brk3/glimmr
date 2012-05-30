@@ -8,8 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import android.widget.RelativeLayout;
+
+import com.actionbarsherlock.app.SherlockFragment;
 
 public class FriendsFragment extends SherlockFragment {
 
