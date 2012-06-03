@@ -20,8 +20,6 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import com.fedorvlasov.lazylist.LazyAdapter;
-
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
@@ -155,7 +153,6 @@ public class PhotoStreamFragment extends SherlockFragment {
 
         mGridView = (GridView)inflater.inflate(R.layout.gridview_fragment,
                 container, false);
-        mGridView.setAdapter(new LazyAdapter(mActivity));
 
         OAuth oauth = getOAuthToken();
         if (oauth == null || oauth.getUser() == null) {
