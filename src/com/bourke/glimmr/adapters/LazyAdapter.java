@@ -37,19 +37,18 @@ public class LazyAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView = (ImageView) convertView;
-
+        View vi = convertView;
         if(convertView == null) {
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(235, 200));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            vi = inflater.inflate(R.layout.gridview_item, null);
         }
+
+        ImageView imageView = (ImageView) vi.findViewById(R.id.image_item);
 
         Photo photo = photos.get(position);
         ImageDownloadTask task = new ImageDownloadTask(imageView);
         Drawable drawable = new DownloadedDrawable(task);
         imageView.setImageDrawable(drawable);
-        task.execute(photo.getSmallUrl());
+        task.execute(photo.getLargeSquareUrl());
 
         /*
         ImageView viewIcon = (ImageView)vi.findViewById(R.id.viewIcon);
@@ -62,7 +61,7 @@ public class LazyAdapter extends BaseAdapter {
         }
         */
 
-        return imageView;
+        return vi;
     }
 
     public int getCount() {

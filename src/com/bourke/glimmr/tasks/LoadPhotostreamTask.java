@@ -36,7 +36,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
 		Set<String> extras = new HashSet<String>();
-		extras.add("url_s");
+		extras.add("url_q");
 		extras.add("url_l");
 		extras.add("views");
 		User user = arg0[0].getUser();
