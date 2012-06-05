@@ -18,6 +18,8 @@ import com.bourke.glimmr.ImageUtils.DownloadedDrawable;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
+import android.widget.LinearLayout;
+import android.widget.AbsListView;
 
 public class LazyAdapter extends BaseAdapter {
 
@@ -36,18 +38,18 @@ public class LazyAdapter extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView = (ImageView) convertView;
+
         if(convertView == null) {
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(250, 250));
+            imageView.setLayoutParams(new GridView.LayoutParams(235, 200));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(0, 0, 0, 0);
         }
 
         Photo photo = photos.get(position);
         ImageDownloadTask task = new ImageDownloadTask(imageView);
         Drawable drawable = new DownloadedDrawable(task);
         imageView.setImageDrawable(drawable);
-        task.execute(photo.getSmallSquareUrl());
+        task.execute(photo.getSmallUrl());
 
         /*
         ImageView viewIcon = (ImageView)vi.findViewById(R.id.viewIcon);
