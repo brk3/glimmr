@@ -15,15 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:background="@color/transparent_black"
-        android:padding="3dp" >
-    <TextView
-        android:id="@+id/image_overlay"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:text="20"
-        android:textColor="@android:color/white" />
+        android:background="@color/transparent_black">
+        <TextView
+            android:id="@+id/viewsText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:textSize="10sp"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </FrameLayout>

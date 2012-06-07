@@ -11,15 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bourke.glimmr.ImageUtils.DownloadedDrawable;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
-import android.widget.LinearLayout;
-import android.widget.AbsListView;
 
 public class LazyAdapter extends BaseAdapter {
 
@@ -50,16 +48,10 @@ public class LazyAdapter extends BaseAdapter {
         imageView.setImageDrawable(drawable);
         task.execute(photo.getLargeSquareUrl());
 
-        /*
-        ImageView viewIcon = (ImageView)vi.findViewById(R.id.viewIcon);
         if (photo.getViews() >= 0) {
-        	viewIcon.setImageResource(R.drawable.views);
         	TextView viewsText = (TextView)vi.findViewById(R.id.viewsText);
-        	viewsText.setText(String.valueOf(photo.getViews()));
-        } else {
-        	viewIcon.setImageBitmap(null);
+        	viewsText.setText("VIEWS: " + String.valueOf(photo.getViews()));
         }
-        */
 
         return vi;
     }

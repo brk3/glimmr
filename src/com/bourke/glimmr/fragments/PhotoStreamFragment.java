@@ -23,6 +23,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
+import android.widget.RelativeLayout;
 
 public class PhotoStreamFragment extends SherlockFragment {
 
@@ -151,8 +152,9 @@ public class PhotoStreamFragment extends SherlockFragment {
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
 
-        mGridView = (GridView)inflater.inflate(R.layout.gridview_fragment,
-                container, false);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(
+                R.layout.gridview_fragment, container, false);
+        mGridView = (GridView)layout.findViewById(R.id.gridview);
 
         OAuth oauth = getOAuthToken();
         if (oauth == null || oauth.getUser() == null) {
@@ -162,7 +164,7 @@ public class PhotoStreamFragment extends SherlockFragment {
 			new LoadPhotostreamTask(mActivity, mGridView).execute(oauth);
         }
 
-        return mGridView;
+        return layout;
     }
 
     @Override
