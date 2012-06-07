@@ -9,12 +9,11 @@
         android:layout_width="200dp"
         android:layout_height="133dp"
         android:scaleType="centerCrop" />
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/image_overlay"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="horizontal"
         android:background="@color/transparent_black">
         <TextView
             android:id="@+id/viewsText"
@@ -22,7 +21,17 @@
             android:layout_height="fill_parent"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
+            android:layout_alignParentLeft="true"
             android:textSize="10sp"
             android:textColor="@android:color/white" />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/ownerText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_alignParentRight="true"
+            android:textSize="10sp"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
 </FrameLayout>

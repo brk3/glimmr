@@ -48,10 +48,11 @@ public class LazyAdapter extends BaseAdapter {
         imageView.setImageDrawable(drawable);
         task.execute(photo.getLargeSquareUrl());
 
-        if (photo.getViews() >= 0) {
-        	TextView viewsText = (TextView)vi.findViewById(R.id.viewsText);
-        	viewsText.setText("VIEWS: " + String.valueOf(photo.getViews()));
-        }
+        TextView viewsText = (TextView) vi.findViewById(R.id.viewsText);
+        viewsText.setText("views:" + String.valueOf(photo.getViews()));
+
+        TextView ownerText = (TextView) vi.findViewById(R.id.ownerText);
+        ownerText.setText(photo.getOwner().getUsername());
 
         return vi;
     }
