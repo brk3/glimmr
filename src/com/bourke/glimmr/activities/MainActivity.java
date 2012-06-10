@@ -56,6 +56,8 @@ public class MainActivity extends SherlockFragmentActivity
         setContentView(R.layout.main);
         initViewPager();
 
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+
         if (savedInstanceState != null) {
             mStackLevel = savedInstanceState.getInt("level");
         }
