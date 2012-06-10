@@ -52,7 +52,6 @@ public class MainActivity extends SherlockFragmentActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, "onCreate()");
         mContext = getApplicationContext();
         setContentView(R.layout.main);
         initViewPager();

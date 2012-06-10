@@ -19,15 +19,11 @@ public class GroupsFragment extends SherlockFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d(TAG, "onCreate()");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView()");
-
         RelativeLayout layout = (RelativeLayout)inflater
             .inflate(R.layout.standard_list_fragment, container, false);
         //initMainList(layout);

@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
+import com.gmail.yuyang226.flickr.photos.Photo;
+
 public final class PhotoFragment extends Fragment {
 
     private static final String KEY_CONTENT = "PhotoFragment:Content";
 
-    public static PhotoFragment newInstance(String content) {
+    public static PhotoFragment newInstance(Photo photo) {
         PhotoFragment fragment = new PhotoFragment();
 
         return fragment;
@@ -25,7 +27,6 @@ public final class PhotoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override

@@ -1,18 +1,15 @@
 package com.bourke.glimmr;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
 import android.util.Log;
 
-import android.widget.GridView;
-
 import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
-import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
 import java.util.HashSet;
@@ -22,12 +19,10 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private static final String TAG = "Glimmr/LoadPhotostreamTask";
 
-	private GridView mGridView;
-	private Activity activity;
+    private IPhotoStreamReadyListener mListener;
 
-	public LoadPhotostreamTask(Activity activity, GridView mGridView) {
-		this.activity = activity;
-		this.mGridView = mGridView;
+	public LoadPhotostreamTask(IPhotoStreamReadyListener listener) {
+        mListener = listener;
 	}
 
 	@Override
@@ -51,10 +46,13 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 	}
 
 	@Override
-	protected void onPostExecute(PhotoList result) {
+	protected void onPostExecute(final PhotoList result) {
 		if (result != null) {
-			LazyAdapter adapter = new LazyAdapter(this.activity, result);
-			mGridView.setAdapter(adapter);
-		}
+            final boolean cancelled = false;
+            mListener.onPhotoStreamReady(result, cancelled);
+		} else {
+            Log.e(TAG, "error fetching photolist, result is null");
+            // TODO: alert user / recover
+        }
 	}
 }
