@@ -1,27 +1,45 @@
 package com.bourke.glimmr;
 
+import android.app.Activity;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import android.os.Bundle;
 
-import android.support.v4.app.Fragment;
-
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockFragment;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 
-public final class PhotoFragment extends Fragment {
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
-    private static final String KEY_CONTENT = "PhotoFragment:Content";
+public final class PhotoFragment extends SherlockFragment {
+
+    private static final String TAG = "Glimmr/PhotoFragment";
+
+    private Activity mActivity;
+
+    private Photo mPhoto;
+
+    private ImageView mImageView;
+
+    public PhotoFragment(Photo photo) {
+        mPhoto = photo;
+        mActivity = getSherlockActivity();
+    }
 
     public static PhotoFragment newInstance(Photo photo) {
-        PhotoFragment fragment = new PhotoFragment();
-
-        return fragment;
+        return new PhotoFragment(photo);
     }
 
     @Override
@@ -32,17 +50,63 @@ public final class PhotoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        LinearLayout layout = new LinearLayout(getActivity());
-        layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-                    LayoutParams.FILL_PARENT));
-        layout.setGravity(Gravity.CENTER);
-
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout
+                .photoviewer_fragment, container, false);
+        mImageView = (ImageView) layout.findViewById(R.id.image_item);
         return layout;
     }
+
+	@Override
+	public void onStart() {
+		super.onStart();
+        /*
+		if (mPhoto != null) {
+            String photoId = mPhoto.getId();
+			File cacheDir = mActivity.getCacheDir();
+			File imageFile = new File(cacheDir, photoId + ".jpg");
+			if (imageFile.exists()) {
+				try {
+					Bitmap bm = BitmapFactory.decodeStream(new FileInputStream(
+							imageFile));
+					onImageDownloaded(bm);
+				} catch (FileNotFoundException e) {
+                    e.printStackTrace();
+				}
+			} else {
+				ImageDownloadTask task = new ImageDownloadTask(mImageView,
+						ImageDownloadTask.ParamType.PHOTO_ID_LARGE, this);
+				task.execute(photoId, mPhotoSecret);
+			}
+		} else {
+			mProgressBar.setVisibility(View.GONE);
+			Toast.makeText(this, getString(R.string.error_get_big_image),
+					Toast.LENGTH_SHORT).show();
+		}
+        */
+    }
+
+	public void onImageDownloaded(Bitmap bitmap) {
+        /*
+		if (mProgressBar != null) {
+			mProgressBar.setVisibility(View.GONE);
+		}
+		if (bitmap == null) {
+			Toast.makeText(this, getString(R.string.error_download_big_photo),
+					Toast.LENGTH_LONG).show();
+			finish();
+			return;
+		}
+		this.mPhotoBitmap = bitmap;
+		if (mImageView != null) {
+			mImageView.setImageBitmap(mPhotoBitmap);
+			fitToScreen();
+			center(true, true);
+		}
+        */
+	}
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //outState.putString(KEY_CONTENT, mContent);
     }
 }

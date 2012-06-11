@@ -1,8 +1,9 @@
 package com.bourke.glimmr;
 
-import com.gmail.yuyang226.flickr.photos.Photo;
 import android.content.Intent;
 
+import android.view.Window;
+import android.view.WindowManager;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
+
+import com.gmail.yuyang226.flickr.photos.Photo;
 
 import com.viewpagerindicator.LinePageIndicator;
 import com.viewpagerindicator.PageIndicator;
@@ -32,6 +35,12 @@ public class PhotoViewerActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.photoviewer);
+
+        /* Remove Title Bar */
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         handleIntent(getIntent());
     }
 
