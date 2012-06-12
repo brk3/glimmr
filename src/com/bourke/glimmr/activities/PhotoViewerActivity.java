@@ -2,17 +2,16 @@ package com.bourke.glimmr;
 
 import android.content.Intent;
 
-import android.view.Window;
-import android.view.WindowManager;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 
@@ -22,7 +21,7 @@ import com.viewpagerindicator.PageIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhotoViewerActivity extends FragmentActivity {
+public class PhotoViewerActivity extends SherlockFragmentActivity {
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
 
@@ -35,12 +34,6 @@ public class PhotoViewerActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.photoviewer);
-
-        /* Remove Title Bar */
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         handleIntent(getIntent());
     }
 

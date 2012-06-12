@@ -7,13 +7,14 @@ import android.graphics.BitmapFactory;
 
 import android.os.Bundle;
 
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -23,7 +24,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public final class PhotoFragment extends SherlockFragment {
+public final class PhotoFragment extends SherlockFragment
+        implements IImageDownloadDoneListener {
 
     private static final String TAG = "Glimmr/PhotoFragment";
 
@@ -33,9 +35,10 @@ public final class PhotoFragment extends SherlockFragment {
 
     private ImageView mImageView;
 
+    private Bitmap mPhotoBitmap = null;
+
     public PhotoFragment(Photo photo) {
         mPhoto = photo;
-        mActivity = getSherlockActivity();
     }
 
     public static PhotoFragment newInstance(Photo photo) {
@@ -45,65 +48,61 @@ public final class PhotoFragment extends SherlockFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mActivity = getSherlockActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout
+        FrameLayout layout = (FrameLayout) inflater.inflate(R.layout
                 .photoviewer_fragment, container, false);
         mImageView = (ImageView) layout.findViewById(R.id.image_item);
         return layout;
     }
 
-	@Override
-	public void onStart() {
-		super.onStart();
-        /*
-		if (mPhoto != null) {
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mPhoto != null) {
             String photoId = mPhoto.getId();
-			File cacheDir = mActivity.getCacheDir();
-			File imageFile = new File(cacheDir, photoId + ".jpg");
-			if (imageFile.exists()) {
-				try {
-					Bitmap bm = BitmapFactory.decodeStream(new FileInputStream(
-							imageFile));
-					onImageDownloaded(bm);
-				} catch (FileNotFoundException e) {
+            File cacheDir = mActivity.getCacheDir();
+            File imageFile = new File(cacheDir, photoId + ".jpg");
+            if (imageFile.exists()) {
+                try {
+                    Bitmap bm = BitmapFactory.decodeStream(new FileInputStream(
+                            imageFile));
+                    onImageDownloaded(bm);
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
-				}
-			} else {
-				ImageDownloadTask task = new ImageDownloadTask(mImageView,
-						ImageDownloadTask.ParamType.PHOTO_ID_LARGE, this);
-				task.execute(photoId, mPhotoSecret);
-			}
-		} else {
-			mProgressBar.setVisibility(View.GONE);
-			Toast.makeText(this, getString(R.string.error_get_big_image),
-					Toast.LENGTH_SHORT).show();
-		}
-        */
+                }
+            } else {
+                ImageDownloadTask task = new ImageDownloadTask(mImageView,
+                        ImageDownloadTask.ParamType.PHOTO_ID_LARGE, this);
+                //task.execute(photoId, mPhotoSecret);
+                task.execute(photoId, "");
+            }
+        } else {
+            Log.e(TAG, "onStart, mPhoto is null");
+            //mProgressBar.setVisibility(View.GONE);
+        }
     }
 
-	public void onImageDownloaded(Bitmap bitmap) {
-        /*
-		if (mProgressBar != null) {
-			mProgressBar.setVisibility(View.GONE);
-		}
-		if (bitmap == null) {
-			Toast.makeText(this, getString(R.string.error_download_big_photo),
-					Toast.LENGTH_LONG).show();
-			finish();
-			return;
-		}
-		this.mPhotoBitmap = bitmap;
-		if (mImageView != null) {
-			mImageView.setImageBitmap(mPhotoBitmap);
-			fitToScreen();
-			center(true, true);
-		}
-        */
-	}
+    public void onImageDownloaded(Bitmap bitmap) {
+        //if (mProgressBar != null) {
+        //    mProgressBar.setVisibility(View.GONE);
+        //}
+        if (bitmap == null) {
+            Log.e(TAG, "Error onImageDownloaded(), bitmap is null");
+            //finish();
+            return;
+        }
+        mPhotoBitmap = bitmap;
+        if (mImageView != null) {
+            mImageView.setImageBitmap(mPhotoBitmap);
+            //fitToScreen();
+            //center(true, true);
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
