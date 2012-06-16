@@ -25,16 +25,14 @@ public class MainActivity extends SherlockFragmentActivity
     private static final String TAG = "Glimmr/MainActivity";
 
     public static final int PHOTOSTREAM_PAGE = 0;
-    public static final int FRIENDS_PAGE = 1;
+    public static final int CONTACTS_PAGE = 1;
     public static final int GROUPS_PAGE = 2;
 
     private PhotoStreamFragment mPhotoStreamFragment =
         new PhotoStreamFragment();
-    private FriendsFragment mFriendsFragment = new FriendsFragment();
+    private ContactsFragment mContactsFragment = new ContactsFragment();
     private GroupsFragment mGroupsFragment = new GroupsFragment();
 
-    private int mCurrentPage = PHOTOSTREAM_PAGE;
-    private Context mContext;
     private int mStackLevel = 0;
 
     //TODO: add to R.strings
@@ -45,7 +43,6 @@ public class MainActivity extends SherlockFragmentActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = getApplicationContext();
         setContentView(R.layout.main);
         initViewPager();
 
@@ -68,10 +65,10 @@ public class MainActivity extends SherlockFragmentActivity
         indicator.setViewPager(viewPager);
     }
 
+    /* This is very important, otherwise you get a null Scheme in the
+     * onResume later on. */
     @Override
     protected void onNewIntent(Intent intent) {
-        /* This is very important, otherwise you would get a null Scheme in the
-         * onResume later on. */
         setIntent(intent);
     }
 
@@ -84,13 +81,12 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public void onPageSelected(int position) {
         Log.d(TAG, "onPageSelected");
-        mCurrentPage = position;
         switch (position) {
             case PHOTOSTREAM_PAGE:
                 //mPhotoStreamFragment.refresh();
                 break;
-            case FRIENDS_PAGE:
-                //mFriendsFragment.refresh();
+            case CONTACTS_PAGE:
+                //mContactsFragment.refresh();
                 break;
             case GROUPS_PAGE:
                 //mGroupsFragment.refresh();
@@ -120,8 +116,8 @@ public class MainActivity extends SherlockFragmentActivity
             switch (position) {
                 case PHOTOSTREAM_PAGE:
                     return mPhotoStreamFragment;
-                case FRIENDS_PAGE:
-                    return mFriendsFragment;
+                case CONTACTS_PAGE:
+                    return mContactsFragment;
                 case GROUPS_PAGE:
                     return mGroupsFragment;
             }

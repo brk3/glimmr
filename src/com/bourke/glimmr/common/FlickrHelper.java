@@ -1,5 +1,6 @@
 package com.bourke.glimmr;
 
+import com.gmail.yuyang226.flickr.contacts.ContactsInterface;
 import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.interestingness.InterestingnessInterface;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
@@ -61,4 +62,12 @@ public final class FlickrHelper {
 		}
 	}
 
+	public ContactsInterface getContactsInterface() {
+		Flickr f = getFlickr();
+		if (f != null) {
+			return f.getContactsInterface();
+		} else {
+			return null;
+		}
+	}
 }

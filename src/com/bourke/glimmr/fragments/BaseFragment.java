@@ -1,4 +1,5 @@
 package com.bourke.glimmr;
+
 import android.app.Activity;
 
 import android.content.Context;
@@ -44,12 +45,7 @@ public abstract class BaseFragment extends SherlockFragment {
         mActivity = getSherlockActivity();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        RelativeLayout layout = (RelativeLayout) inflater.inflate(
-                R.layout.gridview_fragment, container, false);
-
+    protected void initOAuth() {
         OAuth oauth = getOAuthToken();
         if (oauth == null || oauth.getUser() == null) {
             OAuthTask task = new OAuthTask(this);
@@ -57,8 +53,6 @@ public abstract class BaseFragment extends SherlockFragment {
         } else {
             onAuthorised(oauth);
         }
-
-        return layout;
     }
 
     @Override
@@ -177,9 +171,6 @@ public abstract class BaseFragment extends SherlockFragment {
         oauth.setToken(oauthToken);
         oauthToken.setOauthToken(oauthTokenString);
         oauthToken.setOauthTokenSecret(tokenSecret);
-        Log.d(TAG, String.format("Retrieved token from preference store: " +
-                "oauth token=%s, and token secret=%s", oauthTokenString,
-                tokenSecret));
 
         return oauth;
     }

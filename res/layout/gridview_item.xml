@@ -22,7 +22,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_alignParentLeft="true"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@android:color/white" />
         <TextView
             android:id="@+id/ownerText"
@@ -31,7 +31,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_alignParentRight="true"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@android:color/white" />
     </RelativeLayout>
 </FrameLayout>

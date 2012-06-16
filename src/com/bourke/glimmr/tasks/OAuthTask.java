@@ -18,9 +18,7 @@ import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 
 import java.net.URL;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import android.util.Log;
 
 /**
  * This task generates the OAuth url and then opens it in a browser to request
@@ -28,8 +26,8 @@ import org.slf4j.LoggerFactory;
  */
 public class OAuthTask extends AsyncTask<Void, Integer, String> {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(OAuthTask.class);
+    private static final String TAG = "Glimmr/OAuthTask";
+
 	private static final Uri OAUTH_CALLBACK_URI = Uri.parse(
             Constants.CALLBACK_SCHEME + "://oauth");
 
@@ -71,7 +69,7 @@ public class OAuthTask extends AsyncTask<Void, Integer, String> {
 					Permission.READ, oauthToken);
 			return oauthUrl.toString();
 		} catch (Exception e) {
-			logger.error("Error to oauth", e);
+            e.printStackTrace();
 			return "error:" + e.getMessage();
 		}
 	}
@@ -82,9 +80,9 @@ public class OAuthTask extends AsyncTask<Void, Integer, String> {
 	 * @param tokenSecret
 	 */
 	private void saveTokenSecret(String tokenSecret) {
-		logger.debug("request token: " + tokenSecret);
+		Log.d(TAG, "request token: " + tokenSecret);
 		mFragment.saveOAuthToken(null, null, null, tokenSecret);
-		logger.debug("oauth token secret saved: {}", tokenSecret);
+		Log.d(TAG, "oauth token secret saved: " + tokenSecret);
 	}
 
 	@Override

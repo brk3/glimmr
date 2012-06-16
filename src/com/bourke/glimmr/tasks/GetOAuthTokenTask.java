@@ -6,17 +6,13 @@ import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthInterface;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Gets an access token from Flickr once authorised to access the user's
  * account
  */
 public class GetOAuthTokenTask extends AsyncTask<String, Integer, OAuth> {
 
-	private static final Logger logger = LoggerFactory.getLogger(
-            GetOAuthTokenTask.class);
+    private static final String TAG = "Glimmr/GetOAuthTokenTask";
 
 	private BaseFragment mFragment;
 
@@ -36,7 +32,7 @@ public class GetOAuthTokenTask extends AsyncTask<String, Integer, OAuth> {
 			return oauthApi.getAccessToken(oauthToken, oauthTokenSecret,
 					verifier);
 		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage(), e);
+            e.printStackTrace();
 			return null;
 		}
 	}

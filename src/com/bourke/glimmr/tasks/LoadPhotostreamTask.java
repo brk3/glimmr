@@ -1,7 +1,5 @@
 package com.bourke.glimmr;
 
-
-
 import android.os.AsyncTask;
 
 import android.util.Log;

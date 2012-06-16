@@ -76,7 +76,7 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
         public Fragment getItem(int position) {
             Photo photo = new Photo();
             photo.setUrl(mPhotoUrls.get(position));
-            return PhotoFragment.newInstance(photo);
+            return PhotoViewerFragment.newInstance(photo);
         }
 
         @Override

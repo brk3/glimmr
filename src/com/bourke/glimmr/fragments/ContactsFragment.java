@@ -11,14 +11,14 @@ import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 import android.widget.RelativeLayout;
-import android.view.LayoutInflater;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.util.Log;
 
-public class PhotoStreamFragment extends BaseFragment
-        implements IPhotoStreamReadyListener {
+public class ContactsFragment extends BaseFragment
+        implements IContactsPhotosReadyListener {
 
-    private static final String TAG = "Glimmr/PhotoStreamFragment";
+    protected String TAG = "Glimmr/ContactsFragment";
 
 	private AQuery mGridAq;
     private RelativeLayout mLayout;
@@ -34,32 +34,32 @@ public class PhotoStreamFragment extends BaseFragment
 
     /**
      * Once we're authorised to access the user's account, start a task to
-     * fetch their photostream.
+     * fetch N photos from each of their contacts.
      */
     @Override
     public void onAuthorised(OAuth oauth) {
-        new LoadPhotostreamTask(this).execute(oauth);
+        new LoadContactsPhotosTask(this).execute(oauth);
     }
 
     /**
-     * Once LoadPhotostreamTask comes back with the user's list of photos, set
-     * up the GridView adapter etc.
+     * Once LoadContactsPhotosTask comes back with the user's list of contacts
+     * and photos from each, set up the GridView adapter etc.
      */
     @Override
-    public void onPhotoStreamReady(PhotoList photos, boolean cancelled) {
-        Log.d(TAG, "onPhotoStreamReady");
+    public void onContactsPhotosReady(PhotoList photos, boolean cancelled) {
+        Log.d(TAG, "onContactsPhotosReady");
 		mGridAq = new AQuery(mActivity, mLayout);
         mPhotos = photos;
 
 		ArrayAdapter<Photo> adapter = new ArrayAdapter<Photo>(mActivity,
-                R.layout.gridview_item, photos) {
+                R.layout.gridview_item, mPhotos) {
 
             // TODO: implement ViewHolder pattern
 			@Override
 			public View getView(int position, View convertView,
                     ViewGroup parent) {
 
-				if(convertView == null) {
+				if (convertView == null) {
 					convertView = mActivity.getLayoutInflater().inflate(
                             R.layout.gridview_item, null);
 				}

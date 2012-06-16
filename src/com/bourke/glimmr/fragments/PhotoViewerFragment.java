@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.FrameLayout;
-import android.widget.SlidingDrawer;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -19,10 +18,10 @@ import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 
-public final class PhotoFragment extends SherlockFragment {
+public final class PhotoViewerFragment extends SherlockFragment {
 
-    private static final String TAG = "Glimmr/PhotoFragment";
-    private static final String KEY_CONTENT = "PhotoFragment:Content";
+    private static final String TAG = "Glimmr/PhotoViewerFragment";
+    private static final String KEY_CONTENT = "PhotoViewerFragment:Content";
 
 	private AQuery aq;
     private Activity mActivity;
@@ -30,8 +29,8 @@ public final class PhotoFragment extends SherlockFragment {
 
     public Photo mPhoto = new Photo();
 
-    public static PhotoFragment newInstance(Photo photo) {
-        PhotoFragment photoFragment = new PhotoFragment();
+    public static PhotoViewerFragment newInstance(Photo photo) {
+        PhotoViewerFragment photoFragment = new PhotoViewerFragment();
         photoFragment.mPhoto = photo;
         return photoFragment;
     }
