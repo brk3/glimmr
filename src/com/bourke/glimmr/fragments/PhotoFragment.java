@@ -11,31 +11,39 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.FrameLayout;
+import android.widget.SlidingDrawer;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
-import com.androidquery.util.AQUtility;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
-import android.widget.TextView;
 
 public final class PhotoFragment extends SherlockFragment {
 
     private static final String TAG = "Glimmr/PhotoFragment";
+    private static final String KEY_CONTENT = "PhotoFragment:Content";
 
 	private AQuery aq;
-
     private Activity mActivity;
-    private Photo mPhoto;
+    private FrameLayout mLayout;
 
-    public PhotoFragment(Photo photo) {
-        mPhoto = photo;
+    public Photo mPhoto = new Photo();
+
+    public static PhotoFragment newInstance(Photo photo) {
+        PhotoFragment photoFragment = new PhotoFragment();
+        photoFragment.mPhoto = photo;
+        return photoFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if ((savedInstanceState != null) && savedInstanceState.containsKey(
+                    KEY_CONTENT)) {
+            mPhoto.setUrl(savedInstanceState.getString(KEY_CONTENT));
+        }
 
         mActivity = getSherlockActivity();
     }
@@ -43,9 +51,9 @@ public final class PhotoFragment extends SherlockFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        FrameLayout layout = (FrameLayout) inflater.inflate(R.layout
-                .photoviewer_fragment, container, false);
-		aq = new AQuery(mActivity, layout);
+        mLayout = (FrameLayout) inflater.inflate(R.layout.photoviewer_fragment,
+                container, false);
+		aq = new AQuery(mActivity, mLayout);
         if (mPhoto != null) {
             String url = mPhoto.getUrl();
             aq.id(R.id.web).progress(R.id.progress).webImage(url);
@@ -53,6 +61,12 @@ public final class PhotoFragment extends SherlockFragment {
         } else {
             Log.e(TAG, "onStart, mPhoto is null");
         }
-        return layout;
+        return mLayout;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY_CONTENT, mPhoto.getUrl());
     }
 }

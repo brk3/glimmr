@@ -14,18 +14,15 @@ import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.viewpagerindicator.TabPageIndicator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class MainActivity extends SherlockFragmentActivity
-    implements ViewPager.OnPageChangeListener {
+        implements ViewPager.OnPageChangeListener {
 
     private static final String TAG = "Glimmr/MainActivity";
-    private static final Logger logger = LoggerFactory.getLogger(
-            MainActivity.class);
 
     public static final int PHOTOSTREAM_PAGE = 0;
     public static final int FRIENDS_PAGE = 1;
@@ -33,20 +30,16 @@ public class MainActivity extends SherlockFragmentActivity
 
     private PhotoStreamFragment mPhotoStreamFragment =
         new PhotoStreamFragment();
-
     private FriendsFragment mFriendsFragment = new FriendsFragment();
-
     private GroupsFragment mGroupsFragment = new GroupsFragment();
 
     private int mCurrentPage = PHOTOSTREAM_PAGE;
-
     private Context mContext;
-
     private int mStackLevel = 0;
 
     //TODO: add to R.strings
     public static final String[] CONTENT =
-        new String[] { "Photostream", "Friends", "Groups" };
+        new String[] { "You", "Contacts", "Groups" };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +49,7 @@ public class MainActivity extends SherlockFragmentActivity
         setContentView(R.layout.main);
         initViewPager();
 
+        /* Hide the home icon */
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         if (savedInstanceState != null) {
@@ -110,8 +104,13 @@ public class MainActivity extends SherlockFragmentActivity
         outState.putInt("level", mStackLevel);
     }
 
-    class GlimmrPagerAdapter extends FragmentPagerAdapter {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
+    class GlimmrPagerAdapter extends FragmentPagerAdapter {
         public GlimmrPagerAdapter(FragmentManager fm) {
             super(fm);
         }

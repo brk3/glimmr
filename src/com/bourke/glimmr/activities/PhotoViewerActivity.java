@@ -62,9 +62,7 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
     }
 
     class PhotoViewerPagerAdapter extends FragmentPagerAdapter {
-
         protected List<String> mPhotoUrls;
-
         private int mCount;
 
         public PhotoViewerPagerAdapter(FragmentManager fm,
@@ -78,7 +76,7 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
         public Fragment getItem(int position) {
             Photo photo = new Photo();
             photo.setUrl(mPhotoUrls.get(position));
-            return new PhotoFragment(photo);
+            return PhotoFragment.newInstance(photo);
         }
 
         @Override
