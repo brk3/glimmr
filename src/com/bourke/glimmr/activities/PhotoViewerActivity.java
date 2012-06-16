@@ -45,12 +45,12 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
 
     private void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
-        List<String> photoIds = (ArrayList<String>) bundle.getSerializable(
+        List<String> photoUrls = (ArrayList<String>) bundle.getSerializable(
                 Constants.KEY_PHOTOVIEWER_LIST);
-        if (photoIds != null) {
-            Log.d(TAG, "got list of photo ids, size: " + photoIds.size());
+        if (photoUrls != null) {
+            Log.d(TAG, "got list of photo urls, size: " + photoUrls.size());
             mAdapter = new PhotoViewerPagerAdapter(getSupportFragmentManager(),
-                    photoIds);
+                    photoUrls);
             mPager = (ViewPager)findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
             mIndicator = (LinePageIndicator)findViewById(R.id.indicator);
@@ -63,21 +63,22 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
 
     class PhotoViewerPagerAdapter extends FragmentPagerAdapter {
 
-        protected List<String> mPhotos;
+        protected List<String> mPhotoUrls;
 
         private int mCount;
 
         public PhotoViewerPagerAdapter(FragmentManager fm,
                 List<String> photos) {
             super(fm);
-            mPhotos = photos;
-            mCount = mPhotos.size();
+            mPhotoUrls = photos;
+            mCount = mPhotoUrls.size();
         }
 
         @Override
         public Fragment getItem(int position) {
+            Log.d(TAG, "getItem: " + position);
             Photo photo = new Photo();
-            photo.setId(mPhotos.get(position));
+            photo.setUrl(mPhotoUrls.get(position));
             return PhotoFragment.newInstance(photo);
         }
 

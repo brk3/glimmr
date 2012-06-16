@@ -1,5 +1,7 @@
 package com.bourke.glimmr;
 
+import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,11 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+
+import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
@@ -33,19 +37,16 @@ import java.util.ArrayList;
 public class PhotoStreamFragment extends SherlockFragment
         implements IPhotoStreamReadyListener {
 
-    protected String TAG = "Glimmr/PhotoStreamFragment";
+    private String TAG = "Glimmr/PhotoStreamFragment";
 
-    private GridView mGridView;
-
-    private MainActivity mActivity;
-
+	private AQuery mGridAq;
+    private Activity mActivity;
     private PhotoList mPhotos;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mActivity = (MainActivity)getSherlockActivity();
+        mActivity = getSherlockActivity();
     }
 
     public void onOAuthDone(OAuth result) {
@@ -61,7 +62,7 @@ public class PhotoStreamFragment extends SherlockFragment
                 Toast.makeText(mActivity, "Authorization failed",
                         Toast.LENGTH_LONG).show();
                 return;
-                    }
+            }
             Toast.makeText(mActivity, "Logged in!", Toast.LENGTH_LONG).show();
             saveOAuthToken(user.getUsername(), user.getId(),
                     token.getOauthToken(), token.getOauthTokenSecret());
@@ -116,7 +117,6 @@ public class PhotoStreamFragment extends SherlockFragment
         }
     }
 
-
     private OAuth getOAuthToken() {
         /* Restore preferences */
         SharedPreferences settings = mActivity.getSharedPreferences(
@@ -157,7 +157,6 @@ public class PhotoStreamFragment extends SherlockFragment
             Bundle savedInstanceState) {
         RelativeLayout layout = (RelativeLayout) inflater.inflate(
                 R.layout.gridview_fragment, container, false);
-        mGridView = (GridView)layout.findViewById(R.id.gridview);
 
         OAuth oauth = getOAuthToken();
         if (oauth == null || oauth.getUser() == null) {
@@ -172,43 +171,53 @@ public class PhotoStreamFragment extends SherlockFragment
 
     @Override
     public void onPhotoStreamReady(PhotoList photos, boolean cancelled) {
-        Log.d(TAG, "onPhotostreamReady()");
-        if (!cancelled) {
-            mPhotos = photos;
-			LazyAdapter adapter = new LazyAdapter(mActivity, mPhotos);
-			mGridView.setAdapter(adapter);
-            mGridView.setOnItemClickListener(new GridView
-                    .OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v,
-                        int position, long id) {
-                    startPhotoViewer();
-                }
-            });
-        } else {
-            Log.d(TAG, "onPhotostreamReady cancelled is True");
-            // TODO: alert user / recover
-        }
+		mGridAq = new AQuery(mActivity);
+        mPhotos = photos;
+
+		ArrayAdapter<Photo> adapter = new ArrayAdapter<Photo>(mActivity,
+                R.layout.gridview_item, photos) {
+
+			@Override
+			public View getView(int position, View convertView,
+                    ViewGroup parent) {
+
+				if(convertView == null) {
+					convertView = mActivity.getLayoutInflater().inflate(
+                            R.layout.gridview_item, null);
+				}
+
+                Photo photo = getItem(position);
+				AQuery aq = mGridAq.recycle(convertView);
+
+                boolean useMemCache = true;
+                boolean useFileCache = true;
+                aq.id(R.id.image_item).image(photo.getLargeSquareUrl(),
+                        useMemCache, useFileCache,  0, 0, null,
+                        AQuery.FADE_IN_NETWORK, 1.0f);
+                aq.id(R.id.viewsText).text("views:" + String.valueOf(photo
+                            .getViews()));
+                aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
+
+				return convertView;
+			}
+		};
+        mGridAq.id(R.id.gridview).itemClicked(this, "startPhotoViewer");
+		mGridAq.id(R.id.gridview).adapter(adapter);
     }
 
     /* The flickr Photo class isn't Serialisable, so construct a List of photo
-     * ids to send it instead */
-    private void startPhotoViewer() {
-        Log.d(TAG, "startPhotoViewer()");
-        ArrayList<String> photoIds = new ArrayList<String>();
+     * urls to send it instead */
+    private void startPhotoViewer(AdapterView parent, View v, int pos,
+            long id) {
+        ArrayList<String> photoUrls = new ArrayList<String>();
         for (Photo p : mPhotos) {
-            photoIds.add(p.getId());
+            photoUrls.add(p.getLargeUrl());
         }
-        Log.d(TAG, "starting photo viewer with " + photoIds.size() + " ids");
+        Log.d(TAG, "starting photo viewer with " + photoUrls.size() + " ids");
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photoIds);
+        bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photoUrls);
         Intent photoViewer = new Intent(mActivity, PhotoViewerActivity.class);
         photoViewer.putExtras(bundle);
         mActivity.startActivity(photoViewer);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mGridView.setAdapter(null);
     }
 }
