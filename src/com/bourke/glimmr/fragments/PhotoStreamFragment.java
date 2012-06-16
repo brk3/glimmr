@@ -177,6 +177,7 @@ public class PhotoStreamFragment extends SherlockFragment
 		ArrayAdapter<Photo> adapter = new ArrayAdapter<Photo>(mActivity,
                 R.layout.gridview_item, photos) {
 
+            // TODO: implement ViewHolder pattern
 			@Override
 			public View getView(int position, View convertView,
                     ViewGroup parent) {
@@ -193,7 +194,7 @@ public class PhotoStreamFragment extends SherlockFragment
                 boolean useFileCache = true;
                 aq.id(R.id.image_item).image(photo.getLargeSquareUrl(),
                         useMemCache, useFileCache,  0, 0, null,
-                        AQuery.FADE_IN_NETWORK, 1.0f);
+                        AQuery.FADE_IN_NETWORK);
                 aq.id(R.id.viewsText).text("views:" + String.valueOf(photo
                             .getViews()));
                 aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
@@ -201,13 +202,14 @@ public class PhotoStreamFragment extends SherlockFragment
 				return convertView;
 			}
 		};
-        mGridAq.id(R.id.gridview).itemClicked(this, "startPhotoViewer");
+        mGridAq.id(R.id.gridview).adapter(adapter).itemClicked(this,
+                "startPhotoViewer");
 		mGridAq.id(R.id.gridview).adapter(adapter);
     }
 
     /* The flickr Photo class isn't Serialisable, so construct a List of photo
      * urls to send it instead */
-    private void startPhotoViewer(AdapterView parent, View v, int pos,
+    public void startPhotoViewer(AdapterView parent, View v, int pos,
             long id) {
         ArrayList<String> photoUrls = new ArrayList<String>();
         for (Photo p : mPhotos) {

@@ -76,10 +76,9 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            Log.d(TAG, "getItem: " + position);
             Photo photo = new Photo();
             photo.setUrl(mPhotoUrls.get(position));
-            return PhotoFragment.newInstance(photo);
+            return new PhotoFragment(photo);
         }
 
         @Override

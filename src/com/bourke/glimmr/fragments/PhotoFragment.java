@@ -15,14 +15,16 @@ import android.widget.FrameLayout;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
+import com.androidquery.util.AQUtility;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
+import android.widget.TextView;
 
 public final class PhotoFragment extends SherlockFragment {
 
     private static final String TAG = "Glimmr/PhotoFragment";
 
-	protected AQuery aq;
+	private AQuery aq;
 
     private Activity mActivity;
     private Photo mPhoto;
@@ -31,15 +33,11 @@ public final class PhotoFragment extends SherlockFragment {
         mPhoto = photo;
     }
 
-    public static PhotoFragment newInstance(Photo photo) {
-        return new PhotoFragment(photo);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mActivity = getSherlockActivity();
-		aq = new AQuery(mActivity);
     }
 
     @Override
@@ -47,23 +45,14 @@ public final class PhotoFragment extends SherlockFragment {
             Bundle savedInstanceState) {
         FrameLayout layout = (FrameLayout) inflater.inflate(R.layout
                 .photoviewer_fragment, container, false);
-        return layout;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart()");
+		aq = new AQuery(mActivity, layout);
         if (mPhoto != null) {
             String url = mPhoto.getUrl();
             aq.id(R.id.web).progress(R.id.progress).webImage(url);
+            //aq.id(R.id.text).text(url);
         } else {
             Log.e(TAG, "onStart, mPhoto is null");
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        return layout;
     }
 }
