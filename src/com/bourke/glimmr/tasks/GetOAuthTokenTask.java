@@ -9,14 +9,18 @@ import com.gmail.yuyang226.flickr.oauth.OAuthInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Gets an access token from Flickr once authorised to access the user's
+ * account
+ */
 public class GetOAuthTokenTask extends AsyncTask<String, Integer, OAuth> {
 
 	private static final Logger logger = LoggerFactory.getLogger(
             GetOAuthTokenTask.class);
 
-	private PhotoStreamFragment mFragment;
+	private BaseFragment mFragment;
 
-	public GetOAuthTokenTask(PhotoStreamFragment fragment) {
+	public GetOAuthTokenTask(BaseFragment fragment) {
         mFragment = fragment;
 	}
 

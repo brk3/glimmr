@@ -22,6 +22,10 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This task generates the OAuth url and then opens it in a browser to request
+ * access to the user's Flickr account.
+ */
 public class OAuthTask extends AsyncTask<Void, Integer, String> {
 
 	private static final Logger logger = LoggerFactory
@@ -29,15 +33,12 @@ public class OAuthTask extends AsyncTask<Void, Integer, String> {
 	private static final Uri OAUTH_CALLBACK_URI = Uri.parse(
             Constants.CALLBACK_SCHEME + "://oauth");
 
-    private PhotoStreamFragment mFragment;
-
+    private BaseFragment mFragment;
 	private ProgressDialog mProgressDialog;
-
     private MainActivity mActivity;
-
     private Context mContext;
 
-	public OAuthTask(PhotoStreamFragment fragment) {
+	public OAuthTask(BaseFragment fragment) {
 		super();
         mFragment = fragment;
 		mActivity = (MainActivity)fragment.getSherlockActivity();
@@ -65,7 +66,7 @@ public class OAuthTask extends AsyncTask<Void, Integer, String> {
 			Flickr f = FlickrHelper.getInstance().getFlickr();
 			OAuthToken oauthToken = f.getOAuthInterface().getRequestToken(
 					OAUTH_CALLBACK_URI.toString());
-			saveTokenSecrent(oauthToken.getOauthTokenSecret());
+			saveTokenSecret(oauthToken.getOauthTokenSecret());
 			URL oauthUrl = f.getOAuthInterface().buildAuthenticationUrl(
 					Permission.READ, oauthToken);
 			return oauthUrl.toString();
@@ -80,7 +81,7 @@ public class OAuthTask extends AsyncTask<Void, Integer, String> {
 	 *
 	 * @param tokenSecret
 	 */
-	private void saveTokenSecrent(String tokenSecret) {
+	private void saveTokenSecret(String tokenSecret) {
 		logger.debug("request token: " + tokenSecret);
 		mFragment.saveOAuthToken(null, null, null, tokenSecret);
 		logger.debug("oauth token secret saved: {}", tokenSecret);
