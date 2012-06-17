@@ -6,37 +6,48 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
+import android.view.LayoutInflater;
+import android.os.Bundle;
 
 /**
- * Fragment that contains a GridView of photos.
- *
- * Can be used to display many of the Flickr "categories" of photos, i.e.
- * photostreams, favorites, contacts photos, etc.
+ * Subclass of PhotoGridFragment to show a GridView of photos along with
+ * a banner to differentiate what profile the photos belong to.
  */
-public class PhotoGridFragment extends BaseFragment
+public class ProfilePhotoGridFragment extends PhotoGridFragment
         implements IPhotoGridReadyListener {
 
-    private static final String TAG = "Glimmr/PhotoGridFragment";
+    private static final String TAG = "Glimmr/ProfilePhotoGridFragment";
 
     public static final int TYPE_PHOTO_STREAM = 0;
-    public static final int TYPE_CONTACTS_STREAM = 1;
-    public static final int TYPE_GROUPS_STREAM = 2;
-    public static final int TYPE_FAVORITES_STREAM = 3;
+    public static final int TYPE_FAVORITES_STREAM = 1;
 
 	private AQuery mGridAq;
 
     private int mType = TYPE_PHOTO_STREAM;
+    private String mUserId;
 
-    public static PhotoGridFragment newInstance(int type) {
-        PhotoGridFragment newFragment = new PhotoGridFragment();
+    public static ProfilePhotoGridFragment newInstance(int type,
+            String userId) {
+        ProfilePhotoGridFragment newFragment = new ProfilePhotoGridFragment();
         newFragment.mType = type;
+        newFragment.mUserId = userId;
         return newFragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
+                container, false);
+        super.initOAuth();
+        return mLayout;
     }
 
     /**
@@ -47,13 +58,13 @@ public class PhotoGridFragment extends BaseFragment
     public void onAuthorised(OAuth oauth) {
         switch (mType) {
             case TYPE_PHOTO_STREAM:
-                new LoadPhotostreamTask(this).execute(oauth);
+                //new LoadPhotostreamTask(this).execute(oauth);
                 break;
-            case TYPE_CONTACTS_STREAM:
-                new LoadContactsPhotosTask(this).execute(oauth);
+            case TYPE_FAVORITES_STREAM:
+                //new LoadContactsPhotosTask(this).execute(oauth);
                 break;
             default:
-                Log.e(TAG, "Unknown PhotoGridFragment type: " + mType);
+                Log.e(TAG, "Unknown ProfilePhotoGridFragment type: " + mType);
         }
     }
 
@@ -71,7 +82,6 @@ public class PhotoGridFragment extends BaseFragment
                 R.layout.gridview_item, photos) {
 
             // TODO: implement ViewHolder pattern
-            // TODO: add aquery delay loading for fling scrolling
 			@Override
 			public View getView(int position, View convertView,
                     ViewGroup parent) {
@@ -89,7 +99,6 @@ public class PhotoGridFragment extends BaseFragment
                 aq.id(R.id.image_item).image(photo.getLargeSquareUrl(),
                         useMemCache, useFileCache,  0, 0, null,
                         AQuery.FADE_IN_NETWORK);
-
                 aq.id(R.id.viewsText).text("Views: " + String.valueOf(photo
                             .getViews()));
                 aq.id(R.id.ownerText).text(photo.getOwner().getUsername());

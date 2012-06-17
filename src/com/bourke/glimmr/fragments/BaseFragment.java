@@ -30,6 +30,8 @@ import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
 import java.util.ArrayList;
+import android.widget.ImageView;
+import android.graphics.PorterDuff;
 
 /**
  * Basic fragment that handles OAuth initiasation for any fragments subclassing
