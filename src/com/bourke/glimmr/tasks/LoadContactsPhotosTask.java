@@ -24,9 +24,9 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private static final String TAG = "Glimmr/LoadContactsPhotosTask";
 
-    private IContactsPhotosReadyListener mListener;
+    private IPhotoGridReadyListener mListener;
 
-	public LoadContactsPhotosTask(IContactsPhotosReadyListener listener) {
+	public LoadContactsPhotosTask(IPhotoGridReadyListener listener) {
         mListener = listener;
 	}
 
@@ -62,7 +62,7 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 	protected void onPostExecute(final PhotoList result) {
 		if (result != null) {
             boolean cancelled = false;
-            mListener.onContactsPhotosReady(result, cancelled);
+            mListener.onPhotosReady(result, cancelled);
 		} else {
             Log.e(TAG, "error fetching contacts/photos, result is null");
             // TODO: alert user / recover

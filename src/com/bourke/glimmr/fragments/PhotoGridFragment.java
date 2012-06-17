@@ -1,65 +1,82 @@
 package com.bourke.glimmr;
 
+import android.util.Log;
+
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
-import android.widget.RelativeLayout;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.util.Log;
 
-public class ContactsFragment extends BaseFragment
-        implements IContactsPhotosReadyListener {
+/**
+ * Fragment that contains a GridView of photos.
+ *
+ * Can be used to display many of the Flickr "categories" of photos, i.e.
+ * photostreams, favorites, contacts photos, etc.
+ */
+public class PhotoGridFragment extends BaseFragment
+        implements IPhotoGridReadyListener {
 
-    protected String TAG = "Glimmr/ContactsFragment";
+    private static final String TAG = "Glimmr/PhotoGridFragment";
+
+    public static final int TYPE_PHOTO_STREAM = 0;
+    public static final int TYPE_CONTACTS_STREAM = 1;
+    public static final int TYPE_GROUPS_STREAM = 2;
+    public static final int TYPE_FAVORITES_STREAM = 3;
 
 	private AQuery mGridAq;
-    private RelativeLayout mLayout;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
-                container, false);
-        super.initOAuth();
-        return mLayout;
+    private int mType = TYPE_PHOTO_STREAM;
+
+    public static PhotoGridFragment newInstance(int type) {
+        PhotoGridFragment newFragment = new PhotoGridFragment();
+        newFragment.mType = type;
+        return newFragment;
     }
 
     /**
      * Once we're authorised to access the user's account, start a task to
-     * fetch N photos from each of their contacts.
+     * fetch the appropriate photos.
      */
     @Override
     public void onAuthorised(OAuth oauth) {
-        new LoadContactsPhotosTask(this).execute(oauth);
+        switch (mType) {
+            case TYPE_PHOTO_STREAM:
+                new LoadPhotostreamTask(this).execute(oauth);
+                break;
+            case TYPE_CONTACTS_STREAM:
+                new LoadContactsPhotosTask(this).execute(oauth);
+                break;
+            default:
+                Log.e(TAG, "Unknown PhotoGridFragment type: " + mType);
+        }
     }
 
     /**
-     * Once LoadContactsPhotosTask comes back with the user's list of contacts
-     * and photos from each, set up the GridView adapter etc.
+     * Once the task comes back with the list of photos, set up the GridView
+     * adapter etc. to display them.
      */
     @Override
-    public void onContactsPhotosReady(PhotoList photos, boolean cancelled) {
-        Log.d(TAG, "onContactsPhotosReady");
+    public void onPhotosReady(PhotoList photos, boolean cancelled) {
+        Log.d(TAG, "onPhotosReady");
 		mGridAq = new AQuery(mActivity, mLayout);
         mPhotos = photos;
 
 		ArrayAdapter<Photo> adapter = new ArrayAdapter<Photo>(mActivity,
-                R.layout.gridview_item, mPhotos) {
+                R.layout.gridview_item, photos) {
 
             // TODO: implement ViewHolder pattern
 			@Override
 			public View getView(int position, View convertView,
                     ViewGroup parent) {
 
-				if (convertView == null) {
+				if(convertView == null) {
 					convertView = mActivity.getLayoutInflater().inflate(
                             R.layout.gridview_item, null);
 				}

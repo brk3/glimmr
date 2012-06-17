@@ -1,6 +1,6 @@
 package com.bourke.glimmr;
 
-import android.content.Context;
+import com.androidquery.AQuery;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -28,10 +27,7 @@ public class MainActivity extends SherlockFragmentActivity
     public static final int CONTACTS_PAGE = 1;
     public static final int GROUPS_PAGE = 2;
 
-    private PhotoStreamFragment mPhotoStreamFragment =
-        new PhotoStreamFragment();
-    private ContactsFragment mContactsFragment = new ContactsFragment();
-    private GroupsFragment mGroupsFragment = new GroupsFragment();
+    private AQuery mAq;
 
     private int mStackLevel = 0;
 
@@ -44,6 +40,8 @@ public class MainActivity extends SherlockFragmentActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main);
+
+		mAq = new AQuery(this);
         initViewPager();
 
         /* Hide the home icon */
@@ -59,14 +57,18 @@ public class MainActivity extends SherlockFragmentActivity
         GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-        TabPageIndicator indicator =
-            (TabPageIndicator)findViewById(R.id.indicator);
+        TabPageIndicator indicator = (TabPageIndicator) findViewById(
+                R.id.indicator);
         indicator.setOnPageChangeListener(this);
         indicator.setViewPager(viewPager);
     }
 
-    /* This is very important, otherwise you get a null Scheme in the
-     * onResume later on. */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
@@ -79,31 +81,12 @@ public class MainActivity extends SherlockFragmentActivity
     public void onPageScrolled(int pos, float posOffset, int posOffsetPx) {}
 
     @Override
-    public void onPageSelected(int position) {
-        Log.d(TAG, "onPageSelected");
-        switch (position) {
-            case PHOTOSTREAM_PAGE:
-                //mPhotoStreamFragment.refresh();
-                break;
-            case CONTACTS_PAGE:
-                //mContactsFragment.refresh();
-                break;
-            case GROUPS_PAGE:
-                //mGroupsFragment.refresh();
-                break;
-        }
-    }
+    public void onPageSelected(int pos) {}
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("level", mStackLevel);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
     }
 
     class GlimmrPagerAdapter extends FragmentPagerAdapter {
@@ -115,11 +98,14 @@ public class MainActivity extends SherlockFragmentActivity
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case PHOTOSTREAM_PAGE:
-                    return mPhotoStreamFragment;
+                    return PhotoGridFragment.newInstance(PhotoGridFragment
+                            .TYPE_PHOTO_STREAM);
                 case CONTACTS_PAGE:
-                    return mContactsFragment;
+                    return PhotoGridFragment.newInstance(PhotoGridFragment
+                            .TYPE_CONTACTS_STREAM);
                 case GROUPS_PAGE:
-                    return mGroupsFragment;
+                    return PhotoGridFragment.newInstance(PhotoGridFragment
+                            .TYPE_GROUPS_STREAM);
             }
             return null;
         }

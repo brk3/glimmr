@@ -17,9 +17,9 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private static final String TAG = "Glimmr/LoadPhotostreamTask";
 
-    private IPhotoStreamReadyListener mListener;
+    private IPhotoGridReadyListener mListener;
 
-	public LoadPhotostreamTask(IPhotoStreamReadyListener listener) {
+	public LoadPhotostreamTask(IPhotoGridReadyListener listener) {
         mListener = listener;
 	}
 
@@ -47,7 +47,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 	protected void onPostExecute(final PhotoList result) {
 		if (result != null) {
             final boolean cancelled = false;
-            mListener.onPhotoStreamReady(result, cancelled);
+            mListener.onPhotosReady(result, cancelled);
 		} else {
             Log.e(TAG, "error fetching photolist, result is null");
             // TODO: alert user / recover

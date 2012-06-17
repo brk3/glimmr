@@ -31,18 +31,31 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 
 import java.util.ArrayList;
 
+/**
+ * Basic fragment that handles OAuth initiasation for any fragments subclassing
+ * it.
+ */
 public abstract class BaseFragment extends SherlockFragment {
 
-    private static final String TAG = "Glimmr/PhotoStreamFragment";
+    private static final String TAG = "Glimmr/BaseFragment";
 
     protected Activity mActivity;
-
-    protected PhotoList mPhotos;
+    protected RelativeLayout mLayout;
+    protected PhotoList mPhotos = new PhotoList();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = getSherlockActivity();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
+                container, false);
+        initOAuth();
+        return mLayout;
     }
 
     protected void initOAuth() {
