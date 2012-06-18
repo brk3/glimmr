@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -30,12 +29,13 @@ import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
 import java.util.ArrayList;
-import android.widget.ImageView;
-import android.graphics.PorterDuff;
 
 /**
  * Basic fragment that handles OAuth initiasation for any fragments subclassing
  * it.
+ *
+ * Also provides common methods for actions such as showing a photo in the
+ * viewer, or starting a ProfileActivity.
  */
 public abstract class BaseFragment extends SherlockFragment {
 
@@ -44,6 +44,8 @@ public abstract class BaseFragment extends SherlockFragment {
     protected Activity mActivity;
     protected RelativeLayout mLayout;
     protected PhotoList mPhotos = new PhotoList();
+
+    public abstract void onAuthorised(OAuth oauth);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,16 +60,6 @@ public abstract class BaseFragment extends SherlockFragment {
                 container, false);
         initOAuth();
         return mLayout;
-    }
-
-    protected void initOAuth() {
-        OAuth oauth = getOAuthToken();
-        if (oauth == null || oauth.getUser() == null) {
-            OAuthTask task = new OAuthTask(this);
-            task.execute();
-        } else {
-            onAuthorised(oauth);
-        }
     }
 
     @Override
@@ -98,6 +90,16 @@ public abstract class BaseFragment extends SherlockFragment {
                             .getOauthTokenSecret(), oauthVerifier);
                 }
             }
+        }
+    }
+
+    protected void initOAuth() {
+        OAuth oauth = getOAuthToken();
+        if (oauth == null || oauth.getUser() == null) {
+            OAuthTask task = new OAuthTask(this);
+            task.execute();
+        } else {
+            onAuthorised(oauth);
         }
     }
 
@@ -138,26 +140,6 @@ public abstract class BaseFragment extends SherlockFragment {
         editor.commit();
     }
 
-    /* The flickr Photo class isn't Serialisable, so construct a List of photo
-     * urls to send it instead */
-    public void startPhotoViewer(AdapterView parent, View v, int pos,
-            long id) {
-        if (mPhotos == null) {
-            Log.e(TAG, "Cannot start PhotoViewer, mPhotos is null");
-            return;
-        }
-        ArrayList<String> photoUrls = new ArrayList<String>();
-        for (Photo p : mPhotos) {
-            photoUrls.add(p.getLargeUrl());
-        }
-        Log.d(TAG, "starting photo viewer with " + photoUrls.size() + " ids");
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photoUrls);
-        Intent photoViewer = new Intent(mActivity, PhotoViewerActivity.class);
-        photoViewer.putExtras(bundle);
-        mActivity.startActivity(photoViewer);
-    }
-
     private OAuth getOAuthToken() {
         /* Restore preferences */
         SharedPreferences settings = mActivity.getSharedPreferences(
@@ -190,5 +172,36 @@ public abstract class BaseFragment extends SherlockFragment {
         return oauth;
     }
 
-    public abstract void onAuthorised(OAuth oauth);
+    /* The flickr Photo class isn't Serialisable, so construct a List of photo
+     * urls to send it instead */
+    public void startPhotoViewer(int pos) {
+        if (mPhotos == null) {
+            Log.e(TAG, "Cannot start PhotoViewer, mPhotos is null");
+            return;
+        }
+        ArrayList<String> photoUrls = new ArrayList<String>();
+        for (Photo p : mPhotos) {
+            photoUrls.add(p.getLargeUrl());
+        }
+        Log.d(TAG, "starting photo viewer with " + photoUrls.size() + " ids");
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photoUrls);
+        bundle.putInt(Constants.KEY_PHOTO_LIST_INDEX, pos);
+        Intent photoViewer = new Intent(mActivity, PhotoViewerActivity.class);
+        photoViewer.putExtras(bundle);
+        mActivity.startActivity(photoViewer);
+    }
+
+    public void startProfileViewer(User user) {
+        if (user == null) {
+            Log.e(TAG, "Cannot start ProfileActivity, user is null");
+            return;
+        }
+        Log.d(TAG, "Starting ProfileActivity for " + user.getUsername());
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.KEY_PROFILEVIEWER_USER, user);
+        Intent profileViewer = new Intent(mActivity, ProfileActivity.class);
+        profileViewer.putExtras(bundle);
+        mActivity.startActivity(profileViewer);
+    }
 }

@@ -1,7 +1,10 @@
 package com.bourke.glimmr;
 
+import android.os.Bundle;
+
 import android.util.Log;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,10 +14,9 @@ import android.widget.RelativeLayout;
 import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
+import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
-import android.view.LayoutInflater;
-import android.os.Bundle;
 
 /**
  * Subclass of PhotoGridFragment to show a GridView of photos along with
@@ -25,27 +27,21 @@ public class ProfilePhotoGridFragment extends PhotoGridFragment
 
     private static final String TAG = "Glimmr/ProfilePhotoGridFragment";
 
-    public static final int TYPE_PHOTO_STREAM = 0;
-    public static final int TYPE_FAVORITES_STREAM = 1;
-
 	private AQuery mGridAq;
+    private User mUser;
 
-    private int mType = TYPE_PHOTO_STREAM;
-    private String mUserId;
-
-    public static ProfilePhotoGridFragment newInstance(int type,
-            String userId) {
+    public static ProfilePhotoGridFragment newInstance(int type, User user) {
         ProfilePhotoGridFragment newFragment = new ProfilePhotoGridFragment();
         newFragment.mType = type;
-        newFragment.mUserId = userId;
+        newFragment.mUser = user;
         return newFragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
-                container, false);
+        mLayout = (RelativeLayout) inflater.inflate(
+                R.layout.profile_gridview_fragment, container, false);
         super.initOAuth();
         return mLayout;
     }

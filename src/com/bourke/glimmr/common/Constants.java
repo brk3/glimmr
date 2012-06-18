@@ -11,6 +11,8 @@ public class Constants {
 	public static final String KEY_USER_ID = "glimmr-userId";
 
     public static final String KEY_PHOTOVIEWER_LIST = "glimmr-photolist";
-    public static final String KEY_PROFILEVIEWER_USER_ID =
-        "glimmr-profileviewer-id";
+    public static final String KEY_PHOTO_LIST_INDEX = "glimmr-photolist-index";
+
+    public static final String KEY_PROFILEVIEWER_USER =
+        "glimmr-profileviewer-user";
 }

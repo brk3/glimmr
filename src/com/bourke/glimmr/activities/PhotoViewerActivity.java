@@ -47,6 +47,8 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
         Bundle bundle = intent.getExtras();
         List<String> photoUrls = (ArrayList<String>) bundle.getSerializable(
                 Constants.KEY_PHOTOVIEWER_LIST);
+        int startIndex = (Integer) bundle.getInt(Constants
+                .KEY_PHOTO_LIST_INDEX);
         if (photoUrls != null) {
             Log.d(TAG, "got list of photo urls, size: " + photoUrls.size());
             mAdapter = new PhotoViewerPagerAdapter(getSupportFragmentManager(),
@@ -55,6 +57,7 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
             mPager.setAdapter(mAdapter);
             mIndicator = (LinePageIndicator)findViewById(R.id.indicator);
             mIndicator.setViewPager(mPager);
+            mIndicator.setCurrentItem(startIndex);
         } else {
             Log.e(TAG, "photos from intent are null");
             // TODO: show error / recovery
@@ -62,14 +65,12 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
     }
 
     class PhotoViewerPagerAdapter extends FragmentPagerAdapter {
-        protected List<String> mPhotoUrls;
-        private int mCount;
+        private List<String> mPhotoUrls;
 
         public PhotoViewerPagerAdapter(FragmentManager fm,
                 List<String> photos) {
             super(fm);
             mPhotoUrls = photos;
-            mCount = mPhotoUrls.size();
         }
 
         @Override
@@ -81,7 +82,7 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
 
         @Override
         public int getCount() {
-            return mCount;
+            return mPhotoUrls.size();
         }
     }
 }

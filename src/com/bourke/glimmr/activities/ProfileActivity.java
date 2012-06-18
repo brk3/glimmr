@@ -16,14 +16,15 @@ import com.actionbarsherlock.view.Menu;
 
 import com.androidquery.AQuery;
 
+import com.gmail.yuyang226.flickr.people.User;
+
 import com.viewpagerindicator.TabPageIndicator;
 
 /**
  * This activity is similar to MainActivity, but contains some more detailed
  * info on a User profile.
  *
- * Requires the userId of the profile been viewed to be passed in via an
- * intent.
+ * Requires a User object to be passed in via an intent.
  */
 public class ProfileActivity extends SherlockFragmentActivity
         implements ViewPager.OnPageChangeListener {
@@ -39,7 +40,7 @@ public class ProfileActivity extends SherlockFragmentActivity
 
     private int mStackLevel = 0;
 
-    private String mUserId;
+    private User mUser;
 
     //TODO: add to R.strings
     public static final String[] CONTENT =
@@ -65,14 +66,13 @@ public class ProfileActivity extends SherlockFragmentActivity
     private void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (bundle == null) {
-            Log.e(TAG, "bundle is null, ProfileActivity requires an intent " +
-                    "containing a userId");
+            Log.e(TAG, "Bundle is null, ProfileActivity requires an intent " +
+                    "containing a User");
         } else {
-            String userId = bundle.getString(Constants
-                    .KEY_PROFILEVIEWER_USER_ID);
-            if (userId != null && !userId.isEmpty()) {
-                Log.d(TAG, "got userId to view: " + userId);
-                mUserId = userId;
+            mUser = (User) bundle.getSerializable(
+                    Constants.KEY_PROFILEVIEWER_USER);
+            if (mUser != null) {
+                Log.d(TAG, "Got user to view: " + mUser.getUsername());
                 ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
                 ProfilePagerAdapter adapter = new ProfilePagerAdapter(
                         getSupportFragmentManager());
@@ -82,7 +82,7 @@ public class ProfileActivity extends SherlockFragmentActivity
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
             } else {
-                Log.e(TAG, "userId from intent is null or empty");
+                Log.e(TAG, "User from intent is null");
                 // TODO: show error / recovery
             }
         }
@@ -129,12 +129,12 @@ public class ProfileActivity extends SherlockFragmentActivity
                 case PHOTO_STREAM_PAGE:
                     return ProfilePhotoGridFragment.newInstance(
                             ProfilePhotoGridFragment.TYPE_PHOTO_STREAM,
-                            mUserId);
+                            mUser);
 
                 case FAVORITES_STREAM_PAGE:
                     return ProfilePhotoGridFragment.newInstance(
                             ProfilePhotoGridFragment.TYPE_FAVORITES_STREAM,
-                            mUserId);
+                            mUser);
 
                 case SETS_PAGE:
                     //return PhotoGridFragment.newInstance(PhotoGridFragment

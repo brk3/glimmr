@@ -31,7 +31,7 @@ public class PhotoGridFragment extends BaseFragment
 
 	private AQuery mGridAq;
 
-    private int mType = TYPE_PHOTO_STREAM;
+    protected int mType = TYPE_PHOTO_STREAM;
 
     public static PhotoGridFragment newInstance(int type) {
         PhotoGridFragment newFragment = new PhotoGridFragment();
@@ -73,7 +73,7 @@ public class PhotoGridFragment extends BaseFragment
             // TODO: implement ViewHolder pattern
             // TODO: add aquery delay loading for fling scrolling
 			@Override
-			public View getView(int position, View convertView,
+			public View getView(final int position, View convertView,
                     ViewGroup parent) {
 
 				if(convertView == null) {
@@ -81,7 +81,7 @@ public class PhotoGridFragment extends BaseFragment
                             R.layout.gridview_item, null);
 				}
 
-                Photo photo = getItem(position);
+                final Photo photo = getItem(position);
 				AQuery aq = mGridAq.recycle(convertView);
 
                 boolean useMemCache = true;
@@ -89,10 +89,22 @@ public class PhotoGridFragment extends BaseFragment
                 aq.id(R.id.image_item).image(photo.getLargeSquareUrl(),
                         useMemCache, useFileCache,  0, 0, null,
                         AQuery.FADE_IN_NETWORK);
+                aq.id(R.id.image_item).clicked(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startPhotoViewer(position);
+                    }
+                });
 
                 aq.id(R.id.viewsText).text("Views: " + String.valueOf(photo
                             .getViews()));
                 aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
+                aq.id(R.id.ownerText).clicked(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startProfileViewer(photo.getOwner());
+                    }
+                });
 
 				return convertView;
 			}
