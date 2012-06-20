@@ -18,9 +18,11 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
     private static final String TAG = "Glimmr/LoadPhotostreamTask";
 
     private IPhotoGridReadyListener mListener;
+    private User mUser;
 
-	public LoadPhotostreamTask(IPhotoGridReadyListener listener) {
+	public LoadPhotostreamTask(IPhotoGridReadyListener listener, User user) {
         mListener = listener;
+        mUser = user;
 	}
 
 	@Override
@@ -33,9 +35,9 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 		extras.add("url_q");
 		extras.add("url_l");
 		extras.add("views");
-		User user = arg0[0].getUser();
+		//User user = arg0[0].getUser();
 		try {
-			return f.getPeopleInterface().getPhotos(user.getId(), extras, 20,
+			return f.getPeopleInterface().getPhotos(mUser.getId(), extras, 20,
                     1);
 		} catch (Exception e) {
 			e.printStackTrace();

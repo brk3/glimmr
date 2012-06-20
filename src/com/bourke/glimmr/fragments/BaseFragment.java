@@ -29,6 +29,7 @@ import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
 import java.util.ArrayList;
+import android.text.Layout;
 
 /**
  * Basic fragment that handles OAuth initiasation for any fragments subclassing
@@ -42,7 +43,7 @@ public abstract class BaseFragment extends SherlockFragment {
     private static final String TAG = "Glimmr/BaseFragment";
 
     protected Activity mActivity;
-    protected RelativeLayout mLayout;
+    protected ViewGroup mLayout;
     protected PhotoList mPhotos = new PhotoList();
 
     public abstract void onAuthorised(OAuth oauth);

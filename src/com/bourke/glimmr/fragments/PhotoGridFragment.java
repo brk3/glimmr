@@ -47,7 +47,7 @@ public class PhotoGridFragment extends BaseFragment
     public void onAuthorised(OAuth oauth) {
         switch (mType) {
             case TYPE_PHOTO_STREAM:
-                new LoadPhotostreamTask(this).execute(oauth);
+                new LoadPhotostreamTask(this, oauth.getUser()).execute(oauth);
                 break;
             case TYPE_CONTACTS_STREAM:
                 new LoadContactsPhotosTask(this).execute(oauth);

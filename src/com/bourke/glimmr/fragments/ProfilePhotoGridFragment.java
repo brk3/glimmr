@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
@@ -17,6 +16,9 @@ import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
+import android.widget.LinearLayout;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 /**
  * Subclass of PhotoGridFragment to show a GridView of photos along with
@@ -54,7 +56,7 @@ public class ProfilePhotoGridFragment extends PhotoGridFragment
     public void onAuthorised(OAuth oauth) {
         switch (mType) {
             case TYPE_PHOTO_STREAM:
-                //new LoadPhotostreamTask(this).execute(oauth);
+                new LoadPhotostreamTask(this, mUser).execute(oauth);
                 break;
             case TYPE_FAVORITES_STREAM:
                 //new LoadContactsPhotosTask(this).execute(oauth);
