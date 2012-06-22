@@ -137,12 +137,14 @@ public class ProfileActivity extends SherlockFragmentActivity
                             mUser);
 
                 case SETS_PAGE:
-                    //return PhotoGridFragment.newInstance(PhotoGridFragment
-                    //        .TYPE_GROUPS_STREAM);
+                    return ProfilePhotoGridFragment.newInstance(
+                            ProfilePhotoGridFragment.TYPE_FAVORITES_STREAM,
+                            mUser);
 
                 case CONTACTS_PAGE:
-                    //return PhotoGridFragment.newInstance(PhotoGridFragment
-                    //        .TYPE_GROUPS_STREAM);
+                    return ProfilePhotoGridFragment.newInstance(
+                            ProfilePhotoGridFragment.TYPE_FAVORITES_STREAM,
+                            mUser);
             }
             return null;
         }

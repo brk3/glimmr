@@ -86,9 +86,8 @@ public class PhotoGridFragment extends BaseFragment
 
                 boolean useMemCache = true;
                 boolean useFileCache = true;
-                aq.id(R.id.image_item).image(photo.getLargeSquareUrl(),
-                        useMemCache, useFileCache,  0, 0, null,
-                        AQuery.FADE_IN_NETWORK);
+                aq.id(R.id.image_item).image(photo.getSmallUrl(), useMemCache,
+                        useFileCache,  0, 0, null, AQuery.FADE_IN_NETWORK);
                 aq.id(R.id.image_item).clicked(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

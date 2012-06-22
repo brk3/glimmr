@@ -23,4 +23,8 @@
     <color name="text_light">#ffbbbbbb</color>
     <color name="text_primary">#fff1f1f1</color>
     <color name="transparent_black">#32000000</color>
+
+    <color name="flickr_pink">#ffff0084</color>
+    <color name="flickr_blue">#ff0063dc</color>
+    <color name="flickr_blue_transparent">#b40063dc</color>
 </resources>

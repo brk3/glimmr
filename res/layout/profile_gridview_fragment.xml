@@ -22,18 +22,17 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/profile_banner"
         android:layout_alignParentTop="true"
-        android:background="#B40063dc"
+        android:background="@color/flickr_blue_transparent"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/image_profile"
-            android:layout_width="75dip"
-            android:layout_height="75dip"
+            android:layout_width="70dip"
+            android:layout_height="70dip"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:paddingLeft="3dip"
-            android:paddingTop="3dip"
+            android:padding="3dip"
             android:src="@drawable/ic_contact_picture"
             android:scaleType="centerCrop" />
 
@@ -45,8 +44,10 @@
             android:paddingTop="20dip"
             android:paddingLeft="15dip"
             android:paddingBottom="5dip"
-            android:textSize="15sp" />
+            android:textColor="@color/flickr_pink"
+            android:textSize="18sp" />
 
+        <!--
         <TextView
             android:id="@+id/text_joined"
             android:text="Joined:"
@@ -57,6 +58,7 @@
             android:textColor="@android:color/white"
             android:paddingLeft="15dip"
             android:paddingRight="10dip" />
+        -->
     </RelativeLayout>
 
 </RelativeLayout>

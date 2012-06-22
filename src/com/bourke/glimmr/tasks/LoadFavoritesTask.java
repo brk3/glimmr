@@ -10,17 +10,18 @@ import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
+public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
 
-    private static final String TAG = "Glimmr/LoadPhotostreamTask";
+    private static final String TAG = "Glimmr/LoadFavoritesTask";
 
     private IPhotoGridReadyListener mListener;
     private User mUser;
 
-	public LoadPhotostreamTask(IPhotoGridReadyListener listener, User user) {
+	public LoadFavoritesTask(IPhotoGridReadyListener listener, User user) {
         mListener = listener;
         mUser = user;
 	}
@@ -30,14 +31,18 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 		OAuthToken token = arg0[0].getToken();
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
+        Date minFavDate = null;
+        Date maxFavDate = null;
+        int perPage = 20;
+        int page = 1;
 		Set<String> extras = new HashSet<String>();
 		extras.add("owner_name");
 		extras.add("url_q");
 		extras.add("url_l");
 		extras.add("views");
 		try {
-			return f.getPeopleInterface().getPhotos(mUser.getId(), extras, 20,
-                    1);
+			return f.getFavoritesInterface().getList(mUser.getId(), minFavDate,
+                    maxFavDate, perPage, page, extras);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -8,24 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.people.User;
-import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
-import android.widget.LinearLayout;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 /**
  * Subclass of PhotoGridFragment to show a GridView of photos along with
  * a banner to differentiate what profile the photos belong to.
  */
 public class ProfilePhotoGridFragment extends PhotoGridFragment
-        implements IPhotoGridReadyListener {
+        implements IPhotoGridReadyListener, IUserReadyListener {
 
     private static final String TAG = "Glimmr/ProfilePhotoGridFragment";
 
@@ -59,11 +55,12 @@ public class ProfilePhotoGridFragment extends PhotoGridFragment
                 new LoadPhotostreamTask(this, mUser).execute(oauth);
                 break;
             case TYPE_FAVORITES_STREAM:
-                //new LoadContactsPhotosTask(this).execute(oauth);
+                new LoadFavoritesTask(this, mUser).execute(oauth);
                 break;
             default:
                 Log.e(TAG, "Unknown ProfilePhotoGridFragment type: " + mType);
         }
+        new LoadUserTask(this, mUser).execute(oauth);
     }
 
     /**
@@ -72,40 +69,27 @@ public class ProfilePhotoGridFragment extends PhotoGridFragment
      */
     @Override
     public void onPhotosReady(PhotoList photos, boolean cancelled) {
+        /* Call up the PhotoGridFragment to populate the main GridView, then
+         * populate our profile specific elements. */
+        super.onPhotosReady(photos, cancelled);
+
         Log.d(TAG, "onPhotosReady");
 		mGridAq = new AQuery(mActivity, mLayout);
         mPhotos = photos;
 
-		ArrayAdapter<Photo> adapter = new ArrayAdapter<Photo>(mActivity,
-                R.layout.gridview_item, photos) {
+        mGridAq.id(R.id.text_screenname).text(mUser.getUsername());
+    }
 
-            // TODO: implement ViewHolder pattern
-			@Override
-			public View getView(int position, View convertView,
-                    ViewGroup parent) {
+    @Override
+    public void onUserReady(User user, boolean cancelled) {
+        /* Replace the bare bones user object we were passed with a more
+         * complete one containing the buddy icon url. */
+        mUser = user;
 
-				if(convertView == null) {
-					convertView = mActivity.getLayoutInflater().inflate(
-                            R.layout.gridview_item, null);
-				}
-
-                Photo photo = getItem(position);
-				AQuery aq = mGridAq.recycle(convertView);
-
-                boolean useMemCache = true;
-                boolean useFileCache = true;
-                aq.id(R.id.image_item).image(photo.getLargeSquareUrl(),
-                        useMemCache, useFileCache,  0, 0, null,
-                        AQuery.FADE_IN_NETWORK);
-                aq.id(R.id.viewsText).text("Views: " + String.valueOf(photo
-                            .getViews()));
-                aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
-
-				return convertView;
-			}
-		};
-        mGridAq.id(R.id.gridview).adapter(adapter).itemClicked(this,
-                "startPhotoViewer");
-		mGridAq.id(R.id.gridview).adapter(adapter);
+        boolean useMemCache = false;
+        boolean useFileCache = false;
+        mGridAq.id(R.id.image_profile).image(mUser.getBuddyIconUrl(),
+                useMemCache, useFileCache,  0, 0, null,
+                AQuery.FADE_IN_NETWORK);
     }
 }
