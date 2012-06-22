@@ -24,10 +24,9 @@ public final class PhotoViewerFragment extends SherlockFragment {
     private static final String KEY_CONTENT = "PhotoViewerFragment:Content";
 
 	private AQuery aq;
+    private Photo mPhoto = new Photo();
     private Activity mActivity;
-    private FrameLayout mLayout;
-
-    public Photo mPhoto = new Photo();
+    private ViewGroup mLayout;
 
     public static PhotoViewerFragment newInstance(Photo photo) {
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
@@ -56,7 +55,6 @@ public final class PhotoViewerFragment extends SherlockFragment {
         if (mPhoto != null) {
             String url = mPhoto.getUrl();
             aq.id(R.id.web).progress(R.id.progress).webImage(url);
-            //aq.id(R.id.text).text(url);
         } else {
             Log.e(TAG, "onStart, mPhoto is null");
         }

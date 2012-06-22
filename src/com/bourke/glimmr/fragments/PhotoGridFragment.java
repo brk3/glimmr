@@ -1,5 +1,7 @@
 package com.bourke.glimmr;
 
+import android.os.Bundle;
+
 import android.util.Log;
 
 import android.view.View;
@@ -29,12 +31,11 @@ public class PhotoGridFragment extends BaseFragment
     public static final int TYPE_GROUPS_STREAM = 2;
     public static final int TYPE_FAVORITES_STREAM = 3;
 
-	private AQuery mGridAq;
-
     protected int mType = TYPE_PHOTO_STREAM;
 
-    public static PhotoGridFragment newInstance(int type) {
+    public static PhotoGridFragment newInstance(OAuth oauth, int type) {
         PhotoGridFragment newFragment = new PhotoGridFragment();
+        newFragment.mOAuth = oauth;
         newFragment.mType = type;
         return newFragment;
     }
@@ -44,13 +45,15 @@ public class PhotoGridFragment extends BaseFragment
      * fetch the appropriate photos.
      */
     @Override
-    public void onAuthorised(OAuth oauth) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         switch (mType) {
             case TYPE_PHOTO_STREAM:
-                new LoadPhotostreamTask(this, oauth.getUser()).execute(oauth);
+                new LoadPhotostreamTask(this, mOAuth.getUser()).execute(
+                        mOAuth);
                 break;
             case TYPE_CONTACTS_STREAM:
-                new LoadContactsPhotosTask(this).execute(oauth);
+                new LoadContactsPhotosTask(this).execute(mOAuth);
                 break;
             default:
                 Log.e(TAG, "Unknown PhotoGridFragment type: " + mType);

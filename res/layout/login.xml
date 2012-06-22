@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="20dip"
+    android:background="@android:color/background_light">
+
+    <TextView
+        android:id="@+id/textWelcome"
+        android:background="@android:color/background_light"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:textColor="@color/text_faded"
+        android:text="Welcome\nto\nGlimmr."
+        android:paddingBottom="40dp"
+        android:paddingTop="100dip" />
+    <!--
+    <TextView
+        android:id="@+id/textInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textWelcome"
+        android:paddingTop="30dp"
+        android:textSize="12sp"
+        android:text="Click the login button to get started" />
+    -->
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textWelcome"
+        android:layout_alignLeft="@id/textWelcome"
+        android:onClick="loginUser"
+        android:text="Login" />
+
+</RelativeLayout>

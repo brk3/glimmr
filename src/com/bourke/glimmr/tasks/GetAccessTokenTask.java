@@ -10,14 +10,14 @@ import com.gmail.yuyang226.flickr.oauth.OAuthInterface;
  * Gets an access token from Flickr once authorised to access the user's
  * account
  */
-public class GetOAuthTokenTask extends AsyncTask<String, Integer, OAuth> {
+public class GetAccessTokenTask extends AsyncTask<String, Integer, OAuth> {
 
-    private static final String TAG = "Glimmr/GetOAuthTokenTask";
+    private static final String TAG = "Glimmr/GetAccessTokenTask";
 
-	private BaseFragment mFragment;
+	private IAccessTokenReadyListener mListener;
 
-	public GetOAuthTokenTask(BaseFragment fragment) {
-        mFragment = fragment;
+	public GetAccessTokenTask(IAccessTokenReadyListener listener) {
+        mListener = listener;
 	}
 
 	@Override
@@ -33,14 +33,12 @@ public class GetOAuthTokenTask extends AsyncTask<String, Integer, OAuth> {
 					verifier);
 		} catch (Exception e) {
             e.printStackTrace();
-			return null;
 		}
+        return null;
 	}
 
 	@Override
 	protected void onPostExecute(OAuth result) {
-		if (mFragment != null) {
-			mFragment.onOAuthDone(result);
-		}
+        mListener.onAccessTokenReady(result);
 	}
 }

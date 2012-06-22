@@ -25,11 +25,12 @@ public class ProfilePhotoGridFragment extends PhotoGridFragment
 
     private static final String TAG = "Glimmr/ProfilePhotoGridFragment";
 
-	private AQuery mGridAq;
     private User mUser;
 
-    public static ProfilePhotoGridFragment newInstance(int type, User user) {
+    public static ProfilePhotoGridFragment newInstance(OAuth oauth, int type,
+            User user) {
         ProfilePhotoGridFragment newFragment = new ProfilePhotoGridFragment();
+        newFragment.mOAuth = oauth;
         newFragment.mType = type;
         newFragment.mUser = user;
         return newFragment;
@@ -40,27 +41,18 @@ public class ProfilePhotoGridFragment extends PhotoGridFragment
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.profile_gridview_fragment, container, false);
-        super.initOAuth();
-        return mLayout;
-    }
-
-    /**
-     * Once we're authorised to access the user's account, start a task to
-     * fetch the appropriate photos.
-     */
-    @Override
-    public void onAuthorised(OAuth oauth) {
         switch (mType) {
             case TYPE_PHOTO_STREAM:
-                new LoadPhotostreamTask(this, mUser).execute(oauth);
+                new LoadPhotostreamTask(this, mUser).execute(mOAuth);
                 break;
             case TYPE_FAVORITES_STREAM:
-                new LoadFavoritesTask(this, mUser).execute(oauth);
+                new LoadFavoritesTask(this, mUser).execute(mOAuth);
                 break;
             default:
                 Log.e(TAG, "Unknown ProfilePhotoGridFragment type: " + mType);
         }
-        new LoadUserTask(this, mUser).execute(oauth);
+        new LoadUserTask(this, mUser).execute(mOAuth);
+        return mLayout;
     }
 
     /**
