@@ -18,10 +18,10 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private static final String TAG = "Glimmr/LoadFavoritesTask";
 
-    private IPhotoGridReadyListener mListener;
+    private IPhotoListReadyListener mListener;
     private User mUser;
 
-	public LoadFavoritesTask(IPhotoGridReadyListener listener, User user) {
+	public LoadFavoritesTask(IPhotoListReadyListener listener, User user) {
         mListener = listener;
         mUser = user;
 	}

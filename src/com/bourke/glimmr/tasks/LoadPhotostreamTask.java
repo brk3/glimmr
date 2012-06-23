@@ -17,10 +17,10 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private static final String TAG = "Glimmr/LoadPhotostreamTask";
 
-    private IPhotoGridReadyListener mListener;
+    private IPhotoListReadyListener mListener;
     private User mUser;
 
-	public LoadPhotostreamTask(IPhotoGridReadyListener listener, User user) {
+	public LoadPhotostreamTask(IPhotoListReadyListener listener, User user) {
         mListener = listener;
         mUser = user;
 	}

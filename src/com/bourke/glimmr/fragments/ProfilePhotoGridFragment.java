@@ -21,7 +21,7 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
  * a banner to differentiate what profile the photos belong to.
  */
 public class ProfilePhotoGridFragment extends PhotoGridFragment
-        implements IPhotoGridReadyListener, IUserReadyListener {
+        implements IPhotoListReadyListener, IUserReadyListener {
 
     private static final String TAG = "Glimmr/ProfilePhotoGridFragment";
 

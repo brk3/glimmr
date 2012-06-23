@@ -79,8 +79,7 @@ public class MainActivity extends BaseActivity {
                     return PhotoGridFragment.newInstance(mOAuth,
                             PhotoGridFragment.TYPE_CONTACTS_STREAM);
                 case GROUPS_PAGE:
-                    return PhotoGridFragment.newInstance(mOAuth,
-                            PhotoGridFragment.TYPE_GROUPS_STREAM);
+                    return GroupListFragment.newInstance(mOAuth);
             }
             return null;
         }

@@ -24,9 +24,9 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private static final String TAG = "Glimmr/LoadContactsPhotosTask";
 
-    private IPhotoGridReadyListener mListener;
+    private IPhotoListReadyListener mListener;
 
-	public LoadContactsPhotosTask(IPhotoGridReadyListener listener) {
+	public LoadContactsPhotosTask(IPhotoListReadyListener listener) {
         mListener = listener;
 	}
 

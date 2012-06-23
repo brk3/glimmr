@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
  * photostreams, favorites, contacts photos, etc.
  */
 public class PhotoGridFragment extends BaseFragment
-        implements IPhotoGridReadyListener {
+        implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
@@ -65,8 +65,8 @@ public class PhotoGridFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
-                container, false);
+        mLayout = (RelativeLayout) inflater.inflate(R.layout
+                .standard_gridview_fragment, container, false);
         return mLayout;
     }
 
