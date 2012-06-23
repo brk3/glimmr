@@ -26,6 +26,7 @@ public class ProfilePhotoGridFragment extends PhotoGridFragment
     private static final String TAG = "Glimmr/ProfilePhotoGridFragment";
 
     private User mUser;
+    private AQuery mAq;
 
     public static ProfilePhotoGridFragment newInstance(OAuth oauth, int type,
             User user) {
@@ -65,11 +66,8 @@ public class ProfilePhotoGridFragment extends PhotoGridFragment
          * populate our profile specific elements. */
         super.onPhotosReady(photos, cancelled);
 
-        Log.d(TAG, "onPhotosReady");
-		mGridAq = new AQuery(mActivity, mLayout);
-        mPhotos = photos;
-
-        mGridAq.id(R.id.text_screenname).text(mUser.getUsername());
+		mAq = new AQuery(mActivity, mLayout);
+        mAq.id(R.id.text_screenname).text(mUser.getUsername());
     }
 
     @Override
@@ -78,9 +76,10 @@ public class ProfilePhotoGridFragment extends PhotoGridFragment
          * complete one containing the buddy icon url. */
         mUser = user;
 
+        Log.d(TAG, "onUserReady");
         boolean useMemCache = false;
         boolean useFileCache = false;
-        mGridAq.id(R.id.image_profile).image(mUser.getBuddyIconUrl(),
+        mAq.id(R.id.image_profile).image(mUser.getBuddyIconUrl(),
                 useMemCache, useFileCache,  0, 0, null,
                 AQuery.FADE_IN_NETWORK);
     }

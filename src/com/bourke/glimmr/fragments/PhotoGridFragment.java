@@ -14,6 +14,8 @@ import com.androidquery.AQuery;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
+import android.view.LayoutInflater;
+import android.widget.RelativeLayout;
 
 /**
  * Fragment that contains a GridView of photos.
@@ -58,6 +60,14 @@ public class PhotoGridFragment extends BaseFragment
             default:
                 Log.e(TAG, "Unknown PhotoGridFragment type: " + mType);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
+                container, false);
+        return mLayout;
     }
 
     /**

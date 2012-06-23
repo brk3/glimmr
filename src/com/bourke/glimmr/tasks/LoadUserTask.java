@@ -42,7 +42,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
             boolean cancelled = false;
             mListener.onUserReady(result, cancelled);
 		} else {
-            Log.e(TAG, "error fetching user info, result is null");
+            Log.e(TAG, "Error fetching user info, result is null");
             // TODO: alert user / recover
         }
 	}

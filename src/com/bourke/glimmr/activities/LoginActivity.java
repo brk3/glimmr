@@ -20,6 +20,18 @@ import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
 
+/**
+ * Presents a welcome screen to user and a button to login.
+ *
+ * The login button then follows the OAuth flow described at
+ * http://www.flickr.com/services/api/auth.oauth.html:
+ *
+ * Get a Request Token
+ * Get the User's Authorization
+ * Exchange the Request Token for an Access Token
+ *
+ * The access token is then persisted to SharedPreferences.
+ */
 public class LoginActivity extends SherlockFragmentActivity
         implements IRequestTokenReadyListener, IAccessTokenReadyListener {
 
@@ -33,6 +45,11 @@ public class LoginActivity extends SherlockFragmentActivity
         getSupportActionBar().hide();
     }
 
+    /**
+     * Called when the login button is clicked.
+     *
+     * Starts a task to get a request token from Flickr.
+     */
     public void loginUser(View view) {
         new GetRequestToken(this, this).execute();
     }
@@ -54,22 +71,22 @@ public class LoginActivity extends SherlockFragmentActivity
             String scheme = intent.getScheme();
             if (Constants.CALLBACK_SCHEME.equals(scheme)) {
                 Uri uri = intent.getData();
-                String query = uri.getQuery();
-                Log.d(TAG, "Returned Query: " + query);
-
-                String[] data = query.split("&");
-                if (data != null && data.length == 2) {
-                    String oauthToken = data[0].substring(data[0]
-                            .indexOf("=")+1);
-                    String oAuthSecret = getSavedOAuthSecret();
-                    String oauthVerifier = data[1].substring(data[1]
-                            .indexOf("=")+1);
-                    new GetAccessTokenTask(this).execute(oauthToken,
-                            oAuthSecret, oauthVerifier);
-                }
+                String[] data = uri.getQuery().split("&");
+                SharedPreferences prefs = getSharedPreferences(Constants
+                        .PREFS_NAME, Context.MODE_PRIVATE);
+                String oAuthSecret = prefs.getString(
+                        Constants.KEY_TOKEN_SECRET, null);
+                String oauthToken = data[0].substring(data[0]
+                        .indexOf("=")+1);
+                String oauthVerifier = data[1].substring(data[1]
+                        .indexOf("=")+1);
+                new GetAccessTokenTask(this).execute(oauthToken,
+                        oAuthSecret, oauthVerifier);
+            } else {
+                Log.d(TAG, "Received intent but unknown scheme: " + scheme);
             }
         } else {
-            Log.d(TAG, "Received null intent");
+            Log.d(TAG, "Started with null intent");
         }
 	}
 
@@ -77,15 +94,8 @@ public class LoginActivity extends SherlockFragmentActivity
     public void onAccessTokenReady(OAuth accessToken) {
         persistAccessToken(accessToken);
         Log.d(TAG, "Got token, saved to disk, good to start MainActivity");
-        Toast.makeText(this, "Logged In ^_^", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Logged In!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, MainActivity.class));
-    }
-
-    private String getSavedOAuthSecret() {
-        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
-                Context.MODE_PRIVATE);
-        String tokenSecret = prefs.getString(Constants.KEY_TOKEN_SECRET, null);
-        return tokenSecret;
     }
 
     private void persistAccessToken(OAuth oauth) {

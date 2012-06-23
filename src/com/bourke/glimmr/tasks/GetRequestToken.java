@@ -42,7 +42,7 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
 	protected void onPreExecute() {
 		super.onPreExecute();
 		mProgressDialog = ProgressDialog.show(mActivity, "",
-                "Generating the authorization request...");
+                "Just a moment...");
 		mProgressDialog.setCanceledOnTouchOutside(true);
 		mProgressDialog.setCancelable(true);
 		mProgressDialog.setOnCancelListener(new OnCancelListener() {

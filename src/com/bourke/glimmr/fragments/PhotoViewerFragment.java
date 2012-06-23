@@ -18,15 +18,12 @@ import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 
-public final class PhotoViewerFragment extends SherlockFragment {
+public final class PhotoViewerFragment extends BaseFragment {
 
     private static final String TAG = "Glimmr/PhotoViewerFragment";
-    private static final String KEY_CONTENT = "PhotoViewerFragment:Content";
 
-	private AQuery aq;
     private Photo mPhoto = new Photo();
-    private Activity mActivity;
-    private ViewGroup mLayout;
+    private AQuery mAq;
 
     public static PhotoViewerFragment newInstance(Photo photo) {
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
@@ -39,11 +36,10 @@ public final class PhotoViewerFragment extends SherlockFragment {
         super.onCreate(savedInstanceState);
 
         if ((savedInstanceState != null) && savedInstanceState.containsKey(
-                    KEY_CONTENT)) {
-            mPhoto.setUrl(savedInstanceState.getString(KEY_CONTENT));
+                    Constants.KEY_PHOTOVIEWER_URL)) {
+            mPhoto.setUrl(savedInstanceState.getString(
+                        Constants.KEY_PHOTOVIEWER_URL));
         }
-
-        mActivity = getSherlockActivity();
     }
 
     @Override
@@ -51,10 +47,10 @@ public final class PhotoViewerFragment extends SherlockFragment {
             Bundle savedInstanceState) {
         mLayout = (FrameLayout) inflater.inflate(R.layout.photoviewer_fragment,
                 container, false);
-		aq = new AQuery(mActivity, mLayout);
+		mAq = new AQuery(mActivity, mLayout);
         if (mPhoto != null) {
             String url = mPhoto.getUrl();
-            aq.id(R.id.web).progress(R.id.progress).webImage(url);
+            mAq.id(R.id.web).progress(R.id.progress).webImage(url);
         } else {
             Log.e(TAG, "onStart, mPhoto is null");
         }
@@ -64,6 +60,6 @@ public final class PhotoViewerFragment extends SherlockFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(KEY_CONTENT, mPhoto.getUrl());
+        outState.putString(Constants.KEY_PHOTOVIEWER_URL, mPhoto.getUrl());
     }
 }

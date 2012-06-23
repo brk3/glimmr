@@ -32,11 +32,23 @@ public abstract class BaseFragment extends SherlockFragment {
 
     private static final String TAG = "Glimmr/BaseFragment";
 
+    /**
+     * It's useful to keep a reference to the parent activity in our fragments.
+     */
     protected Activity mActivity;
+
+    /**
+     * Most Glimmr fragments deal with a list of photos.
+     */
+    protected PhotoList mPhotos = new PhotoList();
+
+    /**
+     * Should contain current user and valid access token for that user.
+     */
+    protected OAuth mOAuth;
+
 	protected AQuery mGridAq;
     protected ViewGroup mLayout;
-    protected PhotoList mPhotos = new PhotoList();
-    protected OAuth mOAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,16 +56,12 @@ public abstract class BaseFragment extends SherlockFragment {
         mActivity = getSherlockActivity();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
-                container, false);
-        return mLayout;
-    }
-
-    /* The flickr Photo class isn't Serialisable, so construct a List of photo
-     * urls to send it instead */
+    /**
+     * Start the PhotoViewerActivity with a list of photos to view and an index
+     * to start at in the list.
+     *
+     * Unfortunately can't use a PhotoList here as Photo isn't serialisable.
+     */
     public void startPhotoViewer(int pos) {
         if (mPhotos == null) {
             Log.e(TAG, "Cannot start PhotoViewer, mPhotos is null");
@@ -66,7 +74,7 @@ public abstract class BaseFragment extends SherlockFragment {
         Log.d(TAG, "starting photo viewer with " + photoUrls.size() + " ids");
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photoUrls);
-        bundle.putInt(Constants.KEY_PHOTO_LIST_INDEX, pos);
+        bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
         Intent photoViewer = new Intent(mActivity, PhotoViewerActivity.class);
         photoViewer.putExtras(bundle);
         mActivity.startActivity(photoViewer);

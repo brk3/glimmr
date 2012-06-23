@@ -21,13 +21,15 @@ import com.viewpagerindicator.PageIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity for viewing photos.
+ *
+ * Receives a list of photos via an intent and shows the first one specified by
+ * a startIndex in a zoomable WebView.
+ */
 public class PhotoViewerActivity extends SherlockFragmentActivity {
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
-
-    private PhotoViewerPagerAdapter mAdapter;
-    private ViewPager mPager;
-    private PageIndicator mIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +50,20 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
         List<String> photoUrls = (ArrayList<String>) bundle.getSerializable(
                 Constants.KEY_PHOTOVIEWER_LIST);
         int startIndex = (Integer) bundle.getInt(Constants
-                .KEY_PHOTO_LIST_INDEX);
+                .KEY_PHOTOVIEWER_START_INDEX);
+
         if (photoUrls != null) {
-            Log.d(TAG, "got list of photo urls, size: " + photoUrls.size());
-            mAdapter = new PhotoViewerPagerAdapter(getSupportFragmentManager(),
-                    photoUrls);
-            mPager = (ViewPager)findViewById(R.id.pager);
-            mPager.setAdapter(mAdapter);
-            mIndicator = (LinePageIndicator)findViewById(R.id.indicator);
-            mIndicator.setViewPager(mPager);
-            mIndicator.setCurrentItem(startIndex);
+            Log.d(TAG, "Got list of photo urls, size: " + photoUrls.size());
+            PhotoViewerPagerAdapter adapter = new PhotoViewerPagerAdapter(
+                    getSupportFragmentManager(), photoUrls);
+            ViewPager pager = (ViewPager) findViewById(R.id.pager);
+            pager.setAdapter(adapter);
+            PageIndicator indicator = (LinePageIndicator) findViewById(
+                    R.id.indicator);
+            indicator.setViewPager(pager);
+            indicator.setCurrentItem(startIndex);
         } else {
-            Log.e(TAG, "photos from intent are null");
+            Log.e(TAG, "Photos from intent are null");
             // TODO: show error / recovery
         }
     }
