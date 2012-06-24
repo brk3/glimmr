@@ -1,11 +1,6 @@
 package com.bourke.glimmr;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
-import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +11,6 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
-import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
@@ -26,24 +20,10 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
  * Can be used to display many of the Flickr "categories" of photos, i.e.
  * photostreams, favorites, contacts photos, etc.
  */
-public class PhotoGridFragment extends BaseFragment
+public abstract class PhotoGridFragment extends BaseFragment
         implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
-
-    public static final int TYPE_PHOTO_STREAM = 0;
-    public static final int TYPE_CONTACTS_STREAM = 1;
-    public static final int TYPE_GROUPS_STREAM = 2;
-    public static final int TYPE_FAVORITES_STREAM = 3;
-
-    protected int mType = TYPE_PHOTO_STREAM;
-
-    public static PhotoGridFragment newInstance(OAuth oauth, int type) {
-        PhotoGridFragment newFragment = new PhotoGridFragment();
-        newFragment.mOAuth = oauth;
-        newFragment.mType = type;
-        return newFragment;
-    }
 
     /**
      * Once we're authorised to access the user's account, start a task to
@@ -74,27 +54,6 @@ public class PhotoGridFragment extends BaseFragment
         super.onResume();
         log(TAG, "onResume");
         startTask();
-    }
-
-    @Override
-    protected void startTask() {
-        super.startTask();
-        if (mOAuth == null || mOAuth.getUser() == null) {
-            SharedPreferences prefs = mActivity.getSharedPreferences(Constants
-                    .PREFS_NAME, Context.MODE_PRIVATE);
-            mOAuth = BaseActivity.loadAccessToken(prefs);
-        }
-        switch (mType) {
-            case TYPE_PHOTO_STREAM:
-                new LoadPhotostreamTask(this, mOAuth.getUser()).execute(
-                        mOAuth);
-                break;
-            case TYPE_CONTACTS_STREAM:
-                new LoadContactsPhotosTask(this).execute(mOAuth);
-                break;
-            default:
-                Log.e(TAG, "Unknown PhotoGridFragment type: " + mType);
-        }
     }
 
     /**

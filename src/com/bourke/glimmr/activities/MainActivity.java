@@ -77,13 +77,11 @@ public class MainActivity extends BaseActivity {
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case PHOTOSTREAM_PAGE:
-                    return PhotoGridFragment.newInstance(mOAuth,
-                            PhotoGridFragment.TYPE_PHOTO_STREAM);
+                    return PhotoStreamGridFragment.newInstance();
                 case CONTACTS_PAGE:
-                    return PhotoGridFragment.newInstance(mOAuth,
-                            PhotoGridFragment.TYPE_CONTACTS_STREAM);
+                    return ContactsGridFragment.newInstance();
                 case GROUPS_PAGE:
-                    return GroupListFragment.newInstance(mOAuth);
+                    return GroupListFragment.newInstance();
             }
             return null;
         }

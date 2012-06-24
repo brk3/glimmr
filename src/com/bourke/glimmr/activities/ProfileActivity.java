@@ -114,25 +114,18 @@ public class ProfileActivity extends BaseActivity {
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case PHOTO_STREAM_PAGE:
-                    if (mOAuth == null) Log.d(TAG, "sdfjklsdf");
-                    return ProfilePhotoGridFragment.newInstance(mOAuth,
-                            ProfilePhotoGridFragment.TYPE_PHOTO_STREAM,
-                            mUser);
+                    return ProfilePhotoStreamGridFragment.newInstance(mUser);
 
                 case FAVORITES_STREAM_PAGE:
-                    return ProfilePhotoGridFragment.newInstance(mOAuth,
-                            ProfilePhotoGridFragment.TYPE_FAVORITES_STREAM,
-                            mUser);
+                    return ProfileFavoritesGridFragment.newInstance(mUser);
 
                 case SETS_PAGE:
-                    return ProfilePhotoGridFragment.newInstance(mOAuth,
-                            ProfilePhotoGridFragment.TYPE_FAVORITES_STREAM,
-                            mUser);
+                    // TODO
+                    return ProfileFavoritesGridFragment.newInstance(mUser);
 
                 case CONTACTS_PAGE:
-                    return ProfilePhotoGridFragment.newInstance(mOAuth,
-                            ProfilePhotoGridFragment.TYPE_FAVORITES_STREAM,
-                            mUser);
+                    // TODO
+                    return ProfileFavoritesGridFragment.newInstance(mUser);
             }
             return null;
         }

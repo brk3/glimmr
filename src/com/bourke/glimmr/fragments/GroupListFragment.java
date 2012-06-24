@@ -13,7 +13,6 @@ import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.groups.Group;
 import com.gmail.yuyang226.flickr.groups.GroupList;
-import com.gmail.yuyang226.flickr.oauth.OAuth;
 
 import java.util.ArrayList;
 
@@ -27,10 +26,8 @@ public class GroupListFragment extends BaseFragment
 
     private GroupList mGroups = new GroupList();
 
-    public static GroupListFragment newInstance(OAuth oauth) {
-        GroupListFragment newFragment = new GroupListFragment();
-        newFragment.mOAuth = oauth;
-        return newFragment;
+    public static GroupListFragment newInstance() {
+        return new GroupListFragment();
     }
 
     @Override

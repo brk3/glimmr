@@ -2,8 +2,6 @@ package com.bourke.glimmr;
 
 import android.os.Bundle;
 
-import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
-import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
@@ -20,39 +17,21 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
  * Subclass of PhotoGridFragment to show a GridView of photos along with
  * a banner to differentiate what profile the photos belong to.
  */
-public class ProfilePhotoGridFragment extends PhotoGridFragment
+public abstract class ProfilePhotoGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener, IUserReadyListener {
 
     private static final String TAG = "Glimmr/ProfilePhotoGridFragment";
 
-    private User mUser;
     private AQuery mAq;
 
-    public static ProfilePhotoGridFragment newInstance(OAuth oauth, int type,
-            User user) {
-        ProfilePhotoGridFragment newFragment = new ProfilePhotoGridFragment();
-        newFragment.mOAuth = oauth;
-        newFragment.mType = type;
-        newFragment.mUser = user;
-        return newFragment;
-    }
+    protected User mUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.profile_gridview_fragment, container, false);
-        switch (mType) {
-            case TYPE_PHOTO_STREAM:
-                new LoadPhotostreamTask(this, mUser).execute(mOAuth);
-                break;
-            case TYPE_FAVORITES_STREAM:
-                new LoadFavoritesTask(this, mUser).execute(mOAuth);
-                break;
-            default:
-                Log.e(TAG, "Unknown ProfilePhotoGridFragment type: " + mType);
-        }
-        new LoadUserTask(this, mUser).execute(mOAuth);
+        startTask();
         return mLayout;
     }
 
