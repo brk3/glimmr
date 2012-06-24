@@ -2,17 +2,15 @@ package com.bourke.glimmr;
 
 import android.app.Activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
 import android.util.Log;
 
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.RelativeLayout;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -53,6 +51,7 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
         mActivity = getSherlockActivity();
     }
 
@@ -62,7 +61,7 @@ public abstract class BaseFragment extends SherlockFragment {
      *
      * Unfortunately can't use a PhotoList here as Photo isn't serialisable.
      */
-    public void startPhotoViewer(int pos) {
+    protected void startPhotoViewer(int pos) {
         if (mPhotos == null) {
             Log.e(TAG, "Cannot start PhotoViewer, mPhotos is null");
             return;
@@ -80,7 +79,7 @@ public abstract class BaseFragment extends SherlockFragment {
         mActivity.startActivity(photoViewer);
     }
 
-    public void startProfileViewer(User user) {
+    protected void startProfileViewer(User user) {
         if (user == null) {
             Log.e(TAG, "Cannot start ProfileActivity, user is null");
             return;
@@ -91,5 +90,17 @@ public abstract class BaseFragment extends SherlockFragment {
         Intent profileViewer = new Intent(mActivity, ProfileActivity.class);
         profileViewer.putExtras(bundle);
         mActivity.startActivity(profileViewer);
+    }
+
+    protected void startTask() {
+        if (mOAuth == null || mOAuth.getUser() == null) {
+            SharedPreferences prefs = mActivity.getSharedPreferences(Constants
+                    .PREFS_NAME, Context.MODE_PRIVATE);
+            mOAuth = BaseActivity.loadAccessToken(prefs);
+        }
+    }
+
+    protected void log(final String tag, final String msg) {
+        Log.d(tag, msg);
     }
 }

@@ -1,6 +1,8 @@
 package com.bourke.glimmr;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
@@ -31,7 +33,9 @@ public class MainActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mOAuth = loadAccessToken();
+        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mOAuth = loadAccessToken(prefs);
 
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));

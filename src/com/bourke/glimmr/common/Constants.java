@@ -14,7 +14,6 @@ public class Constants {
     public static final String KEY_PHOTOVIEWER_URL = "glimmr_photoviewer_url";
     public static final String KEY_PHOTOVIEWER_START_INDEX =
         "glimmr_photoviewer_index";
-
     public static final String KEY_PROFILEVIEWER_USER =
         "glimmr_profileviewer_user";
 }

@@ -1,21 +1,24 @@
 package com.bourke.glimmr;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import android.os.Bundle;
 
 import android.util.Log;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
-import android.view.LayoutInflater;
-import android.widget.RelativeLayout;
 
 /**
  * Fragment that contains a GridView of photos.
@@ -49,6 +52,38 @@ public class PhotoGridFragment extends BaseFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startTask();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        mLayout = (RelativeLayout) inflater.inflate(R.layout
+                .standard_gridview_fragment, container, false);
+        return mLayout;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        log(TAG, "onPause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        log(TAG, "onResume");
+        startTask();
+    }
+
+    @Override
+    protected void startTask() {
+        super.startTask();
+        if (mOAuth == null || mOAuth.getUser() == null) {
+            SharedPreferences prefs = mActivity.getSharedPreferences(Constants
+                    .PREFS_NAME, Context.MODE_PRIVATE);
+            mOAuth = BaseActivity.loadAccessToken(prefs);
+        }
         switch (mType) {
             case TYPE_PHOTO_STREAM:
                 new LoadPhotostreamTask(this, mOAuth.getUser()).execute(
@@ -62,21 +97,13 @@ public class PhotoGridFragment extends BaseFragment
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(R.layout
-                .standard_gridview_fragment, container, false);
-        return mLayout;
-    }
-
     /**
      * Once the task comes back with the list of photos, set up the GridView
      * adapter etc. to display them.
      */
     @Override
     public void onPhotosReady(PhotoList photos, boolean cancelled) {
-        Log.d(TAG, "onPhotosReady");
+        log(TAG, "onPhotosReady");
 		mGridAq = new AQuery(mActivity, mLayout);
         mPhotos = photos;
 

@@ -1,7 +1,5 @@
 package com.bourke.glimmr;
 
-import android.app.Activity;
-
 import android.os.Bundle;
 
 import android.util.Log;
@@ -12,15 +10,13 @@ import android.view.ViewGroup;
 
 import android.widget.FrameLayout;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 
 public final class PhotoViewerFragment extends BaseFragment {
 
-    private static final String TAG = "Glimmr/PhotoViewerFragment";
+    protected String TAG = "Glimmr/PhotoViewerFragment";
 
     private Photo mPhoto = new Photo();
     private AQuery mAq;
@@ -61,5 +57,17 @@ public final class PhotoViewerFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(Constants.KEY_PHOTOVIEWER_URL, mPhoto.getUrl());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        log(TAG, "onPause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        log(TAG, "onResume");
     }
 }

@@ -2,8 +2,6 @@ package com.bourke.glimmr;
 
 import android.os.Bundle;
 
-import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,8 @@ import com.gmail.yuyang226.flickr.groups.Group;
 import com.gmail.yuyang226.flickr.groups.GroupList;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 
+import java.util.ArrayList;
+
 /**
  *
  */
@@ -24,6 +24,8 @@ public class GroupListFragment extends BaseFragment
         implements IGroupListReadyListener {
 
     private static final String TAG = "Glimmr/GroupListFragment";
+
+    private GroupList mGroups = new GroupList();
 
     public static GroupListFragment newInstance(OAuth oauth) {
         GroupListFragment newFragment = new GroupListFragment();
@@ -34,7 +36,13 @@ public class GroupListFragment extends BaseFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO new LoadGroupsTask(this, mOAuth.getUser()).execute(mOAuth);
+        startTask();
+    }
+
+    @Override
+    protected void startTask() {
+        super.startTask();
+        new LoadGroupsTask(this).execute(mOAuth);
     }
 
     @Override
@@ -46,12 +54,26 @@ public class GroupListFragment extends BaseFragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        log(TAG, "onPause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        log(TAG, "onResume");
+        startTask();
+    }
+
+    @Override
     public void onGroupListReady(GroupList groups, boolean cancelled) {
-        Log.d(TAG, "onGroupListReady");
+        log(TAG, "onGroupListReady");
 		mGridAq = new AQuery(mActivity, mLayout);
+        mGroups = (GroupList) groups;
 
 		ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(mActivity,
-                R.layout.group_list_item, groups) {
+                R.layout.group_list_item, (ArrayList<Group>)groups) {
 
             // TODO: implement ViewHolder pattern
             // TODO: add aquery delay loading for fling scrolling
@@ -67,28 +89,7 @@ public class GroupListFragment extends BaseFragment
                 final Group group = getItem(position);
 				AQuery aq = mGridAq.recycle(convertView);
 
-                /*
-                boolean useMemCache = true;
-                boolean useFileCache = true;
-                aq.id(R.id.image_item).image(photo.getSmallUrl(), useMemCache,
-                        useFileCache,  0, 0, null, AQuery.FADE_IN_NETWORK);
-                aq.id(R.id.image_item).clicked(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startPhotoViewer(position);
-                    }
-                });
-
-                aq.id(R.id.viewsText).text("Views: " + String.valueOf(photo
-                            .getViews()));
-                aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
-                aq.id(R.id.ownerText).clicked(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startProfileViewer(photo.getOwner());
-                    }
-                });
-                */
+                aq.id(R.id.groupName).text(group.getName());
 
 				return convertView;
 			}

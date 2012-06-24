@@ -1,6 +1,5 @@
 package com.bourke.glimmr;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
@@ -32,9 +31,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
 
     protected int mStackLevel = 0;
 
-    protected OAuth loadAccessToken() {
-        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
-                Context.MODE_PRIVATE);
+    protected static OAuth loadAccessToken(SharedPreferences prefs) {
         String oauthTokenString = prefs.getString(Constants.KEY_OAUTH_TOKEN,
                 null);
         String tokenSecret = prefs.getString(Constants.KEY_TOKEN_SECRET, null);

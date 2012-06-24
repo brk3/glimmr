@@ -1,6 +1,8 @@
 package com.bourke.glimmr;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
@@ -50,7 +52,9 @@ public class ProfileActivity extends BaseActivity {
 
         setContentView(R.layout.main);
 
-        mOAuth = loadAccessToken();
+        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mOAuth = loadAccessToken(prefs);
 		mAq = new AQuery(this);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 

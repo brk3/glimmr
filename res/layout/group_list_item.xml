@@ -1,45 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/image_layout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="fill_parent"
-    android:layout_height="200dp">
+    android:layout_height="wrap_content">
 
-</FrameLayout>
-
-<!--
-    <ImageView
-        android:id="@+id/image_item"
-        android:layout_width="200dp"
-        android:layout_height="133dp"
-        android:scaleType="centerCrop" />
-
-    <RelativeLayout
-        android:id="@+id/image_overlay"
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/groupName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/transparent_black">
+        android:layout_margin="5dp"
+        android:textSize="25sp"
+        android:layout_alignParentLeft="true" />
 
-        <TextView
-            android:id="@+id/viewsText"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:textSize="12sp"
-            android:textColor="@android:color/white" />
-
-        <TextView
-            android:id="@+id/ownerText"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_alignParentRight="true"
-            android:textSize="13sp"
-            android:textColor="@android:color/white" />
-    </RelativeLayout>
--->
+</RelativeLayout>
