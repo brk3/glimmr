@@ -111,6 +111,9 @@ public class GroupListFragment extends BaseFragment
 				AQuery aq = mGridAq.recycle(convertView);
 
                 aq.id(R.id.groupName).text(group.getName());
+                aq.id(R.id.numImagesText).text(""+group.getPhotoCount());
+                aq.id(R.id.groupIcon).image(group.getBuddyIconUrl(),
+                        true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
 
 				return convertView;
 			}

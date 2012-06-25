@@ -1,16 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/groupName"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main"
+        android:layout_weight="1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textSize="25sp"
-        android:layout_alignParentLeft="true" />
+        android:layout_height="fill_parent">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/groupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="25sp"
+            android:layout_alignParentLeft="true" />
+
+        <!-- TODO: find where to fetch this value
+        <ImageView
+            android:id="@+id/numMembersIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/groupName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_group_light" />
+
+        <TextView
+            android:id="@+id/numMembersText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="15dp"
+            android:text="100"
+            android:textSize="10sp"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/numMembersIcon" />
+        -->
+
+        <ImageView
+            android:id="@+id/numImagesIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/groupName"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_content_picture_light" />
+
+        <TextView
+            android:id="@+id/numImagesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:textSize="10sp"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/numImagesIcon" />
+    </RelativeLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_weight="0"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent">
+        <ImageView
+            android:id="@+id/groupIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/border" />
+    </FrameLayout>
+
+</LinearLayout>
