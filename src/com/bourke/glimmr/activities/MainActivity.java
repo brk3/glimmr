@@ -33,10 +33,6 @@ public class MainActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
-                Context.MODE_PRIVATE);
-        mOAuth = loadAccessToken(prefs);
-
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));
         } else {

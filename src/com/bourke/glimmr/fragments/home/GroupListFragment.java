@@ -1,11 +1,16 @@
 package com.bourke.glimmr;
 
+import android.content.Intent;
+
 import android.os.Bundle;
+
+import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 
@@ -63,6 +68,25 @@ public class GroupListFragment extends BaseFragment
         startTask();
     }
 
+    private void startGroupViewer(Group group) {
+        if (group == null) {
+            Log.e(TAG, "Cannot start GroupViewerActivity, group is null");
+            return;
+        }
+        Log.d(TAG, "Starting GroupViewerActivity for " + group.getName());
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.KEY_GROUPVIEWER_GROUP, group);
+        Intent groupViewer = new Intent(mActivity, GroupViewerActivity
+                .class);
+        groupViewer.putExtras(bundle);
+        mActivity.startActivity(groupViewer);
+    }
+
+	public void itemClicked(AdapterView<?> parent, View view, int position,
+            long id) {
+        startGroupViewer(mGroups.get(position));
+    }
+
     @Override
     public void onGroupListReady(GroupList groups, boolean cancelled) {
         log(TAG, "onGroupListReady");
@@ -91,8 +115,8 @@ public class GroupListFragment extends BaseFragment
 				return convertView;
 			}
 		};
-        // TODO mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
-        //        "startGroupViewer");
+        mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
+                "itemClicked");
 		mGridAq.id(R.id.list).adapter(adapter);
     }
 }

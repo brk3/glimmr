@@ -17,5 +17,6 @@ public class Constants {
     public static final String KEY_PROFILEVIEWER_USER =
         "glimmr_profileviewer_user";
 
-    public static final String KEY_PHOTOGRID_TYPE = "glimmr_photogrid_type";
+    public static final String KEY_GROUPVIEWER_GROUP =
+        "glimmr_groupviewer_group";
 }

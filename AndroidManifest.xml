@@ -44,5 +44,8 @@
         <activity android:name="PhotoViewerActivity"
             android:label="@string/app_name" />
 
+        <activity android:name="GroupViewerActivity"
+            android:label="@string/app_name" />
+
     </application>
 </manifest>

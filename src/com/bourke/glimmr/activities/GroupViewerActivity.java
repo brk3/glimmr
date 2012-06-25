@@ -15,34 +15,24 @@ import com.actionbarsherlock.view.Menu;
 
 import com.androidquery.AQuery;
 
-import com.gmail.yuyang226.flickr.people.User;
+import com.gmail.yuyang226.flickr.groups.Group;
 
 import com.viewpagerindicator.TabPageIndicator;
 
-/**
- * This activity is similar to MainActivity, but contains some more detailed
- * info on a User profile.
- *
- * Requires a User object to be passed in via an intent.
- */
-public class ProfileActivity extends BaseActivity {
+public class GroupViewerActivity extends BaseActivity {
 
-    private static final String TAG = "Glimmr/ProfileActivity";
+    private static final String TAG = "Glimmr/GroupViewerActivity";
 
-    public static final int PHOTO_STREAM_PAGE = 0;
-    public static final int FAVORITES_STREAM_PAGE = 1;
-    public static final int SETS_PAGE = 2;
-    public static final int CONTACTS_PAGE = 3;
+    public static final int GROUP_POOL_PAGE = 0;
+    public static final int GROUP_ABOUT_PAGE = 1;
 
     //TODO: add to R.strings
-    public static final String[] CONTENT =
-        new String[] { "Photos", "Favorites", "Sets", "Contacts" };
+    public static final String[] CONTENT = new String[] { "Pool", "About" };
 
     /**
-     * User who's profile we're displaying, as distinct from the authorized
-     * user.
+     * The Group this activity is concerned with
      */
-    private User mUser;
+    private Group mGroup = new Group();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,12 +56,12 @@ public class ProfileActivity extends BaseActivity {
     private void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
-            mUser = (User) bundle.getSerializable(
-                    Constants.KEY_PROFILEVIEWER_USER);
-            if (mUser != null) {
-                Log.d(TAG, "Got user to view: " + mUser.getUsername());
+            mGroup = (Group) bundle.getSerializable(Constants.
+                    KEY_GROUPVIEWER_GROUP);
+            if (mGroup != null) {
+                Log.d(TAG, "Got group to view: " + mGroup.getName());
                 ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-                ProfilePagerAdapter adapter = new ProfilePagerAdapter(
+                GroupPagerAdapter adapter = new GroupPagerAdapter(
                         getSupportFragmentManager());
                 viewPager.setAdapter(adapter);
                 TabPageIndicator indicator = (TabPageIndicator) findViewById(
@@ -79,12 +69,12 @@ public class ProfileActivity extends BaseActivity {
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
             } else {
-                Log.e(TAG, "User from intent is null");
+                Log.e(TAG, "Group from intent is null");
                 // TODO: show error / recovery
             }
         } else {
-            Log.e(TAG, "Bundle is null, ProfileActivity requires an intent " +
-                    "containing a User");
+            Log.e(TAG, "Bundle is null, GroupViewerActivity requires an " +
+                    "intent containing a Group");
         }
     }
 
@@ -100,43 +90,31 @@ public class ProfileActivity extends BaseActivity {
         return true;
     }
 
-    /**
-     * Should only be bound once we have a valid userId
-     */
-    class ProfilePagerAdapter extends FragmentPagerAdapter {
-        public ProfilePagerAdapter(FragmentManager fm) {
+    class GroupPagerAdapter extends FragmentPagerAdapter {
+        public GroupPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public SherlockFragment getItem(int position) {
             switch (position) {
-                case PHOTO_STREAM_PAGE:
-                    return ProfilePhotoStreamGridFragment.newInstance(mUser);
-
-                case FAVORITES_STREAM_PAGE:
-                    return ProfileFavoritesGridFragment.newInstance(mUser);
-
-                case SETS_PAGE:
-                    // TODO
-                    return ProfileFavoritesGridFragment.newInstance(mUser);
-
-                case CONTACTS_PAGE:
-                    // TODO
-                    return ProfileFavoritesGridFragment.newInstance(mUser);
+                case GROUP_POOL_PAGE:
+                    return GroupPoolGridFragment.newInstance();
+                case GROUP_ABOUT_PAGE:
+                    return GroupAboutFragment.newInstance();
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            return ProfileActivity.CONTENT.length;
+            return GroupViewerActivity.CONTENT.length;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return ProfileActivity.CONTENT[
-                position % ProfileActivity.CONTENT.length].toUpperCase();
+            return GroupViewerActivity.CONTENT[position %
+                GroupViewerActivity.CONTENT.length].toUpperCase();
         }
     }
 }

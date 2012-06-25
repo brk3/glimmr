@@ -16,6 +16,7 @@ import com.androidquery.AQuery;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
+import android.content.Context;
 
 public abstract class BaseActivity extends SherlockFragmentActivity
         implements ViewPager.OnPageChangeListener {
@@ -30,6 +31,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity
     protected AQuery mAq;
 
     protected int mStackLevel = 0;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mOAuth = loadAccessToken(prefs);
+    }
 
     protected static OAuth loadAccessToken(SharedPreferences prefs) {
         String oauthTokenString = prefs.getString(Constants.KEY_OAUTH_TOKEN,
