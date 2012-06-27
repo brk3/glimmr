@@ -64,7 +64,7 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
                     oauthToken.getOauthTokenSecret());
 
 			URL oauthUrl = f.getOAuthInterface().buildAuthenticationUrl(
-					Permission.READ, oauthToken);
+					Permission.WRITE, oauthToken);
 
 			return oauthUrl.toString();
 		} catch (Exception e) {

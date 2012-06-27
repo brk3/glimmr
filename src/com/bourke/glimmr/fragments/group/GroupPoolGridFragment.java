@@ -1,6 +1,5 @@
 package com.bourke.glimmr;
 
-
 import com.gmail.yuyang226.flickr.groups.Group;
 
 public class GroupPoolGridFragment extends PhotoGridFragment
