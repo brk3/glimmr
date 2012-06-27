@@ -99,7 +99,7 @@ public class GroupViewerActivity extends BaseActivity {
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case GROUP_POOL_PAGE:
-                    return GroupPoolGridFragment.newInstance();
+                    return GroupPoolGridFragment.newInstance(mGroup);
                 case GROUP_ABOUT_PAGE:
                     return GroupAboutFragment.newInstance();
             }

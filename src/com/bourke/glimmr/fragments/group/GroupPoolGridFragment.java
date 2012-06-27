@@ -1,16 +1,24 @@
 package com.bourke.glimmr;
 
-public class GroupPoolGridFragment extends PhotoGridFragment {
+
+import com.gmail.yuyang226.flickr.groups.Group;
+
+public class GroupPoolGridFragment extends PhotoGridFragment
+        implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/GroupPoolGridFragment";
 
-    public static GroupPoolGridFragment newInstance() {
-        return new GroupPoolGridFragment();
+    private Group mGroup;
+
+    public static GroupPoolGridFragment newInstance(Group group) {
+        GroupPoolGridFragment newFragment = new GroupPoolGridFragment();
+        newFragment.mGroup = group;
+        return newFragment;
     }
 
     @Override
     protected void startTask() {
         super.startTask();
-        // TODO: new LoadPhotostreamTask(this, mOAuth.getUser()).execute(mOAuth);
+        new LoadGroupPoolTask(this, mGroup).execute(mOAuth);
     }
 }
