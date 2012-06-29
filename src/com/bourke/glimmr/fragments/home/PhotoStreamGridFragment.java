@@ -11,6 +11,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        new LoadPhotostreamTask(this, mOAuth.getUser()).execute(mOAuth);
+        new LoadPhotostreamTask(mActivity, this, mOAuth.getUser()).execute(
+                mOAuth);
     }
 }

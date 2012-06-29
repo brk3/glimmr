@@ -13,6 +13,7 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import android.app.Activity;
 
 public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
 
@@ -20,8 +21,11 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private IPhotoListReadyListener mListener;
     private User mUser;
+    private Activity mActivity;
 
-	public LoadFavoritesTask(IPhotoListReadyListener listener, User user) {
+	public LoadFavoritesTask(Activity a, IPhotoListReadyListener listener,
+            User user) {
+        mActivity = a;
         mListener = listener;
         mUser = user;
 	}
@@ -40,6 +44,9 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
 		extras.add("url_q");
 		extras.add("url_l");
 		extras.add("views");
+
+        ((BaseActivity) mActivity).showProgressIcon(true);
+
 		try {
 			return f.getFavoritesInterface().getList(mUser.getId(), minFavDate,
                     maxFavDate, perPage, page, extras);
@@ -58,5 +65,6 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
             Log.e(TAG, "error fetching photolist, result is null");
             // TODO: alert user / recover
         }
+        ((BaseActivity) mActivity).showProgressIcon(false);
 	}
 }

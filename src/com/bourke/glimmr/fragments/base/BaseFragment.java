@@ -93,6 +93,7 @@ public abstract class BaseFragment extends SherlockFragment {
     }
 
     protected void startTask() {
+        Log.d(TAG, "BaseFragment.startTask()");
         if (mOAuth == null || mOAuth.getUser() == null) {
             SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                     .PREFS_NAME, Context.MODE_PRIVATE);

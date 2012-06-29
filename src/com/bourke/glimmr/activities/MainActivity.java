@@ -59,12 +59,6 @@ public class MainActivity extends BaseActivity {
         indicator.setCurrentItem(PHOTOSTREAM_PAGE);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
     class GlimmrPagerAdapter extends FragmentPagerAdapter {
         public GlimmrPagerAdapter(FragmentManager fm) {
             super(fm);

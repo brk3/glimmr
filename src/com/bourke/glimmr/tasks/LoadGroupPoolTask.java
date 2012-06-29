@@ -12,6 +12,7 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 
 import java.util.HashSet;
 import java.util.Set;
+import android.app.Activity;
 
 public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
 
@@ -19,8 +20,11 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private IPhotoListReadyListener mListener;
     private Group mGroup;
+    private Activity mActivity;
 
-	public LoadGroupPoolTask(IPhotoListReadyListener listener, Group group) {
+	public LoadGroupPoolTask(Activity a, IPhotoListReadyListener listener,
+            Group group) {
+        mActivity = a;
         mListener = listener;
         mGroup = group;
 	}
@@ -35,6 +39,9 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
 		extras.add("url_q");
 		extras.add("url_l");
 		extras.add("views");
+
+        ((BaseActivity) mActivity).showProgressIcon(true);
+
 		try {
 			return f.getPoolsInterface().getPhotos(mGroup.getId(), null,
                     extras, 20, 1);
@@ -53,5 +60,6 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
             Log.e(TAG, "error fetching photolist, result is null");
             // TODO: alert user / recover
         }
+        ((BaseActivity) mActivity).showProgressIcon(false);
 	}
 }

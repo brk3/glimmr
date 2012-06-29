@@ -16,14 +16,17 @@ import com.gmail.yuyang226.flickr.people.User;
 import java.io.IOException;
 
 import java.util.Collection;
+import android.app.Activity;
 
 public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
 
     private static final String TAG = "Glimmr/LoadGroupsTask";
 
     private IGroupListReadyListener mListener;
+    private Activity mActivity;
 
-	public LoadGroupsTask(IGroupListReadyListener listener) {
+	public LoadGroupsTask(Activity a, IGroupListReadyListener listener) {
+        mActivity = a;
         mListener = listener;
 	}
 
@@ -33,6 +36,9 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
 		User user = arg0[0].getUser();
+
+        ((BaseActivity) mActivity).showProgressIcon(true);
+
 		try {
 			return f.getPoolsInterface().getGroups();
         } catch (IOException e) {
@@ -56,5 +62,6 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
             Log.e(TAG, "Error fetching groups, result is null");
             // TODO: alert user / recover
         }
+        ((BaseActivity) mActivity).showProgressIcon(false);
 	}
 }

@@ -15,15 +15,19 @@ import java.io.IOException;
 
 import java.util.HashSet;
 import java.util.Set;
+import android.app.Activity;
 
 public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private static final String TAG = "Glimmr/LoadContactsPhotosTask";
 
     private IPhotoListReadyListener mListener;
+    private Activity mActivity;
 
-	public LoadContactsPhotosTask(IPhotoListReadyListener listener) {
+	public LoadContactsPhotosTask(Activity a,
+            IPhotoListReadyListener listener) {
         mListener = listener;
+        mActivity = a;
 	}
 
 	@Override
@@ -32,6 +36,9 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
 		User user = arg0[0].getUser();
+
+        ((BaseActivity) mActivity).showProgressIcon(true);
+
 		try {
             int amountToFetch = 50;  // Max is 50
             Set<String> extras = new HashSet<String>();
@@ -63,5 +70,6 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
             Log.e(TAG, "error fetching contacts/photos, result is null");
             // TODO: alert user / recover
         }
+        ((BaseActivity) mActivity).showProgressIcon(false);
 	}
 }

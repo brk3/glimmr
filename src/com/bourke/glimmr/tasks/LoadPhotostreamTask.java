@@ -12,6 +12,7 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 
 import java.util.HashSet;
 import java.util.Set;
+import android.app.Activity;
 
 public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
@@ -19,10 +20,13 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private IPhotoListReadyListener mListener;
     private User mUser;
+    private Activity mActivity;
 
-	public LoadPhotostreamTask(IPhotoListReadyListener listener, User user) {
+	public LoadPhotostreamTask(Activity a, IPhotoListReadyListener listener,
+            User user) {
         mListener = listener;
         mUser = user;
+        mActivity = a;
 	}
 
 	@Override
@@ -35,6 +39,9 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 		extras.add("url_q");
 		extras.add("url_l");
 		extras.add("views");
+
+        ((BaseActivity) mActivity).showProgressIcon(true);
+
 		try {
 			return f.getPeopleInterface().getPhotos(mUser.getId(), extras, 20,
                     1);
@@ -53,5 +60,6 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
             Log.e(TAG, "error fetching photolist, result is null");
             // TODO: alert user / recover
         }
+        ((BaseActivity) mActivity).showProgressIcon(false);
 	}
 }

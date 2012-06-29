@@ -11,6 +11,6 @@ public class ContactsGridFragment extends PhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        new LoadContactsPhotosTask(this).execute(mOAuth);
+        new LoadContactsPhotosTask(mActivity, this).execute(mOAuth);
     }
 }

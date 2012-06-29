@@ -17,6 +17,8 @@ import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
 import android.content.Context;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
 
 public abstract class BaseActivity extends SherlockFragmentActivity
         implements ViewPager.OnPageChangeListener {
@@ -27,10 +29,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity
      * Should contain current user and valid access token for that user.
      */
     protected OAuth mOAuth;
-
     protected AQuery mAq;
-
     protected int mStackLevel = 0;
+
+    private MenuItem mMenuItemProgress;
+    private MenuItem mMenuItemRefresh;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,32 @@ public abstract class BaseActivity extends SherlockFragmentActivity
             return null;
         }
         return oauth;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        mMenuItemProgress = menu.findItem(R.id.menu_progress);
+        mMenuItemRefresh = menu.findItem(R.id.menu_refresh);
+        return true;
+    }
+
+    public void showProgressIcon(boolean show) {
+        if (mMenuItemProgress != null && mMenuItemRefresh != null) {
+            if(show) {
+                Log.d(TAG, "showProgressIcon(true)");
+                mMenuItemProgress.setVisible(true);
+                mMenuItemRefresh.setVisible(false);
+            }
+            else {
+                Log.d(TAG, "showProgressIcon(false)");
+                mMenuItemRefresh.setVisible(true);
+                mMenuItemProgress.setVisible(false);
+            }
+        } else {
+            Log.d(TAG, "showProgressIcon: mMenuItemProgress/mMenuItemRefresh "
+                    + "null");
+        }
     }
 
     @Override

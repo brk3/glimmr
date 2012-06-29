@@ -18,6 +18,6 @@ public class GroupPoolGridFragment extends PhotoGridFragment
     @Override
     protected void startTask() {
         super.startTask();
-        new LoadGroupPoolTask(this, mGroup).execute(mOAuth);
+        new LoadGroupPoolTask(mActivity, this, mGroup).execute(mOAuth);
     }
 }
