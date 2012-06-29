@@ -44,10 +44,14 @@
             @drawable/menu_hardkey_panel_glimmr</item>
 
         <!-- Style the TabPageIndicator -->
-        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator
+        <item name="vpiTabPageIndicatorStyle">
+            @style/Widget.TabPageIndicator
         </item>
-        <!--<item name="vpiTabTextStyle">
-             @style/Widget.TabPageIndicator.Text</item>-->
+
+        <!-- Style the TitlePageIndicator -->
+        <item name="vpiTitlePageIndicatorStyle">
+            @style/Widget.TitlePageIndicator
+        </item>
     </style>
 
     <style name="glimmr_solid_ActionBar"
@@ -116,6 +120,15 @@
         <item name="android:background">
             @drawable/tab_indicator_ab_glimmr</item>
         <item name="android:textColor">@android:color/primary_text_light</item>
+    </style>
+
+    <style name="Widget.TitlePageIndicator" parent="Widget">
+        <item name="android:background">@android:color/white</item>
+        <item name="footerColor">@color/flickr_blue</item>
+        <item name="footerLineHeight">1dp</item>
+        <item name="android:textColor">@color/flickr_pink</item>
+        <item name="selectedColor">@color/flickr_blue</item>
+        <item name="selectedBold">true</item>
     </style>
 
 </resources>

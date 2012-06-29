@@ -17,7 +17,7 @@ import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.groups.Group;
 
-import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 public class GroupViewerActivity extends BaseActivity {
 
@@ -64,8 +64,8 @@ public class GroupViewerActivity extends BaseActivity {
                 GroupPagerAdapter adapter = new GroupPagerAdapter(
                         getSupportFragmentManager());
                 viewPager.setAdapter(adapter);
-                TabPageIndicator indicator = (TabPageIndicator) findViewById(
-                        R.id.indicator);
+                TitlePageIndicator indicator = (TitlePageIndicator)
+                    findViewById(R.id.indicator);
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
             } else {

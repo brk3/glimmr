@@ -17,7 +17,7 @@ import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.people.User;
 
-import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 /**
  * This activity is similar to MainActivity, but contains some more detailed
@@ -74,8 +74,8 @@ public class ProfileActivity extends BaseActivity {
                 ProfilePagerAdapter adapter = new ProfilePagerAdapter(
                         getSupportFragmentManager());
                 viewPager.setAdapter(adapter);
-                TabPageIndicator indicator = (TabPageIndicator) findViewById(
-                        R.id.indicator);
+                TitlePageIndicator indicator = (TitlePageIndicator)
+                    findViewById(R.id.indicator);
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
             } else {

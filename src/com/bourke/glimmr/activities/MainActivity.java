@@ -15,19 +15,19 @@ import com.actionbarsherlock.view.Menu;
 
 import com.androidquery.AQuery;
 
-import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "Glimmr/MainActivity";
 
-    public static final int PHOTOSTREAM_PAGE = 0;
-    public static final int CONTACTS_PAGE = 1;
+    public static final int CONTACTS_PAGE = 0;
+    public static final int PHOTOSTREAM_PAGE = 1;
     public static final int GROUPS_PAGE = 2;
 
     //TODO: add to R.strings
     public static final String[] CONTENT =
-        new String[] { "You", "Contacts", "Groups" };
+        new String[] { "Contacts", "You", "Groups" };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,10 +52,11 @@ public class MainActivity extends BaseActivity {
         GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-        TabPageIndicator indicator = (TabPageIndicator) findViewById(
+        TitlePageIndicator indicator = (TitlePageIndicator) findViewById(
                 R.id.indicator);
         indicator.setOnPageChangeListener(this);
         indicator.setViewPager(viewPager);
+        indicator.setCurrentItem(PHOTOSTREAM_PAGE);
     }
 
     @Override
