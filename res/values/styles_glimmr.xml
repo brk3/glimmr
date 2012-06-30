@@ -123,12 +123,16 @@
     </style>
 
     <style name="Widget.TitlePageIndicator" parent="Widget">
-        <item name="android:background">@android:color/white</item>
-        <item name="footerColor">@color/flickr_blue</item>
-        <item name="footerLineHeight">1dp</item>
+        <item name="android:background">
+            @drawable/titleindicator_gradient</item>
         <item name="android:textColor">@color/flickr_pink</item>
+        <item name="android:textSize">12sp</item>
+        <item name="footerColor">@color/flickr_blue</item>
+        <item name="footerLineHeight">2dp</item>
+        <item name="footerIndicatorHeight">0dp</item>
         <item name="selectedColor">@color/flickr_blue</item>
         <item name="selectedBold">true</item>
+        <item name="topPadding">3dp</item>
     </style>
 
 </resources>
