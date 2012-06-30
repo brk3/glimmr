@@ -25,53 +25,53 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
 
     private static final String TAG = "Glimmr/GetRequestToken";
 
-	private static final Uri OAUTH_CALLBACK_URI = Uri.parse(
+    private static final Uri OAUTH_CALLBACK_URI = Uri.parse(
             Constants.CALLBACK_SCHEME + "://oauth");
 
-	private ProgressDialog mProgressDialog;
+    private ProgressDialog mProgressDialog;
     private Activity mActivity;
     private IRequestTokenReadyListener mListener;
 
-	public GetRequestToken(IRequestTokenReadyListener listener, Activity a) {
-		super();
+    public GetRequestToken(IRequestTokenReadyListener listener, Activity a) {
+        super();
         mListener = listener;
-		mActivity = a;
-	}
+        mActivity = a;
+    }
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		mProgressDialog = ProgressDialog.show(mActivity, "",
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mProgressDialog = ProgressDialog.show(mActivity, "",
                 "Just a moment...");
-		mProgressDialog.setCanceledOnTouchOutside(true);
-		mProgressDialog.setCancelable(true);
-		mProgressDialog.setOnCancelListener(new OnCancelListener() {
-			@Override
-			public void onCancel(DialogInterface dlg) {
-				GetRequestToken.this.cancel(true);
-			}
-		});
-	}
+        mProgressDialog.setCanceledOnTouchOutside(true);
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dlg) {
+                GetRequestToken.this.cancel(true);
+            }
+        });
+    }
 
-	@Override
-	protected String doInBackground(Void... params) {
-		try {
-			Flickr f = FlickrHelper.getInstance().getFlickr();
+    @Override
+    protected String doInBackground(Void... params) {
+        try {
+            Flickr f = FlickrHelper.getInstance().getFlickr();
 
-			OAuthToken oauthToken = f.getOAuthInterface().getRequestToken(
-					OAUTH_CALLBACK_URI.toString());
-			saveRequestToken(null, null, null,
+            OAuthToken oauthToken = f.getOAuthInterface().getRequestToken(
+                    OAUTH_CALLBACK_URI.toString());
+            saveRequestToken(null, null, null,
                     oauthToken.getOauthTokenSecret());
 
-			URL oauthUrl = f.getOAuthInterface().buildAuthenticationUrl(
-					Permission.WRITE, oauthToken);
+            URL oauthUrl = f.getOAuthInterface().buildAuthenticationUrl(
+                    Permission.WRITE, oauthToken);
 
-			return oauthUrl.toString();
-		} catch (Exception e) {
+            return oauthUrl.toString();
+        } catch (Exception e) {
             e.printStackTrace();
-		}
+        }
         return null;
-	}
+    }
 
     private void saveRequestToken(String userName, String userId,
             String token, String tokenSecret) {
@@ -85,11 +85,11 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
         editor.commit();
     }
 
-	@Override
-	protected void onPostExecute(String result) {
-		if (mProgressDialog != null) {
-			mProgressDialog.dismiss();
-		}
+    @Override
+    protected void onPostExecute(String result) {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
         mListener.onRequestTokenReady(result);
-	}
+    }
 }

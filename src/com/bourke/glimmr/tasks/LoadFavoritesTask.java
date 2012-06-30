@@ -23,52 +23,52 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
     private User mUser;
     private Activity mActivity;
 
-	public LoadFavoritesTask(Activity a, IPhotoListReadyListener listener,
+    public LoadFavoritesTask(Activity a, IPhotoListReadyListener listener,
             User user) {
         mActivity = a;
         mListener = listener;
         mUser = user;
-	}
+    }
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
         ((BaseActivity) mActivity).showProgressIcon(true);
     }
 
-	@Override
-	protected PhotoList doInBackground(OAuth... arg0) {
-		OAuthToken token = arg0[0].getToken();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+    @Override
+    protected PhotoList doInBackground(OAuth... arg0) {
+        OAuthToken token = arg0[0].getToken();
+        Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
         Date minFavDate = null;
         Date maxFavDate = null;
         int perPage = 20;
         int page = 1;
-		Set<String> extras = new HashSet<String>();
-		extras.add("owner_name");
-		extras.add("url_q");
-		extras.add("url_l");
-		extras.add("views");
+        Set<String> extras = new HashSet<String>();
+        extras.add("owner_name");
+        extras.add("url_q");
+        extras.add("url_l");
+        extras.add("views");
 
-		try {
-			return f.getFavoritesInterface().getList(mUser.getId(), minFavDate,
+        try {
+            return f.getFavoritesInterface().getList(mUser.getId(), minFavDate,
                     maxFavDate, perPage, page, extras);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	@Override
-	protected void onPostExecute(final PhotoList result) {
-		if (result != null) {
+    @Override
+    protected void onPostExecute(final PhotoList result) {
+        if (result != null) {
             final boolean cancelled = false;
             mListener.onPhotosReady(result, cancelled);
-		} else {
+        } else {
             Log.e(TAG, "error fetching photolist, result is null");
             // TODO: alert user / recover
         }
         ((BaseActivity) mActivity).showProgressIcon(false);
-	}
+    }
 }

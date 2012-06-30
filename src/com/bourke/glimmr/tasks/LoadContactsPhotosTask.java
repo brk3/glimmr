@@ -24,26 +24,26 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
     private IPhotoListReadyListener mListener;
     private Activity mActivity;
 
-	public LoadContactsPhotosTask(Activity a,
+    public LoadContactsPhotosTask(Activity a,
             IPhotoListReadyListener listener) {
         mListener = listener;
         mActivity = a;
-	}
+    }
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
         ((BaseActivity) mActivity).showProgressIcon(true);
     }
 
-	@Override
-	protected PhotoList doInBackground(OAuth... arg0) {
-		OAuthToken token = arg0[0].getToken();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+    @Override
+    protected PhotoList doInBackground(OAuth... arg0) {
+        OAuthToken token = arg0[0].getToken();
+        Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
-		User user = arg0[0].getUser();
+        User user = arg0[0].getUser();
 
-		try {
+        try {
             int amountToFetch = 50;  // Max is 50
             Set<String> extras = new HashSet<String>();
             extras.add("owner_name");
@@ -53,27 +53,27 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
             boolean justFriends = false;
             boolean singlePhoto = false;
             boolean includeSelf = false;
-			return f.getPhotosInterface().getContactsPhotos(amountToFetch,
+            return f.getPhotosInterface().getContactsPhotos(amountToFetch,
                     extras, justFriends, singlePhoto, includeSelf);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (FlickrException e) {
             e.printStackTrace();
         } catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	@Override
-	protected void onPostExecute(final PhotoList result) {
-		if (result != null) {
+    @Override
+    protected void onPostExecute(final PhotoList result) {
+        if (result != null) {
             boolean cancelled = false;
             mListener.onPhotosReady(result, cancelled);
-		} else {
+        } else {
             Log.e(TAG, "error fetching contacts/photos, result is null");
             // TODO: alert user / recover
         }
         ((BaseActivity) mActivity).showProgressIcon(false);
-	}
+    }
 }

@@ -63,7 +63,7 @@ public class GroupListFragment extends BaseFragment
         mActivity.startActivity(groupViewer);
     }
 
-	public void itemClicked(AdapterView<?> parent, View view, int position,
+    public void itemClicked(AdapterView<?> parent, View view, int position,
             long id) {
         startGroupViewer(mGroups.get(position));
     }
@@ -71,36 +71,36 @@ public class GroupListFragment extends BaseFragment
     @Override
     public void onGroupListReady(GroupList groups, boolean cancelled) {
         log(TAG, "onGroupListReady");
-		mGridAq = new AQuery(mActivity, mLayout);
+        mGridAq = new AQuery(mActivity, mLayout);
         mGroups = (GroupList) groups;
 
-		ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(mActivity,
+        ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(mActivity,
                 R.layout.group_list_item, (ArrayList<Group>)groups) {
 
             // TODO: implement ViewHolder pattern
             // TODO: add aquery delay loading for fling scrolling
-			@Override
-			public View getView(final int position, View convertView,
+            @Override
+            public View getView(final int position, View convertView,
                     ViewGroup parent) {
 
-				if (convertView == null) {
-					convertView = mActivity.getLayoutInflater().inflate(
+                if (convertView == null) {
+                    convertView = mActivity.getLayoutInflater().inflate(
                             R.layout.group_list_item, null);
-				}
+                }
 
                 final Group group = getItem(position);
-				AQuery aq = mGridAq.recycle(convertView);
+                AQuery aq = mGridAq.recycle(convertView);
 
                 aq.id(R.id.groupName).text(group.getName());
                 aq.id(R.id.numImagesText).text(""+group.getPhotoCount());
                 aq.id(R.id.groupIcon).image(group.getBuddyIconUrl(),
                         true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
 
-				return convertView;
-			}
-		};
+                return convertView;
+            }
+        };
         mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
                 "itemClicked");
-		mGridAq.id(R.id.list).adapter(adapter);
+        mGridAq.id(R.id.list).adapter(adapter);
     }
 }

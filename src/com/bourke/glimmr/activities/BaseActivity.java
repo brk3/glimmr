@@ -61,9 +61,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity
             oauthToken.setOauthTokenSecret(tokenSecret);
 
             User user = new User();
-        	user.setUsername(userName);
-        	user.setId(userId);
-        	oauth.setUser(user);
+            user.setUsername(userName);
+            user.setId(userId);
+            oauth.setUser(user);
         } else {
             Log.w(TAG, "No saved oauth token found");
             return null;

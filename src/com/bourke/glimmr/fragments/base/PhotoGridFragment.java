@@ -53,25 +53,25 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onPhotosReady(PhotoList photos, boolean cancelled) {
         log(TAG, "onPhotosReady");
-		mGridAq = new AQuery(mActivity, mLayout);
+        mGridAq = new AQuery(mActivity, mLayout);
         mPhotos = photos;
 
-		ArrayAdapter<Photo> adapter = new ArrayAdapter<Photo>(mActivity,
+        ArrayAdapter<Photo> adapter = new ArrayAdapter<Photo>(mActivity,
                 R.layout.gridview_item, photos) {
 
             // TODO: implement ViewHolder pattern
             // TODO: add aquery delay loading for fling scrolling
-			@Override
-			public View getView(final int position, View convertView,
+            @Override
+            public View getView(final int position, View convertView,
                     ViewGroup parent) {
 
-				if(convertView == null) {
-					convertView = mActivity.getLayoutInflater().inflate(
+                if(convertView == null) {
+                    convertView = mActivity.getLayoutInflater().inflate(
                             R.layout.gridview_item, null);
-				}
+                }
 
                 final Photo photo = getItem(position);
-				AQuery aq = mGridAq.recycle(convertView);
+                AQuery aq = mGridAq.recycle(convertView);
 
                 boolean useMemCache = true;
                 boolean useFileCache = true;
@@ -94,11 +94,11 @@ public abstract class PhotoGridFragment extends BaseFragment
                     }
                 });
 
-				return convertView;
-			}
-		};
+                return convertView;
+            }
+        };
         mGridAq.id(R.id.gridview).adapter(adapter).itemClicked(this,
                 "startPhotoViewer");
-		mGridAq.id(R.id.gridview).adapter(adapter);
+        mGridAq.id(R.id.gridview).adapter(adapter);
     }
 }

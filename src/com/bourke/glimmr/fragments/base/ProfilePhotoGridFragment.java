@@ -45,7 +45,7 @@ public abstract class ProfilePhotoGridFragment extends PhotoGridFragment
          * populate our profile specific elements. */
         super.onPhotosReady(photos, cancelled);
 
-		mAq = new AQuery(mActivity, mLayout);
+        mAq = new AQuery(mActivity, mLayout);
         mAq.id(R.id.text_screenname).text(mUser.getUsername());
     }
 

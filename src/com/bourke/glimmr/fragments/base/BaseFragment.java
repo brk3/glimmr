@@ -45,7 +45,7 @@ public abstract class BaseFragment extends SherlockFragment {
      */
     protected OAuth mOAuth;
 
-	protected AQuery mGridAq;
+    protected AQuery mGridAq;
     protected ViewGroup mLayout;
 
     @Override

@@ -25,47 +25,47 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
     private IGroupListReadyListener mListener;
     private Activity mActivity;
 
-	public LoadGroupsTask(Activity a, IGroupListReadyListener listener) {
+    public LoadGroupsTask(Activity a, IGroupListReadyListener listener) {
         mActivity = a;
         mListener = listener;
-	}
+    }
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
         ((BaseActivity) mActivity).showProgressIcon(true);
     }
 
-	@Override
-	protected Collection<Group> doInBackground(OAuth... arg0) {
-		OAuthToken token = arg0[0].getToken();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+    @Override
+    protected Collection<Group> doInBackground(OAuth... arg0) {
+        OAuthToken token = arg0[0].getToken();
+        Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
-		User user = arg0[0].getUser();
+        User user = arg0[0].getUser();
 
-		try {
-			return f.getPoolsInterface().getGroups();
+        try {
+            return f.getPoolsInterface().getGroups();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (FlickrException e) {
             e.printStackTrace();
         } catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	@Override
-	protected void onPostExecute(final Collection<Group> result) {
-		if (result != null) {
+    @Override
+    protected void onPostExecute(final Collection<Group> result) {
+        if (result != null) {
             boolean cancelled = false;
             GroupList ret = new GroupList();
             ret.addAll(result);
             mListener.onGroupListReady(ret, cancelled);
-		} else {
+        } else {
             Log.e(TAG, "Error fetching groups, result is null");
             // TODO: alert user / recover
         }
         ((BaseActivity) mActivity).showProgressIcon(false);
-	}
+    }
 }

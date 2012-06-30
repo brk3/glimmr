@@ -53,7 +53,7 @@ public class PhotosetListFragment extends BaseFragment
         // TODO
     }
 
-	public void itemClicked(AdapterView<?> parent, View view, int position,
+    public void itemClicked(AdapterView<?> parent, View view, int position,
             long id) {
         // TODO startSetViewer(mPhotosets.get(position));
     }
@@ -61,7 +61,7 @@ public class PhotosetListFragment extends BaseFragment
     @Override
     public void onPhotosetListReady(Photosets photoSets, boolean cancelled) {
         log(TAG, "onPhotosetListReady");
-		mGridAq = new AQuery(mActivity, mLayout);
+        mGridAq = new AQuery(mActivity, mLayout);
         mPhotosets = (Photosets) photoSets;
         // TODO
     }

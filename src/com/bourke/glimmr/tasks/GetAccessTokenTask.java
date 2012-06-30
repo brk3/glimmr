@@ -15,31 +15,31 @@ public class GetAccessTokenTask extends AsyncTask<String, Integer, OAuth> {
 
     private static final String TAG = "Glimmr/GetAccessTokenTask";
 
-	private IAccessTokenReadyListener mListener;
+    private IAccessTokenReadyListener mListener;
 
-	public GetAccessTokenTask(IAccessTokenReadyListener listener) {
+    public GetAccessTokenTask(IAccessTokenReadyListener listener) {
         mListener = listener;
-	}
+    }
 
-	@Override
-	protected OAuth doInBackground(String... params) {
-		String oauthToken = params[0];
-		String oauthTokenSecret = params[1];
-		String verifier = params[2];
+    @Override
+    protected OAuth doInBackground(String... params) {
+        String oauthToken = params[0];
+        String oauthTokenSecret = params[1];
+        String verifier = params[2];
 
-		Flickr f = FlickrHelper.getInstance().getFlickr();
-		OAuthInterface oauthApi = f.getOAuthInterface();
-		try {
-			return oauthApi.getAccessToken(oauthToken, oauthTokenSecret,
-					verifier);
-		} catch (Exception e) {
+        Flickr f = FlickrHelper.getInstance().getFlickr();
+        OAuthInterface oauthApi = f.getOAuthInterface();
+        try {
+            return oauthApi.getAccessToken(oauthToken, oauthTokenSecret,
+                    verifier);
+        } catch (Exception e) {
             e.printStackTrace();
-		}
+        }
         return null;
-	}
+    }
 
-	@Override
-	protected void onPostExecute(OAuth result) {
+    @Override
+    protected void onPostExecute(OAuth result) {
         mListener.onAccessTokenReady(result);
-	}
+    }
 }

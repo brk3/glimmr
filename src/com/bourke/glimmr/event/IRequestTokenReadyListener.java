@@ -2,5 +2,5 @@ package com.bourke.glimmr;
 
 public interface IRequestTokenReadyListener {
 
-	void onRequestTokenReady(String authUri);
+    void onRequestTokenReady(String authUri);
 }

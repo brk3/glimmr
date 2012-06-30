@@ -43,7 +43,7 @@ public final class PhotoViewerFragment extends BaseFragment {
             Bundle savedInstanceState) {
         mLayout = (FrameLayout) inflater.inflate(R.layout.photoviewer_fragment,
                 container, false);
-		mAq = new AQuery(mActivity, mLayout);
+        mAq = new AQuery(mActivity, mLayout);
         if (mPhoto != null) {
             String url = mPhoto.getUrl();
             mAq.id(R.id.web).progress(R.id.progress).webImage(url);

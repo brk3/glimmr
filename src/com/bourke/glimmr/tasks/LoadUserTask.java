@@ -18,43 +18,43 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     private User mUser;
     private Activity mActivity;
 
-	public LoadUserTask(Activity a, IUserReadyListener listener, User user) {
+    public LoadUserTask(Activity a, IUserReadyListener listener, User user) {
         mActivity = a;
         mListener = listener;
         mUser = user;
-	}
+    }
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
         ((BaseActivity) mActivity).showProgressIcon(true);
     }
 
-	@Override
-	protected User doInBackground(OAuth... params) {
-		OAuth oauth = params[0];
-		User user = oauth.getUser();
-		OAuthToken token = oauth.getToken();
+    @Override
+    protected User doInBackground(OAuth... params) {
+        OAuth oauth = params[0];
+        User user = oauth.getUser();
+        OAuthToken token = oauth.getToken();
 
-		try {
-			Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+        try {
+            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-			return f.getPeopleInterface().getInfo(mUser.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+            return f.getPeopleInterface().getInfo(mUser.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	@Override
-	protected void onPostExecute(final User result) {
-		if (result != null) {
+    @Override
+    protected void onPostExecute(final User result) {
+        if (result != null) {
             boolean cancelled = false;
             mListener.onUserReady(result, cancelled);
-		} else {
+        } else {
             Log.e(TAG, "Error fetching user info, result is null");
             // TODO: alert user / recover
         }
         ((BaseActivity) mActivity).showProgressIcon(false);
-	}
+    }
 }

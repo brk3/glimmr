@@ -56,16 +56,16 @@ public class LoginActivity extends SherlockFragmentActivity
 
     @Override
     public void onRequestTokenReady(String authUri) {
-		if (authUri != null && !authUri.startsWith("error")) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(authUri)));
-		} else {
+        if (authUri != null && !authUri.startsWith("error")) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(authUri)));
+        } else {
             Log.e(TAG, "Error getting request token in onRequestTokenReady");
-		}
+        }
     }
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
         if (intent != null) {
             String scheme = intent.getScheme();
@@ -88,7 +88,7 @@ public class LoginActivity extends SherlockFragmentActivity
         } else {
             Log.d(TAG, "Started with null intent");
         }
-	}
+    }
 
     @Override
     public void onAccessTokenReady(OAuth accessToken) {
@@ -109,8 +109,8 @@ public class LoginActivity extends SherlockFragmentActivity
         editor.putString(Constants.KEY_OAUTH_TOKEN, token.getOauthToken());
         editor.putString(Constants.KEY_TOKEN_SECRET, token
                 .getOauthTokenSecret());
-		editor.putString(Constants.KEY_USER_NAME, user.getUsername());
-		editor.putString(Constants.KEY_USER_ID, user.getId());
+        editor.putString(Constants.KEY_USER_NAME, user.getUsername());
+        editor.putString(Constants.KEY_USER_ID, user.getId());
         editor.commit();
     }
 }

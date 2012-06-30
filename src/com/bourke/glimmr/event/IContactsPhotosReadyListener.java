@@ -4,5 +4,5 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 
 public interface IContactsPhotosReadyListener {
 
-	void onContactsPhotosReady(PhotoList contactsAndPhotos, boolean cancelled);
+    void onContactsPhotosReady(PhotoList contactsAndPhotos, boolean cancelled);
 }
