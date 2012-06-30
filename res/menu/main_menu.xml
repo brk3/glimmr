@@ -4,7 +4,6 @@
 
     <item android:id="@+id/menu_upload"
           android:icon="@drawable/ic_action_upload_dark"
-          android:showAsAction="always"
           android:title="Upload" />
 
     <item android:id="@+id/menu_refresh"
