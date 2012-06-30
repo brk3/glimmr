@@ -31,13 +31,17 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
 	}
 
 	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+        ((BaseActivity) mActivity).showProgressIcon(true);
+    }
+
+	@Override
 	protected Collection<Group> doInBackground(OAuth... arg0) {
 		OAuthToken token = arg0[0].getToken();
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
 		User user = arg0[0].getUser();
-
-        ((BaseActivity) mActivity).showProgressIcon(true);
 
 		try {
 			return f.getPoolsInterface().getGroups();

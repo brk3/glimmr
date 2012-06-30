@@ -25,16 +25,6 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
-    /**
-     * Once we're authorised to access the user's account, start a task to
-     * fetch the appropriate photos.
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        startTask();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {

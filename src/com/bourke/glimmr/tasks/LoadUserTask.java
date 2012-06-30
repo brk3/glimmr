@@ -25,12 +25,16 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
 	}
 
 	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+        ((BaseActivity) mActivity).showProgressIcon(true);
+    }
+
+	@Override
 	protected User doInBackground(OAuth... params) {
 		OAuth oauth = params[0];
 		User user = oauth.getUser();
 		OAuthToken token = oauth.getToken();
-
-        ((BaseActivity) mActivity).showProgressIcon(true);
 
 		try {
 			Flickr f = FlickrHelper.getInstance().getFlickrAuthed(

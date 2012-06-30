@@ -30,6 +30,12 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 	}
 
 	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+        ((BaseActivity) mActivity).showProgressIcon(true);
+    }
+
+	@Override
 	protected PhotoList doInBackground(OAuth... arg0) {
 		OAuthToken token = arg0[0].getToken();
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
@@ -39,8 +45,6 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 		extras.add("url_q");
 		extras.add("url_l");
 		extras.add("views");
-
-        ((BaseActivity) mActivity).showProgressIcon(true);
 
 		try {
 			return f.getPeopleInterface().getPhotos(mUser.getId(), extras, 20,

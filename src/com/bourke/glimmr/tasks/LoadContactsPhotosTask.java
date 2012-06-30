@@ -31,13 +31,17 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 	}
 
 	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+        ((BaseActivity) mActivity).showProgressIcon(true);
+    }
+
+	@Override
 	protected PhotoList doInBackground(OAuth... arg0) {
 		OAuthToken token = arg0[0].getToken();
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
 		User user = arg0[0].getUser();
-
-        ((BaseActivity) mActivity).showProgressIcon(true);
 
 		try {
             int amountToFetch = 50;  // Max is 50

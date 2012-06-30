@@ -53,6 +53,14 @@ public abstract class BaseFragment extends SherlockFragment {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         mActivity = getSherlockActivity();
+        startTask();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        log(TAG, "onResume");
+        startTask();
     }
 
     /**

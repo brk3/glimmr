@@ -36,12 +36,6 @@ public class GroupListFragment extends BaseFragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        startTask();
-    }
-
-    @Override
     protected void startTask() {
         super.startTask();
         new LoadGroupsTask(mActivity, this).execute(mOAuth);
@@ -51,21 +45,8 @@ public class GroupListFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(R.layout
-                .standard_list_fragment, container, false);
+                .group_list_fragment, container, false);
         return mLayout;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        log(TAG, "onPause");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        log(TAG, "onResume");
-        startTask();
     }
 
     private void startGroupViewer(Group group) {
