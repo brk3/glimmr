@@ -20,6 +20,11 @@ import com.bourke.glimmr.R;
 import com.gmail.yuyang226.flickr.photosets.Photoset;
 import com.gmail.yuyang226.flickr.photosets.Photosets;
 
+import java.util.ArrayList;
+import java.util.List;
+import android.widget.ArrayAdapter;
+import com.bourke.glimmr.tasks.LoadPhotosetsTask;
+
 /**
  *
  */
@@ -28,7 +33,7 @@ public class PhotosetsFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotosetsFragment";
 
-    private Photosets mPhotosets = new Photosets();
+    private List<Photoset> mPhotosets = new ArrayList<Photoset>();
 
     public static PhotosetsFragment newInstance() {
         return new PhotosetsFragment();
@@ -37,7 +42,7 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        // TODO new LoadPhotosetsTask(mActivity, this).execute(mOAuth);
+        new LoadPhotosetsTask(mActivity, this).execute(mOAuth);
     }
 
     @Override
@@ -59,14 +64,43 @@ public class PhotosetsFragment extends BaseFragment
 
     public void itemClicked(AdapterView<?> parent, View view, int position,
             long id) {
-        // TODO startSetViewer(mPhotosets.getPhotosets().get(position));
+        startPhotosetViewer(mPhotosets.get(position));
     }
 
     @Override
     public void onPhotosetsReady(Photosets photoSets, boolean cancelled) {
         log(TAG, "onPhotosetListReady");
         mGridAq = new AQuery(mActivity, mLayout);
-        mPhotosets = (Photosets) photoSets;
-        // TODO
+        mPhotosets = new ArrayList(photoSets.getPhotosets());
+
+        ArrayAdapter<Photoset> adapter = new ArrayAdapter<Photoset>(mActivity,
+                R.layout.photoset_list_item, (ArrayList<Photoset>)mPhotosets) {
+
+            // TODO: implement ViewHolder pattern
+            // TODO: add aquery delay loading for fling scrolling
+            @Override
+            public View getView(final int position, View convertView,
+                    ViewGroup parent) {
+
+                if (convertView == null) {
+                    convertView = mActivity.getLayoutInflater().inflate(
+                            R.layout.photoset_list_item, null);
+                }
+
+                final Photoset photoset = mPhotosets.get(position);
+                AQuery aq = mGridAq.recycle(convertView);
+
+                aq.id(R.id.image_item).image(photoset.getPrimaryPhoto()
+                        .getMediumUrl(), true, true, 0, 0, null,
+                        AQuery.FADE_IN_NETWORK);
+                aq.id(R.id.set_name_text).text(photoset.getTitle());
+                aq.id(R.id.num_images_text).text(""+photoset.getPhotoCount());
+
+                return convertView;
+            }
+        };
+        mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
+                "itemClicked");
+        mGridAq.id(R.id.list).adapter(adapter);
     }
 }

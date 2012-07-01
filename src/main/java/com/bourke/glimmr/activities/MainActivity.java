@@ -26,12 +26,12 @@ public class MainActivity extends BaseActivity {
 
     public static final int CONTACTS_PAGE = 0;
     public static final int PHOTOSTREAM_PAGE = 1;
-    public static final int GROUPS_PAGE = 2;
-    public static final int SETS_PAGE = 3;
+    public static final int SETS_PAGE = 2;
+    public static final int GROUPS_PAGE = 3;
 
     //TODO: add to R.strings
     public static final String[] CONTENT =
-        new String[] { "Contacts", "You", "Groups", "Sets" };
+        new String[] { "Contacts", "You", "Sets", "Groups" };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
