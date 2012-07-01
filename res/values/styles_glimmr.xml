@@ -130,7 +130,7 @@
         <item name="footerLineHeight">2dp</item>
         <item name="footerIndicatorHeight">0dp</item>
         <item name="selectedColor">@color/flickr_blue</item>
-        <item name="selectedBold">true</item>
+        <item name="selectedBold">false</item>
         <item name="topPadding">3dp</item>
     </style>
 

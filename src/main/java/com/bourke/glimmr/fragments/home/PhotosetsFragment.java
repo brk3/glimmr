@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.fragments.home;
 
 import android.os.Bundle;
 
@@ -13,27 +13,31 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.event.IPhotosetsReadyListener;
+import com.bourke.glimmr.fragments.base.BaseFragment;
+import com.bourke.glimmr.R;
+
 import com.gmail.yuyang226.flickr.photosets.Photoset;
 import com.gmail.yuyang226.flickr.photosets.Photosets;
 
 /**
  *
  */
-public class PhotosetListFragment extends BaseFragment
-        implements IPhotosetListReadyListener {
+public class PhotosetsFragment extends BaseFragment
+        implements IPhotosetsReadyListener {
 
-    private static final String TAG = "Glimmr/PhotosetListFragment";
+    private static final String TAG = "Glimmr/PhotosetsFragment";
 
     private Photosets mPhotosets = new Photosets();
 
-    public static PhotosetListFragment newInstance() {
-        return new PhotosetListFragment();
+    public static PhotosetsFragment newInstance() {
+        return new PhotosetsFragment();
     }
 
     @Override
     protected void startTask() {
         super.startTask();
-        // TODO new LoadSetsTask(mActivity, this).execute(mOAuth);
+        // TODO new LoadPhotosetsTask(mActivity, this).execute(mOAuth);
     }
 
     @Override
@@ -55,11 +59,11 @@ public class PhotosetListFragment extends BaseFragment
 
     public void itemClicked(AdapterView<?> parent, View view, int position,
             long id) {
-        // TODO startSetViewer(mPhotosets.get(position));
+        // TODO startSetViewer(mPhotosets.getPhotosets().get(position));
     }
 
     @Override
-    public void onPhotosetListReady(Photosets photoSets, boolean cancelled) {
+    public void onPhotosetsReady(Photosets photoSets, boolean cancelled) {
         log(TAG, "onPhotosetListReady");
         mGridAq = new AQuery(mActivity, mLayout);
         mPhotosets = (Photosets) photoSets;

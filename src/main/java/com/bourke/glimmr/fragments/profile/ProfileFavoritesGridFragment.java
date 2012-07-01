@@ -1,4 +1,8 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.fragments.profile;
+
+import com.bourke.glimmr.fragments.base.ProfilePhotoGridFragment;
+import com.bourke.glimmr.tasks.LoadFavoritesTask;
+import com.bourke.glimmr.tasks.LoadUserTask;
 
 import com.gmail.yuyang226.flickr.people.User;
 

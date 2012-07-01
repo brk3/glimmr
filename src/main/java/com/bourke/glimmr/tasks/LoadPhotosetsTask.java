@@ -1,34 +1,33 @@
 package com.bourke.glimmr.tasks;
 
+import android.app.Activity;
+
 import android.os.AsyncTask;
 
 import android.util.Log;
 
+import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.event.IPhotosetsReadyListener;
+
 import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.FlickrException;
-import com.gmail.yuyang226.flickr.groups.Group;
-import com.gmail.yuyang226.flickr.groups.GroupList;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
+import com.gmail.yuyang226.flickr.photosets.Photosets;
 
 import java.io.IOException;
 
-import java.util.Collection;
-import android.app.Activity;
-import com.bourke.glimmr.event.IGroupListReadyListener;
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.FlickrHelper;
+public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
 
-public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
+    private static final String TAG = "Glimmr/LoadPhotosetsTask";
 
-    private static final String TAG = "Glimmr/LoadGroupsTask";
-
-    private IGroupListReadyListener mListener;
+    private IPhotosetsReadyListener mListener;
     private Activity mActivity;
 
-    public LoadGroupsTask(Activity a, IGroupListReadyListener listener) {
+    public LoadPhotosetsTask(Activity a, IPhotosetsReadyListener listener) {
         mActivity = a;
         mListener = listener;
     }
@@ -40,14 +39,14 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
     }
 
     @Override
-    protected Collection<Group> doInBackground(OAuth... arg0) {
+    protected Photosets doInBackground(OAuth... arg0) {
         OAuthToken token = arg0[0].getToken();
         Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
         User user = arg0[0].getUser();
 
         try {
-            return f.getPoolsInterface().getGroups();
+            return f.getPhotosetsInterface().getList(user.getId());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (FlickrException e) {
@@ -59,14 +58,12 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
     }
 
     @Override
-    protected void onPostExecute(final Collection<Group> result) {
+    protected void onPostExecute(final Photosets result) {
         if (result != null) {
             boolean cancelled = false;
-            GroupList ret = new GroupList();
-            ret.addAll(result);
-            mListener.onGroupListReady(ret, cancelled);
+            mListener.onPhotosetsReady(result, cancelled);
         } else {
-            Log.e(TAG, "Error fetching groups, result is null");
+            Log.e(TAG, "Error fetching photosets, result is null");
             // TODO: alert user / recover
         }
         ((BaseActivity) mActivity).showProgressIcon(false);

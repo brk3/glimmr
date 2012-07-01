@@ -1,6 +1,6 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.fragments.group;
 
-import com.actionbarsherlock.app.SherlockFragment;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 
 public class GroupAboutFragment extends BaseFragment {
 

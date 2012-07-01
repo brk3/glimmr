@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.activities;
 
 import android.content.Intent;
 
@@ -14,6 +14,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 
 import com.androidquery.AQuery;
+
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.fragments.profile.ProfileFavoritesGridFragment;
+import com.bourke.glimmr.fragments.profile.ProfilePhotoStreamGridFragment;
+import com.bourke.glimmr.R;
 
 import com.gmail.yuyang226.flickr.people.User;
 

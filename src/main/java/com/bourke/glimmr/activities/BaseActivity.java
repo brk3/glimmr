@@ -1,5 +1,6 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
@@ -10,15 +11,17 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
+
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.R;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
-import android.content.Context;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Menu;
 
 public abstract class BaseActivity extends SherlockFragmentActivity
         implements ViewPager.OnPageChangeListener {
@@ -44,7 +47,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         mOAuth = loadAccessToken(prefs);
     }
 
-    protected static OAuth loadAccessToken(SharedPreferences prefs) {
+    public static OAuth loadAccessToken(SharedPreferences prefs) {
         String oauthTokenString = prefs.getString(Constants.KEY_OAUTH_TOKEN,
                 null);
         String tokenSecret = prefs.getString(Constants.KEY_TOKEN_SECRET, null);

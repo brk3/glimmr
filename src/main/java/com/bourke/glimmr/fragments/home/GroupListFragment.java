@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.fragments.home;
 
 import android.content.Intent;
 
@@ -15,6 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
+
+import com.bourke.glimmr.activities.GroupViewerActivity;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.event.IGroupListReadyListener;
+import com.bourke.glimmr.fragments.base.BaseFragment;
+import com.bourke.glimmr.R;
+import com.bourke.glimmr.tasks.LoadGroupsTask;
 
 import com.gmail.yuyang226.flickr.groups.Group;
 import com.gmail.yuyang226.flickr.groups.GroupList;

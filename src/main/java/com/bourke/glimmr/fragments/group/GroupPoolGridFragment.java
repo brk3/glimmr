@@ -1,4 +1,8 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.fragments.group;
+
+import com.bourke.glimmr.event.IPhotoListReadyListener;
+import com.bourke.glimmr.fragments.base.PhotoGridFragment;
+import com.bourke.glimmr.tasks.LoadGroupPoolTask;
 
 import com.gmail.yuyang226.flickr.groups.Group;
 

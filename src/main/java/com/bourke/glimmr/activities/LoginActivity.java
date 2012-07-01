@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.event.IAccessTokenReadyListener;
+import com.bourke.glimmr.event.IRequestTokenReadyListener;
+import com.bourke.glimmr.R;
+import com.bourke.glimmr.tasks.GetAccessTokenTask;
+import com.bourke.glimmr.tasks.GetRequestToken;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;

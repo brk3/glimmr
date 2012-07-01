@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.fragments.base;
 
 import android.os.Bundle;
 
@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
+
+import com.bourke.glimmr.event.IPhotoListReadyListener;
+import com.bourke.glimmr.event.IUserReadyListener;
+import com.bourke.glimmr.R;
 
 import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.PhotoList;

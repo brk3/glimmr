@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.activities;
 
 import android.content.Intent;
 
@@ -12,6 +12,10 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
+import com.bourke.glimmr.R;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 

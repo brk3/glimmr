@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.event;
 
 public interface IRequestTokenReadyListener {
 

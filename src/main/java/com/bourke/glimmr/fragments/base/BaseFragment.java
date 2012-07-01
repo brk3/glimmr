@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.fragments.base;
 
 import android.app.Activity;
 
@@ -15,6 +15,12 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
+
+import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.activities.PhotoViewerActivity;
+import com.bourke.glimmr.activities.ProfileActivity;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.Constants;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.people.User;

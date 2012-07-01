@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
 
@@ -13,6 +13,9 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 import java.util.HashSet;
 import java.util.Set;
 import android.app.Activity;
+import com.bourke.glimmr.event.IPhotoListReadyListener;
+import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.FlickrHelper;
 
 public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 

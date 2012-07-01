@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
 
@@ -9,6 +9,9 @@ import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 import com.gmail.yuyang226.flickr.people.User;
 import android.app.Activity;
+import com.bourke.glimmr.event.IUserReadyListener;
+import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.FlickrHelper;
 
 public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
 

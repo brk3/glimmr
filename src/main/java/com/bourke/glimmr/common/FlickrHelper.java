@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.common;
 
 import com.gmail.yuyang226.flickr.contacts.ContactsInterface;
 import com.gmail.yuyang226.flickr.favorites.FavoritesInterface;
@@ -7,6 +7,7 @@ import com.gmail.yuyang226.flickr.groups.pools.PoolsInterface;
 import com.gmail.yuyang226.flickr.interestingness.InterestingnessInterface;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
+import com.gmail.yuyang226.flickr.photosets.PhotosetsInterface;
 import com.gmail.yuyang226.flickr.photos.PhotosInterface;
 import com.gmail.yuyang226.flickr.RequestContext;
 import com.gmail.yuyang226.flickr.REST;
@@ -86,6 +87,15 @@ public final class FlickrHelper {
         Flickr f = getFlickr();
         if (f != null) {
             return f.getPoolsInterface();
+        } else {
+            return null;
+        }
+    }
+
+    public PhotosetsInterface getPhotosetsInterface() {
+        Flickr f = getFlickr();
+        if (f != null) {
+            return f.getPhotosetsInterface();
         } else {
             return null;
         }

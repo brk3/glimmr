@@ -1,4 +1,4 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.tasks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -17,6 +17,9 @@ import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
 
 import java.net.URL;
+import com.bourke.glimmr.event.IRequestTokenReadyListener;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 
 /**
  *

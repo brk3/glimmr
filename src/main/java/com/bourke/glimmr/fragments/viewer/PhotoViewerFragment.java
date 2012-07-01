@@ -1,5 +1,6 @@
-package com.bourke.glimmr;
+package com.bourke.glimmr.fragments.viewer;
 
+import com.bourke.glimmr.R;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.widget.FrameLayout;
 import com.androidquery.AQuery;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
+import com.bourke.glimmr.fragments.base.BaseFragment;
+import com.bourke.glimmr.common.Constants;
 
 public final class PhotoViewerFragment extends BaseFragment {
 
