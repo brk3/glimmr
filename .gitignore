@@ -34,3 +34,4 @@ proguard-project.txt
 tmp
 *~
 tags
+debug.sh
