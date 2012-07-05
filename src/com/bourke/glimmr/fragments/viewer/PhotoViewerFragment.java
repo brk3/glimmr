@@ -16,6 +16,7 @@ import com.androidquery.AQuery;
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.Constants;
+import android.widget.RelativeLayout;
 
 public final class PhotoViewerFragment extends BaseFragment {
 
@@ -44,8 +45,8 @@ public final class PhotoViewerFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (FrameLayout) inflater.inflate(R.layout.photoviewer_fragment,
-                container, false);
+        mLayout = (RelativeLayout) inflater.inflate(R.layout
+                .photoviewer_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
         if (mPhoto != null) {
             String url = mPhoto.getUrl();

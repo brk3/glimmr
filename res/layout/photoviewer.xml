@@ -26,6 +26,26 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         />
+
+    <LinearLayout
+        android:id="@+id/buttons_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/button_exif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exif" />
+        <Button
+            android:id="@+id/button_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comments" />
+    </LinearLayout>
+
     <com.viewpagerindicator.LinePageIndicator
         android:id="@+id/indicator"
         android:padding="5dip"

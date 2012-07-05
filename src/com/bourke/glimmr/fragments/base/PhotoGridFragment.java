@@ -36,19 +36,6 @@ public abstract class PhotoGridFragment extends BaseFragment
         return mLayout;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        log(TAG, "onPause");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        log(TAG, "onResume");
-        startTask();
-    }
-
     /**
      * Once the task comes back with the list of photos, set up the GridView
      * adapter etc. to display them.
