@@ -108,6 +108,5 @@ public class GroupListFragment extends BaseFragment
         };
         mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
                 "itemClicked");
-        mGridAq.id(R.id.list).adapter(adapter);
     }
 }

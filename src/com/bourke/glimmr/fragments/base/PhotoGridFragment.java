@@ -89,19 +89,20 @@ public abstract class PhotoGridFragment extends BaseFragment
 
                 aq.id(R.id.viewsText).text("Views: " + String.valueOf(photo
                             .getViews()));
-                aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
-                aq.id(R.id.ownerText).clicked(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startProfileViewer(photo.getOwner());
-                    }
-                });
+                if (photo.getOwner() != null) {
+                    aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
+                    aq.id(R.id.ownerText).clicked(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startProfileViewer(photo.getOwner());
+                        }
+                    });
+                }
 
                 return convertView;
             }
         };
         mGridAq.id(R.id.gridview).adapter(adapter).itemClicked(this,
                 "startPhotoViewer");
-        mGridAq.id(R.id.gridview).adapter(adapter);
     }
 }

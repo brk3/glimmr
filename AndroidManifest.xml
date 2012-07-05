@@ -47,5 +47,8 @@
         <activity android:name=".activities.GroupViewerActivity"
             android:label="@string/app_name" />
 
+        <activity android:name=".activities.PhotosetViewerActivity"
+            android:label="@string/app_name" />
+
     </application>
 </manifest>

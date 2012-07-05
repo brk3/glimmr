@@ -92,9 +92,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity
                 mMenuItemRefresh.setVisible(true);
                 mMenuItemProgress.setVisible(false);
             }
-        } else {
-            Log.d(TAG, "showProgressIcon: mMenuItemProgress/mMenuItemRefresh "
-                    + "null");
         }
     }
 

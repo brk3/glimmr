@@ -64,8 +64,8 @@ public class PhotosetsFragment extends BaseFragment
         }
         Log.d(TAG, "Starting SetViewerActivity for " + photoset.getTitle());
         Bundle bundle = new Bundle();
-        // TODO bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_PHOTOSET,
-        //        photoset);
+        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_PHOTOSET,
+                photoset);
         Intent photosetViewer = new Intent(mActivity, PhotosetViewerActivity
                 .class);
         photosetViewer.putExtras(bundle);
@@ -111,6 +111,5 @@ public class PhotosetsFragment extends BaseFragment
         };
         mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
                 "itemClicked");
-        mGridAq.id(R.id.list).adapter(adapter);
     }
 }

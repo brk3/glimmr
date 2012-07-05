@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity {
                 R.id.indicator);
         indicator.setOnPageChangeListener(this);
         indicator.setViewPager(viewPager);
-        indicator.setCurrentItem(PHOTOSTREAM_PAGE);
+        /*indicator.setCurrentItem(PHOTOSTREAM_PAGE);*/
     }
 
     class GlimmrPagerAdapter extends FragmentPagerAdapter {
