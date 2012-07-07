@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.view.View;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
@@ -31,14 +31,13 @@ import java.util.List;
  * Receives a list of photos via an intent and shows the first one specified by
  * a startIndex in a zoomable WebView.
  */
-public class PhotoViewerActivity extends SherlockFragmentActivity {
+public class PhotoViewerActivity extends BaseActivity {
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.photoviewer);
         handleIntent(getIntent());
     }
@@ -47,6 +46,11 @@ public class PhotoViewerActivity extends SherlockFragmentActivity {
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         handleIntent(intent);
+    }
+
+    public void onExifButtonClick(View view) {
+        Intent exifActivity = new Intent(this, ExifInfoActivity.class);
+        startActivity(exifActivity);
     }
 
     private void handleIntent(Intent intent) {

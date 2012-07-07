@@ -38,6 +38,7 @@
             android:id="@+id/button_exif"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onExifButtonClick"
             android:text="Exif" />
         <Button
             android:id="@+id/button_comments"
