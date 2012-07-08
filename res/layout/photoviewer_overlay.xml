@@ -1,9 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tableLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
+        >
+
+        <TableRow>
+            <TextView
+                android:id="@+id/textViewISOKey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
+                android:gravity="center"
+                android:text="ISO" />
+            <TextView
+                android:id="@+id/textViewShutterKey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
+                android:gravity="center"
+                android:text="SHUTTER" />
+            <TextView
+                android:id="@+id/textViewApertureKey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
+                android:gravity="center"
+                android:text="APERTURE" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/textViewISOValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/textViewShutterValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/textViewApertureValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
+                android:layout_gravity="center_horizontal" />
+        </TableRow>
+
+    </TableLayout>
+</ScrollView>

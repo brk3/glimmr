@@ -51,8 +51,7 @@
             android:label="@string/app_name" />
 
         <activity android:name=".activities.ExifInfoActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Sherlock.Dialog" />
+            android:theme="@style/Theme.Sherlock.Light.Dialog" />
 
     </application>
 </manifest>

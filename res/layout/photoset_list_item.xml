@@ -26,7 +26,7 @@
             android:layout_marginRight="2dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_medium"
             android:textColor="@android:color/white" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_medium"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true" />
 

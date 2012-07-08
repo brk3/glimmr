@@ -45,7 +45,7 @@
             android:paddingLeft="15dip"
             android:paddingBottom="5dip"
             android:textColor="@color/flickr_pink"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_medium" />
 
         <!--
         <TextView

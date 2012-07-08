@@ -20,6 +20,7 @@
 
     <style name="Theme.glimmr"
             parent="@style/Theme.Sherlock.Light.DarkActionBar">
+
         <item name="actionBarItemBackground">
              @drawable/selectable_background_glimmr</item>
         <item name="popupMenuStyle">@style/glimmr_PopupMenu</item>
@@ -45,12 +46,12 @@
 
         <!-- Style the TabPageIndicator -->
         <item name="vpiTabPageIndicatorStyle">
-            @style/Widget.TabPageIndicator
+            @style/glimmr_TabPageIndicator
         </item>
 
         <!-- Style the TitlePageIndicator -->
         <item name="vpiTitlePageIndicatorStyle">
-            @style/Widget.TitlePageIndicator
+            @style/glimmr_TitlePageIndicator
         </item>
     </style>
 
@@ -116,16 +117,16 @@
             @drawable/progress_horizontal_glimmr</item>
     </style>
 
-    <style name="Widget.TabPageIndicator" parent="Widget">
+    <style name="glimmr_TabPageIndicator" parent="Widget">
         <item name="android:background">
             @drawable/tab_indicator_ab_glimmr</item>
         <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
-    <style name="Widget.TitlePageIndicator" parent="Widget">
+    <style name="glimmr_TitlePageIndicator" parent="Widget">
         <item name="android:background">@drawable/bg_tint</item>
         <item name="android:textColor">@color/flickr_pink</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/text_size_micro</item>
         <item name="footerColor">@color/flickr_blue</item>
         <item name="footerLineHeight">1dp</item>
         <item name="footerIndicatorHeight">0dp</item>

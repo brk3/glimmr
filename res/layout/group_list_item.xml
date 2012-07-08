@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="25sp"
+            android:textSize="@dimen/text_size_large"
             android:layout_alignParentLeft="true" />
 
         <!-- TODO: find where to fetch this value
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
-            android:textSize="10sp"
+            android:textSize="@dimen/text_size_micro"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@id/numImagesIcon" />
     </RelativeLayout>
