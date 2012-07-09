@@ -31,9 +31,13 @@ import java.util.List;
  * Receives a list of photos via an intent and shows the first one specified by
  * a startIndex in a zoomable WebView.
  */
-public class PhotoViewerActivity extends BaseActivity {
+public class PhotoViewerActivity extends BaseActivity
+        implements ViewPager.OnPageChangeListener {
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
+
+    private List<Photo> mPhotos = new ArrayList<Photo>();
+    private int mSelectedIndex = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,25 +53,30 @@ public class PhotoViewerActivity extends BaseActivity {
     }
 
     public void onExifButtonClick(View view) {
-        Intent exifActivity = new Intent(this, ExifInfoActivity.class);
+        Intent exifActivity = new Intent(this, ExifInfoDialogActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO,
+                mPhotos.get(mSelectedIndex));
+        exifActivity.putExtras(bundle);
         startActivity(exifActivity);
     }
 
     private void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
-        List<String> photoUrls = (ArrayList<String>) bundle.getSerializable(
-                Constants.KEY_PHOTOVIEWER_LIST);
+        mPhotos = (ArrayList<Photo>) bundle.getSerializable(Constants
+                .KEY_PHOTOVIEWER_LIST);
         int startIndex = (Integer) bundle.getInt(Constants
                 .KEY_PHOTOVIEWER_START_INDEX);
 
-        if (photoUrls != null) {
-            Log.d(TAG, "Got list of photo urls, size: " + photoUrls.size());
+        if (mPhotos != null) {
+            Log.d(TAG, "Got list of photo urls, size: " + mPhotos.size());
             PhotoViewerPagerAdapter adapter = new PhotoViewerPagerAdapter(
-                    getSupportFragmentManager(), photoUrls);
+                    getSupportFragmentManager());
             ViewPager pager = (ViewPager) findViewById(R.id.pager);
             pager.setAdapter(adapter);
             PageIndicator indicator = (LinePageIndicator) findViewById(
                     R.id.indicator);
+            indicator.setOnPageChangeListener(this);
             indicator.setViewPager(pager);
             indicator.setCurrentItem(startIndex);
         } else {
@@ -76,25 +85,33 @@ public class PhotoViewerActivity extends BaseActivity {
         }
     }
 
-    class PhotoViewerPagerAdapter extends FragmentPagerAdapter {
-        private List<String> mPhotoUrls;
+    @Override
+    public void onPageSelected(int position) {
+        mSelectedIndex = position;
+    }
 
-        public PhotoViewerPagerAdapter(FragmentManager fm,
-                List<String> photos) {
+    @Override
+    public void onPageScrolled(int position, float positionOffset,
+            int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
+    class PhotoViewerPagerAdapter extends FragmentPagerAdapter {
+        public PhotoViewerPagerAdapter(FragmentManager fm) {
             super(fm);
-            mPhotoUrls = photos;
         }
 
         @Override
         public Fragment getItem(int position) {
-            Photo photo = new Photo();
-            photo.setUrl(mPhotoUrls.get(position));
-            return PhotoViewerFragment.newInstance(photo);
+            return PhotoViewerFragment.newInstance(mPhotos.get(position));
         }
 
         @Override
         public int getCount() {
-            return mPhotoUrls.size();
+            return mPhotos.size();
         }
     }
 }

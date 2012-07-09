@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import com.bourke.glimmr.R;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -9,14 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
-import com.gmail.yuyang226.flickr.photos.Photo;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.Constants;
-import android.widget.RelativeLayout;
+import com.bourke.glimmr.fragments.base.BaseFragment;
+import com.bourke.glimmr.R;
+
+import com.gmail.yuyang226.flickr.photos.Photo;
 
 public final class PhotoViewerFragment extends BaseFragment {
 
@@ -49,7 +49,7 @@ public final class PhotoViewerFragment extends BaseFragment {
                 .photoviewer_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
         if (mPhoto != null) {
-            String url = mPhoto.getUrl();
+            String url = mPhoto.getLargeUrl();
             mAq.id(R.id.web).progress(R.id.progress).webImage(url);
         } else {
             Log.e(TAG, "onStart, mPhoto is null");
@@ -61,17 +61,5 @@ public final class PhotoViewerFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(Constants.KEY_PHOTOVIEWER_URL, mPhoto.getUrl());
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        log(TAG, "onPause");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        log(TAG, "onResume");
     }
 }

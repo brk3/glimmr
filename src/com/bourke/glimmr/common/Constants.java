@@ -22,4 +22,7 @@ public class Constants {
 
     public static final String KEY_PHOTOSETVIEWER_PHOTOSET =
         "glimmr_photosetviewer_photoset";
+
+    public static final String KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO =
+        "glimmr_exif_info_dialog_activity_photo";
 }

@@ -24,10 +24,8 @@ import com.bourke.glimmr.common.Constants;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.people.User;
-import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
-import java.util.ArrayList;
 
 /**
  *
@@ -57,7 +55,6 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
         mActivity = getSherlockActivity();
         startTask();
     }
@@ -65,28 +62,21 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onResume() {
         super.onResume();
-        log(TAG, "onResume");
         startTask();
     }
 
     /**
      * Start the PhotoViewerActivity with a list of photos to view and an index
      * to start at in the list.
-     *
-     * Unfortunately can't use a PhotoList here as Photo isn't serialisable.
      */
     protected void startPhotoViewer(int pos) {
         if (mPhotos == null) {
             Log.e(TAG, "Cannot start PhotoViewer, mPhotos is null");
             return;
         }
-        ArrayList<String> photoUrls = new ArrayList<String>();
-        for (Photo p : mPhotos) {
-            photoUrls.add(p.getLargeUrl());
-        }
-        Log.d(TAG, "starting photo viewer with " + photoUrls.size() + " ids");
+        Log.d(TAG, "starting photo viewer with " + mPhotos.size() + " ids");
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photoUrls);
+        bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, mPhotos);
         bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
         Intent photoViewer = new Intent(mActivity, PhotoViewerActivity.class);
         photoViewer.putExtras(bundle);
@@ -107,15 +97,10 @@ public abstract class BaseFragment extends SherlockFragment {
     }
 
     protected void startTask() {
-        Log.d(TAG, "BaseFragment.startTask()");
         if (mOAuth == null || mOAuth.getUser() == null) {
             SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                     .PREFS_NAME, Context.MODE_PRIVATE);
             mOAuth = BaseActivity.loadAccessToken(prefs);
         }
-    }
-
-    protected void log(final String tag, final String msg) {
-        Log.d(tag, msg);
     }
 }

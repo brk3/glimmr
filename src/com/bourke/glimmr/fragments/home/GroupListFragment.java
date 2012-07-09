@@ -77,7 +77,7 @@ public class GroupListFragment extends BaseFragment
 
     @Override
     public void onGroupListReady(GroupList groups, boolean cancelled) {
-        log(TAG, "onGroupListReady");
+        Log.d(TAG, "onGroupListReady");
         mGridAq = new AQuery(mActivity, mLayout);
         mGroups = (GroupList) groups;
 

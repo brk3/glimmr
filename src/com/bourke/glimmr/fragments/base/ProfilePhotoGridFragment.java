@@ -16,6 +16,7 @@ import com.bourke.glimmr.R;
 
 import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
+import android.util.Log;
 
 /**
  * Subclass of PhotoGridFragment to show a GridView of photos along with
@@ -59,7 +60,7 @@ public abstract class ProfilePhotoGridFragment extends PhotoGridFragment
          * complete one containing the buddy icon url. */
         mUser = user;
 
-        log(TAG, "onUserReady");
+        Log.d(TAG, "onUserReady");
         boolean useMemCache = false;
         boolean useFileCache = false;
         mAq.id(R.id.image_profile).image(mUser.getBuddyIconUrl(),

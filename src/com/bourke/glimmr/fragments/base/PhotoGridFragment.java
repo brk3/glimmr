@@ -16,6 +16,7 @@ import com.bourke.glimmr.R;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
+import android.util.Log;
 
 /**
  * Fragment that contains a GridView of photos.
@@ -42,7 +43,7 @@ public abstract class PhotoGridFragment extends BaseFragment
      */
     @Override
     public void onPhotosReady(PhotoList photos, boolean cancelled) {
-        log(TAG, "onPhotosReady");
+        Log.d(TAG, "onPhotosReady");
         mGridAq = new AQuery(mActivity, mLayout);
         mPhotos = photos;
 

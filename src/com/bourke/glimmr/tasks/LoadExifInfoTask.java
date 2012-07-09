@@ -8,25 +8,31 @@ import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
-import com.bourke.glimmr.event.IUserReadyListener;
+import com.bourke.glimmr.event.IExifInfoReadyListener;
 
 import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
-import com.gmail.yuyang226.flickr.people.User;
+import com.gmail.yuyang226.flickr.photos.Exif;
 
-public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
+import java.util.Collection;
+import com.gmail.yuyang226.flickr.photos.Photo;
+import java.util.ArrayList;
 
-    private static final String TAG = "Glimmr/LoadUserTask";
+public class LoadExifInfoTask
+        extends AsyncTask<OAuth, Void, Collection<Exif>> {
 
-    private IUserReadyListener mListener;
-    private User mUser;
+    private static final String TAG = "Glimmr/LoadExifInfoTask";
+
+    private IExifInfoReadyListener mListener;
+    private Photo mPhoto;
     private Activity mActivity;
 
-    public LoadUserTask(Activity a, IUserReadyListener listener, User user) {
+    public LoadExifInfoTask(Activity a, IExifInfoReadyListener listener,
+            Photo photo) {
         mActivity = a;
         mListener = listener;
-        mUser = user;
+        mPhoto = photo;
     }
 
     @Override
@@ -36,15 +42,14 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     }
 
     @Override
-    protected User doInBackground(OAuth... params) {
+    protected Collection<Exif> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        User user = oauth.getUser();
         OAuthToken token = oauth.getToken();
-
         try {
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            return f.getPeopleInterface().getInfo(mUser.getId());
+            return f.getPhotosInterface().getExif(mPhoto.getId(),
+                    mPhoto.getSecret());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,12 +57,12 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     }
 
     @Override
-    protected void onPostExecute(final User result) {
+    protected void onPostExecute(final Collection<Exif> result) {
         if (result != null) {
             boolean cancelled = false;
-            mListener.onUserReady(result, cancelled);
+            mListener.onExifInfoReady(new ArrayList<Exif>(result), cancelled);
         } else {
-            Log.e(TAG, "Error fetching user info, result is null");
+            Log.e(TAG, "Error fetching exif info, result is null");
             // TODO: alert user / recover
         }
         ((BaseActivity) mActivity).showProgressIcon(false);

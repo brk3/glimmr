@@ -50,7 +50,7 @@
         <activity android:name=".activities.PhotosetViewerActivity"
             android:label="@string/app_name" />
 
-        <activity android:name=".activities.ExifInfoActivity"
+        <activity android:name=".activities.ExifInfoDialogActivity"
             android:theme="@style/Theme.Sherlock.Light.Dialog" />
 
     </application>
