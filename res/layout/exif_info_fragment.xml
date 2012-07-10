@@ -5,59 +5,75 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-    <TableLayout
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/tableLayout1"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:shrinkColumns="*"
-        android:stretchColumns="*"
-        >
+        android:layout_height="fill_parent">
 
-        <TableRow>
-            <TextView
-                android:id="@+id/textViewISOKey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium"
-                android:gravity="center"
-                android:text="ISO" />
-            <TextView
-                android:id="@+id/textViewShutterKey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium"
-                android:gravity="center"
-                android:text="SHUTTER" />
-            <TextView
-                android:id="@+id/textViewApertureKey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium"
-                android:gravity="center"
-                android:text="APERTURE" />
-        </TableRow>
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/tableLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_light_grey_stripe"
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
 
-        <TableRow>
-            <TextView
-                android:id="@+id/textViewISOValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium"
-                android:layout_gravity="center_horizontal" />
-            <TextView
-                android:id="@+id/textViewShutterValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium"
-                android:layout_gravity="center_horizontal" />
-            <TextView
-                android:id="@+id/textViewApertureValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium"
-                android:layout_gravity="center_horizontal" />
-        </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/textViewISOKey"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/flickr_pink"
+                    android:gravity="center"
+                    android:text="ISO" />
+                <TextView
+                    android:id="@+id/textViewShutterKey"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/flickr_pink"
+                    android:gravity="center"
+                    android:text="SHUTTER" />
+                <TextView
+                    android:id="@+id/textViewApertureKey"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/flickr_pink"
+                    android:gravity="center"
+                    android:text="APERTURE" />
+            </TableRow>
 
-    </TableLayout>
+            <TableRow>
+                <TextView
+                    android:id="@+id/textViewISOValue"
+                    android:textSize="@dimen/text_size_medium"
+                    android:layout_gravity="center_horizontal" />
+                <TextView
+                    android:id="@+id/textViewShutterValue"
+                    android:textSize="@dimen/text_size_medium"
+                    android:layout_gravity="center_horizontal" />
+                <TextView
+                    android:id="@+id/textViewApertureValue"
+                    android:textSize="@dimen/text_size_medium"
+                    android:layout_gravity="center_horizontal" />
+            </TableRow>
+
+            <TableRow>
+                <View
+                    android:id="@+id/seperator"
+                    android:layout_height="1dp"
+                    android:layout_span="3"
+                    android:background="@color/flickr_blue" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/tableLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:shrinkColumns="*"
+            android:stretchColumns="*" />
+    </LinearLayout>
+
 </ScrollView>

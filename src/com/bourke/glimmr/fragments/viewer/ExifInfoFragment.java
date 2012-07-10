@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.viewer;
 
+import android.widget.TableRow.LayoutParams;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -21,6 +22,9 @@ import com.gmail.yuyang226.flickr.photos.Exif;
 import com.gmail.yuyang226.flickr.photos.Photo;
 
 import java.util.List;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {
@@ -48,10 +52,71 @@ public final class ExifInfoFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
+        Log.d(TAG, "startTask()");
         new LoadExifInfoTask(mActivity, this, mPhoto).execute(mOAuth);
+    }
+
+    /**
+     * Creates a TableRow with two columns containing TextViews, and adds it to
+     * the main TableView.
+     */
+    private void addKeyValueRow(String key, String value) {
+        /* Create the TableRow */
+        TableLayout tl = (TableLayout) mLayout.findViewById(R.id.tableLayout1);
+        TableRow tr = new TableRow(mActivity);
+        TableRow.LayoutParams tableRowParams = new TableRow.LayoutParams(
+                    TableLayout.LayoutParams.FILL_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT);
+        /* left, top, right, bottom */
+        tableRowParams.setMargins(5, 5, 5, 0);
+        tr.setLayoutParams(tableRowParams);
+
+        TextView textViewKey =  new TextView(mActivity);
+        LayoutParams textViewKeyParams = new LayoutParams(
+                    TableRow.LayoutParams.FILL_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+        textViewKey.setLayoutParams(textViewKeyParams);
+        textViewKey.setTextColor(R.color.text_light);
+        textViewKey.setText(key);
+        tr.addView(textViewKey);
+
+        TextView textViewValue =  new TextView(mActivity);
+        LayoutParams textViewValueParams = new LayoutParams(
+                    TableRow.LayoutParams.FILL_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+        textViewValueParams.span = 2;
+        textViewValue.setLayoutParams(textViewValueParams);
+        textViewValue.setText(value);
+        tr.addView(textViewValue);
+
+        /* Add the row to the table */
+        tl.addView(tr);
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, boolean cancelled) {
         Log.d(TAG, "onExifInfoReady, exifInfo.size(): " + exifInfo.size());
+        for (Exif e : exifInfo) {
+            if (e.getTag().equals("ISO")) {
+                mAq.id(R.id.textViewISOValue).text(e.getRaw());
+            } else if (e.getTag().equals("ExposureTime")) {
+                mAq.id(R.id.textViewShutterValue).text(e.getRaw());
+            } else if (e.getTag().equals("FNumber")) {
+                mAq.id(R.id.textViewApertureValue).text(e.getRaw());
+            } else if (e.getTag().equals("Model")) {
+                addKeyValueRow("Camera", e.getRaw());
+            } else if (e.getTag().equals("FocalLength")) {
+                addKeyValueRow(e.getLabel(), e.getRaw());
+            } else if (e.getTag().equals("ExposureProgram")) {
+                addKeyValueRow(e.getLabel(), e.getRaw());
+            } else if (e.getTag().equals("DateTimeOriginal")) {
+                addKeyValueRow(e.getLabel(), e.getRaw());
+            } else if (e.getTag().equals("Quality")) {
+                addKeyValueRow(e.getLabel(), e.getRaw());
+            } else if (e.getTag().equals("LensType")) {
+                addKeyValueRow(e.getLabel(), e.getRaw());
+            } else if (e.getTag().equals("Software")) {
+                addKeyValueRow(e.getLabel(), e.getRaw());
+            }
+        }
     }
 }

@@ -55,6 +55,7 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
         mActivity = getSherlockActivity();
         startTask();
     }
@@ -62,7 +63,8 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onResume() {
         super.onResume();
-        startTask();
+        Log.d(TAG, "onResume");
+        // startTask();
     }
 
     /**
@@ -97,6 +99,7 @@ public abstract class BaseFragment extends SherlockFragment {
     }
 
     protected void startTask() {
+        Log.d(TAG, "startTask()");
         if (mOAuth == null || mOAuth.getUser() == null) {
             SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                     .PREFS_NAME, Context.MODE_PRIVATE);
