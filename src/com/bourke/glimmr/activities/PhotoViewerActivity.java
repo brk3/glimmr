@@ -61,6 +61,15 @@ public class PhotoViewerActivity extends BaseActivity
         startActivity(exifActivity);
     }
 
+    public void onCommentsButtonClick(View view) {
+        Intent activity = new Intent(this, CommentsDialogActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.COMMENTS_DIALOG_ACTIVITY_PHOTO,
+                mPhotos.get(mSelectedIndex));
+        activity.putExtras(bundle);
+        startActivity(activity);
+    }
+
     private void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
         mPhotos = (ArrayList<Photo>) bundle.getSerializable(Constants

@@ -54,5 +54,9 @@
             android:label="@string/exif_info"
             android:theme="@style/Theme.Sherlock.Light.Dialog" />
 
+        <activity android:name=".activities.CommentsDialogActivity"
+            android:label="@string/comments"
+            android:theme="@style/Theme.Sherlock.Light.Dialog" />
+
     </application>
 </manifest>

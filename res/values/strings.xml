@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Glimmr</string>
     <string name="exif_info">Exif Info</string>
+    <string name="comments">Comments</string>
 
     <string name="menu_refresh">Refresh</string>
 </resources>

@@ -10,18 +10,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.fragments.viewer.ExifInfoFragment;
+import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import com.bourke.glimmr.R;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 
 /**
- * Simple dialog themed Activity that floats over another.  Contains a fragment
- * to show exif info about a photo.
+ *
  */
-public class ExifInfoDialogActivity extends BaseActivity {
+public class CommentsDialogActivity extends BaseActivity {
 
-    public static final String TAG = "Glimmr/ExifInfoDialogActivity";
+    public static final String TAG = "Glimmr/CommentsDialogActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,21 +38,21 @@ public class ExifInfoDialogActivity extends BaseActivity {
     private void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (bundle == null) {
-            Log.e(TAG, "null bundle, ExifInfoDialogActivity requires a Photo");
+            Log.e(TAG, "null bundle, CommentsDialogActivity requires a Photo");
             return;
         }
 
         Photo photo = (Photo) bundle.getSerializable(Constants
-                .KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO);
+                .COMMENTS_DIALOG_ACTIVITY_PHOTO);
         if (photo != null) {
-            Log.d(TAG, "Got photo to fetch exif for: " + photo.getId());
+            Log.d(TAG, "Got photo to fetch comments for: " + photo.getId());
 
-            /* Create and add the fragment now we have the photo to fetch exif
-             * info for */
+            /* Create and add the fragment now we have the photo to fetch
+             * comments for */
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
-            ExifInfoFragment newFragment = ExifInfoFragment.newInstance(photo);
+            CommentsFragment newFragment = CommentsFragment.newInstance(photo);
             fragmentTransaction.add(R.id.layout, newFragment);
             fragmentTransaction.commit();
         } else {
