@@ -7,12 +7,14 @@ import com.gmail.yuyang226.flickr.groups.pools.PoolsInterface;
 import com.gmail.yuyang226.flickr.interestingness.InterestingnessInterface;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
+import com.gmail.yuyang226.flickr.photos.comments.CommentsInterface;
 import com.gmail.yuyang226.flickr.photosets.PhotosetsInterface;
 import com.gmail.yuyang226.flickr.photos.PhotosInterface;
 import com.gmail.yuyang226.flickr.RequestContext;
 import com.gmail.yuyang226.flickr.REST;
 
 import javax.xml.parsers.ParserConfigurationException;
+import com.gmail.yuyang226.flickr.people.PeopleInterface;
 
 public final class FlickrHelper {
 
@@ -96,6 +98,24 @@ public final class FlickrHelper {
         Flickr f = getFlickr();
         if (f != null) {
             return f.getPhotosetsInterface();
+        } else {
+            return null;
+        }
+    }
+
+    public CommentsInterface getCommentsInterface() {
+        Flickr f = getFlickr();
+        if (f != null) {
+            return f.getCommentsInterface();
+        } else {
+            return null;
+        }
+    }
+
+    public PeopleInterface getPeopleInterface() {
+        Flickr f = getFlickr();
+        if (f != null) {
+            return f.getPeopleInterface();
         } else {
             return null;
         }

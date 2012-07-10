@@ -51,8 +51,8 @@ public class GroupListFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(R.layout
-                .group_list_fragment, container, false);
+        mLayout = (RelativeLayout) inflater.inflate(R.layout.list_fragment,
+                container, false);
         return mLayout;
     }
 
@@ -82,7 +82,7 @@ public class GroupListFragment extends BaseFragment
         mGroups = (GroupList) groups;
 
         ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(mActivity,
-                R.layout.group_list_item, (ArrayList<Group>)groups) {
+                R.layout.group_list_row, (ArrayList<Group>)groups) {
 
             // TODO: implement ViewHolder pattern
             // TODO: add aquery delay loading for fling scrolling
@@ -92,7 +92,7 @@ public class GroupListFragment extends BaseFragment
 
                 if (convertView == null) {
                     convertView = mActivity.getLayoutInflater().inflate(
-                            R.layout.group_list_item, null);
+                            R.layout.group_list_row, null);
                 }
 
                 final Group group = getItem(position);

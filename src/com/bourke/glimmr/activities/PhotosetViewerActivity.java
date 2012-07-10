@@ -29,7 +29,7 @@ public class PhotosetViewerActivity extends BaseActivity {
 
     public static final int PHOTOSET_PAGE = 0;
 
-    //TODO: add to R.strings
+    // TODO: Set this to the title of the current set being viewed
     public static final String[] CONTENT = new String[] { "Set" };
 
     /**

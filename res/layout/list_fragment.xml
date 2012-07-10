@@ -6,7 +6,6 @@
 
     <ListView
         android:id="@+id/list"
-        android:fastScrollEnabled="true"
         android:divider="@color/flickr_pink"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
