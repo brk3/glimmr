@@ -35,6 +35,11 @@ public abstract class BaseFragment extends SherlockFragment {
     private static final String TAG = "Glimmr/BaseFragment";
 
     /**
+     * Avoid calling onResume when coming in through onCreate.
+     */
+    private boolean mCameFromPause;
+
+    /**
      * It's useful to keep a reference to the parent activity in our fragments.
      */
     protected Activity mActivity;
@@ -56,15 +61,24 @@ public abstract class BaseFragment extends SherlockFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
+        mCameFromPause = false;
         mActivity = getSherlockActivity();
         startTask();
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mCameFromPause = true;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
-        // startTask();
+        if (mCameFromPause) {
+            Log.d(TAG, "onResume");
+            startTask();
+        }
     }
 
     /**

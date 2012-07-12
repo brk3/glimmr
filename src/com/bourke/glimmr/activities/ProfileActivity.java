@@ -98,12 +98,6 @@ public class ProfileActivity extends BaseActivity {
         handleIntent(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
     /**
      * Should only be bound once we have a valid userId
      */

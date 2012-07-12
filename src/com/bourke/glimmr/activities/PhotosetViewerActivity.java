@@ -86,12 +86,6 @@ public class PhotosetViewerActivity extends BaseActivity {
         handleIntent(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
     class GroupPagerAdapter extends FragmentPagerAdapter {
         public GroupPagerAdapter(FragmentManager fm) {
             super(fm);

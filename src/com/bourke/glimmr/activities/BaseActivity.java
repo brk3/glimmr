@@ -79,6 +79,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         getSupportMenuInflater().inflate(R.menu.main_menu, menu);
         mMenuItemProgress = menu.findItem(R.id.menu_progress);
         mMenuItemRefresh = menu.findItem(R.id.menu_refresh);
+        showProgressIcon(false);
         return true;
     }
 
