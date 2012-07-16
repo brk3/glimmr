@@ -13,6 +13,10 @@ import android.util.Log;
 
 import android.view.View;
 
+import com.actionbarsherlock.app.ActionBar;
+
+import com.androidquery.AQuery;
+
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
@@ -43,6 +47,7 @@ public class PhotoViewerActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photoviewer);
+        mAq = new AQuery(this);
         handleIntent(getIntent());
     }
 
@@ -59,6 +64,22 @@ public class PhotoViewerActivity extends BaseActivity
                 mPhotos.get(mSelectedIndex));
         exifActivity.putExtras(bundle);
         startActivity(exifActivity);
+    }
+
+    /**
+     * Toggle whether the actionbar and button panel are showing or not.
+     */
+    public void toggleOverlayVisibility(View view) {
+        // TODO: there is a visible flicker when the actionbar hides, possibly
+        // due to the layout been redrawn.  An overlay actionbar may fix this.
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar.isShowing()) {
+            actionBar.hide();
+            mAq.id(R.id.buttons_panel).invisible();
+        } else {
+            actionBar.show();
+            mAq.id(R.id.buttons_panel).visible();
+        }
     }
 
     public void onCommentsButtonClick(View view) {

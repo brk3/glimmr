@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
@@ -49,8 +50,11 @@ public final class PhotoViewerFragment extends BaseFragment {
                 .photoviewer_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
         if (mPhoto != null) {
+            boolean useMemCache = true;
+            boolean useFileCache = true;
             String url = mPhoto.getLargeUrl();
-            mAq.id(R.id.web).progress(R.id.progress).webImage(url);
+            mAq.id(R.id.image).progress(R.id.progress).image(url, useMemCache,
+                    useFileCache, 0, 0, null, AQuery.FADE_IN_NETWORK);
         } else {
             Log.e(TAG, "onStart, mPhoto is null");
         }
