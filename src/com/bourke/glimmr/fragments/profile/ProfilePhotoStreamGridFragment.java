@@ -9,6 +9,8 @@ public class ProfilePhotoStreamGridFragment extends ProfilePhotoGridFragment {
 
     private static final String TAG = "Glimmr/ProfilePhotoStreamGridFragment";
 
+    private int mPage = 1;
+
     public static ProfilePhotoStreamGridFragment newInstance(User user) {
         ProfilePhotoStreamGridFragment newFragment =
             new ProfilePhotoStreamGridFragment();
@@ -19,7 +21,8 @@ public class ProfilePhotoStreamGridFragment extends ProfilePhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        new LoadPhotostreamTask(mActivity, this, mUser).execute(mOAuth);
+        new LoadPhotostreamTask(mActivity, this, mUser, mPage++)
+            .execute(mOAuth);
         new LoadUserTask(mActivity, this, mUser).execute(mOAuth);
     }
 }

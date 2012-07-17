@@ -1,8 +1,14 @@
 package com.bourke.glimmr.tasks;
 
+import android.app.Activity;
+
 import android.os.AsyncTask;
 
 import android.util.Log;
+
+import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.event.IPhotoListReadyListener;
 
 import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
@@ -12,10 +18,6 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 
 import java.util.HashSet;
 import java.util.Set;
-import android.app.Activity;
-import com.bourke.glimmr.event.IPhotoListReadyListener;
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.FlickrHelper;
 
 public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
@@ -24,12 +26,14 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
     private IPhotoListReadyListener mListener;
     private User mUser;
     private Activity mActivity;
+    private int mPage;
 
     public LoadPhotostreamTask(Activity a, IPhotoListReadyListener listener,
-            User user) {
+            User user, int page) {
         mListener = listener;
         mUser = user;
         mActivity = a;
+        mPage = page;
     }
 
     @Override
@@ -48,10 +52,12 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
         extras.add("url_q");
         extras.add("url_l");
         extras.add("views");
+        int perPage = 20;
+        Log.d(TAG, "Fetching page " + mPage);
 
         try {
-            return f.getPeopleInterface().getPhotos(mUser.getId(), extras, 20,
-                    1);
+            return f.getPeopleInterface().getPhotos(mUser.getId(), extras,
+                    perPage, mPage);
         } catch (Exception e) {
             e.printStackTrace();
         }

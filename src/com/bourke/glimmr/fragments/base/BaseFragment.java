@@ -26,7 +26,6 @@ import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
-
 /**
  *
  */
@@ -37,7 +36,7 @@ public abstract class BaseFragment extends SherlockFragment {
     /**
      * Avoid calling onResume when coming in through onCreate.
      */
-    private boolean mCameFromPause;
+    protected boolean mCameFromPause;
 
     /**
      * It's useful to keep a reference to the parent activity in our fragments.
@@ -69,6 +68,7 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
         mCameFromPause = true;
     }
 

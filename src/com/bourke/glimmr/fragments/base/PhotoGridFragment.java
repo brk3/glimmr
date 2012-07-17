@@ -2,6 +2,8 @@ package com.bourke.glimmr.fragments.base;
 
 import android.os.Bundle;
 
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,10 @@ import com.androidquery.AQuery;
 import com.bourke.glimmr.event.IPhotoListReadyListener;
 import com.bourke.glimmr.R;
 
+import com.commonsware.cwac.endless.EndlessAdapter;
+
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
-import android.util.Log;
 
 /**
  * Fragment that contains a GridView of photos.
@@ -28,6 +31,11 @@ public abstract class PhotoGridFragment extends BaseFragment
         implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
+
+    private EndlessGridAdapter mAdapter;
+
+    protected int mPage = 1;
+    protected boolean mMorePages = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,52 +53,101 @@ public abstract class PhotoGridFragment extends BaseFragment
     public void onPhotosReady(PhotoList photos, boolean cancelled) {
         Log.d(TAG, "onPhotosReady");
         mGridAq = new AQuery(mActivity, mLayout);
-        mPhotos = photos;
+        if (mAdapter == null || mCameFromPause) {
+            // TODO: store mPage in onPause and restore it in onResume
+            mCameFromPause = false;
+            mPage = 1;
+            //
+            mPhotos = photos;
+            mAdapter = new EndlessGridAdapter(photos);
+            mAdapter.setRunInBackground(false);
+            mGridAq.id(R.id.gridview).adapter(mAdapter).itemClicked(this,
+                    "startPhotoViewer");
+        } else {
+            mPhotos.addAll(photos);
+            mAdapter.addAll(photos);
+            mAdapter.onDataReady();
+        }
+    }
 
-        ArrayAdapter<Photo> adapter = new ArrayAdapter<Photo>(mActivity,
-                R.layout.gridview_item, photos) {
+    /**
+     * Return false by default to indicate to the EndlessAdapter that there's
+     * no more data to load.
+     * Subclasses that support pagination should override this.
+     */
+    protected boolean cacheInBackground() {
+        return false;
+    }
 
-            // TODO: implement ViewHolder pattern
-            // TODO: add aquery delay loading for fling scrolling
-            @Override
-            public View getView(final int position, View convertView,
-                    ViewGroup parent) {
 
-                if(convertView == null) {
-                    convertView = mActivity.getLayoutInflater().inflate(
-                            R.layout.gridview_item, null);
+    class EndlessGridAdapter extends EndlessAdapter {
+
+        public EndlessGridAdapter(PhotoList list) {
+            super(mActivity, new GridAdapter(list), R.layout.pending);
+        }
+
+        public void addAll(PhotoList list) {
+            ArrayAdapter<Photo> a = (ArrayAdapter<Photo>) getWrappedAdapter();
+            for (Photo photo : list) {
+                a.add(photo);
+            }
+        }
+
+        @Override
+        protected boolean cacheInBackground() throws Exception {
+            return PhotoGridFragment.this.cacheInBackground();
+        }
+
+        @Override
+        protected void appendCachedData() {
+        }
+    }
+
+    class GridAdapter extends ArrayAdapter<Photo> {
+
+        public GridAdapter(PhotoList items) {
+            super(mActivity, R.layout.gridview_item, android.R.id.text1,
+                    items);
+        }
+
+        // TODO: implement ViewHolder pattern
+        // TODO: add aquery delay loading for fling scrolling
+        @Override
+        public View getView(final int position, View convertView,
+                ViewGroup parent) {
+
+            if (convertView == null) {
+                convertView = mActivity.getLayoutInflater().inflate(
+                        R.layout.gridview_item, null);
+            }
+
+            final Photo photo = getItem(position);
+            AQuery aq = mGridAq.recycle(convertView);
+
+            boolean useMemCache = true;
+            boolean useFileCache = true;
+            aq.id(R.id.image_item).image(photo.getSmallUrl(), useMemCache,
+                    useFileCache,  0, 0, null, AQuery.FADE_IN_NETWORK);
+            aq.id(R.id.image_item).clicked(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startPhotoViewer(position);
                 }
+            });
 
-                final Photo photo = getItem(position);
-                AQuery aq = mGridAq.recycle(convertView);
-
-                boolean useMemCache = true;
-                boolean useFileCache = true;
-                aq.id(R.id.image_item).image(photo.getSmallUrl(), useMemCache,
-                        useFileCache,  0, 0, null, AQuery.FADE_IN_NETWORK);
-                aq.id(R.id.image_item).clicked(new View.OnClickListener() {
+            aq.id(R.id.viewsText).text("Views: " + String.valueOf(photo
+                        .getViews()));
+            if (photo.getOwner() != null) {
+                aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
+                aq.id(R.id.ownerText).clicked(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startPhotoViewer(position);
+                        startProfileViewer(photo.getOwner());
                     }
                 });
-
-                aq.id(R.id.viewsText).text("Views: " + String.valueOf(photo
-                            .getViews()));
-                if (photo.getOwner() != null) {
-                    aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
-                    aq.id(R.id.ownerText).clicked(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startProfileViewer(photo.getOwner());
-                        }
-                    });
-                }
-
-                return convertView;
             }
-        };
-        mGridAq.id(R.id.gridview).adapter(adapter).itemClicked(this,
-                "startPhotoViewer");
+
+            return convertView;
+        }
     }
 }
