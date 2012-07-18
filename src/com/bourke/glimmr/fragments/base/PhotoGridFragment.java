@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
@@ -20,6 +22,8 @@ import com.commonsware.cwac.endless.EndlessAdapter;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
+import android.graphics.Bitmap;
+import com.bourke.glimmr.common.Constants;
 
 /**
  * Fragment that contains a GridView of photos.
@@ -114,44 +118,68 @@ public abstract class PhotoGridFragment extends BaseFragment
                     items);
         }
 
-        // TODO: implement ViewHolder pattern
-        // TODO: add aquery delay loading for fling scrolling
         @Override
         public View getView(final int position, View convertView,
                 ViewGroup parent) {
 
+            ViewHolder holder;
+
             if (convertView == null) {
                 convertView = mActivity.getLayoutInflater().inflate(
                         R.layout.gridview_item, null);
+                holder = new ViewHolder();
+                holder.image = (ImageView) convertView.findViewById(
+                        R.id.image_item);
+                holder.ownerText = (TextView) convertView.findViewById(
+                        R.id.ownerText);
+                holder.viewsText = (TextView) convertView.findViewById(
+                        R.id.viewsText);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
             }
 
             final Photo photo = getItem(position);
             AQuery aq = mGridAq.recycle(convertView);
 
-            boolean useMemCache = true;
-            boolean useFileCache = true;
-            aq.id(R.id.image_item).image(photo.getSmallUrl(), useMemCache,
-                    useFileCache,  0, 0, null, AQuery.FADE_IN_NETWORK);
-            aq.id(R.id.image_item).clicked(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startPhotoViewer(position);
-                }
-            });
-
-            aq.id(R.id.viewsText).text("Views: " + String.valueOf(photo
-                        .getViews()));
-            if (photo.getOwner() != null) {
-                aq.id(R.id.ownerText).text(photo.getOwner().getUsername());
-                aq.id(R.id.ownerText).clicked(new View.OnClickListener() {
+            /* Don't load image if flinging past it */
+            if (aq.shouldDelay(position, convertView, parent,
+                        photo.getSmallUrl())) {
+                Bitmap placeholder = aq.getCachedImage(R.drawable.blank);
+                aq.id(holder.image).image(placeholder);
+            } else {
+                aq.id(holder.image).image(photo.getSmallUrl(),
+                        Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
+                        0, 0, null, AQuery.FADE_IN_NETWORK);
+                aq.id(holder.image).clicked(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startProfileViewer(photo.getOwner());
+                        startPhotoViewer(position);
                     }
                 });
+
+                aq.id(holder.viewsText).text("Views: " + String.valueOf(photo
+                            .getViews()));
+                if (photo.getOwner() != null) {
+                    aq.id(holder.ownerText).text(photo.getOwner()
+                            .getUsername());
+                    aq.id(holder.ownerText).clicked(
+                            new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startProfileViewer(photo.getOwner());
+                        }
+                    });
+                }
             }
 
             return convertView;
+        }
+
+        class ViewHolder {
+            ImageView image;
+            TextView ownerText;
+            TextView viewsText;
         }
     }
 }

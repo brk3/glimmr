@@ -58,10 +58,12 @@ public class GroupListFragment extends BaseFragment
 
     private void startGroupViewer(Group group) {
         if (group == null) {
-            Log.e(getLogTag(), "Cannot start GroupViewerActivity, group is null");
+            Log.e(getLogTag(),
+                    "Cannot start GroupViewerActivity, group is null");
             return;
         }
-        Log.d(getLogTag(), "Starting GroupViewerActivity for " + group.getName());
+        Log.d(getLogTag(), "Starting GroupViewerActivity for " +
+                group.getName());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_GROUPVIEWER_GROUP, group);
         Intent groupViewer = new Intent(mActivity, GroupViewerActivity

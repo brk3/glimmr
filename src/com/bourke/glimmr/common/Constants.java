@@ -2,6 +2,9 @@ package com.bourke.glimmr.common;
 
 public class Constants {
 
+    public static final boolean USE_FILE_CACHE = true;
+    public static final boolean USE_MEMORY_CACHE = true;
+
     public static final String CALLBACK_SCHEME = "glimmr-oauth-callback";
     public static final String PREFS_NAME = "glimmr_prefs";
 
