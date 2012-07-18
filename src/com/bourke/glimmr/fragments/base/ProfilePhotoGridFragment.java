@@ -67,4 +67,9 @@ public abstract class ProfilePhotoGridFragment extends PhotoGridFragment
                 useMemCache, useFileCache,  0, 0, null,
                 AQuery.FADE_IN_NETWORK);
     }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
 }

@@ -51,7 +51,7 @@ public abstract class PhotoGridFragment extends BaseFragment
      */
     @Override
     public void onPhotosReady(PhotoList photos, boolean cancelled) {
-        Log.d(TAG, "onPhotosReady");
+        Log.d(getLogTag(), "onPhotosReady");
         mGridAq = new AQuery(mActivity, mLayout);
         if (mAdapter == null || mCameFromPause) {
             // TODO: store mPage in onPause and restore it in onResume
@@ -79,6 +79,10 @@ public abstract class PhotoGridFragment extends BaseFragment
         return false;
     }
 
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
 
     class EndlessGridAdapter extends EndlessAdapter {
 

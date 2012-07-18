@@ -58,10 +58,10 @@ public class GroupListFragment extends BaseFragment
 
     private void startGroupViewer(Group group) {
         if (group == null) {
-            Log.e(TAG, "Cannot start GroupViewerActivity, group is null");
+            Log.e(getLogTag(), "Cannot start GroupViewerActivity, group is null");
             return;
         }
-        Log.d(TAG, "Starting GroupViewerActivity for " + group.getName());
+        Log.d(getLogTag(), "Starting GroupViewerActivity for " + group.getName());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_GROUPVIEWER_GROUP, group);
         Intent groupViewer = new Intent(mActivity, GroupViewerActivity
@@ -77,7 +77,7 @@ public class GroupListFragment extends BaseFragment
 
     @Override
     public void onGroupListReady(GroupList groups, boolean cancelled) {
-        Log.d(TAG, "onGroupListReady");
+        Log.d(getLogTag(), "onGroupListReady");
         mGridAq = new AQuery(mActivity, mLayout);
         mGroups = (GroupList) groups;
 
@@ -108,5 +108,10 @@ public class GroupListFragment extends BaseFragment
         };
         mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
                 "itemClicked");
+    }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
     }
 }
