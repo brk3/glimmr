@@ -35,4 +35,9 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
             mMorePages = false;
         }
     }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
 }

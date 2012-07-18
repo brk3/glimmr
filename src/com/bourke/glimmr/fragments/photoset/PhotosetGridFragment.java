@@ -21,4 +21,9 @@ public class PhotosetGridFragment extends PhotoGridFragment {
         super.startTask();
         new LoadPhotosetTask(mActivity, this, mPhotoset).execute(mOAuth);
     }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
 }

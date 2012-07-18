@@ -59,7 +59,7 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
+        Log.d(getLogTag(), "onCreate");
         mCameFromPause = false;
         mActivity = getSherlockActivity();
         startTask();
@@ -68,7 +68,7 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause");
+        Log.d(getLogTag(), "onPause");
         mCameFromPause = true;
     }
 
@@ -76,7 +76,7 @@ public abstract class BaseFragment extends SherlockFragment {
     public void onResume() {
         super.onResume();
         if (mCameFromPause) {
-            Log.d(TAG, "onResume");
+            Log.d(getLogTag(), "onResume");
             startTask();
         }
     }
@@ -87,10 +87,11 @@ public abstract class BaseFragment extends SherlockFragment {
      */
     protected void startPhotoViewer(int pos) {
         if (mPhotos == null) {
-            Log.e(TAG, "Cannot start PhotoViewer, mPhotos is null");
+            Log.e(getLogTag(), "Cannot start PhotoViewer, mPhotos is null");
             return;
         }
-        Log.d(TAG, "starting photo viewer with " + mPhotos.size() + " ids");
+        Log.d(getLogTag(), "starting photo viewer with " + mPhotos.size()
+                + " ids");
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, mPhotos);
         bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
@@ -101,10 +102,11 @@ public abstract class BaseFragment extends SherlockFragment {
 
     protected void startProfileViewer(User user) {
         if (user == null) {
-            Log.e(TAG, "Cannot start ProfileActivity, user is null");
+            Log.e(getLogTag(), "Cannot start ProfileActivity, user is null");
             return;
         }
-        Log.d(TAG, "Starting ProfileActivity for " + user.getUsername());
+        Log.d(getLogTag(), "Starting ProfileActivity for "
+                + user.getUsername());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_PROFILEVIEWER_USER, user);
         Intent profileViewer = new Intent(mActivity, ProfileActivity.class);
@@ -113,11 +115,15 @@ public abstract class BaseFragment extends SherlockFragment {
     }
 
     protected void startTask() {
-        Log.d(TAG, "startTask()");
+        Log.d(getLogTag(), "startTask()");
         if (mOAuth == null || mOAuth.getUser() == null) {
             SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                     .PREFS_NAME, Context.MODE_PRIVATE);
             mOAuth = BaseActivity.loadAccessToken(prefs);
         }
+    }
+
+    protected String getLogTag() {
+        return TAG;
     }
 }

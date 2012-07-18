@@ -25,4 +25,9 @@ public class ProfilePhotoStreamGridFragment extends ProfilePhotoGridFragment {
             .execute(mOAuth);
         new LoadUserTask(mActivity, this, mUser).execute(mOAuth);
     }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
 }

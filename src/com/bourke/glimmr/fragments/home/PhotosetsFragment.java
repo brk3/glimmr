@@ -59,10 +59,12 @@ public class PhotosetsFragment extends BaseFragment
 
     private void startPhotosetViewer(Photoset photoset) {
         if (photoset == null) {
-            Log.e(TAG, "Cannot start SetViewerActivity, photoset is null");
+            Log.e(getLogTag(),
+                    "Cannot start SetViewerActivity, photoset is null");
             return;
         }
-        Log.d(TAG, "Starting SetViewerActivity for " + photoset.getTitle());
+        Log.d(getLogTag(), "Starting SetViewerActivity for "
+                + photoset.getTitle());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_PHOTOSET,
                 photoset);
@@ -79,7 +81,7 @@ public class PhotosetsFragment extends BaseFragment
 
     @Override
     public void onPhotosetsReady(Photosets photoSets, boolean cancelled) {
-        Log.d(TAG, "onPhotosetListReady");
+        Log.d(getLogTag(), "onPhotosetListReady");
         mGridAq = new AQuery(mActivity, mLayout);
         mPhotosets = new ArrayList(photoSets.getPhotosets());
 
@@ -111,5 +113,10 @@ public class PhotosetsFragment extends BaseFragment
         };
         mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
                 "itemClicked");
+    }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
     }
 }
