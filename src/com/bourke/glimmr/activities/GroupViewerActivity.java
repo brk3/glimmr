@@ -47,6 +47,8 @@ public class GroupViewerActivity extends BaseActivity {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
             setContentView(R.layout.main);
+
+            mActionBar.setDisplayHomeAsUpEnabled(true);
             mAq = new AQuery(this);
 
             handleIntent(getIntent());

@@ -12,16 +12,18 @@ import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.group.GroupPoolGridFragment;
+import com.bourke.glimmr.fragments.photoset.PhotosetGridFragment;
 import com.bourke.glimmr.R;
 
-import com.viewpagerindicator.TitlePageIndicator;
 import com.gmail.yuyang226.flickr.photosets.Photoset;
-import com.bourke.glimmr.fragments.photoset.PhotosetGridFragment;
+
+import com.viewpagerindicator.TitlePageIndicator;
 
 public class PhotosetViewerActivity extends BaseActivity {
 
@@ -45,6 +47,8 @@ public class PhotosetViewerActivity extends BaseActivity {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
             setContentView(R.layout.main);
+
+            mActionBar.setDisplayHomeAsUpEnabled(true);
             mAq = new AQuery(this);
 
             handleIntent(getIntent());

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
 
@@ -46,7 +47,10 @@ public class PhotoViewerActivity extends BaseActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.photoviewer);
+
+        mActionBar.setDisplayHomeAsUpEnabled(true);
         mAq = new AQuery(this);
         handleIntent(getIntent());
     }
@@ -72,12 +76,11 @@ public class PhotoViewerActivity extends BaseActivity
     public void toggleOverlayVisibility(View view) {
         // TODO: there is a visible flicker when the actionbar hides, possibly
         // due to the layout been redrawn.  An overlay actionbar may fix this.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar.isShowing()) {
-            actionBar.hide();
+        if (mActionBar.isShowing()) {
+            mActionBar.hide();
             mAq.id(R.id.buttons_panel).invisible();
         } else {
-            actionBar.show();
+            mActionBar.show();
             mAq.id(R.id.buttons_panel).visible();
         }
     }
