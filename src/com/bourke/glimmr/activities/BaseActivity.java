@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -32,8 +33,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity
      * Should contain current user and valid access token for that user.
      */
     protected OAuth mOAuth;
+
     protected AQuery mAq;
+
     protected int mStackLevel = 0;
+
+    protected ActionBar mActionBar;
 
     private MenuItem mMenuItemProgress;
     private MenuItem mMenuItemRefresh;
@@ -45,6 +50,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
                 Context.MODE_PRIVATE);
         mOAuth = loadAccessToken(prefs);
+        mActionBar = getSupportActionBar();
     }
 
     public static OAuth loadAccessToken(SharedPreferences prefs) {
@@ -81,6 +87,23 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         mMenuItemRefresh = menu.findItem(R.id.menu_refresh);
         showProgressIcon(false);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                /* This is called when the Home (Up) button is pressed
+                 * in the Action Bar. */
+                Intent parentActivityIntent = new Intent(this,
+                        MainActivity.class);
+                parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(parentActivityIntent);
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void showProgressIcon(boolean show) {
