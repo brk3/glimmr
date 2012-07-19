@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- pressed -->
+    <item android:state_pressed="true"
+          android:drawable="@drawable/gradient_flickr_pink" />
+
+    <!-- focused -->
+    <item android:state_focused="true"
+          android:drawable="@drawable/gradient_black" />
+
+    <!-- hovered -->
+    <item android:state_hovered="true"
+          android:drawable="@drawable/gradient_black" />
+
+    <!-- default -->
+    <item android:drawable="@drawable/gradient_black" />
+</selector>
+
