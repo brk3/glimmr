@@ -1,10 +1,14 @@
 package com.bourke.glimmr.fragments.base;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+
 import android.os.Bundle;
 
 import android.util.Log;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +19,7 @@ import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.IPhotoListReadyListener;
 import com.bourke.glimmr.R;
 
@@ -22,8 +27,6 @@ import com.commonsware.cwac.endless.EndlessAdapter;
 
 import com.gmail.yuyang226.flickr.photos.Photo;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
-import android.graphics.Bitmap;
-import com.bourke.glimmr.common.Constants;
 
 /**
  * Fragment that contains a GridView of photos.
@@ -128,6 +131,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                 convertView = mActivity.getLayoutInflater().inflate(
                         R.layout.gridview_item, null);
                 holder = new ViewHolder();
+                holder.imageOverlay = (RelativeLayout) convertView
+                    .findViewById(R.id.imageOverlay);
                 holder.image = (ImageView) convertView.findViewById(
                         R.id.image_item);
                 holder.ownerText = (TextView) convertView.findViewById(
@@ -158,12 +163,26 @@ public abstract class PhotoGridFragment extends BaseFragment
                     }
                 });
 
+                /* Set tint on the image to flickr_blue when clicked */
+                holder.image.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            ((ImageView) v).setColorFilter(Color.argb(
+                                    100, 0, 99, 220));
+                        } else {
+                            ((ImageView) v).setColorFilter(null);
+                        }
+                        return false;
+                    }
+                });
+
                 aq.id(holder.viewsText).text("Views: " + String.valueOf(photo
                             .getViews()));
                 if (photo.getOwner() != null) {
                     aq.id(holder.ownerText).text(photo.getOwner()
                             .getUsername());
-                    aq.id(holder.ownerText).clicked(
+                    aq.id(holder.imageOverlay).clicked(
                             new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -177,6 +196,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         }
 
         class ViewHolder {
+            RelativeLayout imageOverlay;
             ImageView image;
             TextView ownerText;
             TextView viewsText;

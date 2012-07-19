@@ -12,30 +12,32 @@
         android:scaleType="centerCrop" />
 
     <RelativeLayout
-        android:id="@+id/image_overlay"
+        android:id="@+id/imageOverlay"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_gravity="bottom"
-        android:background="@color/transparent_black">
+        android:clickable="true"
+        android:background="@drawable/gridview_item_overlay">
 
         <TextView
             android:id="@+id/viewsText"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
+            android:duplicateParentState="true"
             android:textSize="@dimen/text_size_micro"
             android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/ownerText"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:duplicateParentState="true"
             android:textSize="@dimen/text_size_micro"
             android:textColor="@android:color/white" />
     </RelativeLayout>
