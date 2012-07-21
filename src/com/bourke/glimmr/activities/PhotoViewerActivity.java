@@ -34,7 +34,7 @@ import java.util.List;
  * Activity for viewing photos.
  *
  * Receives a list of photos via an intent and shows the first one specified by
- * a startIndex in a zoomable WebView.
+ * a startIndex in a zoomable ImageView.
  */
 public class PhotoViewerActivity extends BaseActivity
         implements ViewPager.OnPageChangeListener {
@@ -98,8 +98,7 @@ public class PhotoViewerActivity extends BaseActivity
         Bundle bundle = intent.getExtras();
         mPhotos = (ArrayList<Photo>) bundle.getSerializable(Constants
                 .KEY_PHOTOVIEWER_LIST);
-        int startIndex = (Integer) bundle.getInt(Constants
-                .KEY_PHOTOVIEWER_START_INDEX);
+        mSelectedIndex = bundle.getInt(Constants.KEY_PHOTOVIEWER_START_INDEX);
 
         if (mPhotos != null) {
             Log.d(TAG, "Got list of photo urls, size: " + mPhotos.size());
@@ -111,7 +110,7 @@ public class PhotoViewerActivity extends BaseActivity
                     R.id.indicator);
             indicator.setOnPageChangeListener(this);
             indicator.setViewPager(pager);
-            indicator.setCurrentItem(startIndex);
+            indicator.setCurrentItem(mSelectedIndex);
         } else {
             Log.e(TAG, "Photos from intent are null");
             // TODO: show error / recovery

@@ -33,14 +33,29 @@ public final class PhotoViewerFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState");
+        outState.putSerializable(Constants.KEY_PHOTOVIEWER_URL, mPhoto);
+    }
 
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(
-                    Constants.KEY_PHOTOVIEWER_URL)) {
-            mPhoto.setUrl(savedInstanceState.getString(
-                        Constants.KEY_PHOTOVIEWER_URL));
+    /**
+     * Fragments don't seem to have a onRestoreInstanceState so we use this
+     * to restore the photo been viewed in the case of rotate instead.
+     */
+    @Override
+    public void onActivityCreated(Bundle state) {
+        super.onActivityCreated(state);
+        Log.d(TAG, "onActivityCreated");
+        if (state != null) {
+            Photo p = (Photo) state.getSerializable(
+                    Constants.KEY_PHOTOVIEWER_URL);
+            if (p != null) {
+                Log.d(TAG, "mPhoto restored");
+                mPhoto = p;
+            }
         }
+        displayImage();
     }
 
     @Override
@@ -49,21 +64,17 @@ public final class PhotoViewerFragment extends BaseFragment {
         mLayout = (RelativeLayout) inflater.inflate(R.layout
                 .photoviewer_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
-        if (mPhoto != null) {
-            boolean useMemCache = true;
-            boolean useFileCache = true;
-            String url = mPhoto.getLargeUrl();
-            mAq.id(R.id.image).progress(R.id.progress).image(url, useMemCache,
-                    useFileCache, 0, 0, null, AQuery.FADE_IN_NETWORK);
-        } else {
-            Log.e(TAG, "onStart, mPhoto is null");
-        }
         return mLayout;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(Constants.KEY_PHOTOVIEWER_URL, mPhoto.getUrl());
+    private void displayImage() {
+        if (mPhoto != null) {
+            mAq.id(R.id.image).progress(R.id.progress).image(
+                    mPhoto.getLargeUrl(), Constants.USE_MEMORY_CACHE,
+                    Constants.USE_FILE_CACHE, 0, 0, null,
+                    AQuery.FADE_IN_NETWORK);
+        } else {
+            Log.e(TAG, "displayImage: mPhoto is null");
+        }
     }
 }
