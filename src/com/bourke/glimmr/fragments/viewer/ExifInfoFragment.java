@@ -52,7 +52,7 @@ public final class ExifInfoFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        Log.d(TAG, "startTask()");
+        Log.d(getLogTag(), "startTask()");
         new LoadExifInfoTask(mActivity, this, mPhoto).execute(mOAuth);
     }
 
@@ -94,7 +94,8 @@ public final class ExifInfoFragment extends BaseFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, boolean cancelled) {
-        Log.d(TAG, "onExifInfoReady, exifInfo.size(): " + exifInfo.size());
+        Log.d(getLogTag(), "onExifInfoReady, exifInfo.size(): "
+                + exifInfo.size());
         for (Exif e : exifInfo) {
             if (e.getTag().equals("ISO")) {
                 mAq.id(R.id.textViewISOValue).text(e.getRaw());
@@ -118,5 +119,10 @@ public final class ExifInfoFragment extends BaseFragment
                 addKeyValueRow(e.getLabel(), e.getRaw());
             }
         }
+    }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
     }
 }

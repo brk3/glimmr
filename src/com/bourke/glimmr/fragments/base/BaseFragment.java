@@ -25,6 +25,7 @@ import com.bourke.glimmr.common.Constants;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
+import com.gmail.yuyang226.flickr.photos.Photo;
 
 /**
  *
@@ -32,11 +33,6 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 public abstract class BaseFragment extends SherlockFragment {
 
     private static final String TAG = "Glimmr/BaseFragment";
-
-    /**
-     * Avoid calling onResume when coming in through onCreate.
-     */
-    protected boolean mCameFromPause;
 
     /**
      * It's useful to keep a reference to the parent activity in our fragments.
@@ -60,25 +56,14 @@ public abstract class BaseFragment extends SherlockFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(getLogTag(), "onCreate");
-        mCameFromPause = false;
         mActivity = getSherlockActivity();
-        startTask();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(getLogTag(), "onPause");
-        mCameFromPause = true;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mCameFromPause) {
-            Log.d(getLogTag(), "onResume");
-            startTask();
-        }
+        Log.d(getLogTag(), "onResume");
+        startTask();
     }
 
     /**

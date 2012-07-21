@@ -15,4 +15,9 @@ public class GroupAboutFragment extends BaseFragment {
         super.startTask();
         // TODO new LoadPhotostreamTask(this, mOAuth.getUser()).execute(mOAuth);
     }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
 }

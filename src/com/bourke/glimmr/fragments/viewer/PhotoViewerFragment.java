@@ -35,7 +35,7 @@ public final class PhotoViewerFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState");
+        Log.d(getLogTag(), "onSaveInstanceState");
         outState.putSerializable(Constants.KEY_PHOTOVIEWER_URL, mPhoto);
     }
 
@@ -46,12 +46,12 @@ public final class PhotoViewerFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
-        Log.d(TAG, "onActivityCreated");
+        Log.d(getLogTag(), "onActivityCreated");
         if (state != null) {
             Photo p = (Photo) state.getSerializable(
                     Constants.KEY_PHOTOVIEWER_URL);
             if (p != null) {
-                Log.d(TAG, "mPhoto restored");
+                Log.d(getLogTag(), "mPhoto restored");
                 mPhoto = p;
             }
         }
@@ -74,7 +74,12 @@ public final class PhotoViewerFragment extends BaseFragment {
                     Constants.USE_FILE_CACHE, 0, 0, null,
                     AQuery.FADE_IN_NETWORK);
         } else {
-            Log.e(TAG, "displayImage: mPhoto is null");
+            Log.e(getLogTag(), "displayImage: mPhoto is null");
         }
+    }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
     }
 }

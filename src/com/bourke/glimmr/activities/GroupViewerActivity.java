@@ -52,10 +52,6 @@ public class GroupViewerActivity extends BaseActivity {
             mAq = new AQuery(this);
 
             handleIntent(getIntent());
-
-            if (savedInstanceState != null) {
-                mStackLevel = savedInstanceState.getInt("level");
-            }
         }
     }
 
