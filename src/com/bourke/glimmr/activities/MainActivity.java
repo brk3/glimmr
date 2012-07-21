@@ -43,10 +43,6 @@ public class MainActivity extends BaseActivity {
             setContentView(R.layout.main);
             mAq = new AQuery(this);
             initViewPager();
-
-            if (savedInstanceState != null) {
-                mStackLevel = savedInstanceState.getInt("level");
-            }
         }
     }
 

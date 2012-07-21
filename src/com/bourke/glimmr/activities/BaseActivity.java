@@ -36,8 +36,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity
 
     protected AQuery mAq;
 
-    protected int mStackLevel = 0;
-
     protected ActionBar mActionBar;
 
     private MenuItem mMenuItemProgress;
@@ -132,10 +130,4 @@ public abstract class BaseActivity extends SherlockFragmentActivity
 
     @Override
     public void onPageSelected(int pos) {}
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("level", mStackLevel);
-    }
 }

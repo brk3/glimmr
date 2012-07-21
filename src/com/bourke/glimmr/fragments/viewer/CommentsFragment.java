@@ -53,7 +53,7 @@ public final class CommentsFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        Log.d(TAG, "startTask()");
+        Log.d(getLogTag(), "startTask()");
         new LoadCommentsTask(mActivity, this, mPhoto).execute(mOAuth);
     }
 
@@ -63,7 +63,8 @@ public final class CommentsFragment extends BaseFragment
     }
 
     public void onCommentsReady(List<Comment> comments, boolean cancelled) {
-        Log.d(TAG, "onCommentsReady, comments.size(): " + comments.size());
+        Log.d(getLogTag(), "onCommentsReady, comments.size(): "
+                + comments.size());
         mGridAq = new AQuery(mActivity, mLayout);
 
         ArrayAdapter<Comment> adapter = new ArrayAdapter<Comment>(mActivity,
@@ -96,5 +97,10 @@ public final class CommentsFragment extends BaseFragment
         };
         mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
                 "itemClicked");
+    }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
     }
 }

@@ -49,37 +49,25 @@ public abstract class PhotoGridFragment extends BaseFragment
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(R.layout
                 .standard_gridview_fragment, container, false);
+        mAdapter = new EndlessGridAdapter(mPhotos);
+        mAdapter.setRunInBackground(false);
+        mGridAq = new AQuery(mActivity, mLayout);
+        mGridAq.id(R.id.gridview).adapter(mAdapter).itemClicked(this,
+                "startPhotoViewer");
         return mLayout;
     }
 
-    /**
-     * Once the task comes back with the list of photos, set up the GridView
-     * adapter etc. to display them.
-     */
     @Override
     public void onPhotosReady(PhotoList photos, boolean cancelled) {
         Log.d(getLogTag(), "onPhotosReady");
-        mGridAq = new AQuery(mActivity, mLayout);
-        if (mAdapter == null || mCameFromPause) {
-            // TODO: store mPage in onPause and restore it in onResume
-            mCameFromPause = false;
-            mPage = 1;
-            //
-            mPhotos = photos;
-            mAdapter = new EndlessGridAdapter(photos);
-            mAdapter.setRunInBackground(false);
-            mGridAq.id(R.id.gridview).adapter(mAdapter).itemClicked(this,
-                    "startPhotoViewer");
-        } else {
-            mPhotos.addAll(photos);
-            mAdapter.addAll(photos);
-            mAdapter.onDataReady();
-        }
+        mPhotos.addAll(photos);
+        mAdapter.onDataReady();
     }
 
     /**
      * Return false by default to indicate to the EndlessAdapter that there's
      * no more data to load.
+     *
      * Subclasses that support pagination should override this.
      */
     protected boolean cacheInBackground() {
@@ -95,13 +83,6 @@ public abstract class PhotoGridFragment extends BaseFragment
 
         public EndlessGridAdapter(PhotoList list) {
             super(mActivity, new GridAdapter(list), R.layout.pending);
-        }
-
-        public void addAll(PhotoList list) {
-            ArrayAdapter<Photo> a = (ArrayAdapter<Photo>) getWrappedAdapter();
-            for (Photo photo : list) {
-                a.add(photo);
-            }
         }
 
         @Override
