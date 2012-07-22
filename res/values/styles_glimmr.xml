@@ -58,15 +58,15 @@
     <style name="glimmr_solid_ActionBar"
             parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <!--<item name="background">@drawable/ab_solid_glimmr</item>-->
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_glimmr</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_glimmr</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_glimmr</item>
         <item name="progressBarStyle">@style/glimmr_ProgressBar</item>
 
         <!--<item name="android:background">@drawable/ab_solid_glimmr</item>-->
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_glimmr
+            </item>
         <item name="android:backgroundStacked">
             @drawable/ab_stacked_solid_glimmr</item>
-        <item name="android:backgroundSplit">
-            @drawable/ab_bottom_solid_glimmr</item>
         <item name="android:progressBarStyle">@style/glimmr_ProgressBar</item>
     </style>
 

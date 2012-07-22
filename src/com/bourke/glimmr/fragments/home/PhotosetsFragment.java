@@ -18,7 +18,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.IPhotosetsReadyListener;
+import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadPhotosetsTask;

@@ -8,30 +8,28 @@ import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 
 import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
+import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import com.gmail.yuyang226.flickr.photosets.Photoset;
 
-public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
+public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
 
-    private static final String TAG = "Glimmr/LoadPhotosetTask";
+    private static final String TAG = "Glimmr/SetFavoriteTask";
 
-    private IPhotoListReadyListener mListener;
-    private Photoset mPhotoset;
+    private IFavoriteReadyListener mListener;
     private Activity mActivity;
 
-    public LoadPhotosetTask(Activity a, IPhotoListReadyListener listener,
-            Photoset photoset) {
+    public SetFavoriteTask(Activity a, IFavoriteReadyListener listener) {
         mActivity = a;
         mListener = listener;
-        mPhotoset = photoset;
     }
 
     @Override
@@ -41,30 +39,34 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected PhotoList doInBackground(OAuth... arg0) {
+    protected Exception doInBackground(OAuth... arg0) {
+        /*
         OAuthToken token = arg0[0].getToken();
         Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
+        Date minFavDate = null;
+        Date maxFavDate = null;
+        int perPage = 20;
+        int page = 1;
         Set<String> extras = new HashSet<String>();
         extras.add("owner_name");
         extras.add("url_q");
         extras.add("url_l");
         extras.add("views");
 
-        final int perPage = 20;
-        int page = 1;
-
         try {
-            return f.getPhotosetsInterface().getPhotos(""+mPhotoset.getId(),
-                    extras, Flickr.PRIVACY_LEVEL_NO_FILTER, perPage, page);
+            return f.getFavoritesInterface().getList(mUser.getId(), minFavDate,
+                    maxFavDate, perPage, page, extras);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        */
         return null;
     }
 
     @Override
-    protected void onPostExecute(final PhotoList result) {
+    protected void onPostExecute(final Exception result) {
+        /*
         if (result != null) {
             final boolean cancelled = false;
             mListener.onPhotosReady(result, cancelled);
@@ -73,5 +75,6 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
             // TODO: alert user / recover
         }
         ((BaseActivity) mActivity).showProgressIcon(false);
+        */
     }
 }

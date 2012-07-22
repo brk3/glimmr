@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.PrettyDate;
-import com.bourke.glimmr.event.ICommentsReadyListener;
+import com.bourke.glimmr.event.Events.ICommentsReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadCommentsTask;

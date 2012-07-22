@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-    <!-- This seems to need to come after the ViewPager to display -->
+    <!-- Seems to need to come after the ViewPager to display -->
     <com.viewpagerindicator.LinePageIndicator
         android:id="@+id/indicator"
         android:padding="5dip"
@@ -18,30 +18,5 @@
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
-
-    <LinearLayout
-        android:id="@+id/buttons_panel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/pager"
-        android:layout_alignLeft="@id/pager"
-        android:layout_alignRight="@id/pager"
-        android:layout_marginBottom="10dp"
-        android:background="@android:color/transparent"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/button_exif"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onExifButtonClick"
-            android:text="Exif" />
-        <Button
-            android:id="@+id/button_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCommentsButtonClick"
-            android:text="Comments" />
-    </LinearLayout>
 
 </RelativeLayout>

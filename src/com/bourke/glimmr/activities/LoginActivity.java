@@ -18,8 +18,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.IAccessTokenReadyListener;
-import com.bourke.glimmr.event.IRequestTokenReadyListener;
+import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
+import com.bourke.glimmr.event.Events.IRequestTokenReadyListener;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.GetAccessTokenTask;
 import com.bourke.glimmr.tasks.GetRequestToken;

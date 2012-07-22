@@ -6,7 +6,7 @@ import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthInterface;
 import android.app.Activity;
-import com.bourke.glimmr.event.IAccessTokenReadyListener;
+import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
 import com.bourke.glimmr.common.FlickrHelper;
 
 /**

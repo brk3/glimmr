@@ -17,7 +17,7 @@ import java.io.IOException;
 
 import java.util.Collection;
 import android.app.Activity;
-import com.bourke.glimmr.event.IGroupListReadyListener;
+import com.bourke.glimmr.event.Events.IGroupListReadyListener;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
 

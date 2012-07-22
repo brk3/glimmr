@@ -1,6 +1,6 @@
 package com.bourke.glimmr.fragments.home;
 
-import com.bourke.glimmr.event.IPhotoListReadyListener;
+import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPhotostreamTask;
 

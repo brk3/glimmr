@@ -18,7 +18,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.GroupViewerActivity;
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.IGroupListReadyListener;
+import com.bourke.glimmr.event.Events.IGroupListReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadGroupsTask;
