@@ -5,4 +5,7 @@
     <string name="comments">Comments and Favs</string>
 
     <string name="menu_refresh">Refresh</string>
+    <string name="menu_favorite">Mark as Favorite</string>
+    <string name="menu_view_comments">Comments</string>
+    <string name="menu_view_exif">View Exif Info</string>
 </resources>

@@ -13,7 +13,7 @@ import android.util.Log;
 
 import android.view.View;
 
-import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
@@ -41,6 +41,8 @@ public class PhotoViewerActivity extends BaseActivity
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
 
+    private MenuItem mFavoriteButton;
+
     private List<Photo> mPhotos = new ArrayList<Photo>();
     private int mSelectedIndex = 0;
 
@@ -56,12 +58,53 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.photoviewer_menu, menu);
+        mFavoriteButton = menu.findItem(R.id.menu_favorite);
+        return true;
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         handleIntent(intent);
     }
 
-    public void onExifButtonClick(View view) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_view_comments:
+                onCommentsButtonClick();
+                return true;
+            case R.id.menu_favorite:
+                onFavoriteButtonClick();
+                return true;
+            case R.id.menu_view_exif:
+                onExifButtonClick();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void onCommentsButtonClick() {
+        Intent activity = new Intent(this, CommentsDialogActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.COMMENTS_DIALOG_ACTIVITY_PHOTO,
+                mPhotos.get(mSelectedIndex));
+        activity.putExtras(bundle);
+        startActivity(activity);
+    }
+
+    public void onFavoriteButtonClick() {
+        if (mPhotos.get(mSelectedIndex).isFavorite()) {
+            mFavoriteButton.setIcon(R.drawable.ic_rating_important_dark);
+        } else {
+            mFavoriteButton.setIcon(R.drawable.ic_rating_not_important_dark);
+        }
+    }
+
+    public void onExifButtonClick() {
         Intent exifActivity = new Intent(this, ExifInfoDialogActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO,
@@ -78,21 +121,11 @@ public class PhotoViewerActivity extends BaseActivity
         // due to the layout been redrawn.  An overlay actionbar may fix this.
         if (mActionBar.isShowing()) {
             mActionBar.hide();
-            mAq.id(R.id.buttons_panel).invisible();
         } else {
             mActionBar.show();
-            mAq.id(R.id.buttons_panel).visible();
         }
     }
 
-    public void onCommentsButtonClick(View view) {
-        Intent activity = new Intent(this, CommentsDialogActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.COMMENTS_DIALOG_ACTIVITY_PHOTO,
-                mPhotos.get(mSelectedIndex));
-        activity.putExtras(bundle);
-        startActivity(activity);
-    }
 
     private void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();

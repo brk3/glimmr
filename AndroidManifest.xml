@@ -42,6 +42,7 @@
             android:label="@string/app_name" />
 
         <activity android:name=".activities.PhotoViewerActivity"
+            android:uiOptions="splitActionBarWhenNarrow"
             android:label="@string/app_name" />
 
         <activity android:name=".activities.GroupViewerActivity"

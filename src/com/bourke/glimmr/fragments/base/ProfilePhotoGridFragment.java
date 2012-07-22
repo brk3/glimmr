@@ -10,8 +10,8 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.event.IPhotoListReadyListener;
-import com.bourke.glimmr.event.IUserReadyListener;
+import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.R;
 
 import com.gmail.yuyang226.flickr.people.User;

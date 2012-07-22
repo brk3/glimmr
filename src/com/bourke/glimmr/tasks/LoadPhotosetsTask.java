@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
-import com.bourke.glimmr.event.IPhotosetsReadyListener;
+import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
 
 import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.FlickrException;

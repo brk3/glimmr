@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import android.app.Activity;
-import com.bourke.glimmr.event.IPhotoListReadyListener;
+import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
 

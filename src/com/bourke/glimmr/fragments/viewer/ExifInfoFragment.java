@@ -13,7 +13,7 @@ import android.widget.ScrollView;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.event.IExifInfoReadyListener;
+import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadExifInfoTask;

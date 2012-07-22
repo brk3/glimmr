@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.IPhotoListReadyListener;
+import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.R;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
@@ -133,7 +133,9 @@ public abstract class PhotoGridFragment extends BaseFragment
                         photo.getSmallUrl())) {
                 Bitmap placeholder = aq.getCachedImage(R.drawable.blank);
                 aq.id(holder.image).image(placeholder);
+                aq.id(holder.imageOverlay).invisible();
             } else {
+                aq.id(holder.imageOverlay).visible();
                 aq.id(holder.image).image(photo.getSmallUrl(),
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_view_comments"
+          android:title="@string/menu_view_comments"
+          android:icon="@drawable/ic_social_chat_dark"
+          android:showAsAction="always|withText"
+          android:visible="true" />
+
+    <item android:id="@+id/menu_favorite"
+          android:title="@string/menu_favorite"
+          android:icon="@drawable/ic_rating_not_important_dark"
+          android:showAsAction="always"
+          android:visible="true" />
+
+    <item android:id="@+id/menu_view_exif"
+          android:title="@string/menu_view_exif"
+          android:icon="@drawable/ic_action_about_dark"
+          android:showAsAction="always|withText"
+          android:visible="true" />
+</menu>
