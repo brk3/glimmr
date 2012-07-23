@@ -54,8 +54,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     @Override
     protected void onPostExecute(final User result) {
         if (result != null) {
-            boolean cancelled = false;
-            mListener.onUserReady(result, cancelled);
+            mListener.onUserReady(result);
         } else {
             Log.e(TAG, "Error fetching user info, result is null");
             // TODO: alert user / recover

@@ -1,8 +1,14 @@
 package com.bourke.glimmr.tasks;
 
+import android.app.Activity;
+
 import android.os.AsyncTask;
 
 import android.util.Log;
+
+import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 
 import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
@@ -13,10 +19,6 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import android.app.Activity;
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.FlickrHelper;
 
 public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
 
@@ -66,8 +68,7 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPostExecute(final PhotoList result) {
         if (result != null) {
-            final boolean cancelled = false;
-            mListener.onPhotosReady(result, cancelled);
+            mListener.onPhotosReady(result);
         } else {
             Log.e(TAG, "error fetching photolist, result is null");
             // TODO: alert user / recover

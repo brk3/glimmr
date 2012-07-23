@@ -80,7 +80,7 @@ public class PhotosetsFragment extends BaseFragment
     }
 
     @Override
-    public void onPhotosetsReady(Photosets photoSets, boolean cancelled) {
+    public void onPhotosetsReady(Photosets photoSets) {
         Log.d(getLogTag(), "onPhotosetListReady");
         mGridAq = new AQuery(mActivity, mLayout);
         mPhotosets = new ArrayList(photoSets.getPhotosets());

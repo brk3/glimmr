@@ -93,7 +93,7 @@ public final class ExifInfoFragment extends BaseFragment
         tl.addView(tr);
     }
 
-    public void onExifInfoReady(List<Exif> exifInfo, boolean cancelled) {
+    public void onExifInfoReady(List<Exif> exifInfo) {
         Log.d(getLogTag(), "onExifInfoReady, exifInfo.size(): "
                 + exifInfo.size());
         for (Exif e : exifInfo) {

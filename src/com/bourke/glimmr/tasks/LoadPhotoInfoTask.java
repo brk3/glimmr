@@ -8,27 +8,23 @@ import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
-import com.bourke.glimmr.event.Events.ICommentsReadyListener;
+import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 
 import com.gmail.yuyang226.flickr.Flickr;
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.oauth.OAuthToken;
-import com.gmail.yuyang226.flickr.photos.comments.Comment;
 import com.gmail.yuyang226.flickr.photos.Photo;
 
-import java.util.Date;
-import java.util.List;
 
-public class LoadCommentsTask
-        extends AsyncTask<OAuth, Void, List<Comment>> {
+public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
 
-    private static final String TAG = "Glimmr/LoadCommentsTask";
+    private static final String TAG = "Glimmr/LoadPhotoInfoTask";
 
-    private ICommentsReadyListener mListener;
+    private IPhotoInfoReadyListener mListener;
     private Photo mPhoto;
     private Activity mActivity;
 
-    public LoadCommentsTask(Activity a, ICommentsReadyListener listener,
+    public LoadPhotoInfoTask(Activity a, IPhotoInfoReadyListener listener,
             Photo photo) {
         mActivity = a;
         mListener = listener;
@@ -42,16 +38,14 @@ public class LoadCommentsTask
     }
 
     @Override
-    protected List<Comment> doInBackground(OAuth... params) {
+    protected Photo doInBackground(OAuth... params) {
         OAuth oauth = params[0];
         OAuthToken token = oauth.getToken();
         try {
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            Date minCommentDate = null;
-            Date maxCommentDate = null;
-            return f.getCommentsInterface().getList(mPhoto.getId(),
-                    minCommentDate, maxCommentDate);
+            return f.getPhotosInterface().getInfo(mPhoto.getId(),
+                    mPhoto.getSecret());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,11 +53,11 @@ public class LoadCommentsTask
     }
 
     @Override
-    protected void onPostExecute(final List<Comment> result) {
+    protected void onPostExecute(final Photo result) {
         if (result != null) {
-            mListener.onCommentsReady(result);
+            mListener.onPhotoInfoReady(result);
         } else {
-            Log.e(TAG, "Error fetching comments, result is null");
+            Log.e(TAG, "Error fetching photo info, result is null");
             // TODO: alert user / recover
         }
         ((BaseActivity) mActivity).showProgressIcon(false);

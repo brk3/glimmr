@@ -130,4 +130,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity
 
     @Override
     public void onPageSelected(int pos) {}
+
+    protected String getLogTag() {
+        return TAG;
+    }
 }

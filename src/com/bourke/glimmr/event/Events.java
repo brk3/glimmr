@@ -7,6 +7,7 @@ import com.gmail.yuyang226.flickr.photos.comments.Comment;
 import com.gmail.yuyang226.flickr.photosets.Photosets;
 import com.gmail.yuyang226.flickr.photos.Exif;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
+import com.gmail.yuyang226.flickr.photos.Photo;
 
 import java.util.List;
 
@@ -17,28 +18,27 @@ public class Events {
     }
 
     public interface ICommentsReadyListener {
-        void onCommentsReady(List<Comment> exifItems, boolean cancelled);
+        void onCommentsReady(List<Comment> exifItems);
     }
 
     public interface IContactsPhotosReadyListener {
-        void onContactsPhotosReady(PhotoList contactsAndPhotos,
-                boolean cancelled);
+        void onContactsPhotosReady(PhotoList contactsAndPhotos);
     }
 
     public interface IExifInfoReadyListener {
-        void onExifInfoReady(List<Exif> exifItems, boolean cancelled);
+        void onExifInfoReady(List<Exif> exifItems);
     }
 
     public interface IGroupListReadyListener {
-        void onGroupListReady(GroupList groups, boolean cancelled);
+        void onGroupListReady(GroupList groups);
     }
 
     public interface IPhotoListReadyListener {
-        void onPhotosReady(PhotoList photos, boolean cancelled);
+        void onPhotosReady(PhotoList photos);
     }
 
     public interface IPhotosetsReadyListener {
-        void onPhotosetsReady(Photosets photosets, boolean cancelled);
+        void onPhotosetsReady(Photosets photosets);
     }
 
     public interface IRequestTokenReadyListener {
@@ -46,10 +46,14 @@ public class Events {
     }
 
     public interface IUserReadyListener {
-        void onUserReady(User user, boolean cancelled);
+        void onUserReady(User user);
     }
 
     public interface IFavoriteReadyListener {
-        void onFavoriteComplete(boolean cancelled);
+        void onFavoriteComplete(Exception e);
+    }
+
+    public interface IPhotoInfoReadyListener {
+        void onPhotoInfoReady(Photo photo);
     }
 }

@@ -60,8 +60,7 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
     @Override
     protected void onPostExecute(final Photosets result) {
         if (result != null) {
-            boolean cancelled = false;
-            mListener.onPhotosetsReady(result, cancelled);
+            mListener.onPhotosetsReady(result);
         } else {
             Log.e(TAG, "Error fetching photosets, result is null");
             // TODO: alert user / recover

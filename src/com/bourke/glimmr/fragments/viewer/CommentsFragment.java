@@ -62,7 +62,7 @@ public final class CommentsFragment extends BaseFragment
         // TODO
     }
 
-    public void onCommentsReady(List<Comment> comments, boolean cancelled) {
+    public void onCommentsReady(List<Comment> comments) {
         Log.d(getLogTag(), "onCommentsReady, comments.size(): "
                 + comments.size());
         mGridAq = new AQuery(mActivity, mLayout);

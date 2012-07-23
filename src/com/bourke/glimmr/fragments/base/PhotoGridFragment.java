@@ -58,7 +58,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     @Override
-    public void onPhotosReady(PhotoList photos, boolean cancelled) {
+    public void onPhotosReady(PhotoList photos) {
         Log.d(getLogTag(), "onPhotosReady");
         mPhotos.addAll(photos);
         mAdapter.onDataReady();
