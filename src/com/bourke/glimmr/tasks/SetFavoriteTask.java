@@ -19,6 +19,7 @@ import com.gmail.yuyang226.flickr.photos.PhotoList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import com.gmail.yuyang226.flickr.photos.Photo;
 
 public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
 
@@ -26,10 +27,13 @@ public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
 
     private IFavoriteReadyListener mListener;
     private Activity mActivity;
+    private Photo mPhoto;
 
-    public SetFavoriteTask(Activity a, IFavoriteReadyListener listener) {
+    public SetFavoriteTask(Activity a, IFavoriteReadyListener listener,
+            Photo photo) {
         mActivity = a;
         mListener = listener;
+        mPhoto = photo;
     }
 
     @Override
@@ -40,41 +44,25 @@ public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
 
     @Override
     protected Exception doInBackground(OAuth... arg0) {
-        /*
         OAuthToken token = arg0[0].getToken();
         Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
-        Date minFavDate = null;
-        Date maxFavDate = null;
-        int perPage = 20;
-        int page = 1;
-        Set<String> extras = new HashSet<String>();
-        extras.add("owner_name");
-        extras.add("url_q");
-        extras.add("url_l");
-        extras.add("views");
-
         try {
-            return f.getFavoritesInterface().getList(mUser.getId(), minFavDate,
-                    maxFavDate, perPage, page, extras);
+            if (mPhoto.isFavorite()) {
+                f.getFavoritesInterface().remove(mPhoto.getId());
+            } else {
+                f.getFavoritesInterface().add(mPhoto.getId());
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            return e;
         }
-        */
         return null;
     }
 
     @Override
     protected void onPostExecute(final Exception result) {
-        /*
-        if (result != null) {
-            final boolean cancelled = false;
-            mListener.onPhotosReady(result, cancelled);
-        } else {
-            Log.e(TAG, "error fetching photolist, result is null");
-            // TODO: alert user / recover
-        }
+        mListener.onFavoriteComplete(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
-        */
     }
 }

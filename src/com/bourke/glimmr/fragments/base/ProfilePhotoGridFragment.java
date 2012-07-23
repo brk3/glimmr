@@ -17,6 +17,7 @@ import com.bourke.glimmr.R;
 import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
 import android.util.Log;
+import com.bourke.glimmr.common.Constants;
 
 /**
  * Subclass of PhotoGridFragment to show a GridView of photos along with
@@ -31,12 +32,11 @@ public abstract class ProfilePhotoGridFragment extends PhotoGridFragment
 
     protected User mUser;
 
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.profile_gridview_fragment, container, false);
-        startTask();
         return mLayout;
     }
 
@@ -45,27 +45,24 @@ public abstract class ProfilePhotoGridFragment extends PhotoGridFragment
      * adapter etc. to display them.
      */
     @Override
-    public void onPhotosReady(PhotoList photos, boolean cancelled) {
+    public void onPhotosReady(PhotoList photos) {
         /* Call up the PhotoGridFragment to populate the main GridView, then
          * populate our profile specific elements. */
-        super.onPhotosReady(photos, cancelled);
-
+        super.onPhotosReady(photos);
         mAq = new AQuery(mActivity, mLayout);
         mAq.id(R.id.text_screenname).text(mUser.getUsername());
     }
 
     @Override
-    public void onUserReady(User user, boolean cancelled) {
+    public void onUserReady(User user) {
+        Log.d(TAG, "onUserReady");
+
         /* Replace the bare bones user object we were passed with a more
          * complete one containing the buddy icon url. */
         mUser = user;
-
-        Log.d(TAG, "onUserReady");
-        boolean useMemCache = false;
-        boolean useFileCache = false;
         mAq.id(R.id.image_profile).image(mUser.getBuddyIconUrl(),
-                useMemCache, useFileCache,  0, 0, null,
-                AQuery.FADE_IN_NETWORK);
+                Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
+                null, AQuery.FADE_IN_NETWORK);
     }
 
     @Override

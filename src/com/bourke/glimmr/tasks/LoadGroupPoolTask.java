@@ -61,8 +61,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPostExecute(final PhotoList result) {
         if (result != null) {
-            final boolean cancelled = false;
-            mListener.onPhotosReady(result, cancelled);
+            mListener.onPhotosReady(result);
         } else {
             Log.e(TAG, "error fetching photolist, result is null");
             // TODO: alert user / recover

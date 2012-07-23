@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.base;
 
-import android.app.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +11,9 @@ import android.util.Log;
 
 import android.view.ViewGroup;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import com.androidquery.AQuery;
 
@@ -20,12 +21,10 @@ import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.Constants;
 
 import com.gmail.yuyang226.flickr.oauth.OAuth;
 import com.gmail.yuyang226.flickr.people.User;
 import com.gmail.yuyang226.flickr.photos.PhotoList;
-import com.gmail.yuyang226.flickr.photos.Photo;
 
 /**
  *
@@ -37,7 +36,9 @@ public abstract class BaseFragment extends SherlockFragment {
     /**
      * It's useful to keep a reference to the parent activity in our fragments.
      */
-    protected Activity mActivity;
+    protected SherlockFragmentActivity mActivity;
+
+    protected ActionBar mActionBar;
 
     /**
      * Most Glimmr fragments deal with a list of photos.
@@ -57,6 +58,7 @@ public abstract class BaseFragment extends SherlockFragment {
         super.onCreate(savedInstanceState);
         Log.d(getLogTag(), "onCreate");
         mActivity = getSherlockActivity();
+        mActionBar = mActivity.getSupportActionBar();
     }
 
     @Override

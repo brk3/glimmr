@@ -6,8 +6,7 @@ import com.bourke.glimmr.tasks.LoadGroupPoolTask;
 
 import com.gmail.yuyang226.flickr.groups.Group;
 
-public class GroupPoolGridFragment extends PhotoGridFragment
-        implements IPhotoListReadyListener {
+public class GroupPoolGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/GroupPoolGridFragment";
 

@@ -59,8 +59,7 @@ public class LoadExifInfoTask
     @Override
     protected void onPostExecute(final Collection<Exif> result) {
         if (result != null) {
-            boolean cancelled = false;
-            mListener.onExifInfoReady(new ArrayList<Exif>(result), cancelled);
+            mListener.onExifInfoReady(new ArrayList<Exif>(result));
         } else {
             Log.e(TAG, "Error fetching exif info, result is null");
             // TODO: alert user / recover
