@@ -64,6 +64,33 @@ public final class PhotoViewerFragment extends BaseFragment
         return mLayout;
     }
 
+     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(getLogTag(), "onSaveInstanceState");
+        outState.putSerializable(Constants.KEY_PHOTOVIEWER_URL, mPhoto);
+        outState.putInt("glimmr_photoviewer_id", mId);
+     }
+
+    /**
+     * Fragments don't seem to have a onRestoreInstanceState so we use this
+     * to restore the photo been viewed in the case of rotate instead.
+     */
+    @Override
+    public void onActivityCreated(Bundle state) {
+        super.onActivityCreated(state);
+        Log.d(getLogTag(), "onActivityCreated");
+        if (state != null) {
+            Photo p = (Photo) state.getSerializable(
+                    Constants.KEY_PHOTOVIEWER_URL);
+            if (p != null) {
+                Log.d(getLogTag(), "mPhoto restored");
+                mPhoto = p;
+            }
+            mId = state.getInt("glimmr_photoviewer_id");
+        }
+    }
+
     @Override
     protected void startTask() {
         super.startTask();
