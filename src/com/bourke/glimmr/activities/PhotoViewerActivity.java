@@ -45,10 +45,10 @@ public class PhotoViewerActivity extends BaseActivity
 
     private List<Photo> mPhotos = new ArrayList<Photo>();
     private int mSelectedIndex = 0;
-    private MenuItem mFavoriteButton;
 
-    private Map<Integer, PhotoViewerFragment> mPageReferenceMap =
-        new HashMap<Integer, PhotoViewerFragment>();
+    private MenuItem mFavoriteButton;
+    private PhotoViewerPagerAdapter mAdapter;
+    private ViewPager mPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -154,14 +154,14 @@ public class PhotoViewerActivity extends BaseActivity
         if (mPhotos != null) {
             Log.d(getLogTag(), "Got list of photo urls, size: "
                     + mPhotos.size());
-            PhotoViewerPagerAdapter adapter = new PhotoViewerPagerAdapter(
+            mAdapter = new PhotoViewerPagerAdapter(
                     getSupportFragmentManager());
-            ViewPager pager = (ViewPager) findViewById(R.id.pager);
-            pager.setAdapter(adapter);
+            mPager = (ViewPager) findViewById(R.id.pager);
+            mPager.setAdapter(mAdapter);
             PageIndicator indicator = (LinePageIndicator) findViewById(
                     R.id.indicator);
             indicator.setOnPageChangeListener(this);
-            indicator.setViewPager(pager);
+            indicator.setViewPager(mPager);
             indicator.setCurrentItem(mSelectedIndex);
         } else {
             Log.e(getLogTag(), "Photos from intent are null");
@@ -201,9 +201,9 @@ public class PhotoViewerActivity extends BaseActivity
     public void onPageScrollStateChanged(int state) {
     }
 
-    public PhotoViewerFragment getFragment(int key) {
-        Log.d(TAG, "getFragment: " + key);
-        return mPageReferenceMap.get(key);
+    public PhotoViewerFragment getFragment(int id) {
+        Log.d(TAG, "getFragment: " + id);
+        return (PhotoViewerFragment) mAdapter.instantiateItem(mPager, id);
     }
 
     @Override
@@ -229,17 +229,8 @@ public class PhotoViewerActivity extends BaseActivity
         @Override
         public Fragment getItem(int position) {
             Log.d(TAG, "getItem: " + position);
-            PhotoViewerFragment myFragment = PhotoViewerFragment.newInstance(
-                    mPhotos.get(position), position);
-            mPageReferenceMap.put(position, myFragment);
-            return myFragment;
-        }
-
-        @Override
-        public void destroyItem(View container, int position, Object object) {
-            Log.d(TAG, "destroyItem: " + position);
-            super.destroyItem(container, position, object);
-            mPageReferenceMap.remove(position);
+            return PhotoViewerFragment.newInstance(mPhotos.get(position),
+                    position);
         }
 
         @Override
