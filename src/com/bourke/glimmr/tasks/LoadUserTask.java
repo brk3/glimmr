@@ -20,13 +20,14 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     private static final String TAG = "Glimmr/LoadUserTask";
 
     private IUserReadyListener mListener;
-    private User mUser;
+    private String mUserId;
     private Activity mActivity;
 
-    public LoadUserTask(Activity a, IUserReadyListener listener, User user) {
+    public LoadUserTask(Activity a, IUserReadyListener listener,
+            String userId) {
         mActivity = a;
         mListener = listener;
-        mUser = user;
+        mUserId = userId;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
         try {
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            return f.getPeopleInterface().getInfo(mUser.getId());
+            return f.getPeopleInterface().getInfo(mUserId);
         } catch (Exception e) {
             e.printStackTrace();
         }

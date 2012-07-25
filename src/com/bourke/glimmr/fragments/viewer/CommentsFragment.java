@@ -14,26 +14,37 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.PrettyDate;
 import com.bourke.glimmr.event.Events.ICommentsReadyListener;
+import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadCommentsTask;
+import com.bourke.glimmr.tasks.LoadUserTask;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Collections;
 
 public final class CommentsFragment extends BaseFragment
-        implements ICommentsReadyListener {
+        implements ICommentsReadyListener, IUserReadyListener {
 
     protected String TAG = "Glimmr/CommentsFragment";
 
     private Photo mPhoto = new Photo();
     private AQuery mAq;
+
+    private ArrayAdapter<Comment> mAdapter;
+
+    private Map<String, UserItem> mUsers = Collections.synchronizedMap(
+            new HashMap<String, UserItem>());
 
     public static CommentsFragment newInstance(Photo photo) {
         CommentsFragment newFragment = new CommentsFragment();
@@ -62,12 +73,20 @@ public final class CommentsFragment extends BaseFragment
         // TODO
     }
 
+    @Override
+    public void onUserReady(User user) {
+        Log.d(getLogTag(), "onUserReady: " + user.getId());
+        mUsers.put(user.getId(), new UserItem(user, false));
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onCommentsReady(List<Comment> comments) {
         Log.d(getLogTag(), "onCommentsReady, comments.size(): "
                 + comments.size());
         mGridAq = new AQuery(mActivity, mLayout);
 
-        ArrayAdapter<Comment> adapter = new ArrayAdapter<Comment>(mActivity,
+        mAdapter = new ArrayAdapter<Comment>(mActivity,
                 R.layout.comment_list_row, (ArrayList<Comment>) comments) {
 
             // TODO: implement ViewHolder pattern
@@ -89,18 +108,41 @@ public final class CommentsFragment extends BaseFragment
                 aq.id(R.id.commentDate).text(new PrettyDate(comment
                             .getDateCreate()).toString());
                 aq.id(R.id.commentText).text(comment.getText());
-                // TODO aq.id(R.id.userIcon).image(group.getBuddyIconUrl(),
-                //        true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
+
+                UserItem author = mUsers.get(comment.getAuthor());
+                if (author == null) {
+                    mUsers.put(comment.getAuthor(), new UserItem(null, true));
+                    new LoadUserTask(mActivity, CommentsFragment.this,
+                            comment.getAuthor()).execute(mOAuth);
+                } else {
+                    if (!author.isLoading) {
+                        aq.id(R.id.userIcon).image(
+                                author.user.getBuddyIconUrl(),
+                                Constants.USE_MEMORY_CACHE,
+                                Constants.USE_FILE_CACHE, 0, 0, null,
+                                AQuery.FADE_IN_NETWORK);
+                    }
+                }
 
                 return convertView;
             }
         };
-        mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
+        mGridAq.id(R.id.list).adapter(mAdapter).itemClicked(this,
                 "itemClicked");
     }
 
     @Override
     protected String getLogTag() {
         return TAG;
+    }
+
+    class UserItem {
+        public User user;
+        public boolean isLoading = true;
+
+        public UserItem(User user, boolean isLoading) {
+            this.user = user;
+            this.isLoading = isLoading;
+        }
     }
 }
