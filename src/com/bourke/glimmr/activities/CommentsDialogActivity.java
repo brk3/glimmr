@@ -13,7 +13,7 @@ import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import com.bourke.glimmr.R;
 
-import com.gmail.yuyang226.flickr.photos.Photo;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 /**
  *

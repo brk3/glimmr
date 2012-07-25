@@ -12,9 +12,9 @@ import android.net.Uri;
 
 import android.os.AsyncTask;
 
-import com.gmail.yuyang226.flickr.auth.Permission;
-import com.gmail.yuyang226.flickr.Flickr;
-import com.gmail.yuyang226.flickr.oauth.OAuthToken;
+import com.googlecode.flickrjandroid.auth.Permission;
+import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
 import java.net.URL;
 import com.bourke.glimmr.event.Events.IRequestTokenReadyListener;

@@ -1,20 +1,20 @@
 package com.bourke.glimmr.common;
 
-import com.gmail.yuyang226.flickr.contacts.ContactsInterface;
-import com.gmail.yuyang226.flickr.favorites.FavoritesInterface;
-import com.gmail.yuyang226.flickr.Flickr;
-import com.gmail.yuyang226.flickr.groups.pools.PoolsInterface;
-import com.gmail.yuyang226.flickr.interestingness.InterestingnessInterface;
-import com.gmail.yuyang226.flickr.oauth.OAuth;
-import com.gmail.yuyang226.flickr.oauth.OAuthToken;
-import com.gmail.yuyang226.flickr.photos.comments.CommentsInterface;
-import com.gmail.yuyang226.flickr.photosets.PhotosetsInterface;
-import com.gmail.yuyang226.flickr.photos.PhotosInterface;
-import com.gmail.yuyang226.flickr.RequestContext;
-import com.gmail.yuyang226.flickr.REST;
+import com.googlecode.flickrjandroid.contacts.ContactsInterface;
+import com.googlecode.flickrjandroid.favorites.FavoritesInterface;
+import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.groups.pools.PoolsInterface;
+import com.googlecode.flickrjandroid.interestingness.InterestingnessInterface;
+import com.googlecode.flickrjandroid.oauth.OAuth;
+import com.googlecode.flickrjandroid.oauth.OAuthToken;
+import com.googlecode.flickrjandroid.photos.comments.CommentsInterface;
+import com.googlecode.flickrjandroid.photosets.PhotosetsInterface;
+import com.googlecode.flickrjandroid.photos.PhotosInterface;
+import com.googlecode.flickrjandroid.RequestContext;
+import com.googlecode.flickrjandroid.REST;
 
 import javax.xml.parsers.ParserConfigurationException;
-import com.gmail.yuyang226.flickr.people.PeopleInterface;
+import com.googlecode.flickrjandroid.people.PeopleInterface;
 
 public final class FlickrHelper {
 

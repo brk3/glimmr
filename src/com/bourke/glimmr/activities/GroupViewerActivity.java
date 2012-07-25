@@ -20,7 +20,7 @@ import com.bourke.glimmr.fragments.group.GroupAboutFragment;
 import com.bourke.glimmr.fragments.group.GroupPoolGridFragment;
 import com.bourke.glimmr.R;
 
-import com.gmail.yuyang226.flickr.groups.Group;
+import com.googlecode.flickrjandroid.groups.Group;
 
 import com.viewpagerindicator.TitlePageIndicator;
 

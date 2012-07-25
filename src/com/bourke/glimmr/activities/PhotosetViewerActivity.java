@@ -21,7 +21,7 @@ import com.bourke.glimmr.fragments.group.GroupPoolGridFragment;
 import com.bourke.glimmr.fragments.photoset.PhotosetGridFragment;
 import com.bourke.glimmr.R;
 
-import com.gmail.yuyang226.flickr.photosets.Photoset;
+import com.googlecode.flickrjandroid.photosets.Photoset;
 
 import com.viewpagerindicator.TitlePageIndicator;
 

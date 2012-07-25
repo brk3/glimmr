@@ -4,7 +4,7 @@ import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPhotostreamTask;
 
-import com.gmail.yuyang226.flickr.photos.PhotoList;
+import com.googlecode.flickrjandroid.photos.PhotoList;
 
 public class PhotoStreamGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {

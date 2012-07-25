@@ -23,8 +23,8 @@ import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadGroupsTask;
 
-import com.gmail.yuyang226.flickr.groups.Group;
-import com.gmail.yuyang226.flickr.groups.GroupList;
+import com.googlecode.flickrjandroid.groups.Group;
+import com.googlecode.flickrjandroid.groups.GroupList;
 
 import java.util.ArrayList;
 

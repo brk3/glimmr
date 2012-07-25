@@ -1,13 +1,13 @@
 package com.bourke.glimmr.event;
 
-import com.gmail.yuyang226.flickr.groups.GroupList;
-import com.gmail.yuyang226.flickr.oauth.OAuth;
-import com.gmail.yuyang226.flickr.people.User;
-import com.gmail.yuyang226.flickr.photos.comments.Comment;
-import com.gmail.yuyang226.flickr.photosets.Photosets;
-import com.gmail.yuyang226.flickr.photos.Exif;
-import com.gmail.yuyang226.flickr.photos.PhotoList;
-import com.gmail.yuyang226.flickr.photos.Photo;
+import com.googlecode.flickrjandroid.groups.GroupList;
+import com.googlecode.flickrjandroid.oauth.OAuth;
+import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.comments.Comment;
+import com.googlecode.flickrjandroid.photosets.Photosets;
+import com.googlecode.flickrjandroid.photos.Exif;
+import com.googlecode.flickrjandroid.photos.PhotoList;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
 

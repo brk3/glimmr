@@ -25,8 +25,8 @@ import com.bourke.glimmr.R;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
 
-import com.gmail.yuyang226.flickr.photos.Photo;
-import com.gmail.yuyang226.flickr.photos.PhotoList;
+import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photos.PhotoList;
 
 /**
  * Fragment that contains a GridView of photos.

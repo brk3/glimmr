@@ -20,9 +20,9 @@ import com.androidquery.AQuery;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
 
-import com.gmail.yuyang226.flickr.oauth.OAuth;
-import com.gmail.yuyang226.flickr.oauth.OAuthToken;
-import com.gmail.yuyang226.flickr.people.User;
+import com.googlecode.flickrjandroid.oauth.OAuth;
+import com.googlecode.flickrjandroid.oauth.OAuthToken;
+import com.googlecode.flickrjandroid.people.User;
 
 public abstract class BaseActivity extends SherlockFragmentActivity
         implements ViewPager.OnPageChangeListener {

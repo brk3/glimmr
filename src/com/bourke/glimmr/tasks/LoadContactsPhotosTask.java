@@ -4,12 +4,12 @@ import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.gmail.yuyang226.flickr.Flickr;
-import com.gmail.yuyang226.flickr.FlickrException;
-import com.gmail.yuyang226.flickr.oauth.OAuth;
-import com.gmail.yuyang226.flickr.oauth.OAuthToken;
-import com.gmail.yuyang226.flickr.people.User;
-import com.gmail.yuyang226.flickr.photos.PhotoList;
+import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.FlickrException;
+import com.googlecode.flickrjandroid.oauth.OAuth;
+import com.googlecode.flickrjandroid.oauth.OAuthToken;
+import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import java.io.IOException;
 

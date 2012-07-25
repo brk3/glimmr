@@ -18,8 +18,8 @@ import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadExifInfoTask;
 
-import com.gmail.yuyang226.flickr.photos.Exif;
-import com.gmail.yuyang226.flickr.photos.Photo;
+import com.googlecode.flickrjandroid.photos.Exif;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
 import android.widget.TableLayout;

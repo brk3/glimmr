@@ -22,7 +22,7 @@ import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.SetFavoriteTask;
 
-import com.gmail.yuyang226.flickr.photos.Photo;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 import com.viewpagerindicator.LinePageIndicator;
 import com.viewpagerindicator.PageIndicator;
