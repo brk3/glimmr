@@ -74,10 +74,13 @@ public class PhotoViewerActivity extends BaseActivity
     public void toggleOverlayVisibility(View view) {
         // TODO: there is a visible flicker when the actionbar hides, possibly
         // due to the layout been redrawn.  An overlay actionbar may fix this.
+        PhotoViewerFragment currentFragment = getFragment(mSelectedIndex);
         if (mActionBar.isShowing()) {
             mActionBar.hide();
+            currentFragment.toggleOverlayVisibility(false);
         } else {
             mActionBar.show();
+            currentFragment.toggleOverlayVisibility(true);
         }
     }
 

@@ -15,10 +15,30 @@
         gesture-image:min-scale="0.75"
         gesture-image:max-scale="10.0" />
 
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/textViewAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_small"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/textViewTitle"
+        android:layout_alignParentLeft="true" />
+
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="30dip"
         android:layout_height="30dip"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:layout_centerInParent="true" />
 </RelativeLayout>
