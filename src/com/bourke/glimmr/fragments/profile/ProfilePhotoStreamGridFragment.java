@@ -21,9 +21,7 @@ public class ProfilePhotoStreamGridFragment extends ProfilePhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        new LoadPhotostreamTask(mActivity, this, mUser, mPage++)
-            .execute(mOAuth);
-        new LoadUserTask(mActivity, this, mUser).execute(mOAuth);
+        // TODO
     }
 
     @Override

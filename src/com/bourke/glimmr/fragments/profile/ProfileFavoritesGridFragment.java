@@ -20,8 +20,7 @@ public class ProfileFavoritesGridFragment extends ProfilePhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        new LoadFavoritesTask(mActivity, this, mUser).execute(mOAuth);
-        new LoadUserTask(mActivity, this, mUser).execute(mOAuth);
+        // TODO
     }
 
     @Override
