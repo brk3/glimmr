@@ -23,8 +23,8 @@ import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadPhotosetsTask;
 
-import com.gmail.yuyang226.flickr.photosets.Photoset;
-import com.gmail.yuyang226.flickr.photosets.Photosets;
+import com.googlecode.flickrjandroid.photosets.Photoset;
+import com.googlecode.flickrjandroid.photosets.Photosets;
 
 import java.util.ArrayList;
 import java.util.List;

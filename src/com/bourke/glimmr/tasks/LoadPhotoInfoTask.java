@@ -10,10 +10,10 @@ import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 
-import com.gmail.yuyang226.flickr.Flickr;
-import com.gmail.yuyang226.flickr.oauth.OAuth;
-import com.gmail.yuyang226.flickr.oauth.OAuthToken;
-import com.gmail.yuyang226.flickr.photos.Photo;
+import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.oauth.OAuth;
+import com.googlecode.flickrjandroid.oauth.OAuthToken;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 
 public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {

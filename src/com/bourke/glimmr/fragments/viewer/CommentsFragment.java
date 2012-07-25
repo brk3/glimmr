@@ -20,9 +20,9 @@ import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadCommentsTask;
 
-import com.gmail.yuyang226.flickr.people.User;
-import com.gmail.yuyang226.flickr.photos.comments.Comment;
-import com.gmail.yuyang226.flickr.photos.Photo;
+import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.comments.Comment;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -24,9 +24,9 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.GetAccessTokenTask;
 import com.bourke.glimmr.tasks.GetRequestToken;
 
-import com.gmail.yuyang226.flickr.oauth.OAuth;
-import com.gmail.yuyang226.flickr.oauth.OAuthToken;
-import com.gmail.yuyang226.flickr.people.User;
+import com.googlecode.flickrjandroid.oauth.OAuth;
+import com.googlecode.flickrjandroid.oauth.OAuthToken;
+import com.googlecode.flickrjandroid.people.User;
 
 /**
  * Presents a welcome screen to user and a button to login.

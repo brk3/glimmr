@@ -14,8 +14,8 @@ import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.R;
 
-import com.gmail.yuyang226.flickr.people.User;
-import com.gmail.yuyang226.flickr.photos.PhotoList;
+import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.PhotoList;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 
