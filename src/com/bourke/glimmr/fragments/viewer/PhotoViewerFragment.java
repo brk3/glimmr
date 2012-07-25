@@ -115,8 +115,21 @@ public final class PhotoViewerFragment extends BaseFragment
                     mPhoto.getLargeUrl(), Constants.USE_MEMORY_CACHE,
                     Constants.USE_FILE_CACHE, 0, 0, null,
                     AQuery.FADE_IN_NETWORK);
+            mAq.id(R.id.textViewTitle).text(mPhoto.getTitle());
+            mAq.id(R.id.textViewAuthor).text("by "+mPhoto.getOwner()
+                    .getUsername());
         } else {
             Log.e(getLogTag(), "displayImage: mPhoto is null");
+        }
+    }
+
+    public void toggleOverlayVisibility(boolean on) {
+        if (on) {
+            mAq.id(R.id.textViewTitle).visible();
+            mAq.id(R.id.textViewAuthor).visible();
+        } else {
+            mAq.id(R.id.textViewTitle).invisible();
+            mAq.id(R.id.textViewAuthor).invisible();
         }
     }
 
