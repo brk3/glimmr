@@ -56,7 +56,7 @@ public final class CommentsFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(
-                R.layout.list_fragment, container, false);
+                R.layout.comments_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
         return mLayout;
     }
