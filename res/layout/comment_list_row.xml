@@ -14,9 +14,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp"
+        android:paddingBottom="10dp"
         android:background="@drawable/border" />
 
     <TextView
@@ -24,28 +23,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/flickr_blue"
+        android:layout_toRightOf="@id/userIcon"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:textSize="@dimen/text_size_medium"
-        android:layout_toRightOf="@id/userIcon" />
+        android:textSize="@dimen/text_size_medium" />
 
     <TextView
         android:id="@+id/commentDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/text_light"
-        android:layout_margin="5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
         android:textSize="@dimen/text_size_micro" />
 
     <TextView
         android:id="@+id/commentText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
         android:textSize="@dimen/text_size_small"
-        android:layout_below="@id/commentDate"
+        android:layout_below="@id/userName"
+        android:layout_margin="5dp"
+        android:paddingBottom="10dp"
         android:layout_toRightOf="@id/userIcon" />
 
 </RelativeLayout>
