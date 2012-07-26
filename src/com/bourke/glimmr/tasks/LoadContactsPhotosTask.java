@@ -1,8 +1,14 @@
 package com.bourke.glimmr.tasks;
 
+import android.app.Activity;
+
 import android.os.AsyncTask;
 
 import android.util.Log;
+
+import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.FlickrException;
@@ -15,10 +21,6 @@ import java.io.IOException;
 
 import java.util.HashSet;
 import java.util.Set;
-import android.app.Activity;
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.FlickrHelper;
 
 public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 
