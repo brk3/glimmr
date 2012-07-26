@@ -67,10 +67,10 @@ public class MainActivity extends BaseActivity {
             switch (position) {
                 case PHOTOSTREAM_PAGE:
                     return PhotoStreamGridFragment
-                        .newInstance(mOAuth.getUser(), false);
+                        .newInstance(mOAuth.getUser());
 
                 case CONTACTS_PAGE:
-                    return ContactsGridFragment.newInstance();
+                    return ContactsGridFragment.newInstance(mOAuth.getUser());
 
                 case GROUPS_PAGE:
                     return GroupListFragment.newInstance();
