@@ -12,11 +12,9 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
 
     private static final String TAG = "Glimmr/PhotoStreamGridFragment";
 
-    public static PhotoStreamGridFragment newInstance(User user,
-            boolean showProfileOverlay) {
+    public static PhotoStreamGridFragment newInstance(User user) {
         PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
         newFragment.mUser = user;
-        newFragment.mShowProfileOverlay = showProfileOverlay;
         return newFragment;
     }
 

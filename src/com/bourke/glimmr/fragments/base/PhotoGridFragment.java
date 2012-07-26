@@ -60,16 +60,13 @@ public abstract class PhotoGridFragment extends BaseFragment
         mAq = new AQuery(mActivity, mLayout);
         mAq.id(R.id.gridview).adapter(mAdapter).itemClicked(this,
                 "startPhotoViewer");
-        if (mShowProfileOverlay) {
-            mAq.id(R.id.profile_banner).visible();
-        }
         return mLayout;
     }
 
     @Override
     protected void startTask() {
         super.startTask();
-        if (mShowProfileOverlay && mUser != null) {
+        if (mUser != null) {
             new LoadUserTask(mActivity, this, mUser.getId()).execute(mOAuth);
         }
     }
