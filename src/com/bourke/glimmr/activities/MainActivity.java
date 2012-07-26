@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity {
                 R.id.indicator);
         indicator.setOnPageChangeListener(this);
         indicator.setViewPager(viewPager);
-        /*indicator.setCurrentItem(PHOTOSTREAM_PAGE);*/
     }
 
     class GlimmrPagerAdapter extends FragmentPagerAdapter {
@@ -67,11 +66,15 @@ public class MainActivity extends BaseActivity {
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case PHOTOSTREAM_PAGE:
-                    return PhotoStreamGridFragment.newInstance();
+                    return PhotoStreamGridFragment
+                        .newInstance(mOAuth.getUser(), false);
+
                 case CONTACTS_PAGE:
                     return ContactsGridFragment.newInstance();
+
                 case GROUPS_PAGE:
                     return GroupListFragment.newInstance();
+
                 case SETS_PAGE:
                     return PhotosetsFragment.newInstance();
             }

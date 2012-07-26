@@ -16,7 +16,59 @@
         android:verticalSpacing="1dp"
         android:stretchMode="columnWidth"
         android:listSelector="@null"
-        android:gravity="center"
-    />
+        android:gravity="center" />
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/profile_banner"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_screenname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/flickr_blue_transparent"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/image_profile"
+            android:paddingLeft="3dp"
+            android:textColor="@color/flickr_pink"
+            android:textSize="@dimen/text_size_medium" />
+
+        <!-- Filler, uses TextView so it's the same height as text_screenname
+             -->
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/flickr_blue_transparent"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/text_screenname"
+            android:textSize="@dimen/text_size_medium" />
+
+        <ImageView
+            android:id="@id/image_profile"
+            android:layout_width="70dip"
+            android:layout_height="70dip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:padding="3dip"
+            android:src="@drawable/ic_contact_picture"
+            android:scaleType="centerCrop" />
+
+        <!--
+        <TextView
+            android:id="@+id/text_joined"
+            android:text="Joined:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/image_profile"
+            android:layout_below="@id/text_screenname"
+            android:textColor="@android:color/white"
+            android:paddingLeft="15dip"
+            android:paddingRight="10dip" />
+        -->
+    </RelativeLayout>
 
 </RelativeLayout>

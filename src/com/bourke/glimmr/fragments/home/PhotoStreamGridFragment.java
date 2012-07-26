@@ -5,25 +5,26 @@ import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPhotostreamTask;
 
 import com.googlecode.flickrjandroid.photos.PhotoList;
+import com.googlecode.flickrjandroid.people.User;
 
 public class PhotoStreamGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/PhotoStreamGridFragment";
 
-    public static PhotoStreamGridFragment newInstance() {
-        return new PhotoStreamGridFragment();
+    public static PhotoStreamGridFragment newInstance(User user,
+            boolean showProfileOverlay) {
+        PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
+        newFragment.mUser = user;
+        newFragment.mShowProfileOverlay = showProfileOverlay;
+        return newFragment;
     }
 
-    @Override
-    protected void startTask() {
-        /**
-         * Once the parent binds the adapter it will trigger cacheInBackground
-         * for us as it will be empty when first bound.  So we don't need to
-         * respond to the Activities calls to startTask().
-         */
-    }
-
+    /**
+     * Once the parent binds the adapter it will trigger cacheInBackground
+     * for us as it will be empty when first bound.  So we don't need to
+     * override startTask().
+     */
     @Override
     protected boolean cacheInBackground() {
         startTask(mPage++);
@@ -32,8 +33,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        new LoadPhotostreamTask(mActivity, this, mOAuth.getUser(), page)
-            .execute(mOAuth);
+        new LoadPhotostreamTask(mActivity, this, mUser, page).execute(mOAuth);
     }
 
     @Override

@@ -21,21 +21,24 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.R;
+import com.bourke.glimmr.tasks.LoadUserTask;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
 
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
 /**
- * Fragment that contains a GridView of photos.
+ * Base Fragment that contains a GridView of photos.
  *
  * Can be used to display many of the Flickr "categories" of photos, i.e.
  * photostreams, favorites, contacts photos, etc.
  */
 public abstract class PhotoGridFragment extends BaseFragment
-        implements IPhotoListReadyListener {
+        implements IPhotoListReadyListener, IUserReadyListener {
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
@@ -44,6 +47,8 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     protected int mPage = 1;
     protected boolean mMorePages = true;
+    protected boolean mShowProfileOverlay = false;
+    protected User mUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,7 +60,18 @@ public abstract class PhotoGridFragment extends BaseFragment
         mAq = new AQuery(mActivity, mLayout);
         mAq.id(R.id.gridview).adapter(mAdapter).itemClicked(this,
                 "startPhotoViewer");
+        if (mShowProfileOverlay) {
+            mAq.id(R.id.profile_banner).visible();
+        }
         return mLayout;
+    }
+
+    @Override
+    protected void startTask() {
+        super.startTask();
+        if (mShowProfileOverlay && mUser != null) {
+            new LoadUserTask(mActivity, this, mUser.getId()).execute(mOAuth);
+        }
     }
 
     @Override
@@ -63,6 +79,19 @@ public abstract class PhotoGridFragment extends BaseFragment
         Log.d(getLogTag(), "onPhotosReady");
         mPhotos.addAll(photos);
         mAdapter.onDataReady();
+    }
+
+    @Override
+    public void onUserReady(User user) {
+        Log.d(getLogTag(), "onUserReady");
+        if (user == null) {
+            Log.e(getLogTag(), "onUserReady: user is null");
+            return;
+        }
+        mAq.id(R.id.image_profile).image(user.getBuddyIconUrl(),
+                Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
+                null, AQuery.FADE_IN_NETWORK);
+        mAq.id(R.id.text_screenname).text(user.getUsername());
     }
 
     /**
