@@ -13,7 +13,7 @@ public class GroupAboutFragment extends BaseFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        // TODO new LoadPhotostreamTask(this, mOAuth.getUser()).execute(mOAuth);
+        // TODO
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.base;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,19 +37,13 @@ public abstract class BaseFragment extends SherlockFragment {
      */
     protected SherlockFragmentActivity mActivity;
 
-    protected ActionBar mActionBar;
-
-    /**
-     * Most Glimmr fragments deal with a list of photos.
-     */
-    protected PhotoList mPhotos = new PhotoList();
-
     /**
      * Should contain current user and valid access token for that user.
      */
     protected OAuth mOAuth;
 
-    protected AQuery mGridAq;
+    protected ActionBar mActionBar;
+    protected AQuery mAq;
     protected ViewGroup mLayout;
 
     @Override
@@ -72,15 +65,15 @@ public abstract class BaseFragment extends SherlockFragment {
      * Start the PhotoViewerActivity with a list of photos to view and an index
      * to start at in the list.
      */
-    protected void startPhotoViewer(int pos) {
-        if (mPhotos == null) {
-            Log.e(getLogTag(), "Cannot start PhotoViewer, mPhotos is null");
+    protected void startPhotoViewer(PhotoList photos, int pos) {
+        if (photos == null) {
+            Log.e(getLogTag(), "Cannot start PhotoViewer, photos is null");
             return;
         }
-        Log.d(getLogTag(), "starting photo viewer with " + mPhotos.size()
+        Log.d(getLogTag(), "starting photo viewer with " + photos.size()
                 + " ids");
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, mPhotos);
+        bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photos);
         bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
         Intent photoViewer = new Intent(mActivity, PhotoViewerActivity.class);
         photoViewer.putExtras(bundle);

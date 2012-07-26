@@ -40,6 +40,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
     private EndlessGridAdapter mAdapter;
+    private PhotoList mPhotos = new PhotoList();
 
     protected int mPage = 1;
     protected boolean mMorePages = true;
@@ -51,8 +52,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                 .standard_gridview_fragment, container, false);
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
-        mGridAq = new AQuery(mActivity, mLayout);
-        mGridAq.id(R.id.gridview).adapter(mAdapter).itemClicked(this,
+        mAq = new AQuery(mActivity, mLayout);
+        mAq.id(R.id.gridview).adapter(mAdapter).itemClicked(this,
                 "startPhotoViewer");
         return mLayout;
     }
@@ -126,7 +127,7 @@ public abstract class PhotoGridFragment extends BaseFragment
             }
 
             final Photo photo = getItem(position);
-            AQuery aq = mGridAq.recycle(convertView);
+            AQuery aq = mAq.recycle(convertView);
 
             /* Don't load image if flinging past it */
             if (aq.shouldDelay(position, convertView, parent,
@@ -142,7 +143,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                 aq.id(holder.image).clicked(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startPhotoViewer(position);
+                        startPhotoViewer(mPhotos, position);
                     }
                 });
 
