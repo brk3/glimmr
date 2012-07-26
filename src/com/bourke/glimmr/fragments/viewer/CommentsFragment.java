@@ -16,10 +16,12 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.PrettyDate;
+import com.bourke.glimmr.event.Events.ICommentAddedListener;
 import com.bourke.glimmr.event.Events.ICommentsReadyListener;
 import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
+import com.bourke.glimmr.tasks.AddCommentTask;
 import com.bourke.glimmr.tasks.LoadCommentsTask;
 import com.bourke.glimmr.tasks.LoadUserTask;
 
@@ -28,13 +30,16 @@ import com.googlecode.flickrjandroid.photos.comments.Comment;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
+import android.view.inputmethod.InputMethodManager;
+import android.content.Context;
 
 public final class CommentsFragment extends BaseFragment
-        implements ICommentsReadyListener, IUserReadyListener {
+        implements ICommentsReadyListener, ICommentAddedListener,
+                   IUserReadyListener {
 
     protected String TAG = "Glimmr/CommentsFragment";
 
@@ -67,7 +72,23 @@ public final class CommentsFragment extends BaseFragment
     }
 
     public void submitButtonClicked(View view) {
+        String commentText = mAq.id(R.id.editText).getText().toString();
+        if (commentText.isEmpty()) {
+            // TODO: alert user
+            Log.d(getLogTag(), "Comment text empty, do nothing");
+            return;
+        }
 
+        Log.d(getLogTag(), "Starting AddCommentTask: " + commentText);
+        new AddCommentTask(mActivity, this, mPhoto, commentText)
+            .execute(mOAuth);
+
+        /* Clear the editText and hide keyboard */
+        mAq.id(R.id.editText).getEditText().setText("");
+        InputMethodManager inputManager = (InputMethodManager)
+            mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(mActivity.getCurrentFocus()
+                .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void itemClicked(AdapterView<?> parent, View view, int position,
@@ -80,6 +101,13 @@ public final class CommentsFragment extends BaseFragment
         Log.d(getLogTag(), "onUserReady: " + user.getId());
         mUsers.put(user.getId(), new UserItem(user, false));
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCommentAdded(String commentId) {
+        // TODO: show toast / update list
+        Log.d(getLogTag(), "Sucessfully added comment with id: " + commentId);
+        startTask();
     }
 
     @Override
