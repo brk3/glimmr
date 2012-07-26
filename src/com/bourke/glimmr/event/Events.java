@@ -56,4 +56,8 @@ public class Events {
     public interface IPhotoInfoReadyListener {
         void onPhotoInfoReady(Photo photo);
     }
+
+    public interface ICommentAddedListener {
+        void onCommentAdded(String commentId);
+    }
 }
