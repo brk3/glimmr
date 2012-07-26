@@ -66,8 +66,7 @@ public class GroupListFragment extends BaseFragment
                 group.getName());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_GROUPVIEWER_GROUP, group);
-        Intent groupViewer = new Intent(mActivity, GroupViewerActivity
-                .class);
+        Intent groupViewer = new Intent(mActivity, GroupViewerActivity.class);
         groupViewer.putExtras(bundle);
         mActivity.startActivity(groupViewer);
     }
@@ -80,7 +79,7 @@ public class GroupListFragment extends BaseFragment
     @Override
     public void onGroupListReady(GroupList groups) {
         Log.d(getLogTag(), "onGroupListReady");
-        mGridAq = new AQuery(mActivity, mLayout);
+        mAq = new AQuery(mActivity, mLayout);
         mGroups = (GroupList) groups;
 
         ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(mActivity,
@@ -98,7 +97,7 @@ public class GroupListFragment extends BaseFragment
                 }
 
                 final Group group = getItem(position);
-                AQuery aq = mGridAq.recycle(convertView);
+                AQuery aq = mAq.recycle(convertView);
 
                 aq.id(R.id.groupName).text(group.getName());
                 aq.id(R.id.numImagesText).text(""+group.getPhotoCount());
@@ -108,7 +107,7 @@ public class GroupListFragment extends BaseFragment
                 return convertView;
             }
         };
-        mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
+        mAq.id(R.id.list).adapter(adapter).itemClicked(this,
                 "itemClicked");
     }
 

@@ -2,6 +2,8 @@ package com.bourke.glimmr.fragments.base;
 
 import android.os.Bundle;
 
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +12,13 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.PhotoList;
-import android.util.Log;
-import com.bourke.glimmr.common.Constants;
 
 /**
  * Subclass of PhotoGridFragment to show a GridView of photos along with
@@ -27,8 +28,6 @@ public abstract class ProfilePhotoGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener, IUserReadyListener {
 
     private static final String TAG = "Glimmr/ProfilePhotoGridFragment";
-
-    private AQuery mAq;
 
     protected User mUser;
 

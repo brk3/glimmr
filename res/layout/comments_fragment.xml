@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
         android:src="@drawable/ic_social_send_now_light" />
 
 </RelativeLayout>

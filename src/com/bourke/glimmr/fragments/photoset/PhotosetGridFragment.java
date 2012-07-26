@@ -2,6 +2,7 @@ package com.bourke.glimmr.fragments.photoset;
 
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPhotosetTask;
+
 import com.googlecode.flickrjandroid.photosets.Photoset;
 
 public class PhotosetGridFragment extends PhotoGridFragment {

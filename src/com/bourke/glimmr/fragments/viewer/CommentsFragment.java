@@ -39,10 +39,7 @@ public final class CommentsFragment extends BaseFragment
     protected String TAG = "Glimmr/CommentsFragment";
 
     private Photo mPhoto = new Photo();
-    private AQuery mAq;
-
     private ArrayAdapter<Comment> mAdapter;
-
     private Map<String, UserItem> mUsers = Collections.synchronizedMap(
             new HashMap<String, UserItem>());
 
@@ -58,6 +55,7 @@ public final class CommentsFragment extends BaseFragment
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.comments_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
+        mAq.id(R.id.submitButton).clicked(this, "submitButtonClicked");
         return mLayout;
     }
 
@@ -66,6 +64,10 @@ public final class CommentsFragment extends BaseFragment
         super.startTask();
         Log.d(getLogTag(), "startTask()");
         new LoadCommentsTask(mActivity, this, mPhoto).execute(mOAuth);
+    }
+
+    public void submitButtonClicked(View view) {
+
     }
 
     public void itemClicked(AdapterView<?> parent, View view, int position,
@@ -84,11 +86,9 @@ public final class CommentsFragment extends BaseFragment
     public void onCommentsReady(List<Comment> comments) {
         Log.d(getLogTag(), "onCommentsReady, comments.size(): "
                 + comments.size());
-        mGridAq = new AQuery(mActivity, mLayout);
 
         mAdapter = new ArrayAdapter<Comment>(mActivity,
                 R.layout.comment_list_row, (ArrayList<Comment>) comments) {
-
             // TODO: implement ViewHolder pattern
             // TODO: add aquery delay loading for fling scrolling
             @Override
@@ -101,7 +101,7 @@ public final class CommentsFragment extends BaseFragment
                 }
 
                 final Comment comment = getItem(position);
-                AQuery aq = mGridAq.recycle(convertView);
+                AQuery aq = mAq.recycle(convertView);
 
                 // TODO: if your username replace with "You"
                 aq.id(R.id.userName).text(comment.getAuthorName());
@@ -123,11 +123,11 @@ public final class CommentsFragment extends BaseFragment
                                 AQuery.FADE_IN_NETWORK);
                     }
                 }
-
                 return convertView;
             }
         };
-        mGridAq.id(R.id.list).adapter(mAdapter).itemClicked(this,
+
+        mAq.id(R.id.list).adapter(mAdapter).itemClicked(this,
                 "itemClicked");
     }
 

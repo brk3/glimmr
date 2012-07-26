@@ -82,7 +82,7 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     public void onPhotosetsReady(Photosets photoSets) {
         Log.d(getLogTag(), "onPhotosetListReady");
-        mGridAq = new AQuery(mActivity, mLayout);
+        mAq = new AQuery(mActivity, mLayout);
         mPhotosets = new ArrayList(photoSets.getPhotosets());
 
         ArrayAdapter<Photoset> adapter = new ArrayAdapter<Photoset>(mActivity,
@@ -100,7 +100,7 @@ public class PhotosetsFragment extends BaseFragment
                 }
 
                 final Photoset photoset = mPhotosets.get(position);
-                AQuery aq = mGridAq.recycle(convertView);
+                AQuery aq = mAq.recycle(convertView);
 
                 aq.id(R.id.image_item).image(photoset.getPrimaryPhoto()
                         .getMediumUrl(), true, true, 0, 0, null,
@@ -111,8 +111,7 @@ public class PhotosetsFragment extends BaseFragment
                 return convertView;
             }
         };
-        mGridAq.id(R.id.list).adapter(adapter).itemClicked(this,
-                "itemClicked");
+        mAq.id(R.id.list).adapter(adapter).itemClicked(this, "itemClicked");
     }
 
     @Override
