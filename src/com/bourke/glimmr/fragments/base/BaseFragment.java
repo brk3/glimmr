@@ -17,12 +17,14 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.PhotoList;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  *
@@ -51,6 +53,7 @@ public abstract class BaseFragment extends SherlockFragment {
         Log.d(getLogTag(), "onCreate");
         mActivity = (BaseActivity) getSherlockActivity();
         mActionBar = mActivity.getSupportActionBar();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -100,6 +103,17 @@ public abstract class BaseFragment extends SherlockFragment {
                     .PREFS_NAME, Context.MODE_PRIVATE);
             mOAuth = BaseActivity.loadAccessToken(prefs);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                Log.d(getLogTag(), "refresh");
+                startTask();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     protected String getLogTag() {

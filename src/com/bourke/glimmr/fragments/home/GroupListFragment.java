@@ -25,6 +25,7 @@ import com.bourke.glimmr.tasks.LoadGroupsTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.GroupList;
+import com.googlecode.flickrjandroid.people.User;
 
 import java.util.ArrayList;
 
@@ -37,9 +38,12 @@ public class GroupListFragment extends BaseFragment
     private static final String TAG = "Glimmr/GroupListFragment";
 
     private GroupList mGroups = new GroupList();
+    private User mUser;
 
-    public static GroupListFragment newInstance() {
-        return new GroupListFragment();
+    public static GroupListFragment newInstance(User user) {
+        GroupListFragment newFragment = new GroupListFragment();
+        newFragment.mUser = user;
+        return newFragment;
     }
 
     @Override
@@ -66,6 +70,7 @@ public class GroupListFragment extends BaseFragment
                 group.getName());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_GROUPVIEWER_GROUP, group);
+        bundle.putSerializable(Constants.KEY_GROUPVIEWER_USER, mUser);
         Intent groupViewer = new Intent(mActivity, GroupViewerActivity.class);
         groupViewer.putExtras(bundle);
         mActivity.startActivity(groupViewer);
