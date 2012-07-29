@@ -76,6 +76,8 @@ public class PhotosetViewerActivity extends BaseActivity {
                     findViewById(R.id.indicator);
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
+
+                mActionBar.setSubtitle(mPhotoset.getTitle());
             } else {
                 Log.e(TAG, "Photoset/User from intent is null");
                 // TODO: show error / recovery

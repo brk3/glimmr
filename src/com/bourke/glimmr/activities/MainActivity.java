@@ -73,14 +73,14 @@ public class MainActivity extends BaseActivity {
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case PHOTOSTREAM_PAGE:
-                    return PhotoStreamGridFragment
-                        .newInstance(mOAuth.getUser());
+                    return PhotoStreamGridFragment.newInstance(
+                            mOAuth.getUser());
 
                 case CONTACTS_PAGE:
                     return ContactsGridFragment.newInstance(mOAuth.getUser());
 
                 case GROUPS_PAGE:
-                    return GroupListFragment.newInstance();
+                    return GroupListFragment.newInstance(mOAuth.getUser());
 
                 case SETS_PAGE:
                     return PhotosetsFragment.newInstance(mOAuth.getUser());

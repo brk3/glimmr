@@ -22,6 +22,8 @@ public class Constants {
 
     public static final String KEY_GROUPVIEWER_GROUP =
         "glimmr_groupviewer_group";
+    public static final String KEY_GROUPVIEWER_USER =
+        "glimmr_groupviewer_user";
 
     public static final String KEY_PHOTOSETVIEWER_PHOTOSET =
         "glimmr_photosetviewer_photoset";

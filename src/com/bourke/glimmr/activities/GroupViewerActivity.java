@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
 
 import com.androidquery.AQuery;
 
@@ -21,6 +20,7 @@ import com.bourke.glimmr.fragments.group.GroupPoolGridFragment;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.groups.Group;
+import com.googlecode.flickrjandroid.people.User;
 
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -38,6 +38,12 @@ public class GroupViewerActivity extends BaseActivity {
      * The Group this activity is concerned with
      */
     private Group mGroup = new Group();
+
+    /**
+     * User who's profile we're displaying, as distinct from the authorized
+     * user.
+     */
+    private User mUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +66,9 @@ public class GroupViewerActivity extends BaseActivity {
         if (bundle != null) {
             mGroup = (Group) bundle.getSerializable(Constants.
                     KEY_GROUPVIEWER_GROUP);
-            if (mGroup != null) {
+            mUser = (User) bundle.getSerializable(
+                    Constants.KEY_GROUPVIEWER_USER);
+            if (mGroup != null && mUser != null) {
                 Log.d(TAG, "Got group to view: " + mGroup.getName());
                 ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
                 GroupPagerAdapter adapter = new GroupPagerAdapter(
@@ -70,13 +78,15 @@ public class GroupViewerActivity extends BaseActivity {
                     findViewById(R.id.indicator);
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
+
+                mActionBar.setSubtitle(mGroup.getName());
             } else {
-                Log.e(TAG, "Group from intent is null");
+                Log.e(TAG, "Group/User from intent is null");
                 // TODO: show error / recovery
             }
         } else {
             Log.e(TAG, "Bundle is null, GroupViewerActivity requires an " +
-                    "intent containing a Group");
+                    "intent containing a Group and a User");
         }
     }
 
@@ -95,7 +105,7 @@ public class GroupViewerActivity extends BaseActivity {
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case GROUP_POOL_PAGE:
-                    return GroupPoolGridFragment.newInstance(mGroup);
+                    return GroupPoolGridFragment.newInstance(mGroup, mUser);
                 case GROUP_ABOUT_PAGE:
                     return GroupAboutFragment.newInstance();
             }
