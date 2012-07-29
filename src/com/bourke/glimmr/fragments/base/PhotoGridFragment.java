@@ -69,6 +69,8 @@ public abstract class PhotoGridFragment extends BaseFragment
         super.startTask();
         if (mUser != null) {
             new LoadUserTask(mActivity, this, mUser.getId()).execute(mOAuth);
+        } else {
+            Log.d("getLogTag", "Cannot start LoadUserTask, mUser is null");
         }
     }
 

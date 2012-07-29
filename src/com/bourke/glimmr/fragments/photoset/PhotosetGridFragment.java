@@ -3,6 +3,7 @@ package com.bourke.glimmr.fragments.photoset;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPhotosetTask;
 
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 
 public class PhotosetGridFragment extends PhotoGridFragment {
@@ -11,9 +12,11 @@ public class PhotosetGridFragment extends PhotoGridFragment {
 
     private Photoset mPhotoset = new Photoset();
 
-    public static PhotosetGridFragment newInstance(Photoset photoset) {
+    public static PhotosetGridFragment newInstance(Photoset photoset,
+            User user) {
         PhotosetGridFragment newFragment = new PhotosetGridFragment();
         newFragment.mPhotoset = photoset;
+        newFragment.mUser = user;
         return newFragment;
     }
 

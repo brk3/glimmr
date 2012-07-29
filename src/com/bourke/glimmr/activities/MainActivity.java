@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity {
                     return GroupListFragment.newInstance();
 
                 case SETS_PAGE:
-                    return PhotosetsFragment.newInstance();
+                    return PhotosetsFragment.newInstance(mOAuth.getUser());
             }
             return null;
         }
