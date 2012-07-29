@@ -28,6 +28,7 @@ import com.googlecode.flickrjandroid.photosets.Photosets;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.googlecode.flickrjandroid.people.User;
 
 /**
  *
@@ -38,9 +39,12 @@ public class PhotosetsFragment extends BaseFragment
     private static final String TAG = "Glimmr/PhotosetsFragment";
 
     private List<Photoset> mPhotosets = new ArrayList<Photoset>();
+    private User mUser;
 
-    public static PhotosetsFragment newInstance() {
-        return new PhotosetsFragment();
+    public static PhotosetsFragment newInstance(User user) {
+        PhotosetsFragment newFragment = new PhotosetsFragment();
+        newFragment.mUser = user;
+        return newFragment;
     }
 
     @Override
@@ -68,6 +72,7 @@ public class PhotosetsFragment extends BaseFragment
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_PHOTOSET,
                 photoset);
+        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_USER, mUser);
         Intent photosetViewer = new Intent(mActivity, PhotosetViewerActivity
                 .class);
         photosetViewer.putExtras(bundle);
