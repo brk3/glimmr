@@ -4,6 +4,7 @@ import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadContactsPhotosTask;
 
 import com.googlecode.flickrjandroid.people.User;
+import android.util.Log;
 
 public class ContactsGridFragment extends PhotoGridFragment {
 
@@ -18,7 +19,12 @@ public class ContactsGridFragment extends PhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        new LoadContactsPhotosTask(mActivity, this).execute(mOAuth);
+        if (mPhotos != null && !mPhotos.isEmpty()) {
+            Log.d(getLogTag(), "mPhotos occupied, not starting task");
+        } else {
+            Log.d(getLogTag(), "mPhotos null or empty, starting task");
+            new LoadContactsPhotosTask(mActivity, this).execute(mOAuth);
+        }
     }
 
     @Override
