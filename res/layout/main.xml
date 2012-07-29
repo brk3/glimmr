@@ -1,21 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <com.viewpagerindicator.TitlePageIndicator
-        android:id="@+id/indicator"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <com.viewpagerindicator.TitlePageIndicator
+            android:id="@+id/indicator"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/profile_banner"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        />
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/viewPager">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/text_screenname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/flickr_blue_transparent"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/image_profile"
+            android:paddingLeft="3dp"
+            android:textColor="@color/flickr_pink"
+            android:textSize="@dimen/text_size_medium" />
 
+        <!-- Filler, uses TextView so it's the same height as text_screenname
+             -->
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/flickr_blue_transparent"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/text_screenname"
+            android:textSize="@dimen/text_size_medium" />
+
+        <ImageView
+            android:id="@id/image_profile"
+            android:layout_width="70dip"
+            android:layout_height="70dip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:padding="3dip"
+            android:src="@drawable/ic_contact_picture"
+            android:scaleType="centerCrop" />
+    </RelativeLayout>
+
+</RelativeLayout>

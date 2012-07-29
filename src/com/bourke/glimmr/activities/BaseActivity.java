@@ -104,6 +104,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void updateUserOverlay(User user) {
+        mAq.id(R.id.image_profile).image(user.getBuddyIconUrl(),
+                Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
+                null, AQuery.FADE_IN_NETWORK);
+        mAq.id(R.id.text_screenname).text(user.getUsername());
+    }
+
     public void showProgressIcon(boolean show) {
         if (mMenuItemProgress != null && mMenuItemRefresh != null) {
             if(show) {

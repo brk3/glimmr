@@ -8,15 +8,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import android.util.Log;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.fragments.home.ContactsGridFragment;
 import com.bourke.glimmr.fragments.home.GroupListFragment;
 import com.bourke.glimmr.fragments.home.PhotosetsFragment;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
 import com.bourke.glimmr.R;
+import com.bourke.glimmr.tasks.LoadUserTask;
+
+import com.googlecode.flickrjandroid.people.User;
 
 import com.viewpagerindicator.TitlePageIndicator;
 

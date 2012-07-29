@@ -48,6 +48,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected int mPage = 1;
     protected boolean mMorePages = true;
     protected boolean mShowProfileOverlay = false;
+
     protected User mUser;
 
     @Override
@@ -85,10 +86,7 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.e(getLogTag(), "onUserReady: user is null");
             return;
         }
-        mAq.id(R.id.image_profile).image(user.getBuddyIconUrl(),
-                Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
-                null, AQuery.FADE_IN_NETWORK);
-        mAq.id(R.id.text_screenname).text(user.getUsername());
+        mActivity.updateUserOverlay(user);
     }
 
     /**

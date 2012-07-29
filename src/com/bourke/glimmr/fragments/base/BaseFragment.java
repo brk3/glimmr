@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import com.androidquery.AQuery;
 
@@ -35,7 +34,7 @@ public abstract class BaseFragment extends SherlockFragment {
     /**
      * It's useful to keep a reference to the parent activity in our fragments.
      */
-    protected SherlockFragmentActivity mActivity;
+    protected BaseActivity mActivity;
 
     /**
      * Should contain current user and valid access token for that user.
@@ -50,7 +49,7 @@ public abstract class BaseFragment extends SherlockFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(getLogTag(), "onCreate");
-        mActivity = getSherlockActivity();
+        mActivity = (BaseActivity) getSherlockActivity();
         mActionBar = mActivity.getSupportActionBar();
     }
 
