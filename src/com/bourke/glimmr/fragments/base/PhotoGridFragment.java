@@ -43,8 +43,8 @@ public abstract class PhotoGridFragment extends BaseFragment
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
     private EndlessGridAdapter mAdapter;
-    private PhotoList mPhotos = new PhotoList();
 
+    protected PhotoList mPhotos = new PhotoList();
     protected int mPage = 1;
     protected boolean mMorePages = true;
     protected boolean mShowProfileOverlay = false;

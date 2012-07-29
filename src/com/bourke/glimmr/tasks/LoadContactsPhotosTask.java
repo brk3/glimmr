@@ -49,7 +49,10 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
         User user = arg0[0].getUser();
 
         try {
-            int amountToFetch = 50;  // Max is 50
+            /* Flickr api doc says max allowed is 50, but seems to allow
+             * more... For some reason pagination doesn't seem to be an option.
+             */
+            int amountToFetch = 100;
             Set<String> extras = new HashSet<String>();
             extras.add("owner_name");
             extras.add("url_q");
