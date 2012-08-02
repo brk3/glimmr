@@ -7,8 +7,9 @@
 
     <ImageView
         android:id="@+id/image_item"
-        android:layout_width="200dp"
-        android:layout_height="133dp"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/gridview_item_size"
+        android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
 
     <RelativeLayout
