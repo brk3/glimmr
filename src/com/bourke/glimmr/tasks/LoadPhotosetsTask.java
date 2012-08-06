@@ -45,6 +45,10 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
                 token.getOauthToken(), token.getOauthTokenSecret());
         User user = arg0[0].getUser();
 
+        /* "Currently all sets are returned, but this behaviour may change in
+         * future."
+         * (http://www.flickr.com/services/api/flickr.photosets.getList.html)
+         */
         try {
             return f.getPhotosetsInterface().getList(user.getId());
         } catch (IOException e) {
