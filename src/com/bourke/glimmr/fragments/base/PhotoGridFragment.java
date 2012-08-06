@@ -3,6 +3,7 @@ package com.bourke.glimmr.fragments.base;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -49,6 +50,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected boolean mMorePages = true;
     protected boolean mShowProfileOverlay = false;
 
+    protected LoadUserTask mTask;
     protected User mUser;
 
     @Override
@@ -65,10 +67,19 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
+    }
+
+    @Override
     protected void startTask() {
         super.startTask();
         if (mUser != null) {
-            new LoadUserTask(mActivity, this, mUser.getId()).execute(mOAuth);
+            mTask = new LoadUserTask(mActivity, this, mUser.getId());
+            mTask.execute(mOAuth);
         } else {
             Log.d("getLogTag", "Cannot start LoadUserTask, mUser is null");
         }

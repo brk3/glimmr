@@ -62,4 +62,9 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
         }
         ((BaseActivity) mActivity).showProgressIcon(false);
     }
+
+    @Override
+    protected void onCancelled(final Photo result) {
+        Log.d(TAG, "onCancelled");
+    }
 }

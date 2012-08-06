@@ -1,9 +1,12 @@
 package com.bourke.glimmr.fragments.viewer;
 
+import android.content.Context;
+
 import android.os.Bundle;
 
 import android.util.Log;
 
+import android.view.inputmethod.InputMethodManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +37,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import android.view.inputmethod.InputMethodManager;
-import android.content.Context;
 
 public final class CommentsFragment extends BaseFragment
         implements ICommentsReadyListener, ICommentAddedListener,
@@ -43,6 +44,7 @@ public final class CommentsFragment extends BaseFragment
 
     protected String TAG = "Glimmr/CommentsFragment";
 
+    private LoadCommentsTask mTask;
     private Photo mPhoto = new Photo();
     private ArrayAdapter<Comment> mAdapter;
     private Map<String, UserItem> mUsers = Collections.synchronizedMap(
@@ -65,10 +67,20 @@ public final class CommentsFragment extends BaseFragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+            Log.d(TAG, "onPause: cancelling task");
+        }
+    }
+
+    @Override
     protected void startTask() {
         super.startTask();
         Log.d(getLogTag(), "startTask()");
-        new LoadCommentsTask(mActivity, this, mPhoto).execute(mOAuth);
+        mTask = new LoadCommentsTask(mActivity, this, mPhoto);
+        mTask.execute(mOAuth);
     }
 
     public void submitButtonClicked(View view) {

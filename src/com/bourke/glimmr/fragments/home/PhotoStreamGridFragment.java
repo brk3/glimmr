@@ -4,13 +4,16 @@ import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPhotostreamTask;
 
-import com.googlecode.flickrjandroid.photos.PhotoList;
 import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.PhotoList;
+import android.util.Log;
 
 public class PhotoStreamGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/PhotoStreamGridFragment";
+
+    private LoadPhotostreamTask mTask;
 
     public static PhotoStreamGridFragment newInstance(User user) {
         PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
@@ -31,7 +34,8 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        new LoadPhotostreamTask(mActivity, this, mUser, page).execute(mOAuth);
+        mTask = new LoadPhotostreamTask(mActivity, this, mUser, page);
+        mTask.execute(mOAuth);
     }
 
     @Override

@@ -39,6 +39,7 @@ public class GroupListFragment extends BaseFragment
 
     private GroupList mGroups = new GroupList();
     private User mUser;
+    private LoadGroupsTask mTask;
 
     public static GroupListFragment newInstance(User user) {
         GroupListFragment newFragment = new GroupListFragment();
@@ -47,9 +48,19 @@ public class GroupListFragment extends BaseFragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+            Log.d(TAG, "onPause: cancelling task");
+        }
+    }
+
+    @Override
     protected void startTask() {
         super.startTask();
-        new LoadGroupsTask(mActivity, this).execute(mOAuth);
+        mTask = new LoadGroupsTask(mActivity, this);
+        mTask.execute(mOAuth);
     }
 
     @Override
