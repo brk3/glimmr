@@ -62,4 +62,9 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
         }
         ((BaseActivity) mActivity).showProgressIcon(false);
     }
+
+    @Override
+    protected void onCancelled(final User result) {
+        Log.d(TAG, "onCancelled");
+    }
 }

@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import android.widget.TableRow.LayoutParams;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -10,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
@@ -22,9 +25,7 @@ import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.os.AsyncTask;
 
 public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {
@@ -33,6 +34,7 @@ public final class ExifInfoFragment extends BaseFragment
 
     private Photo mPhoto = new Photo();
     private AQuery mAq;
+    private LoadExifInfoTask mTask;
 
     public static ExifInfoFragment newInstance(Photo photo) {
         ExifInfoFragment photoFragment = new ExifInfoFragment();
@@ -53,7 +55,17 @@ public final class ExifInfoFragment extends BaseFragment
     protected void startTask() {
         super.startTask();
         Log.d(getLogTag(), "startTask()");
-        new LoadExifInfoTask(mActivity, this, mPhoto).execute(mOAuth);
+        mTask = new LoadExifInfoTask(mActivity, this, mPhoto);
+        mTask.execute(mOAuth);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+            Log.d(TAG, "onPause: cancelling task");
+        }
     }
 
     /**

@@ -10,6 +10,8 @@ public class ContactsGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/ContactsGridFragment";
 
+    private LoadContactsPhotosTask mTask;
+
     public static ContactsGridFragment newInstance(User user) {
         ContactsGridFragment newFragment = new ContactsGridFragment();
         newFragment.mUser = user;
@@ -23,7 +25,17 @@ public class ContactsGridFragment extends PhotoGridFragment {
             Log.d(getLogTag(), "mPhotos occupied, not starting task");
         } else {
             Log.d(getLogTag(), "mPhotos null or empty, starting task");
-            new LoadContactsPhotosTask(mActivity, this).execute(mOAuth);
+            mTask = new LoadContactsPhotosTask(mActivity, this);
+            mTask.execute(mOAuth);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+            Log.d(TAG, "onPause: cancelling task");
         }
     }
 

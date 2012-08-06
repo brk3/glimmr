@@ -55,6 +55,15 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+            Log.d(TAG, "onPause: cancelling task");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Log.d(getLogTag(), "onCreateView");

@@ -12,19 +12,19 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.PhotoList;
-import com.actionbarsherlock.view.MenuItem;
 
 /**
  *

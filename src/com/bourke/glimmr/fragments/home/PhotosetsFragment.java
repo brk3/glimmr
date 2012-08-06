@@ -23,12 +23,12 @@ import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadPhotosetsTask;
 
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photosets.Photosets;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.googlecode.flickrjandroid.people.User;
 
 /**
  *
@@ -38,6 +38,7 @@ public class PhotosetsFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotosetsFragment";
 
+    private LoadPhotosetsTask mTask;
     private List<Photoset> mPhotosets = new ArrayList<Photoset>();
     private User mUser;
 
@@ -50,7 +51,17 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        new LoadPhotosetsTask(mActivity, this).execute(mOAuth);
+        mTask = new LoadPhotosetsTask(mActivity, this);
+        mTask.execute(mOAuth);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+            Log.d(TAG, "onPause: cancelling task");
+        }
     }
 
     @Override
