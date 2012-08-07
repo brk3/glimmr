@@ -2,6 +2,7 @@ package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
 
+import com.bourke.glimmr.common.Constants;
 import android.util.Log;
 
 import com.googlecode.flickrjandroid.Flickr;
@@ -24,12 +25,14 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
     private IPhotoListReadyListener mListener;
     private Group mGroup;
     private Activity mActivity;
+    private int mPage;
 
     public LoadGroupPoolTask(Activity a, IPhotoListReadyListener listener,
-            Group group) {
+            Group group, int page) {
         mActivity = a;
         mListener = listener;
         mGroup = group;
+        mPage = page;
     }
 
     @Override
@@ -48,10 +51,11 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
         extras.add("url_q");
         extras.add("url_l");
         extras.add("views");
+        Log.d(TAG, "Fetching page " + mPage);
 
         try {
             return f.getPoolsInterface().getPhotos(mGroup.getId(), null,
-                    extras, 20, 1);
+                    extras, Constants.FETCH_PER_PAGE, mPage);
         } catch (Exception e) {
             e.printStackTrace();
         }

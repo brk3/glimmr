@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 
@@ -52,12 +53,11 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
         extras.add("url_q");
         extras.add("url_l");
         extras.add("views");
-        int perPage = 20;
         Log.d(TAG, "Fetching page " + mPage);
 
         try {
             return f.getPeopleInterface().getPhotos(mUser.getId(), extras,
-                    perPage, mPage);
+                    Constants.FETCH_PER_PAGE, mPage);
         } catch (Exception e) {
             e.printStackTrace();
         }

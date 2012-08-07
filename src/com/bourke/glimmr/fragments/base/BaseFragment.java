@@ -51,8 +51,11 @@ public abstract class BaseFragment extends SherlockFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(getLogTag(), "onCreate");
+
         mActivity = (BaseActivity) getSherlockActivity();
         mActionBar = mActivity.getSupportActionBar();
+
+        setRetainInstance(true);
         setHasOptionsMenu(true);
     }
 

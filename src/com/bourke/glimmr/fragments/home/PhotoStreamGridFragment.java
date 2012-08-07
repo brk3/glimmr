@@ -6,7 +6,6 @@ import com.bourke.glimmr.tasks.LoadPhotostreamTask;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.PhotoList;
-import android.util.Log;
 
 public class PhotoStreamGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
