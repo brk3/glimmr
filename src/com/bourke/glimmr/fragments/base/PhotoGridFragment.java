@@ -67,6 +67,14 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (mPhotos != null && !mPhotos.isEmpty()) {
+            mAq.id(android.R.id.empty).invisible();
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (mTask != null) {
@@ -90,6 +98,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         Log.d(getLogTag(), "onPhotosReady");
         mPhotos.addAll(photos);
         mAdapter.onDataReady();
+        mAq.id(android.R.id.empty).invisible();
     }
 
     @Override
