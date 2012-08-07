@@ -18,4 +18,6 @@
         android:listSelector="@null"
         android:gravity="center" />
 
+    <include layout="@layout/pending" android:id="@android:id/empty" />
+
 </RelativeLayout>
