@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="text_size_micro">12sp</dimen>
+    <dimen name="text_size_small">14dip</dimen>
+    <dimen name="text_size_medium">18dip</dimen>
+    <dimen name="text_size_large">22dip</dimen>
+
     <dimen name="gridview_item_size">150dp</dimen>
 </resources>
 
