@@ -177,13 +177,13 @@ public abstract class PhotoGridFragment extends BaseFragment
 
             /* Don't load image if flinging past it */
             if (aq.shouldDelay(position, convertView, parent,
-                        photo.getSmallUrl())) {
+                        photo.getLargeSquareUrl())) {
                 Bitmap placeholder = aq.getCachedImage(R.drawable.blank);
                 aq.id(holder.image).image(placeholder);
                 aq.id(holder.imageOverlay).invisible();
             } else {
                 aq.id(holder.imageOverlay).visible();
-                aq.id(holder.image).image(photo.getSmallUrl(),
+                aq.id(holder.image).image(photo.getLargeSquareUrl(),
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);
                 aq.id(holder.image).clicked(new View.OnClickListener() {
