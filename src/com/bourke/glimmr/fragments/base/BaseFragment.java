@@ -63,6 +63,9 @@ public abstract class BaseFragment extends SherlockFragment {
     public void onResume() {
         super.onResume();
         Log.d(getLogTag(), "onResume");
+
+        /* Update our reference to the activity as it may have changed */
+        mActivity = (BaseActivity) getSherlockActivity();
         startTask();
     }
 

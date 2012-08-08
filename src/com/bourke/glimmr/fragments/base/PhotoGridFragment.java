@@ -69,6 +69,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(getLogTag(), "onResume");
         if (mPhotos != null && !mPhotos.isEmpty()) {
             mAq.id(android.R.id.empty).invisible();
         }
@@ -85,12 +86,15 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        if (mUser != null) {
-            mTask = new LoadUserTask(mActivity, this, mUser.getId());
-            mTask.execute(mOAuth);
-        } else {
-            Log.d("getLogTag", "Cannot start LoadUserTask, mUser is null");
+
+        /* Default user info doesn't include the buddy icon url, so we need to
+         * fetch extra info about the user */
+        if (mUser == null) {
+            Log.d(getLogTag(), "Cannot start LoadUserTask, mUser is null");
+            return;
         }
+        mTask = new LoadUserTask(mActivity, this, mUser.getId());
+        mTask.execute(mOAuth);
     }
 
     @Override
