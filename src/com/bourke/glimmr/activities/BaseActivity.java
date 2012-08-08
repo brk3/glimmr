@@ -105,6 +105,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
     }
 
     public void updateUserOverlay(User user) {
+        Log.d(getLogTag(), "updateUserOverlay");
         mAq.id(R.id.image_profile).image(user.getBuddyIconUrl(),
                 Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
                 null, AQuery.FADE_IN_NETWORK);

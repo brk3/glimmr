@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(getLogTag(), "onCreate");
 
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));
