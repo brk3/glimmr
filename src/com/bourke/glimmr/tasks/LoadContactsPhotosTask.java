@@ -75,12 +75,10 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     @Override
     protected void onPostExecute(final PhotoList result) {
-        if (result != null) {
-            mListener.onPhotosReady(result);
-        } else {
-            Log.e(TAG, "error fetching contacts/photos, result is null");
-            // TODO: alert user / recover
+        if (result == null) {
+            Log.e(TAG, "Error fetching contacts photos, result is null");
         }
+        mListener.onPhotosReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
     }
 }
