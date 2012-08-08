@@ -100,9 +100,13 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onPhotosReady(PhotoList photos) {
         Log.d(getLogTag(), "onPhotosReady");
-        mPhotos.addAll(photos);
-        mAdapter.onDataReady();
-        mAq.id(android.R.id.empty).invisible();
+        if (photos == null) {
+            mAq.id(android.R.id.empty).text("No internet connection");
+        } else {
+            mPhotos.addAll(photos);
+            mAdapter.onDataReady();
+            mAq.id(android.R.id.empty).invisible();
+        }
     }
 
     @Override
