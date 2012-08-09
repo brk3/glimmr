@@ -3,11 +3,11 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@android:color/white">
+    android:layout_height="fill_parent">
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    <GridView
         android:id="@+id/gridview"
+        android:background="@android:color/white"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:columnWidth="@dimen/gridview_item_size"
@@ -18,6 +18,13 @@
         android:listSelector="@null"
         android:gravity="center" />
 
-    <include layout="@layout/pending" android:id="@android:id/empty" />
+    <include
+        layout="@layout/no_connection"
+        android:id="@+id/no_connection_layout"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/pending"
+        android:id="@android:id/empty" />
 
 </RelativeLayout>

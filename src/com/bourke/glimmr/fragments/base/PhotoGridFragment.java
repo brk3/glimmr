@@ -56,8 +56,8 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(R.layout
-                .standard_gridview_fragment, container, false);
+        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
+                container, false);
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
         mAq = new AQuery(mActivity, mLayout);
@@ -100,13 +100,17 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onPhotosReady(PhotoList photos) {
         Log.d(getLogTag(), "onPhotosReady");
+
         if (photos == null) {
-            mAq.id(android.R.id.empty).text("No internet connection");
+            mAq.id(R.id.no_connection_layout).visible();
+            mAq.id(R.id.gridview).gone();
         } else {
+            mAq.id(R.id.no_connection_layout).gone();
+            mAq.id(R.id.gridview).visible();
             mPhotos.addAll(photos);
             mAdapter.onDataReady();
-            mAq.id(android.R.id.empty).invisible();
         }
+        mAq.id(android.R.id.empty).invisible();
     }
 
     @Override

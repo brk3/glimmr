@@ -81,4 +81,9 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
         mListener.onPhotosReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
     }
+
+    @Override
+    protected void onCancelled(final PhotoList result) {
+        Log.d(TAG, "onCancelled");
+    }
 }

@@ -55,12 +55,14 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
 
     @Override
     protected void onPostExecute(final String result) {
-        if (result != null) {
-            mListener.onCommentAdded(result);
-        } else {
+        if (result == null) {
             Log.e(TAG, "Error adding comment, result is null");
-            // TODO: alert user / recover
         }
-        // TODO: hide progress icon
+        mListener.onCommentAdded(result);
+    }
+
+    @Override
+    protected void onCancelled(final String result) {
+        Log.d(TAG, "onCancelled");
     }
 }

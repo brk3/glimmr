@@ -63,12 +63,10 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
 
     @Override
     protected void onPostExecute(final Photosets result) {
-        if (result != null) {
-            mListener.onPhotosetsReady(result);
-        } else {
+        if (result == null) {
             Log.e(TAG, "Error fetching photosets, result is null");
-            // TODO: alert user / recover
         }
+        mListener.onPhotosetsReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
     }
 }

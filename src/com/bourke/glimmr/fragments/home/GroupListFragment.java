@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.GroupViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IGroupListReadyListener;
@@ -66,8 +67,9 @@ public class GroupListFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(R.layout.list_fragment,
-                container, false);
+        mLayout = (RelativeLayout) inflater.inflate(
+                R.layout.group_list_fragment, container, false);
+        mAq = new AQuery(mActivity, mLayout);
         return mLayout;
     }
 
@@ -95,40 +97,50 @@ public class GroupListFragment extends BaseFragment
     @Override
     public void onGroupListReady(GroupList groups) {
         Log.d(getLogTag(), "onGroupListReady");
-        mAq = new AQuery(mActivity, mLayout);
-        mGroups = (GroupList) groups;
 
-        ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(mActivity,
-                R.layout.group_list_row, (ArrayList<Group>)groups) {
-
-            // TODO: implement ViewHolder pattern
-            // TODO: add aquery delay loading for fling scrolling
-            @Override
-            public View getView(final int position, View convertView,
-                    ViewGroup parent) {
-
-                if (convertView == null) {
-                    convertView = mActivity.getLayoutInflater().inflate(
-                            R.layout.group_list_row, null);
-                }
-
-                final Group group = getItem(position);
-                AQuery aq = mAq.recycle(convertView);
-
-                aq.id(R.id.groupName).text(group.getName());
-                aq.id(R.id.numImagesText).text(""+group.getPhotoCount());
-                aq.id(R.id.groupIcon).image(group.getBuddyIconUrl(),
-                        true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
-
-                return convertView;
-            }
-        };
-        mAq.id(R.id.list).adapter(adapter).itemClicked(this,
-                "itemClicked");
+        if (groups == null || groups.isEmpty()) {
+            mAq.id(R.id.no_connection_layout).visible();
+            mAq.id(R.id.list).gone();
+        } else {
+            mGroups = (GroupList) groups;
+            GroupListAdapter adapter = new GroupListAdapter(mActivity,
+                    R.layout.group_list_row, (ArrayList<Group>)groups);
+            mAq.id(R.id.list).adapter(adapter).itemClicked(this,
+                    "itemClicked");
+        }
+        mAq.id(android.R.id.empty).invisible();
     }
 
     @Override
     protected String getLogTag() {
         return TAG;
+    }
+
+    class GroupListAdapter extends ArrayAdapter<Group> {
+        public GroupListAdapter(BaseActivity activity, int textViewResourceId,
+                ArrayList<Group> objects) {
+            super(activity, textViewResourceId, objects);
+        }
+
+        // TODO: implement ViewHolder pattern
+        // TODO: add aquery delay loading for fling scrolling
+        @Override
+        public View getView(final int position, View convertView,
+                ViewGroup parent) {
+            if (convertView == null) {
+                convertView = mActivity.getLayoutInflater().inflate(
+                        R.layout.group_list_row, null);
+            }
+
+            final Group group = getItem(position);
+            AQuery aq = mAq.recycle(convertView);
+
+            aq.id(R.id.groupName).text(group.getName());
+            aq.id(R.id.numImagesText).text(""+group.getPhotoCount());
+            aq.id(R.id.groupIcon).image(group.getBuddyIconUrl(),
+                    true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
+
+            return convertView;
+        }
     }
 }

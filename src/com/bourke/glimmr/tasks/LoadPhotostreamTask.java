@@ -66,12 +66,15 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     @Override
     protected void onPostExecute(final PhotoList result) {
-        if (result != null) {
-            mListener.onPhotosReady(result);
-        } else {
-            Log.e(TAG, "error fetching photolist, result is null");
-            // TODO: alert user / recover
+        if (result == null) {
+            Log.e(TAG, "Error fetching photolist, result is null");
         }
+        mListener.onPhotosReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
+    }
+
+    @Override
+    protected void onCancelled(final PhotoList result) {
+        Log.d(TAG, "onCancelled");
     }
 }

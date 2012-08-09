@@ -54,12 +54,10 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
 
     @Override
     protected void onPostExecute(final Photo result) {
-        if (result != null) {
-            mListener.onPhotoInfoReady(result);
-        } else {
+        if (result == null) {
             Log.e(TAG, "Error fetching photo info, result is null");
-            // TODO: alert user / recover
         }
+        mListener.onPhotoInfoReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
     }
 

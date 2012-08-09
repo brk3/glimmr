@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
@@ -68,7 +69,8 @@ public class PhotosetsFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(R.layout
-                .standard_list_fragment, container, false);
+                .photoset_list_fragment, container, false);
+        mAq = new AQuery(mActivity, mLayout);
         return mLayout;
     }
 
@@ -98,40 +100,53 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     public void onPhotosetsReady(Photosets photoSets) {
         Log.d(getLogTag(), "onPhotosetListReady");
-        mAq = new AQuery(mActivity, mLayout);
-        mPhotosets = new ArrayList(photoSets.getPhotosets());
 
-        ArrayAdapter<Photoset> adapter = new ArrayAdapter<Photoset>(mActivity,
-                R.layout.photoset_list_item, (ArrayList<Photoset>)mPhotosets) {
-
-            // TODO: implement ViewHolder pattern
-            // TODO: add aquery delay loading for fling scrolling
-            @Override
-            public View getView(final int position, View convertView,
-                    ViewGroup parent) {
-
-                if (convertView == null) {
-                    convertView = mActivity.getLayoutInflater().inflate(
-                            R.layout.photoset_list_item, null);
-                }
-
-                final Photoset photoset = mPhotosets.get(position);
-                AQuery aq = mAq.recycle(convertView);
-
-                aq.id(R.id.image_item).image(photoset.getPrimaryPhoto()
-                        .getMediumUrl(), true, true, 0, 0, null,
-                        AQuery.FADE_IN_NETWORK);
-                aq.id(R.id.set_name_text).text(photoset.getTitle());
-                aq.id(R.id.num_images_text).text(""+photoset.getPhotoCount());
-
-                return convertView;
-            }
-        };
-        mAq.id(R.id.list).adapter(adapter).itemClicked(this, "itemClicked");
+        if (photoSets == null) {
+            mAq.id(R.id.no_connection_layout).visible();
+            mAq.id(R.id.list).gone();
+        } else {
+            mPhotosets = new ArrayList(photoSets.getPhotosets());
+            SetListAdapter adapter = new SetListAdapter(
+                    mActivity, R.layout.photoset_list_item,
+                    (ArrayList<Photoset>)mPhotosets);
+            mAq.id(R.id.list).adapter(adapter).itemClicked(this,
+                    "itemClicked");
+        }
+        mAq.id(android.R.id.empty).invisible();
     }
 
     @Override
     protected String getLogTag() {
         return TAG;
+    }
+
+    class SetListAdapter extends ArrayAdapter<Photoset> {
+        public SetListAdapter(BaseActivity activity, int textViewResourceId,
+                ArrayList<Photoset> objects) {
+            super(activity, textViewResourceId, objects);
+        }
+
+        // TODO: implement ViewHolder pattern
+        // TODO: add aquery delay loading for fling scrolling
+        @Override
+        public View getView(final int position, View convertView,
+                ViewGroup parent) {
+
+            if (convertView == null) {
+                convertView = mActivity.getLayoutInflater().inflate(
+                        R.layout.photoset_list_item, null);
+            }
+
+            final Photoset photoset = mPhotosets.get(position);
+            AQuery aq = mAq.recycle(convertView);
+
+            aq.id(R.id.image_item).image(photoset.getPrimaryPhoto()
+                    .getMediumUrl(), true, true, 0, 0, null,
+                    AQuery.FADE_IN_NETWORK);
+            aq.id(R.id.set_name_text).text(photoset.getTitle());
+            aq.id(R.id.num_images_text).text(""+photoset.getPhotoCount());
+
+            return convertView;
+        }
     }
 }
