@@ -35,7 +35,7 @@
             android:id="@+id/text_screenname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/flickr_blue"
+            android:background="@drawable/tiled_noise_flickr_blue"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/image_profile"
             android:paddingLeft="3dp"
@@ -47,7 +47,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/flickr_blue"
+            android:background="@drawable/noise_flickr_blue"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/text_screenname"
             android:textSize="@dimen/text_size_medium" />
