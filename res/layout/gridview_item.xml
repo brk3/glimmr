@@ -15,7 +15,7 @@
     <RelativeLayout
         android:id="@+id/imageOverlay"
         android:layout_width="fill_parent"
-        android:layout_height="25dp"
+        android:layout_height="32dp"
         android:layout_gravity="bottom"
         android:clickable="true"
         android:background="@drawable/gridview_item_overlay">
