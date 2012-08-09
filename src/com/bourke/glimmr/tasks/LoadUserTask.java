@@ -54,12 +54,10 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
 
     @Override
     protected void onPostExecute(final User result) {
-        if (result != null) {
-            mListener.onUserReady(result);
-        } else {
+        if (result == null) {
             Log.e(TAG, "Error fetching user info, result is null");
-            // TODO: alert user / recover
         }
+        mListener.onUserReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
     }
 

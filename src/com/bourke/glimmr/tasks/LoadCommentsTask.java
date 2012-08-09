@@ -60,12 +60,15 @@ public class LoadCommentsTask
 
     @Override
     protected void onPostExecute(final List<Comment> result) {
-        if (result != null) {
-            mListener.onCommentsReady(result);
-        } else {
+        if (result == null) {
             Log.e(TAG, "Error fetching comments, result is null");
-            // TODO: alert user / recover
         }
+        mListener.onCommentsReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
+    }
+
+    @Override
+    protected void onCancelled(final List<Comment> result) {
+        Log.d(TAG, "onCancelled");
     }
 }

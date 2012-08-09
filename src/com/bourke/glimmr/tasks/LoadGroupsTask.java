@@ -60,14 +60,18 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
 
     @Override
     protected void onPostExecute(final Collection<Group> result) {
-        if (result != null) {
-            GroupList ret = new GroupList();
-            ret.addAll(result);
-            mListener.onGroupListReady(ret);
-        } else {
+        GroupList ret = new GroupList();
+        if (result == null) {
             Log.e(TAG, "Error fetching groups, result is null");
-            // TODO: alert user / recover
+        } else {
+            ret.addAll(result);
         }
+        mListener.onGroupListReady(ret);
         ((BaseActivity) mActivity).showProgressIcon(false);
+    }
+
+    @Override
+    protected void onCancelled(final Collection<Group> result) {
+        Log.d(TAG, "onCancelled");
     }
 }

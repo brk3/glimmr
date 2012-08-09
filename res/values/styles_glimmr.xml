@@ -126,7 +126,7 @@
     <style name="glimmr_TitlePageIndicator" parent="Widget">
         <item name="android:background">@drawable/bg_tint</item>
         <item name="android:textColor">@color/flickr_pink</item>
-        <item name="android:textSize">@dimen/text_size_micro</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="footerColor">@color/flickr_blue</item>
         <item name="footerLineHeight">1dp</item>
         <item name="footerIndicatorHeight">0dp</item>

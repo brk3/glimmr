@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Glimmr</string>
-
     <string name="exif_info">Exif Info</string>
     <string name="comments">Comments and Favs</string>
-
     <string name="menu_refresh">Refresh</string>
     <string name="menu_favorite">Mark as Favorite</string>
     <string name="menu_view_comments">Comments</string>
     <string name="menu_view_exif">View Exif Info</string>
-
     <string name="edit_text_hint">Add your comment…</string>
+    <string name="no_connection">No internet connection</string>
 </resources>

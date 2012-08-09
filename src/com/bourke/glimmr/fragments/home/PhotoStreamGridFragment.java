@@ -40,7 +40,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
     @Override
     public void onPhotosReady(PhotoList photos) {
         super.onPhotosReady(photos);
-        if (photos.isEmpty()) {
+        if (photos != null && photos.isEmpty()) {
             mMorePages = false;
         }
     }
