@@ -5,6 +5,8 @@ public class Constants {
     /* File and mem cache tuning params */
     public static final boolean USE_FILE_CACHE = true;
     public static final boolean USE_MEMORY_CACHE = true;
+    public static final int CACHE_TRIM_TRIGGER_SIZE = 8000000;  // 8MB
+    public static final int CACHE_TRIM_TARGET_SIZE = 5000000;  // 5MB
 
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;

@@ -16,6 +16,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
+import com.androidquery.util.AQUtility;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
@@ -49,6 +50,20 @@ public abstract class BaseActivity extends SherlockFragmentActivity
                 Context.MODE_PRIVATE);
         mOAuth = loadAccessToken(prefs);
         mActionBar = getSupportActionBar();
+    }
+
+    /**
+     * Clean the file cache when root activity exits.
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(getLogTag(), "onDestroy");
+        if (isTaskRoot()) {
+            Log.d(getLogTag(), "Trimming file cache");
+            AQUtility.cleanCacheAsync(this, Constants.CACHE_TRIM_TRIGGER_SIZE,
+                   Constants.CACHE_TRIM_TARGET_SIZE);
+        }
     }
 
     public static OAuth loadAccessToken(SharedPreferences prefs) {
