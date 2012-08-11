@@ -1,9 +1,11 @@
 package com.bourke.glimmr.fragments.base;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.R;
@@ -31,6 +34,9 @@ import com.commonsware.cwac.endless.EndlessAdapter;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base Fragment that contains a GridView of photos.
@@ -46,11 +52,17 @@ public abstract class PhotoGridFragment extends BaseFragment
     private EndlessGridAdapter mAdapter;
 
     protected PhotoList mPhotos = new PhotoList();
+
+    protected List<Photo> mNewPhotos = new ArrayList<Photo>();
+
     protected int mPage = 1;
+
     protected boolean mMorePages = true;
+
     protected boolean mShowProfileOverlay = false;
 
     protected LoadUserTask mTask;
+
     protected User mUser;
 
     @Override
@@ -107,6 +119,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         } else {
             mAq.id(R.id.no_connection_layout).gone();
             mAq.id(R.id.gridview).visible();
+            checkForNewPhotos(photos);
             mPhotos.addAll(photos);
             mAdapter.onDataReady();
         }
@@ -121,6 +134,46 @@ public abstract class PhotoGridFragment extends BaseFragment
             return;
         }
         mActivity.updateUserOverlay(user);
+    }
+
+    public abstract String getNewestPhotoId();
+    public abstract void storeNewestPhotoId(Photo photo);
+
+    /**
+     * If we have a most recent id stored, see if it exists in the photo
+     * list we just fetched. If so, all photos before that id in the list
+     * are said to be new.
+     */
+    protected void checkForNewPhotos(PhotoList photos) {
+        if (photos == null || photos.isEmpty()) {
+            Log.d(getLogTag(), "checkForNewPhotos: photos null or empty");
+            return;
+        }
+
+        mNewPhotos = new ArrayList<Photo>();
+        SharedPreferences prefs = mActivity.getSharedPreferences(Constants
+                .PREFS_NAME, Context.MODE_PRIVATE);
+
+        String newestId = getNewestPhotoId();
+        if (newestId != null) {
+            for (int i=0; i < photos.size(); i++) {
+                Photo p = photos.get(i);
+                if (p.getId().equals(newestId)) {
+                    mNewPhotos = photos.subList(0, i);
+                    Log.d(getLogTag(), String.format("Found %d new photos",
+                                mNewPhotos.size()));
+                    break;
+                }
+            }
+        }
+
+        if (mNewPhotos != null && !mNewPhotos.isEmpty()) {
+            storeNewestPhotoId(mNewPhotos.get(0));
+        } else {
+            Log.d(getLogTag(), "mNewPhotos null or empty, using most recent " +
+                    "fetched photo as newest");
+            storeNewestPhotoId(photos.get(0));
+        }
     }
 
     /**
@@ -175,6 +228,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                     .findViewById(R.id.imageOverlay);
                 holder.image = (ImageView) convertView.findViewById(
                         R.id.image_item);
+                holder.imageNewRibbon = (ImageView) convertView.findViewById(
+                        R.id.imageNewRibbon);
                 holder.ownerText = (TextView) convertView.findViewById(
                         R.id.ownerText);
                 holder.viewsText = (TextView) convertView.findViewById(
@@ -194,6 +249,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                 aq.id(holder.image).image(placeholder);
                 aq.id(holder.imageOverlay).invisible();
             } else {
+                /* Fetch the main photo */
                 aq.id(holder.imageOverlay).visible();
                 aq.id(holder.image).image(photo.getLargeSquareUrl(),
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
@@ -219,6 +275,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                     }
                 });
 
+                /* Set the overlay views and owner info */
                 aq.id(holder.viewsText).text("Views: " + String.valueOf(photo
                             .getViews()));
                 if (photo.getOwner() != null) {
@@ -232,6 +289,16 @@ public abstract class PhotoGridFragment extends BaseFragment
                         }
                     });
                 }
+
+                /* Show ribbon in corner if photo is new */
+                mAq.id(holder.imageNewRibbon).invisible();
+                if (mNewPhotos != null) {
+                    for (Photo p : mNewPhotos) {
+                        if (p.getId().equals(photo.getId())) {
+                            mAq.id(holder.imageNewRibbon).visible();
+                        }
+                    }
+                }
             }
 
             return convertView;
@@ -240,6 +307,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         class ViewHolder {
             RelativeLayout imageOverlay;
             ImageView image;
+            ImageView imageNewRibbon;
             TextView ownerText;
             TextView viewsText;
         }

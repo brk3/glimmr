@@ -1,10 +1,17 @@
 package com.bourke.glimmr.fragments.photoset;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import android.util.Log;
+
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPhotosetTask;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 public class PhotosetGridFragment extends PhotoGridFragment {
 
@@ -24,6 +31,26 @@ public class PhotosetGridFragment extends PhotoGridFragment {
     protected void startTask() {
         super.startTask();
         new LoadPhotosetTask(mActivity, this, mPhotoset).execute(mOAuth);
+    }
+
+    @Override
+    public String getNewestPhotoId() {
+        SharedPreferences prefs = mActivity.getSharedPreferences(Constants
+                .PREFS_NAME, Context.MODE_PRIVATE);
+        String newestId = prefs.getString(
+                Constants.NEWEST_PHOTOSET_PHOTO_ID, null);
+        return newestId;
+    }
+
+    @Override
+    public void storeNewestPhotoId(Photo photo) {
+        SharedPreferences prefs = mActivity.getSharedPreferences(Constants
+                .PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.NEWEST_PHOTOSET_PHOTO_ID, photo.getId());
+        editor.commit();
+        Log.d(getLogTag(), "Updated most recent photoset photo id to " +
+                photo.getId());
     }
 
     @Override
