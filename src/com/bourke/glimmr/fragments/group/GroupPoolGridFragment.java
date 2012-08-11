@@ -1,13 +1,18 @@
 package com.bourke.glimmr.fragments.group;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadGroupPoolTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
-import android.os.Bundle;
+import android.util.Log;
 
 public class GroupPoolGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
@@ -39,6 +44,26 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         super.startTask();
         mTask = new LoadGroupPoolTask(mActivity, this, mGroup, page);
         mTask.execute(mOAuth);
+    }
+
+    @Override
+    public String getNewestPhotoId() {
+        SharedPreferences prefs = mActivity.getSharedPreferences(Constants
+                .PREFS_NAME, Context.MODE_PRIVATE);
+        String newestId = prefs.getString(Constants.NEWEST_GROUPPOOL_PHOTO_ID,
+                null);
+        return newestId;
+    }
+
+    @Override
+    public void storeNewestPhotoId(Photo photo) {
+        SharedPreferences prefs = mActivity.getSharedPreferences(Constants
+                .PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.NEWEST_GROUPPOOL_PHOTO_ID, photo.getId());
+        editor.commit();
+        Log.d(getLogTag(), "Updated most recent grouppool photo id to " +
+                photo.getId());
     }
 
     @Override

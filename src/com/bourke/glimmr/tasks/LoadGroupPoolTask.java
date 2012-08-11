@@ -1,9 +1,15 @@
 package com.bourke.glimmr.tasks;
 
+import android.app.Activity;
+
 import android.os.AsyncTask;
 
-import com.bourke.glimmr.common.Constants;
 import android.util.Log;
+
+import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.groups.Group;
@@ -13,10 +19,6 @@ import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import java.util.HashSet;
 import java.util.Set;
-import android.app.Activity;
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.FlickrHelper;
 
 public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
 

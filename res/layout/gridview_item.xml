@@ -12,6 +12,14 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
 
+    <ImageView
+        android:id="@+id/imageNewRibbon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:visibility="invisible"
+        android:src="@drawable/ribbon_corner" />
+
     <RelativeLayout
         android:id="@+id/imageOverlay"
         android:layout_width="fill_parent"

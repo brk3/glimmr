@@ -2,6 +2,9 @@ package com.bourke.glimmr.common;
 
 public class Constants {
 
+    /* Global app prefs */
+    public static final String PREFS_NAME = "glimmr_prefs";
+
     /* File and mem cache tuning params */
     public static final boolean USE_FILE_CACHE = true;
     public static final boolean USE_MEMORY_CACHE = true;
@@ -11,12 +14,8 @@ public class Constants {
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;
 
-    /* OAuth callback uri */
+    /* OAuth preferences */
     public static final String CALLBACK_SCHEME = "glimmr-oauth-callback";
-
-    /* Global app prefs */
-    public static final String PREFS_NAME = "glimmr_prefs";
-
     public static final String KEY_OAUTH_TOKEN = "glimmr_oauthtoken";
     public static final String KEY_TOKEN_SECRET = "glimmr_tokensecret";
     public static final String KEY_USER_NAME = "glimmr_username";
@@ -41,6 +40,22 @@ public class Constants {
         "glimmr_photosetviewer_photoset";
     public static final String KEY_PHOTOSETVIEWER_USER =
         "glimmr_photosetviewer_user";
+
+    /* Contacts fragment state */
+    public static final String NEWEST_CONTACT_PHOTO_ID =
+        "glimmr_newest_contact_photo_id";
+
+    /* Photostream fragment state */
+    public static final String NEWEST_PHOTOSTREAM_PHOTO_ID =
+        "glimmr_newest_photostream_photo_id";
+
+    /* GroupPool fragment state */
+    public static final String NEWEST_GROUPPOOL_PHOTO_ID =
+        "glimmr_newest_grouppool_photo_id";
+
+    /* Photoset fragment state */
+    public static final String NEWEST_PHOTOSET_PHOTO_ID =
+        "glimmr_newest_photoset_photo_id";
 
     /* Exif dialog state */
     public static final String KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO =
