@@ -3,7 +3,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.bourke.glimmr"
       android:versionCode="1"
-      android:versionName="1.0">
+      android:versionName="1.0"
+      android:installLocation="auto">
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -12,6 +13,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:label="@string/app_name"
@@ -58,6 +61,18 @@
         <activity android:name=".activities.CommentsDialogActivity"
             android:label="@string/comments"
             android:theme="@style/Theme.Sherlock.Light.Dialog" />
+
+		<receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED"/>
+			</intent-filter>
+
+			<meta-data
+				android:name="com.commonsware.cwac.wakeful"
+				android:resource="@xml/wakeful"/>
+		</receiver>
+
+        <service android:name=".services.AppService" />
 
     </application>
 </manifest>

@@ -66,6 +66,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         }
     }
 
+    /**
+     * Have to pass prefs as they can't be loaded from a static context
+     */
     public static OAuth loadAccessToken(SharedPreferences prefs) {
         String oauthTokenString = prefs.getString(Constants.KEY_OAUTH_TOKEN,
                 null);

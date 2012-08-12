@@ -14,16 +14,14 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.fragments.home.ContactsGridFragment;
 import com.bourke.glimmr.fragments.home.GroupListFragment;
 import com.bourke.glimmr.fragments.home.PhotosetsFragment;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.tasks.LoadUserTask;
+import com.bourke.glimmr.services.AppListener;
 
-import com.googlecode.flickrjandroid.people.User;
+import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -48,6 +46,8 @@ public class MainActivity extends BaseActivity {
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
+            WakefulIntentService.scheduleAlarms(
+                    new AppListener(), this, false);
             setContentView(R.layout.main);
             mAq = new AQuery(this);
             initViewPager();
