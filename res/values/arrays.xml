@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="pref_notification_intervals">
+        <item>@string/fifteen_mins</item>
+        <item>@string/thirty_mins</item>
+        <item>@string/one_hour</item>
+        <item>@string/four_hours</item>
+        <item>@string/once_a_day</item>
+    </string-array>
+</resources>
+

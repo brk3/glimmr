@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_category_notifications">
+
+        <CheckBoxPreference
+            android:key="enableNotifications"
+            android:title="@string/pref_checkbox_enable"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="enableContactsNotifications"
+            android:title="@string/pref_checkbox_enable_contacts"
+            android:dependency="enableNotifications"
+            android:defaultValue="true"
+            android:summary="@string/pref_checkbox_enable_contacts_summary" />
+
+        <ListPreference
+            android:key="notificationIntervals"
+            android:entries="@array/pref_notification_intervals"
+            android:dependency="enableNotifications"
+            android:title="@string/pref_notification_intervals_title"
+            android:entryValues="@array/pref_notification_intervals"
+            android:defaultValue="@string/one_hour" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
