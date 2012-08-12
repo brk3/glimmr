@@ -3,6 +3,8 @@ package com.bourke.glimmr.fragments.group;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import android.util.Log;
+
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
@@ -12,7 +14,6 @@ import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
-import android.util.Log;
 
 public class GroupPoolGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {

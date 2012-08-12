@@ -7,6 +7,7 @@ import com.googlecode.flickrjandroid.groups.pools.PoolsInterface;
 import com.googlecode.flickrjandroid.interestingness.InterestingnessInterface;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
+import com.googlecode.flickrjandroid.people.PeopleInterface;
 import com.googlecode.flickrjandroid.photos.comments.CommentsInterface;
 import com.googlecode.flickrjandroid.photosets.PhotosetsInterface;
 import com.googlecode.flickrjandroid.photos.PhotosInterface;
@@ -14,7 +15,6 @@ import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.REST;
 
 import javax.xml.parsers.ParserConfigurationException;
-import com.googlecode.flickrjandroid.people.PeopleInterface;
 
 public final class FlickrHelper {
 

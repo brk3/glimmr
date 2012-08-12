@@ -12,7 +12,6 @@ import com.bourke.glimmr.event.Events.ICommentAddedListener;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
-import com.googlecode.flickrjandroid.photos.comments.Comment;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
