@@ -64,4 +64,10 @@ public class Constants {
     /* Comments dialog state */
     public static final String COMMENTS_DIALOG_ACTIVITY_PHOTO =
         "glimmr_comments_dialog_activity_photo";
+
+    /* AppService prefs */
+    public static final String NEW_PHOTOS_SERVICE_INTERVAL =
+        "glimmr_new_photos_service_interval";
+    public static final String KEY_APP_SERVICE_OAUTH =
+        "glimmr_key_app_service_oauth";
 }

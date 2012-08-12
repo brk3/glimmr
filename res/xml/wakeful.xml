@@ -1,0 +1,2 @@
+<WakefulIntentService
+  listener="com.bourke.glimmr.services.AppListener" />
