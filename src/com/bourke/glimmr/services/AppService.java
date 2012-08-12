@@ -1,5 +1,9 @@
 package com.bourke.glimmr.services;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,8 +11,10 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.activities.MainActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.R;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
@@ -17,6 +23,8 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
+
+import com.jakewharton.notificationcompat2.NotificationCompat2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +50,41 @@ public class AppService extends WakefulIntentService {
             return;
         }
 
+        PhotoList photos = fetchPhotos(oauth);
+        List<Photo> newPhotos = checkForNewPhotos(photos);
+        if (newPhotos != null && !newPhotos.isEmpty()) {
+            showNotification(newPhotos);
+        }
+    }
+
+    protected void showNotification(List<Photo> newPhotos) {
+        final NotificationManager mgr = (NotificationManager)
+            getSystemService(NOTIFICATION_SERVICE);
+        Notification newContactsPhotos = getNotification(
+                "Your Flickr contacts have posted new photos",
+                newPhotos.size()+" New Photos", "");
+        mgr.notify(Constants.NOTIFICATION_NEW_CONTACTS_PHOTOS,
+                newContactsPhotos);
+    }
+
+    private Notification getNotification(String tickerText, String titleText,
+            String contextText) {
+        return new NotificationCompat2.Builder(this)
+            .setSmallIcon(R.drawable.ic_launcher)
+            .setTicker(tickerText)
+            .setContentTitle(titleText)
+            .setContentText(contextText)
+            .setContentIntent(getPendingIntent())
+            .build();
+    }
+
+    private PendingIntent getPendingIntent() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return PendingIntent.getActivity(this, 0, i, 0);
+    }
+
+    protected PhotoList fetchPhotos(OAuth oauth) {
         OAuthToken token = oauth.getToken();
         Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
@@ -57,12 +100,8 @@ public class AppService extends WakefulIntentService {
                     extras, justFriends, singlePhoto, includeSelf);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
-
-        List<Photo> newPhotos = checkForNewPhotos(photos);
-        // TODO: if new photos, pop notification
-        // ...
+        return photos;
     }
 
     protected List<Photo> checkForNewPhotos(PhotoList photos) {
@@ -108,6 +147,7 @@ public class AppService extends WakefulIntentService {
                 Context.MODE_PRIVATE);
         String newestId = prefs.getString(Constants.NEWEST_CONTACT_PHOTO_ID,
                 null);
+        Log.d(TAG, String.format("getNewestPhotoId: newest is %s", newestId));
         return newestId;
     }
 
