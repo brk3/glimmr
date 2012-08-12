@@ -25,7 +25,6 @@ import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
-import android.os.AsyncTask;
 
 public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {

@@ -13,11 +13,11 @@ import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
+import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.googlecode.flickrjandroid.photosets.Photoset;
 
 public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
 

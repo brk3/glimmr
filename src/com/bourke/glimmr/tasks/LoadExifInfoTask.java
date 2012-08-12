@@ -14,10 +14,10 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Exif;
-
-import java.util.Collection;
 import com.googlecode.flickrjandroid.photos.Photo;
+
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class LoadExifInfoTask
         extends AsyncTask<OAuth, Void, Collection<Exif>> {

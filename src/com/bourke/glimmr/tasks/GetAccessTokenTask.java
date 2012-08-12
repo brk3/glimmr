@@ -2,12 +2,12 @@ package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
 
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
+
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthInterface;
-import android.app.Activity;
-import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
-import com.bourke.glimmr.common.FlickrHelper;
 
 /**
  * Gets an access token from Flickr once authorised to access the user's
