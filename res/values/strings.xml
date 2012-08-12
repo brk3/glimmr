@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Glimmr</string>
-    <string name="exif_info">Exif Info</string>
     <string name="comments">Comments and Favs</string>
-    <string name="menu_refresh">Refresh</string>
+    <string name="edit_text_hint">Add your comment…</string>
+    <string name="exif_info">Exif Info</string>
     <string name="menu_favorite">Mark as Favorite</string>
+    <string name="menu_preferences">Preferences</string>
+    <string name="menu_refresh">Refresh</string>
     <string name="menu_view_comments">Comments</string>
     <string name="menu_view_exif">View Exif Info</string>
-    <string name="edit_text_hint">Add your comment…</string>
     <string name="no_connection">No internet connection</string>
+    <string name="pref_category_notifications">Notifications</string>
+    <string name="pref_checkbox_enable">Enable Notifications</string>
+    <string name="pref_checkbox_enable_contacts">Contacts Uploads</string>
+    <string name="pref_checkbox_enable_contacts_summary">Notify when contacts upload new photos</string>
+    <string name="pref_notification_intervals_title">Sync Interval</string>
+    <string name="set_preferences">Set Preferences</string>
+    <string name="fifteen_mins">15 minutes</string>
+    <string name="thirty_mins">30 minutes</string>
+    <string name="one_hour">1 hour</string>
+    <string name="four_hours">4 hours</string>
+    <string name="once_a_day">Once a day</string>
 </resources>

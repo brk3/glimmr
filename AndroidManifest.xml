@@ -62,6 +62,10 @@
             android:label="@string/comments"
             android:theme="@style/Theme.Sherlock.Light.Dialog" />
 
+        <activity
+            android:name=".activities.PreferencesActivity"
+            android:label="@string/set_preferences" />
+
 		<receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED"/>

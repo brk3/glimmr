@@ -118,6 +118,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity
                 startActivity(parentActivityIntent);
                 finish();
                 return true;
+
+            case R.id.menu_preferences:
+                Intent preferencesActivity = new Intent(getBaseContext(),
+                        PreferencesActivity.class);
+                startActivity(preferencesActivity);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
