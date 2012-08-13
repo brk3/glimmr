@@ -60,20 +60,25 @@ public class AppService extends WakefulIntentService {
     protected void showNotification(List<Photo> newPhotos) {
         final NotificationManager mgr = (NotificationManager)
             getSystemService(NOTIFICATION_SERVICE);
-        Notification newContactsPhotos = getNotification(
-                "Your Flickr contacts have posted new photos",
-                newPhotos.size()+" New Photos", "");
+        String tickerText = "Your Flickr contacts have posted new photos";
+        String titleText = newPhotos.size()+" New photos";
+        String contentText = "from your contacts.";
+        Notification newContactsPhotos = getNotification(tickerText, titleText,
+                contentText);
         mgr.notify(Constants.NOTIFICATION_NEW_CONTACTS_PHOTOS,
                 newContactsPhotos);
     }
 
-    private Notification getNotification(String tickerText, String titleText,
-            String contextText) {
+    private Notification getNotification(final String tickerText,
+            final String titleText, final String contentText) {
+        // TODO: make notification sound/vibrate configurable in preferences
         return new NotificationCompat2.Builder(this)
-            .setSmallIcon(R.drawable.ic_launcher)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setAutoCancel(true)
+            .setDefaults(Notification.DEFAULT_ALL)
             .setTicker(tickerText)
             .setContentTitle(titleText)
-            .setContentText(contextText)
+            .setContentText(contentText)
             .setContentIntent(getPendingIntent())
             .build();
     }
@@ -145,8 +150,8 @@ public class AppService extends WakefulIntentService {
     protected String getNewestPhotoId() {
         SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
                 Context.MODE_PRIVATE);
-        String newestId = prefs.getString(Constants.NEWEST_CONTACT_PHOTO_ID,
-                null);
+        String newestId = prefs.getString(
+                Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID, null);
         Log.d(TAG, String.format("getNewestPhotoId: newest is %s", newestId));
         return newestId;
     }
@@ -155,7 +160,8 @@ public class AppService extends WakefulIntentService {
         SharedPreferences prefs = getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.NEWEST_CONTACT_PHOTO_ID, photo.getId());
+        editor.putString(Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
+                photo.getId());
         editor.commit();
         Log.d(TAG, "Updated most recent contact photo id to " + photo.getId());
     }

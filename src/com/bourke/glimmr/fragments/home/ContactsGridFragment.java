@@ -60,6 +60,10 @@ public class ContactsGridFragment extends PhotoGridFragment {
                 .PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Constants.NEWEST_CONTACT_PHOTO_ID, photo.getId());
+        /* NOTE: Important, update the notification's latest id also so we
+         * don't notify for already viewed photos */
+        editor.putString(Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
+                photo.getId());
         editor.commit();
         Log.d(getLogTag(), "Updated most recent contact photo id to " +
                 photo.getId());
