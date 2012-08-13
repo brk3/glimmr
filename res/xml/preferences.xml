@@ -22,8 +22,8 @@
             android:entries="@array/pref_notification_intervals"
             android:dependency="enableNotifications"
             android:title="@string/pref_notification_intervals_title"
-            android:entryValues="@array/pref_notification_intervals"
-            android:defaultValue="@string/one_hour" />
+            android:entryValues="@array/pref_notification_intervals_values"
+            android:defaultValue="60" />
 
     </PreferenceCategory>
 

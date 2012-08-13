@@ -71,6 +71,12 @@ public class Constants {
     public static final String KEY_APP_SERVICE_OAUTH =
         "glimmr_key_app_service_oauth";
 
+    /* PreferencesActivity */
+    public static final String KEY_INTERVALS_LIST_PREFERENCE
+        = "notificationIntervals";
+
     /* Notification ids */
     public static final int NOTIFICATION_NEW_CONTACTS_PHOTOS = 0;
+    public static final String NOTIFICATION_NEWEST_CONTACT_PHOTO_ID =
+        "glimmr_notification_newest_contact_photo_id";
 }
