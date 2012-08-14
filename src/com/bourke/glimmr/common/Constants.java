@@ -49,6 +49,10 @@ public class Constants {
     public static final String NEWEST_PHOTOSTREAM_PHOTO_ID =
         "glimmr_newest_photostream_photo_id";
 
+    /* FavoritesGridFragment */
+    public static final String NEWEST_FAVORITES_PHOTO_ID =
+        "glimmr_newest_favorites_photo_id";
+
     /* GroupPool fragment state */
     public static final String NEWEST_GROUPPOOL_PHOTO_ID =
         "glimmr_newest_grouppool_photo_id";

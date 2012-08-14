@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 
@@ -27,12 +28,14 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
     private IPhotoListReadyListener mListener;
     private User mUser;
     private Activity mActivity;
+    private int mPage;
 
     public LoadFavoritesTask(Activity a, IPhotoListReadyListener listener,
-            User user) {
+            User user, int page) {
         mActivity = a;
         mListener = listener;
         mUser = user;
+        mPage = page;
     }
 
     @Override
@@ -48,17 +51,16 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
                 token.getOauthToken(), token.getOauthTokenSecret());
         Date minFavDate = null;
         Date maxFavDate = null;
-        int perPage = 20;
-        int page = 1;
         Set<String> extras = new HashSet<String>();
         extras.add("owner_name");
         extras.add("url_q");
         extras.add("url_l");
         extras.add("views");
+        Log.d(TAG, "Fetching page " + mPage);
 
         try {
             return f.getFavoritesInterface().getList(mUser.getId(), minFavDate,
-                    maxFavDate, perPage, page, extras);
+                    maxFavDate, Constants.FETCH_PER_PAGE, mPage, extras);
         } catch (Exception e) {
             e.printStackTrace();
         }

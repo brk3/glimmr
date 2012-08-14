@@ -16,6 +16,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
+import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.people.User;
@@ -37,7 +38,7 @@ public class ProfileActivity extends BaseActivity {
     //TODO: add to R.strings
     public static final String[] CONTENT =
         //new String[] { "Photos", "Favorites", "Sets", "Contacts" };
-        new String[] { "Photos" };
+        new String[] { "Photos", "Favorites" };
 
     /**
      * User who's profile we're displaying, as distinct from the authorized
@@ -105,8 +106,7 @@ public class ProfileActivity extends BaseActivity {
                     return PhotoStreamGridFragment.newInstance(mUser);
 
                 case FAVORITES_STREAM_PAGE:
-                    // TODO
-                    return PhotoStreamGridFragment.newInstance(mUser);
+                    return FavoritesGridFragment.newInstance(mUser);
 
                 case SETS_PAGE:
                     // TODO
