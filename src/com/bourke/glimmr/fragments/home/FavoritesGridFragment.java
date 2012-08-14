@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.group;
+package com.bourke.glimmr.fragments.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,26 +6,20 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadGroupPoolTask;
+import com.bourke.glimmr.tasks.LoadFavoritesTask;
 
-import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
 
-public class GroupPoolGridFragment extends PhotoGridFragment
-        implements IPhotoListReadyListener {
+public class FavoritesGridFragment extends PhotoGridFragment {
 
-    private static final String TAG = "Glimmr/GroupPoolGridFragment";
+    private static final String TAG = "Glimmr/FavoritesGridFragment";
 
-    private Group mGroup;
-    private LoadGroupPoolTask mTask;
+    private LoadFavoritesTask mTask;
 
-    public static GroupPoolGridFragment newInstance(Group group, User user) {
-        GroupPoolGridFragment newFragment = new GroupPoolGridFragment();
-        newFragment.mGroup = group;
+    public static FavoritesGridFragment newInstance(User user) {
+        FavoritesGridFragment newFragment = new FavoritesGridFragment();
         newFragment.mUser = user;
         return newFragment;
     }
@@ -43,16 +37,8 @@ public class GroupPoolGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadGroupPoolTask(mActivity, this, mGroup, page);
+        mTask = new LoadFavoritesTask(mActivity, this, mUser, page);
         mTask.execute(mOAuth);
-    }
-
-    @Override
-    public void onPhotosReady(PhotoList photos) {
-        super.onPhotosReady(photos);
-        if (photos != null && photos.isEmpty()) {
-            mMorePages = false;
-        }
     }
 
     @Override
@@ -60,7 +46,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
         String newestId = prefs.getString(
-                Constants.NEWEST_GROUPPOOL_PHOTO_ID, null);
+                Constants.NEWEST_FAVORITES_PHOTO_ID, null);
         return newestId;
     }
 
@@ -69,9 +55,9 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.NEWEST_GROUPPOOL_PHOTO_ID, photo.getId());
+        editor.putString(Constants.NEWEST_FAVORITES_PHOTO_ID, photo.getId());
         editor.commit();
-        Log.d(getLogTag(), "Updated most recent grouppool photo id to " +
+        Log.d(getLogTag(), "Updated most recent favorites photo id to " +
                 photo.getId());
     }
 
