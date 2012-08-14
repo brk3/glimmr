@@ -25,6 +25,7 @@ import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
+import android.view.Gravity;
 
 public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {
@@ -47,6 +48,7 @@ public final class ExifInfoFragment extends BaseFragment
         mLayout = (ScrollView) inflater.inflate(
                 R.layout.exif_info_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
+        mAq.id(R.id.progressIndicator).visible();
         return mLayout;
     }
 
@@ -72,32 +74,26 @@ public final class ExifInfoFragment extends BaseFragment
      * the main TableView.
      */
     private void addKeyValueRow(String key, String value) {
+        TableLayout tl = (TableLayout)
+            mLayout.findViewById(R.id.extraExifInfo);
         /* Create the TableRow */
-        TableLayout tl = (TableLayout) mLayout.findViewById(R.id.tableLayout1);
         TableRow tr = new TableRow(mActivity);
         TableRow.LayoutParams tableRowParams = new TableRow.LayoutParams(
                     TableLayout.LayoutParams.FILL_PARENT,
                     TableLayout.LayoutParams.WRAP_CONTENT);
         /* left, top, right, bottom */
-        tableRowParams.setMargins(5, 5, 5, 0);
+        tableRowParams.setMargins(5, 5, 5, 5);
         tr.setLayoutParams(tableRowParams);
 
         TextView textViewKey =  new TextView(mActivity);
-        LayoutParams textViewKeyParams = new LayoutParams(
-                    TableRow.LayoutParams.FILL_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
-        textViewKey.setLayoutParams(textViewKeyParams);
-        textViewKey.setTextColor(R.color.text_light);
         textViewKey.setText(key);
         tr.addView(textViewKey);
 
         TextView textViewValue =  new TextView(mActivity);
-        LayoutParams textViewValueParams = new LayoutParams(
-                    TableRow.LayoutParams.FILL_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
-        textViewValueParams.span = 2;
-        textViewValue.setLayoutParams(textViewValueParams);
         textViewValue.setText(value);
+        textViewValue.setTextColor(
+                mActivity.getResources().getColor(R.color.flickr_pink));
+        textViewValue.setGravity(Gravity.RIGHT);
         tr.addView(textViewValue);
 
         /* Add the row to the table */
@@ -107,6 +103,7 @@ public final class ExifInfoFragment extends BaseFragment
     public void onExifInfoReady(List<Exif> exifInfo) {
         Log.d(getLogTag(), "onExifInfoReady, exifInfo.size(): "
                 + exifInfo.size());
+        mAq.id(R.id.progressIndicator).gone();
         for (Exif e : exifInfo) {
             if (e.getTag().equals("ISO")) {
                 mAq.id(R.id.textViewISOValue).text(e.getRaw());
@@ -114,20 +111,17 @@ public final class ExifInfoFragment extends BaseFragment
                 mAq.id(R.id.textViewShutterValue).text(e.getRaw());
             } else if (e.getTag().equals("FNumber")) {
                 mAq.id(R.id.textViewApertureValue).text(e.getRaw());
-            } else if (e.getTag().equals("Model")) {
-                addKeyValueRow("Camera", e.getRaw());
-            } else if (e.getTag().equals("FocalLength")) {
-                addKeyValueRow(e.getLabel(), e.getRaw());
-            } else if (e.getTag().equals("ExposureProgram")) {
-                addKeyValueRow(e.getLabel(), e.getRaw());
-            } else if (e.getTag().equals("DateTimeOriginal")) {
-                addKeyValueRow(e.getLabel(), e.getRaw());
-            } else if (e.getTag().equals("Quality")) {
-                addKeyValueRow(e.getLabel(), e.getRaw());
-            } else if (e.getTag().equals("LensType")) {
-                addKeyValueRow(e.getLabel(), e.getRaw());
-            } else if (e.getTag().equals("Software")) {
-                addKeyValueRow(e.getLabel(), e.getRaw());
+            } else {
+               /* Convert camel case key to space delimited:
+                * http://stackoverflow.com/a/2560017/663370 */
+                String rawTag = e.getTag();
+                String tagConverted = rawTag.replaceAll(
+                    String.format("%s|%s|%s",
+                        "(?<=[A-Z])(?=[A-Z][a-z])",
+                        "(?<=[^A-Z])(?=[A-Z])",
+                        "(?<=[A-Za-z])(?=[^A-Za-z])"), " "
+                    );
+                addKeyValueRow(tagConverted, e.getRaw());
             }
         }
     }

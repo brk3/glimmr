@@ -13,7 +13,7 @@
 
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/tableLayout"
+            android:id="@+id/headerExifInfo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_light_grey_stripe"
@@ -40,6 +40,13 @@
                     android:gravity="center"
                     android:text="APERTURE" />
             </TableRow>
+
+            <ProgressBar
+                android:id="@+id/progressIndicator"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:visibility="gone"
+                android:gravity="center" />
 
             <TableRow>
                 <TextView
@@ -68,7 +75,7 @@
 
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/tableLayout1"
+            android:id="@+id/extraExifInfo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
