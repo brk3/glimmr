@@ -25,11 +25,14 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
     private static final String TAG = "Glimmr/LoadPhotosetsTask";
 
     private IPhotosetsReadyListener mListener;
+    private User mUser;
     private Activity mActivity;
 
-    public LoadPhotosetsTask(Activity a, IPhotosetsReadyListener listener) {
+    public LoadPhotosetsTask(Activity a, IPhotosetsReadyListener listener,
+            User user) {
         mActivity = a;
         mListener = listener;
+        mUser = user;
     }
 
     @Override
@@ -43,14 +46,13 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
         OAuthToken token = arg0[0].getToken();
         Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                 token.getOauthToken(), token.getOauthTokenSecret());
-        User user = arg0[0].getUser();
 
         /* "Currently all sets are returned, but this behaviour may change in
          * future."
          * (http://www.flickr.com/services/api/flickr.photosets.getList.html)
          */
         try {
-            return f.getPhotosetsInterface().getList(user.getId());
+            return f.getPhotosetsInterface().getList(mUser.getId());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (FlickrException e) {

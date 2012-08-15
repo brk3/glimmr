@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.viewer;
 
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -136,9 +135,11 @@ public final class PhotoViewerFragment extends BaseFragment
         if (on) {
             mAq.id(R.id.textViewTitle).visible();
             mAq.id(R.id.textViewAuthor).visible();
+            mLayout.setSystemUiVisibility(View.STATUS_BAR_VISIBLE);
         } else {
             mAq.id(R.id.textViewTitle).invisible();
             mAq.id(R.id.textViewAuthor).invisible();
+            mLayout.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
         }
     }
 

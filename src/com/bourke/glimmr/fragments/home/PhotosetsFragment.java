@@ -2,6 +2,8 @@ package com.bourke.glimmr.fragments.home;
 
 import android.content.Intent;
 
+import android.graphics.Bitmap;
+
 import android.os.Bundle;
 
 import android.util.Log;
@@ -12,7 +14,9 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
@@ -52,7 +56,7 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        mTask = new LoadPhotosetsTask(mActivity, this);
+        mTask = new LoadPhotosetsTask(mActivity, this, mUser);
         mTask.execute(mOAuth);
     }
 
@@ -121,32 +125,66 @@ public class PhotosetsFragment extends BaseFragment
     }
 
     class SetListAdapter extends ArrayAdapter<Photoset> {
+
         public SetListAdapter(BaseActivity activity, int textViewResourceId,
                 ArrayList<Photoset> objects) {
             super(activity, textViewResourceId, objects);
         }
 
-        // TODO: implement ViewHolder pattern
-        // TODO: add aquery delay loading for fling scrolling
         @Override
         public View getView(final int position, View convertView,
                 ViewGroup parent) {
+            ViewHolder holder;
 
             if (convertView == null) {
                 convertView = mActivity.getLayoutInflater().inflate(
                         R.layout.photoset_list_item, null);
+                holder = new ViewHolder();
+                holder.imageItem = (ImageView)
+                    convertView.findViewById(R.id.imageItem);
+                holder.imageOverlay = (RelativeLayout)
+                    convertView.findViewById(R.id.imageOverlay);
+                holder.photosetNameText = (TextView)
+                    convertView.findViewById(R.id.photosetNameText);
+                holder.numImagesInSetText = (TextView)
+                    convertView.findViewById(R.id.numImagesInSetText);
+                holder.numImagesIcon = (ImageView)
+                    convertView.findViewById(R.id.numImagesIcon);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
             }
 
             final Photoset photoset = mPhotosets.get(position);
             AQuery aq = mAq.recycle(convertView);
 
-            aq.id(R.id.image_item).image(photoset.getPrimaryPhoto()
-                    .getMediumUrl(), true, true, 0, 0, null,
-                    AQuery.FADE_IN_NETWORK);
-            aq.id(R.id.set_name_text).text(photoset.getTitle());
-            aq.id(R.id.num_images_text).text(""+photoset.getPhotoCount());
+            /* Don't load image if flinging past it */
+            if (aq.shouldDelay(position, convertView, parent,
+                        photoset.getPrimaryPhoto().getMediumUrl())) {
+                Bitmap placeholder = aq.getCachedImage(R.drawable.blank);
+                aq.id(holder.imageItem).image(placeholder);
+                aq.id(holder.imageOverlay).invisible();
+            } else {
+                /* Fetch the set cover photo */
+                aq.id(holder.imageOverlay).visible();
+                aq.id(holder.imageItem).image(
+                        photoset.getPrimaryPhoto().getMediumUrl(),
+                        Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
+                        0, 0, null, AQuery.FADE_IN_NETWORK);
 
+                aq.id(holder.photosetNameText).text(photoset.getTitle());
+                aq.id(holder.numImagesInSetText).text(
+                        ""+photoset.getPhotoCount());
+            }
             return convertView;
+        }
+
+        class ViewHolder {
+            ImageView imageItem;
+            ImageView numImagesIcon;
+            TextView photosetNameText;
+            TextView numImagesInSetText;
+            RelativeLayout imageOverlay;
         }
     }
 }
