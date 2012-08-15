@@ -6,20 +6,20 @@
     android:layout_height="fill_parent">
 
     <ImageView
-        android:id="@+id/image_item"
+        android:id="@+id/imageItem"
         android:layout_width="fill_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop" />
 
     <RelativeLayout
-        android:id="@+id/image_overlay"
+        android:id="@+id/imageOverlay"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/transparent_black">
 
         <TextView
-            android:id="@+id/set_name_text"
+            android:id="@+id/photosetNameText"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_marginLeft="2dp"
@@ -30,7 +30,7 @@
             android:textColor="@android:color/white" />
 
         <TextView
-            android:id="@+id/num_images_text"
+            android:id="@+id/numImagesInSetText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
@@ -40,11 +40,11 @@
             android:layout_alignParentBottom="true" />
 
         <ImageView
-            android:id="@+id/num_images_icon"
+            android:id="@+id/numImagesIcon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@id/num_images_text"
+            android:layout_toLeftOf="@id/numImagesInSetText"
             android:layout_alignParentBottom="true"
             android:src="@drawable/ic_content_picture_dark" />
 
