@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Custom action bar title text.  Required to use a custom font.  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingRight="10dip">
+
+    <TextView
+        android:id="@+id/abTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-10dp"
+        android:layout_centerVertical="true"
+        android:scrollHorizontally="true"
+        android:textSize="26sp"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>
