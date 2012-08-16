@@ -79,7 +79,7 @@ public class GroupViewerActivity extends BaseActivity {
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
 
-                mActionBar.setSubtitle(mGroup.getName());
+                //setActionBarSubtitle(mGroup.getName());
             } else {
                 Log.e(TAG, "Group/User from intent is null");
                 // TODO: show error / recovery

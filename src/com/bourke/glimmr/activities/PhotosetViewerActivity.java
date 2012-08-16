@@ -1,6 +1,9 @@
 package com.bourke.glimmr.activities;
 
+import android.content.Context;
 import android.content.Intent;
+
+import android.graphics.Typeface;
 
 import android.os.Bundle;
 
@@ -9,6 +12,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
+
+import android.view.LayoutInflater;
+import android.view.View;
+
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -30,6 +38,8 @@ public class PhotosetViewerActivity extends BaseActivity {
     public static final int PHOTOSET_PAGE = 0;
 
     public static final String[] CONTENT = new String[] { "Set" };
+
+    private TextView mAbSubtitle;
 
     /**
      * The Photoset this activity is concerned with
@@ -76,7 +86,7 @@ public class PhotosetViewerActivity extends BaseActivity {
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
 
-                mActionBar.setSubtitle(mPhotoset.getTitle());
+                setActionBarSubtitle(mPhotoset.getTitle());
             } else {
                 Log.e(TAG, "Photoset/User from intent is null");
                 // TODO: show error / recovery
@@ -91,6 +101,24 @@ public class PhotosetViewerActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         handleIntent(intent);
+    }
+
+    @Override
+    protected void initActionBar() {
+        LayoutInflater inflator = (LayoutInflater)
+            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.action_bar_subtitle_item, null);
+        mAbTitle = (TextView) v.findViewById(R.id.abTitle);
+        mAbSubtitle = (TextView) v.findViewById(R.id.abSubtitle);
+        Typeface typeface = Typeface.createFromAsset(getAssets(),
+                Constants.FONT_SHADOWSINTOLIGHT);
+        mAbTitle.setTypeface(typeface);
+        mAbTitle.setText(getTitle().toString());
+        mActionBar.setCustomView(v);
+    }
+
+    private void setActionBarSubtitle(String subTitle) {
+        mAbSubtitle.setText(subTitle);
     }
 
     class GroupPagerAdapter extends FragmentPagerAdapter {
