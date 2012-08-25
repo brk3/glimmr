@@ -34,14 +34,16 @@ public class MainActivity extends BaseActivity {
     public static final int SETS_PAGE = 2;
     public static final int GROUPS_PAGE = 3;
 
-    //TODO: add to R.strings
-    public static final String[] CONTENT =
-        new String[] { "Contacts", "You", "Sets", "Groups" };
+    public static String[] CONTENT;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(getLogTag(), "onCreate");
+
+        CONTENT = new String[] { getString(R.string.contacts),
+                getString(R.string.you), getString(R.string.sets),
+                getString(R.string.groups) };
 
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));

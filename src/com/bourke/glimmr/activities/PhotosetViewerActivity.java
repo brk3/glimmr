@@ -37,7 +37,7 @@ public class PhotosetViewerActivity extends BaseActivity {
 
     public static final int PHOTOSET_PAGE = 0;
 
-    public static final String[] CONTENT = new String[] { "Set" };
+    public static String[] CONTENT;
 
     private TextView mAbSubtitle;
 
@@ -55,6 +55,8 @@ public class PhotosetViewerActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CONTENT = new String[] { getString(R.string.sets) };
 
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));

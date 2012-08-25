@@ -31,8 +31,7 @@ public class GroupViewerActivity extends BaseActivity {
     public static final int GROUP_POOL_PAGE = 0;
     public static final int GROUP_ABOUT_PAGE = 1;
 
-    //TODO: add to R.strings
-    public static final String[] CONTENT = new String[] { "Pool", "About" };
+    public static String[] CONTENT;
 
     /**
      * The Group this activity is concerned with
@@ -48,6 +47,9 @@ public class GroupViewerActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CONTENT = new String[] { getString(R.string.pool),
+            getString(R.string.about) };
 
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));
