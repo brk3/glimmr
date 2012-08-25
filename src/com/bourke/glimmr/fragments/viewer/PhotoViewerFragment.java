@@ -132,14 +132,21 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     public void toggleOverlayVisibility(boolean on) {
+        boolean honeycombOrGreater =
+            (android.os.Build.VERSION.SDK_INT >=
+             android.os.Build.VERSION_CODES.HONEYCOMB);
         if (on) {
             mAq.id(R.id.textViewTitle).visible();
             mAq.id(R.id.textViewAuthor).visible();
-            mLayout.setSystemUiVisibility(View.STATUS_BAR_VISIBLE);
+            if (honeycombOrGreater) {
+                mLayout.setSystemUiVisibility(View.STATUS_BAR_VISIBLE);
+            }
         } else {
             mAq.id(R.id.textViewTitle).invisible();
             mAq.id(R.id.textViewAuthor).invisible();
-            mLayout.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
+            if (honeycombOrGreater) {
+                mLayout.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
+            }
         }
     }
 

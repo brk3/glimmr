@@ -19,7 +19,7 @@
 <resources>
 
     <style name="Theme.glimmr"
-            parent="@style/Theme.Sherlock.Light.DarkActionBar">
+            parent="@style/Theme.Sherlock.Light.DarkActionBar.ForceOverflow">
 
         <item name="actionBarItemBackground">
              @drawable/selectable_background_glimmr</item>
