@@ -8,4 +8,4 @@
     android:gravity="center_vertical"
     android:paddingLeft="6dip"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:text="Please wait..." />
+    android:text="@string/please_wait" />

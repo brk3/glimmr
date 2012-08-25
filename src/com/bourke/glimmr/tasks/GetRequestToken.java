@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IRequestTokenReadyListener;
+import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.auth.Permission;
 import com.googlecode.flickrjandroid.Flickr;
@@ -46,7 +47,7 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         mProgressDialog = ProgressDialog.show(mActivity, "",
-                "Just a moment...");
+                mActivity.getString(R.string.just_a_moment));
         mProgressDialog.setCanceledOnTouchOutside(true);
         mProgressDialog.setCancelable(true);
         mProgressDialog.setOnCancelListener(new OnCancelListener() {

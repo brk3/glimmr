@@ -36,10 +36,7 @@ public class ProfileActivity extends BaseActivity {
     public static final int SETS_PAGE = 2;
     public static final int CONTACTS_PAGE = 3;
 
-    //TODO: add to R.strings
-    public static final String[] CONTENT =
-        //new String[] { "Photos", "Favorites", "Sets", "Contacts" };
-        new String[] { "Photos", "Favorites", "Sets" };
+    public static String[] CONTENT;
 
     /**
      * User who's profile we're displaying, as distinct from the authorized
@@ -50,6 +47,10 @@ public class ProfileActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CONTENT = new String[] { getString(R.string.photos),
+            getString(R.string.favorites),
+            getString(R.string.sets) };//, getString(R.string.contacts) };
 
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));

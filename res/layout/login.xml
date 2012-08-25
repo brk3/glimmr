@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textSize="35sp"
         android:textColor="@color/text_faded"
-        android:text="Welcome\nto\nGlimmr."
+        android:text="@string/welcome"
         android:paddingBottom="40dp"
         android:paddingTop="100dip" />
     <!--
@@ -33,6 +33,6 @@
         android:layout_below="@id/textWelcome"
         android:layout_alignLeft="@id/textWelcome"
         android:onClick="loginUser"
-        android:text="Login" />
+        android:text="@string/login" />
 
 </RelativeLayout>

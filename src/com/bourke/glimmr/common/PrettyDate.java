@@ -20,11 +20,11 @@ public class PrettyDate {
     }
 
     public String toString() {
-        long    current = (new Date()).getTime(),
+        long current = (new Date()).getTime(),
             timestamp = date.getTime(),
             diff = (current - timestamp)/1000;
         int amount = 0;
-        String  what = "";
+        String what = "";
 
         /**
          * Second counts
@@ -71,7 +71,8 @@ public class PrettyDate {
             if(what.equals("day")) {
                 return "Yesterday";
             }
-            else if(what.equals("week") || what.equals("month") || what.equals("year")) {
+            else if(what.equals("week") || what.equals("month")
+                    || what.equals("year")) {
                 return "Last " + what;
             }
         }

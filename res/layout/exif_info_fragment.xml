@@ -9,7 +9,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content">
 
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,19 +26,19 @@
                     android:textSize="@dimen/text_size_medium"
                     android:textColor="@color/flickr_pink"
                     android:gravity="center"
-                    android:text="ISO" />
+                    android:text="@string/iso" />
                 <TextView
                     android:id="@+id/textViewShutterKey"
                     android:textSize="@dimen/text_size_medium"
                     android:textColor="@color/flickr_pink"
                     android:gravity="center"
-                    android:text="SHUTTER" />
+                    android:text="@string/shutter" />
                 <TextView
                     android:id="@+id/textViewApertureKey"
                     android:textSize="@dimen/text_size_medium"
                     android:textColor="@color/flickr_pink"
                     android:gravity="center"
-                    android:text="APERTURE" />
+                    android:text="@string/aperture" />
             </TableRow>
 
             <ProgressBar
