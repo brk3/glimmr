@@ -15,6 +15,8 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.event.Events.IUserReadyListener;
+import com.bourke.glimmr.tasks.LoadUserTask;
 import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
 import com.bourke.glimmr.fragments.home.PhotosetsFragment;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
@@ -27,7 +29,8 @@ import com.viewpagerindicator.TitlePageIndicator;
 /**
  * Requires a User object to be passed in via an intent.
  */
-public class ProfileActivity extends BaseActivity {
+public class ProfileActivity extends BaseActivity
+        implements IUserReadyListener {
 
     private static final String TAG = "Glimmr/ProfileActivity";
 
@@ -35,6 +38,9 @@ public class ProfileActivity extends BaseActivity {
     public static final int FAVORITES_STREAM_PAGE = 1;
     public static final int SETS_PAGE = 2;
     public static final int CONTACTS_PAGE = 3;
+
+    protected LoadUserTask mTask;
+    protected AQuery mAq;
 
     public static String[] CONTENT;
 
@@ -57,9 +63,46 @@ public class ProfileActivity extends BaseActivity {
         } else {
             setContentView(R.layout.main);
             mAq = new AQuery(this);
-
             handleIntent(getIntent());
         }
+    }
+
+    protected void startTask() {
+        /* Default user info doesn't include the buddy icon url, so we need to
+         * fetch extra info about the user */
+        if (mUser == null) {
+            Log.d(getLogTag(), "Cannot start LoadUserTask, mUser is null");
+            return;
+        }
+        mTask = new LoadUserTask(this, this, mUser.getId());
+        mTask.execute(mOAuth);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
+    }
+
+    @Override
+    public void onUserReady(User user) {
+        Log.d(getLogTag(), "onUserReady");
+        if (user == null) {
+            Log.e(getLogTag(), "onUserReady: user is null");
+            return;
+        }
+        updateUserOverlay(user);
+    }
+
+    public void updateUserOverlay(User user) {
+        Log.d(getLogTag(), "updateUserOverlay");
+        mAq.id(R.id.profile_banner).visible();
+        mAq.id(R.id.image_profile).image(user.getBuddyIconUrl(),
+                Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
+                null, AQuery.FADE_IN_NETWORK);
+        mAq.id(R.id.text_screenname).text(user.getUsername());
     }
 
     private void handleIntent(Intent intent) {
@@ -77,6 +120,8 @@ public class ProfileActivity extends BaseActivity {
                     findViewById(R.id.indicator);
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
+
+                startTask();
             } else {
                 Log.e(TAG, "User from intent is null");
                 // TODO: show error / recovery
