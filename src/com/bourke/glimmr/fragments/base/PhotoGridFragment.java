@@ -25,9 +25,7 @@ import com.androidquery.AQuery;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.tasks.LoadUserTask;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
 
@@ -45,7 +43,7 @@ import java.util.List;
  * photostreams, favorites, contacts photos, etc.
  */
 public abstract class PhotoGridFragment extends BaseFragment
-        implements IPhotoListReadyListener, IUserReadyListener {
+        implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
@@ -60,8 +58,6 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected boolean mMorePages = true;
 
     protected boolean mShowProfileOverlay = false;
-
-    protected LoadUserTask mTask;
 
     protected User mUser;
 
@@ -88,28 +84,6 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (mTask != null) {
-            mTask.cancel(true);
-        }
-    }
-
-    @Override
-    protected void startTask() {
-        super.startTask();
-
-        /* Default user info doesn't include the buddy icon url, so we need to
-         * fetch extra info about the user */
-        if (mUser == null) {
-            Log.d(getLogTag(), "Cannot start LoadUserTask, mUser is null");
-            return;
-        }
-        mTask = new LoadUserTask(mActivity, this, mUser.getId());
-        mTask.execute(mOAuth);
-    }
-
-    @Override
     public void onPhotosReady(PhotoList photos) {
         Log.d(getLogTag(), "onPhotosReady");
 
@@ -124,16 +98,6 @@ public abstract class PhotoGridFragment extends BaseFragment
             mAdapter.onDataReady();
         }
         mAq.id(android.R.id.empty).invisible();
-    }
-
-    @Override
-    public void onUserReady(User user) {
-        Log.d(getLogTag(), "onUserReady");
-        if (user == null) {
-            Log.e(getLogTag(), "onUserReady: user is null");
-            return;
-        }
-        mActivity.updateUserOverlay(user);
     }
 
     public abstract String getNewestPhotoId();
