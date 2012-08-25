@@ -106,6 +106,8 @@ public class Constants {
     /* PreferencesActivity */
     public static final String KEY_INTERVALS_LIST_PREFERENCE
         = "notificationIntervals";
+    public static final String KEY_ENABLE_NOTIFICATIONS
+        = "enableNotifications";
 
     /* Notification ids */
     public static final int NOTIFICATION_NEW_CONTACTS_PHOTOS = 0;

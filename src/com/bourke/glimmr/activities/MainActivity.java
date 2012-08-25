@@ -1,8 +1,11 @@
 package com.bourke.glimmr.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import android.os.Bundle;
+
+import android.preference.PreferenceManager;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,6 +17,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.home.ContactsGridFragment;
 import com.bourke.glimmr.fragments.home.GroupListFragment;
 import com.bourke.glimmr.fragments.home.PhotosetsFragment;
@@ -48,11 +52,19 @@ public class MainActivity extends BaseActivity {
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
-            WakefulIntentService.scheduleAlarms(
-                    new AppListener(), this, false);
             setContentView(R.layout.main);
             mAq = new AQuery(this);
             initViewPager();
+
+            /* Enable alarms */
+            SharedPreferences defaultSharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences(this);
+            boolean enableNotifications = defaultSharedPrefs.getBoolean(
+                    Constants.KEY_ENABLE_NOTIFICATIONS, false);
+            if (enableNotifications) {
+                WakefulIntentService.scheduleAlarms(
+                        new AppListener(), this, false);
+            }
         }
     }
 

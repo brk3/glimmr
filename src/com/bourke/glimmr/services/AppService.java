@@ -1,5 +1,6 @@
 package com.bourke.glimmr.services;
 
+import android.net.ConnectivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -29,6 +30,7 @@ import com.jakewharton.notificationcompat2.NotificationCompat2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import android.net.NetworkInfo;
 
 public class AppService extends WakefulIntentService {
 

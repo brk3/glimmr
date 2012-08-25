@@ -13,6 +13,7 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.services.AppListener;
+import com.bourke.glimmr.services.AppService;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
@@ -23,7 +24,6 @@ public class PreferencesActivity extends PreferenceActivity
 
 
     private SharedPreferences mSharedPrefs;
-    private SharedPreferences.Editor mEditor;
 
     private ListPreference mIntervalsListPreference;
 
@@ -32,7 +32,6 @@ public class PreferencesActivity extends PreferenceActivity
         super.onCreate(savedInstanceState);
 
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mEditor = mSharedPrefs.edit();
 
         addPreferencesFromResource(R.xml.preferences);
         PreferenceManager.setDefaultValues(PreferencesActivity.this,
@@ -69,6 +68,16 @@ public class PreferencesActivity extends PreferenceActivity
             updateIntervalSummary();
             WakefulIntentService.scheduleAlarms(new AppListener(), this,
                     false);
+        } else if (key.equals(Constants.KEY_ENABLE_NOTIFICATIONS)) {
+            boolean enableNotifications = sharedPreferences.getBoolean(
+                    Constants.KEY_ENABLE_NOTIFICATIONS, false);
+            if (!enableNotifications) {
+                Log.d(TAG, "Cancelling alarms");
+                AppService.cancelAlarms(this);
+            } else {
+                WakefulIntentService.scheduleAlarms(new AppListener(), this,
+                        false);
+            }
         }
     }
 
