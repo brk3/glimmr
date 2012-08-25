@@ -60,11 +60,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         mOAuth = loadAccessToken(prefs);
         mActionBar = getSupportActionBar();
 
-        /* Set custom title on action bar */
+        /* Set custom title on action bar (it will be null for dialog
+         * activities */
         mActionBar = getSupportActionBar();
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        initActionBar();
+        if (mActionBar != null) {
+            mActionBar.setDisplayShowCustomEnabled(true);
+            mActionBar.setDisplayShowTitleEnabled(false);
+            initActionBar();
+        }
     }
 
     /**
@@ -187,7 +190,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
             Log.e(getLogTag(), "setActionBarTitle: mActionBar is null");
             return;
         }
-        mAbTitle.setText(getTitle().toString());//.toLowerCase());
+        mAbTitle.setText(getTitle().toString());
     }
 
     protected void initActionBar() {
@@ -198,7 +201,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         Typeface typeface = Typeface.createFromAsset(getAssets(),
                 Constants.FONT_SHADOWSINTOLIGHT);
         mAbTitle.setTypeface(typeface);
-        mAbTitle.setText(getTitle().toString());//.toLowerCase());
+        mAbTitle.setText(getTitle().toString());
         mActionBar.setCustomView(v);
     }
 }
