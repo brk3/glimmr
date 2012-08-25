@@ -6,5 +6,6 @@
     <dimen name="text_size_large">22dip</dimen>
 
     <dimen name="gridview_item_size">150dp</dimen>
+    <dimen name="gridview_item_text_size">@dimen/text_size_micro</dimen>
 </resources>
 

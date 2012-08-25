@@ -37,7 +37,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:duplicateParentState="true"
-            android:textSize="@dimen/text_size_micro"
+            android:textSize="@dimen/gridview_item_text_size"
             android:textColor="@android:color/white" />
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:duplicateParentState="true"
-            android:textSize="@dimen/text_size_micro"
+            android:textSize="@dimen/gridview_item_text_size"
             android:textColor="@android:color/white" />
     </RelativeLayout>
 
