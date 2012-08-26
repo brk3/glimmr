@@ -57,7 +57,8 @@ public class FavoritesGridFragment extends PhotoGridFragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Constants.NEWEST_FAVORITES_PHOTO_ID, photo.getId());
         editor.commit();
-        Log.d(getLogTag(), "Updated most recent favorites photo id to " +
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "Updated most recent favorites photo id to " +
                 photo.getId());
     }
 

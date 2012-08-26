@@ -71,7 +71,8 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Constants.NEWEST_GROUPPOOL_PHOTO_ID, photo.getId());
         editor.commit();
-        Log.d(getLogTag(), "Updated most recent grouppool photo id to " +
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "Updated most recent grouppool photo id to " +
                 photo.getId());
     }
 

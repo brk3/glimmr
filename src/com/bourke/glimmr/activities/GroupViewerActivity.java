@@ -77,7 +77,8 @@ public class GroupViewerActivity extends BaseActivity {
             mUser = (User) bundle.getSerializable(
                     Constants.KEY_GROUPVIEWER_USER);
             if (mGroup != null && mUser != null) {
-                Log.d(TAG, "Got group to view: " + mGroup.getName());
+                if (Constants.DEBUG)
+                    Log.d(TAG, "Got group to view: " + mGroup.getName());
                 ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
                 GroupPagerAdapter adapter = new GroupPagerAdapter(
                         getSupportFragmentManager());
@@ -89,11 +90,13 @@ public class GroupViewerActivity extends BaseActivity {
 
                 mActionbarSubTitle.setActionBarSubtitle(mGroup.getName());
             } else {
-                Log.e(TAG, "Group/User from intent is null");
+                if (Constants.DEBUG)
+                    Log.e(TAG, "Group/User from intent is null");
                 // TODO: show error / recovery
             }
         } else {
-            Log.e(TAG, "Bundle is null, GroupViewerActivity requires an " +
+            if (Constants.DEBUG)
+                Log.e(TAG, "Bundle is null, GroupViewerActivity requires an " +
                     "intent containing a Group and a User");
         }
     }

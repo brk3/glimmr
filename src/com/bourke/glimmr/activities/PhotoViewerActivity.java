@@ -60,7 +60,8 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(getLogTag(), "onCreateOptionsMenu");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onCreateOptionsMenu");
         getSupportMenuInflater().inflate(R.menu.photoviewer_menu, menu);
         mFavoriteButton = menu.findItem(R.id.menu_favorite);
         return true;
@@ -115,15 +116,18 @@ public class PhotoViewerActivity extends BaseActivity
             Photo currentPhoto = currentFragment.getPhoto();
             if (currentPhoto != null) {
                 updateFavoriteButtonIcon(!currentPhoto.isFavorite());
-                Log.d(getLogTag(), String.format(
+                if (Constants.DEBUG)
+                    Log.d(getLogTag(), String.format(
                             "Starting SetFavoriteTask, id/index:"
                             + "%s/%s", currentPhoto.getId(), mSelectedIndex));
                 new SetFavoriteTask(this, this, currentPhoto).execute(mOAuth);
             } else {
-                Log.e(TAG, "onFavoriteButtonClick: currentPhoto is null");
+                if (Constants.DEBUG)
+                    Log.e(TAG, "onFavoriteButtonClick: currentPhoto is null");
             }
         } else {
-            Log.e(TAG, "onFavoriteButtonClick: currentFragment is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "onFavoriteButtonClick: currentFragment is null");
         }
     }
 
@@ -132,7 +136,8 @@ public class PhotoViewerActivity extends BaseActivity
      * photo.
      */
     public void updateFavoriteButtonIcon(boolean favorite) {
-        Log.d(getLogTag(), "updateFavoriteButtonIcon: " + favorite);
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "updateFavoriteButtonIcon: " + favorite);
         if (favorite) {
             mFavoriteButton.setIcon(R.drawable.ic_rating_important_dark);
         } else {
@@ -153,7 +158,8 @@ public class PhotoViewerActivity extends BaseActivity
         mSelectedIndex = bundle.getInt(Constants.KEY_PHOTOVIEWER_START_INDEX);
 
         if (mPhotos != null) {
-            Log.d(getLogTag(), "Got list of photo urls, size: "
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "Got list of photo urls, size: "
                     + mPhotos.size());
             mAdapter = new PhotoViewerPagerAdapter(
                     getSupportFragmentManager());
@@ -165,7 +171,8 @@ public class PhotoViewerActivity extends BaseActivity
             indicator.setViewPager(mPager);
             indicator.setCurrentItem(mSelectedIndex);
         } else {
-            Log.e(getLogTag(), "Photos from intent are null");
+            if (Constants.DEBUG)
+                Log.e(getLogTag(), "Photos from intent are null");
             // TODO: show error / recovery
         }
     }
@@ -176,7 +183,8 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onPageSelected(int position) {
-        Log.d(getLogTag(), "onPageSelected: " + position);
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onPageSelected: " + position);
         mSelectedIndex = position;
         PhotoViewerFragment current = getFragment(position);
         if (current != null) {
@@ -203,17 +211,20 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     public PhotoViewerFragment getFragment(int id) {
-        Log.d(TAG, "getFragment: " + id);
+        if (Constants.DEBUG)
+            Log.d(TAG, "getFragment: " + id);
         return (PhotoViewerFragment) mAdapter.instantiateItem(mPager, id);
     }
 
     @Override
     public void onFavoriteComplete(Exception e) {
         if (e != null) {
-            Log.d(getLogTag(), "Error setting favorite on photo");
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "Error setting favorite on photo");
             return;
         } else {
-            Log.d(getLogTag(), "Successfully favorited/unfavorited photo");
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "Successfully favorited/unfavorited photo");
         }
     }
 
@@ -229,7 +240,8 @@ public class PhotoViewerActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int position) {
-            Log.d(TAG, "getItem: " + position);
+            if (Constants.DEBUG)
+                Log.d(TAG, "getItem: " + position);
             return PhotoViewerFragment.newInstance(mPhotos.get(position),
                     position);
         }

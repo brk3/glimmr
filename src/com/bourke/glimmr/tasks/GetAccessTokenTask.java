@@ -3,6 +3,7 @@ package com.bourke.glimmr.tasks;
 import android.os.AsyncTask;
 
 import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
 
 import com.googlecode.flickrjandroid.Flickr;

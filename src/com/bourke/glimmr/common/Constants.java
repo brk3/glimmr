@@ -5,6 +5,8 @@ public class Constants {
     /* Global app prefs */
     public static final String PREFS_NAME = "glimmr_prefs";
 
+    public static final boolean DEBUG = true;
+
     /* File and mem cache tuning params */
     public static final boolean USE_FILE_CACHE = true;
     public static final boolean USE_MEMORY_CACHE = true;

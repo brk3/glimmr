@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.ICommentsReadyListener;
 
 import com.googlecode.flickrjandroid.Flickr;
@@ -61,7 +62,8 @@ public class LoadCommentsTask
     @Override
     protected void onPostExecute(final List<Comment> result) {
         if (result == null) {
-            Log.e(TAG, "Error fetching comments, result is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "Error fetching comments, result is null");
         }
         mListener.onCommentsReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
@@ -69,6 +71,7 @@ public class LoadCommentsTask
 
     @Override
     protected void onCancelled(final List<Comment> result) {
-        Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG)
+            Log.d(TAG, "onCancelled");
     }
 }

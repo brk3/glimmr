@@ -69,9 +69,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(getLogTag(), "onDestroy");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onDestroy");
         if (isTaskRoot()) {
-            Log.d(getLogTag(), "Trimming file cache");
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "Trimming file cache");
             AQUtility.cleanCacheAsync(this, Constants.CACHE_TRIM_TRIGGER_SIZE,
                    Constants.CACHE_TRIM_TARGET_SIZE);
         }
@@ -101,7 +103,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity
             user.setId(userId);
             oauth.setUser(user);
         } else {
-            Log.w(TAG, "No saved oauth token found");
+            if (Constants.DEBUG)
+                Log.w(TAG, "No saved oauth token found");
             return null;
         }
         return oauth;

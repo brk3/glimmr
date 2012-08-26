@@ -28,9 +28,11 @@ public class ContactsGridFragment extends PhotoGridFragment {
     protected void startTask() {
         super.startTask();
         if (mPhotos != null && !mPhotos.isEmpty()) {
-            Log.d(getLogTag(), "mPhotos occupied, not starting task");
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "mPhotos occupied, not starting task");
         } else {
-            Log.d(getLogTag(), "mPhotos null or empty, starting task");
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "mPhotos null or empty, starting task");
             mTask = new LoadContactsPhotosTask(mActivity, this);
             mTask.execute(mOAuth);
         }
@@ -41,7 +43,8 @@ public class ContactsGridFragment extends PhotoGridFragment {
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
-            Log.d(TAG, "onPause: cancelling task");
+            if (Constants.DEBUG)
+                Log.d(TAG, "onPause: cancelling task");
         }
     }
 
@@ -65,7 +68,8 @@ public class ContactsGridFragment extends PhotoGridFragment {
         editor.putString(Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
                 photo.getId());
         editor.commit();
-        Log.d(getLogTag(), "Updated most recent contact photo id to " +
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "Updated most recent contact photo id to " +
                 photo.getId());
     }
 

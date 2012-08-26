@@ -38,14 +38,18 @@ public class CommentsDialogActivity extends BaseActivity {
     private void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (bundle == null) {
-            Log.e(TAG, "null bundle, CommentsDialogActivity requires a Photo");
+            if (Constants.DEBUG)
+                Log.e(TAG, "null bundle, CommentsDialogActivity requires " +
+                        "a Photo");
             return;
         }
 
         Photo photo = (Photo) bundle.getSerializable(Constants
                 .COMMENTS_DIALOG_ACTIVITY_PHOTO);
         if (photo != null) {
-            Log.d(TAG, "Got photo to fetch comments for: " + photo.getId());
+            if (Constants.DEBUG)
+                Log.d(TAG, "Got photo to fetch comments for: " +
+                        photo.getId());
 
             /* Create and add the fragment now we have the photo to fetch
              * comments for */
@@ -56,7 +60,8 @@ public class CommentsDialogActivity extends BaseActivity {
             fragmentTransaction.add(R.id.layout, newFragment);
             fragmentTransaction.commit();
         } else {
-            Log.e(TAG, "photo from intent is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "photo from intent is null");
             // TODO: show error / recovery
         }
     }

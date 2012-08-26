@@ -74,7 +74,9 @@ public class PhotosetViewerActivity extends BaseActivity {
             mUser = (User) bundle.getSerializable(
                     Constants.KEY_PHOTOSETVIEWER_USER);
             if (mPhotoset != null && mUser != null) {
-                Log.d(TAG, "Got photoset to view: " + mPhotoset.getTitle());
+                if (Constants.DEBUG)
+                    Log.d(TAG, "Got photoset to view: " +
+                            mPhotoset.getTitle());
                 ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
                 GroupPagerAdapter adapter = new GroupPagerAdapter(
                         getSupportFragmentManager());
@@ -90,8 +92,9 @@ public class PhotosetViewerActivity extends BaseActivity {
                 // TODO: show error / recovery
             }
         } else {
-            Log.e(TAG, "Bundle is null, PhotosetViewerActivity requires an " +
-                    "intent containing a Photoset and a User");
+            if (Constants.DEBUG)
+                Log.e(TAG, "Bundle is null, PhotosetViewerActivity requires " +
+                    "an intent containing a Photoset and a User");
         }
     }
 

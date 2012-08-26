@@ -43,7 +43,8 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(getLogTag(), "onCreate");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onCreate");
 
         CONTENT = new String[] { getString(R.string.contacts),
                 getString(R.string.you), getString(R.string.sets),

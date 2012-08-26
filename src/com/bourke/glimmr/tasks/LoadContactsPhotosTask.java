@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 
 import com.googlecode.flickrjandroid.Flickr;
@@ -76,7 +77,8 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPostExecute(final PhotoList result) {
         if (result == null) {
-            Log.e(TAG, "Error fetching contacts photos, result is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "Error fetching contacts photos, result is null");
         }
         mListener.onPhotosReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
@@ -84,6 +86,7 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     @Override
     protected void onCancelled(final PhotoList result) {
-        Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG)
+            Log.d(TAG, "onCancelled");
     }
 }
