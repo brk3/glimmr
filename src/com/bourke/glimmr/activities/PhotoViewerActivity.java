@@ -151,6 +151,9 @@ public class PhotoViewerActivity extends BaseActivity
         handleIntent(intent);
     }
 
+    /* Ignore the unchecked cast warning-
+     * http://stackoverflow.com/a/262417/663370 */
+    @SuppressWarnings("unchecked")
     private void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
         mPhotos = (ArrayList<Photo>) bundle.getSerializable(Constants

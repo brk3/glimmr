@@ -113,7 +113,7 @@ public class PhotosetsFragment extends BaseFragment
             mAq.id(R.id.no_connection_layout).visible();
             mAq.id(R.id.list).gone();
         } else {
-            mPhotosets = new ArrayList(photoSets.getPhotosets());
+            mPhotosets = new ArrayList<Photoset>(photoSets.getPhotosets());
             SetListAdapter adapter = new SetListAdapter(
                     mActivity, R.layout.photoset_list_item,
                     (ArrayList<Photoset>)mPhotosets);

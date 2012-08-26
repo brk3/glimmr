@@ -153,13 +153,13 @@ public final class PhotoViewerFragment extends BaseFragment
             mAq.id(R.id.textViewTitle).visible();
             mAq.id(R.id.textViewAuthor).visible();
             if (honeycombOrGreater) {
-                mLayout.setSystemUiVisibility(View.STATUS_BAR_VISIBLE);
+                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             }
         } else {
             mAq.id(R.id.textViewTitle).invisible();
             mAq.id(R.id.textViewAuthor).invisible();
             if (honeycombOrGreater) {
-                mLayout.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
+                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
             }
         }
     }

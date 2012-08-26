@@ -76,6 +76,7 @@ public final class ExifInfoFragment extends BaseFragment
      * Creates a TableRow with two columns containing TextViews, and adds it to
      * the main TableView.
      */
+    @SuppressWarnings("deprecation")
     private void addKeyValueRow(String key, String value) {
         TableLayout tl = (TableLayout)
             mLayout.findViewById(R.id.extraExifInfo);

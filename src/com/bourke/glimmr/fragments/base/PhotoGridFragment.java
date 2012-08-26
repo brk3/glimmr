@@ -49,15 +49,10 @@ public abstract class PhotoGridFragment extends BaseFragment
     private EndlessGridAdapter mAdapter;
 
     protected PhotoList mPhotos = new PhotoList();
-
     protected List<Photo> mNewPhotos = new ArrayList<Photo>();
-
     protected int mPage = 1;
-
     protected boolean mMorePages = true;
-
     protected boolean mShowProfileOverlay = false;
-
     protected User mUser;
 
     @Override
