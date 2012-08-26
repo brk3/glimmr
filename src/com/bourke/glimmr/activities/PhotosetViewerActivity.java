@@ -49,7 +49,7 @@ public class PhotosetViewerActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CONTENT = new String[] { getString(R.string.sets) };
+        CONTENT = new String[] { getString(R.string.photoset) };
 
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));

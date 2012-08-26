@@ -28,15 +28,17 @@ public final class PhotoViewerFragment extends BaseFragment
 
     protected String TAG = "Glimmr/PhotoViewerFragment";
 
-    private Photo mPhoto = new Photo();
+    private Photo mBasePhoto;
+    private Photo mPhoto;
     private AQuery mAq;
     private int mId;
 
     private LoadPhotoInfoTask mTask;
 
     public static PhotoViewerFragment newInstance(Photo photo, int id) {
+        Log.d("Glimmr/PhotoViewerFragment", "newInstance");
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
-        photoFragment.mPhoto = photo;
+        photoFragment.mBasePhoto = photo;
         photoFragment.mId = id;
         return photoFragment;
     }
@@ -44,18 +46,19 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTask = new LoadPhotoInfoTask(mActivity, this, mPhoto);
+        Log.d(TAG, "onCreate");
     }
 
     @Override
     public void onResume() {
-        mTask = new LoadPhotoInfoTask(mActivity, this, mPhoto);
+        mTask = new LoadPhotoInfoTask(mActivity, this, mBasePhoto);
         super.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
         if (mTask != null) {
             mTask.cancel(true);
             Log.d(TAG, "onPause: cancelling task");
@@ -72,11 +75,11 @@ public final class PhotoViewerFragment extends BaseFragment
         return mLayout;
     }
 
-     @Override
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(getLogTag(), "onSaveInstanceState");
-        outState.putSerializable(Constants.KEY_PHOTOVIEWER_URL, mPhoto);
+        outState.putSerializable(Constants.KEY_PHOTOVIEWER_URL, mBasePhoto);
         outState.putInt("glimmr_photoviewer_id", mId);
      }
 
@@ -92,8 +95,8 @@ public final class PhotoViewerFragment extends BaseFragment
             Photo p = (Photo) state.getSerializable(
                     Constants.KEY_PHOTOVIEWER_URL);
             if (p != null) {
-                Log.d(getLogTag(), "mPhoto restored");
-                mPhoto = p;
+                Log.d(getLogTag(), "mBasePhoto restored");
+                mBasePhoto = p;
             }
             mId = state.getInt("glimmr_photoviewer_id");
         }
@@ -102,7 +105,11 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        mTask.execute(mOAuth);
+        /* Start a task to fetch more detailed info about the photo if we don't
+         * already have it (required for favorite status) */
+        if (mPhoto == null) {
+            mTask.execute(mOAuth);
+        }
     }
 
     @Override
@@ -118,16 +125,21 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     private void displayImage() {
-        if (mPhoto != null) {
+        Log.d(TAG, "displayImage()");
+        if (mBasePhoto != null) {
             mAq.id(R.id.image).progress(R.id.progress).image(
-                    mPhoto.getLargeUrl(), Constants.USE_MEMORY_CACHE,
+                    mBasePhoto.getLargeUrl(), Constants.USE_MEMORY_CACHE,
                     Constants.USE_FILE_CACHE, 0, 0, null,
                     AQuery.FADE_IN_NETWORK);
-            mAq.id(R.id.textViewTitle).text(mPhoto.getTitle());
-            mAq.id(R.id.textViewAuthor).text("by "+mPhoto.getOwner()
-                    .getUsername());
+            String photoTitle = mBasePhoto.getTitle();
+            if (photoTitle == null || photoTitle.isEmpty()) {
+                photoTitle = mActivity.getString(R.string.untitled);
+            }
+            mAq.id(R.id.textViewTitle).text(photoTitle);
+            mAq.id(R.id.textViewAuthor).text(mActivity.getString(R.string.by) +
+                    " " + mBasePhoto.getOwner().getUsername());
         } else {
-            Log.e(getLogTag(), "displayImage: mPhoto is null");
+            Log.e(getLogTag(), "displayImage: mBasePhoto is null");
         }
     }
 
@@ -157,7 +169,7 @@ public final class PhotoViewerFragment extends BaseFragment
             if (mTask.getStatus() == AsyncTask.Status.FINISHED) {
                 Log.d(getLogTag(), "mTask finished");
                 ((PhotoViewerActivity) mActivity).updateFavoriteButtonIcon(
-                    mPhoto.isFavorite());
+                    mBasePhoto.isFavorite());
             }
         } else {
             /* Do nothing, it will update when it's done */
@@ -166,7 +178,7 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     public Photo getPhoto() {
-        return mPhoto;
+        return mBasePhoto;
     }
 
     @Override
