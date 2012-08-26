@@ -15,6 +15,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GlimmrAbCustomSubTitle;
 import com.bourke.glimmr.fragments.group.GroupAboutFragment;
 import com.bourke.glimmr.fragments.group.GroupPoolGridFragment;
 import com.bourke.glimmr.R;
@@ -44,6 +45,8 @@ public class GroupViewerActivity extends BaseActivity {
      */
     private User mUser;
 
+    private GlimmrAbCustomSubTitle mActionbarSubTitle;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,9 @@ public class GroupViewerActivity extends BaseActivity {
             setContentView(R.layout.main);
 
             mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionbarSubTitle = new GlimmrAbCustomSubTitle(getBaseContext());
+            mActionbarSubTitle.init(mActionBar);
+
             mAq = new AQuery(this);
 
             handleIntent(getIntent());
@@ -81,7 +87,7 @@ public class GroupViewerActivity extends BaseActivity {
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(viewPager);
 
-                //setActionBarSubtitle(mGroup.getName());
+                mActionbarSubTitle.setActionBarSubtitle(mGroup.getName());
             } else {
                 Log.e(TAG, "Group/User from intent is null");
                 // TODO: show error / recovery

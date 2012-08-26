@@ -4,18 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import android.graphics.Typeface;
-
 import android.os.Bundle;
 
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
-
-import android.view.LayoutInflater;
-import android.view.View;
-
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -26,6 +19,7 @@ import com.androidquery.AQuery;
 import com.androidquery.util.AQUtility;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GlimmrAbCustomTitle;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -49,7 +43,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
     private MenuItem mMenuItemProgress;
     private MenuItem mMenuItemRefresh;
 
-    protected TextView mAbTitle;
+    private GlimmrAbCustomTitle mActionbarTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,9 +58,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity
          * activities */
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
-            mActionBar.setDisplayShowCustomEnabled(true);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            initActionBar();
+            mActionbarTitle = new GlimmrAbCustomTitle(getBaseContext());
+            mActionbarTitle.init(mActionBar);
         }
     }
 
@@ -175,25 +168,5 @@ public abstract class BaseActivity extends SherlockFragmentActivity
 
     protected String getLogTag() {
         return TAG;
-    }
-
-    protected void setActionBarTitle() {
-        if (mActionBar == null) {
-            Log.e(getLogTag(), "setActionBarTitle: mActionBar is null");
-            return;
-        }
-        mAbTitle.setText(getTitle().toString());
-    }
-
-    protected void initActionBar() {
-        LayoutInflater inflator = (LayoutInflater)
-            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.action_bar_title_item, null);
-        mAbTitle = (TextView) v.findViewById(R.id.abTitle);
-        Typeface typeface = Typeface.createFromAsset(getAssets(),
-                Constants.FONT_SHADOWSINTOLIGHT);
-        mAbTitle.setTypeface(typeface);
-        mAbTitle.setText(getTitle().toString());
-        mActionBar.setCustomView(v);
     }
 }

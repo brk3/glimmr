@@ -1,14 +1,17 @@
 package com.bourke.glimmr.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
 import android.preference.ListPreference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 import android.util.Log;
+
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
@@ -17,11 +20,10 @@ import com.bourke.glimmr.services.AppService;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
-public class PreferencesActivity extends PreferenceActivity
+public class PreferencesActivity extends SherlockPreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private static final String TAG = "Glimmr/PreferenceManager";
-
 
     private SharedPreferences mSharedPrefs;
 
@@ -31,12 +33,12 @@ public class PreferencesActivity extends PreferenceActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         addPreferencesFromResource(R.xml.preferences);
         PreferenceManager.setDefaultValues(PreferencesActivity.this,
                 R.xml.preferences, false);
-
         mIntervalsListPreference = (ListPreference) getPreferenceScreen()
             .findPreference(Constants.KEY_INTERVALS_LIST_PREFERENCE);
     }
@@ -101,5 +103,22 @@ public class PreferencesActivity extends PreferenceActivity
                     "ListPreference entry: " + listPrefValue);
         }
         mIntervalsListPreference.setSummary(summaryString);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                /* This is called when the Home (Up) button is pressed
+                 * in the Action Bar. */
+                Intent parentActivityIntent = new Intent(this,
+                        MainActivity.class);
+                parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(parentActivityIntent);
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
