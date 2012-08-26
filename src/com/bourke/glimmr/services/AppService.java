@@ -42,13 +42,15 @@ public class AppService extends WakefulIntentService {
 
     @Override
     protected void doWakefulWork(Intent intent) {
-        Log.d(TAG, "doWakefulWork");
+        if (Constants.DEBUG)
+            Log.d(TAG, "doWakefulWork");
 
         SharedPreferences prefs = getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
         OAuth oauth = BaseActivity.loadAccessToken(prefs);
         if (oauth == null) {
-            Log.e(TAG, "doWakefulWork: oauth from intent is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "doWakefulWork: oauth from intent is null");
             return;
         }
 
@@ -113,7 +115,8 @@ public class AppService extends WakefulIntentService {
 
     protected List<Photo> checkForNewPhotos(PhotoList photos) {
         if (photos == null || photos.isEmpty()) {
-            Log.d(TAG, "checkForNewPhotos: photos null or empty");
+            if (Constants.DEBUG)
+                Log.d(TAG, "checkForNewPhotos: photos null or empty");
             return null;
         }
 
@@ -130,7 +133,8 @@ public class AppService extends WakefulIntentService {
                 Photo p = photos.get(i);
                 if (p.getId().equals(newestId)) {
                     newPhotos = photos.subList(0, i);
-                    Log.d(TAG, String.format("Found %d new photos",
+                    if (Constants.DEBUG)
+                        Log.d(TAG, String.format("Found %d new photos",
                                 newPhotos.size()));
                     break;
                 }
@@ -141,7 +145,8 @@ public class AppService extends WakefulIntentService {
         if (newPhotos != null && !newPhotos.isEmpty()) {
             storeNewestPhotoId(newPhotos.get(0));
         } else {
-            Log.d(TAG, "newPhotos null or empty, using most recent " +
+            if (Constants.DEBUG)
+                Log.d(TAG, "newPhotos null or empty, using most recent " +
                     "fetched photo as newest");
             storeNewestPhotoId(photos.get(0));
         }
@@ -154,7 +159,9 @@ public class AppService extends WakefulIntentService {
                 Context.MODE_PRIVATE);
         String newestId = prefs.getString(
                 Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID, null);
-        Log.d(TAG, String.format("getNewestPhotoId: newest is %s", newestId));
+        if (Constants.DEBUG)
+            Log.d(TAG, String.format("getNewestPhotoId: newest is %s",
+                        newestId));
         return newestId;
     }
 
@@ -165,6 +172,8 @@ public class AppService extends WakefulIntentService {
         editor.putString(Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
                 photo.getId());
         editor.commit();
-        Log.d(TAG, "Updated most recent contact photo id to " + photo.getId());
+        if (Constants.DEBUG)
+            Log.d(TAG, "Updated most recent contact photo id to " +
+                    photo.getId());
     }
 }

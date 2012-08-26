@@ -29,7 +29,8 @@ public class AppListener implements WakefulIntentService.AlarmListener {
         mgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime()+mMinutes*60*1000,
                 mMinutes*60*1000, pendingIntent);
-        Log.d(TAG, String.format("Set alarms for %d minute intervals",
+        if (Constants.DEBUG)
+            Log.d(TAG, String.format("Set alarms for %d minute intervals",
                     mMinutes));
     }
 
@@ -50,9 +51,11 @@ public class AppListener implements WakefulIntentService.AlarmListener {
                 Constants.KEY_INTERVALS_LIST_PREFERENCE, "60");
         try {
             mMinutes = Integer.parseInt(intervalPref);
-            Log.d(TAG, "mMinutes set to " + mMinutes);
+            if (Constants.DEBUG)
+                Log.d(TAG, "mMinutes set to " + mMinutes);
         } catch (NumberFormatException e) {
-            Log.e(TAG, String.format("scheduleAlarms: can't parse '%s' " +
+            if (Constants.DEBUG)
+                Log.e(TAG, String.format("scheduleAlarms: can't parse '%s' " +
                     "as intervalPref", intervalPref));
         }
         return mMinutes;

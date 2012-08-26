@@ -53,7 +53,8 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
         extras.add("url_q");
         extras.add("url_l");
         extras.add("views");
-        Log.d(TAG, "Fetching page " + mPage);
+        if (Constants.DEBUG)
+            Log.d(TAG, "Fetching page " + mPage);
 
         try {
             return f.getPeopleInterface().getPhotos(mUser.getId(), extras,
@@ -67,7 +68,8 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPostExecute(final PhotoList result) {
         if (result == null) {
-            Log.e(TAG, "Error fetching photolist, result is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "Error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);
@@ -75,6 +77,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     @Override
     protected void onCancelled(final PhotoList result) {
-        Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG)
+            Log.d(TAG, "onCancelled");
     }
 }

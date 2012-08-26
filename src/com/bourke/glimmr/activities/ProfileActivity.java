@@ -71,7 +71,8 @@ public class ProfileActivity extends BaseActivity
         /* Default user info doesn't include the buddy icon url, so we need to
          * fetch extra info about the user */
         if (mUser == null) {
-            Log.d(getLogTag(), "Cannot start LoadUserTask, mUser is null");
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "Cannot start LoadUserTask, mUser is null");
             return;
         }
         mTask = new LoadUserTask(this, this, mUser.getId());
@@ -88,16 +89,19 @@ public class ProfileActivity extends BaseActivity
 
     @Override
     public void onUserReady(User user) {
-        Log.d(getLogTag(), "onUserReady");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onUserReady");
         if (user == null) {
-            Log.e(getLogTag(), "onUserReady: user is null");
+            if (Constants.DEBUG)
+                Log.e(getLogTag(), "onUserReady: user is null");
             return;
         }
         updateUserOverlay(user);
     }
 
     public void updateUserOverlay(User user) {
-        Log.d(getLogTag(), "updateUserOverlay");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "updateUserOverlay");
         mAq.id(R.id.profile_banner).visible();
         mAq.id(R.id.image_profile).image(user.getBuddyIconUrl(),
                 Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
@@ -111,7 +115,8 @@ public class ProfileActivity extends BaseActivity
             mUser = (User) bundle.getSerializable(
                     Constants.KEY_PROFILEVIEWER_USER);
             if (mUser != null) {
-                Log.d(TAG, "Got user to view: " + mUser.getUsername());
+                if (Constants.DEBUG)
+                    Log.d(TAG, "Got user to view: " + mUser.getUsername());
                 ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
                 ProfilePagerAdapter adapter = new ProfilePagerAdapter(
                         getSupportFragmentManager());
@@ -123,12 +128,14 @@ public class ProfileActivity extends BaseActivity
 
                 startTask();
             } else {
-                Log.e(TAG, "User from intent is null");
+                if (Constants.DEBUG)
+                    Log.e(TAG, "User from intent is null");
                 // TODO: show error / recovery
             }
         } else {
-            Log.e(TAG, "Bundle is null, ProfileActivity requires an intent " +
-                    "containing a User");
+            if (Constants.DEBUG)
+                Log.e(TAG, "Bundle is null, ProfileActivity requires an " +
+                    "intent containing a User");
         }
     }
 

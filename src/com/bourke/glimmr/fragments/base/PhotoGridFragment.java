@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.R;
 
@@ -77,7 +76,8 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(getLogTag(), "onResume");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onResume");
         if (mPhotos != null && !mPhotos.isEmpty()) {
             mAq.id(android.R.id.empty).invisible();
         }
@@ -85,7 +85,8 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     @Override
     public void onPhotosReady(PhotoList photos) {
-        Log.d(getLogTag(), "onPhotosReady");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onPhotosReady");
 
         if (photos == null) {
             mAq.id(R.id.no_connection_layout).visible();
@@ -110,7 +111,8 @@ public abstract class PhotoGridFragment extends BaseFragment
      */
     protected void checkForNewPhotos(PhotoList photos) {
         if (photos == null || photos.isEmpty()) {
-            Log.d(getLogTag(), "checkForNewPhotos: photos null or empty");
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "checkForNewPhotos: photos null or empty");
             return;
         }
 
@@ -124,7 +126,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                 Photo p = photos.get(i);
                 if (p.getId().equals(newestId)) {
                     mNewPhotos = photos.subList(0, i);
-                    Log.d(getLogTag(), String.format("Found %d new photos",
+                    if (Constants.DEBUG)
+                        Log.d(getLogTag(), String.format("Found %d new photos",
                                 mNewPhotos.size()));
                     break;
                 }
@@ -134,8 +137,9 @@ public abstract class PhotoGridFragment extends BaseFragment
         if (mNewPhotos != null && !mNewPhotos.isEmpty()) {
             storeNewestPhotoId(mNewPhotos.get(0));
         } else {
-            Log.d(getLogTag(), "mNewPhotos null or empty, using most recent " +
-                    "fetched photo as newest");
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "mNewPhotos null or empty, using most " +
+                    "recent fetched photo as newest");
             storeNewestPhotoId(photos.get(0));
         }
     }

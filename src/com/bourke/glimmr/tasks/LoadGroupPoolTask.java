@@ -53,7 +53,8 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
         extras.add("url_q");
         extras.add("url_l");
         extras.add("views");
-        Log.d(TAG, "Fetching page " + mPage);
+        if (Constants.DEBUG)
+            Log.d(TAG, "Fetching page " + mPage);
 
         try {
             return f.getPoolsInterface().getPhotos(mGroup.getId(), null,
@@ -67,7 +68,8 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPostExecute(final PhotoList result) {
         if (result == null) {
-            Log.e(TAG, "error fetching photolist, result is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);

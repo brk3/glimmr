@@ -53,7 +53,8 @@ public class GroupListFragment extends BaseFragment
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
-            Log.d(TAG, "onPause: cancelling task");
+            if (Constants.DEBUG)
+                Log.d(TAG, "onPause: cancelling task");
         }
     }
 
@@ -75,11 +76,13 @@ public class GroupListFragment extends BaseFragment
 
     private void startGroupViewer(Group group) {
         if (group == null) {
-            Log.e(getLogTag(),
+            if (Constants.DEBUG)
+                Log.e(getLogTag(),
                     "Cannot start GroupViewerActivity, group is null");
             return;
         }
-        Log.d(getLogTag(), "Starting GroupViewerActivity for " +
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "Starting GroupViewerActivity for " +
                 group.getName());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_GROUPVIEWER_GROUP, group);
@@ -96,7 +99,8 @@ public class GroupListFragment extends BaseFragment
 
     @Override
     public void onGroupListReady(GroupList groups) {
-        Log.d(getLogTag(), "onGroupListReady");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onGroupListReady");
 
         if (groups == null || groups.isEmpty()) {
             mAq.id(R.id.no_connection_layout).visible();

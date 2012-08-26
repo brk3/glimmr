@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
 import com.bourke.glimmr.event.Events.IRequestTokenReadyListener;
 import com.bourke.glimmr.R;
@@ -67,7 +66,9 @@ public class LoginActivity extends SherlockFragmentActivity
         if (authUri != null && !authUri.startsWith("error")) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(authUri)));
         } else {
-            Log.e(TAG, "Error getting request token in onRequestTokenReady");
+            if (Constants.DEBUG)
+                Log.e(TAG, "Error getting request token in " +
+                        "onRequestTokenReady");
         }
     }
 
@@ -91,17 +92,21 @@ public class LoginActivity extends SherlockFragmentActivity
                 new GetAccessTokenTask(this).execute(oauthToken,
                         oAuthSecret, oauthVerifier);
             } else {
-                Log.d(TAG, "Received intent but unknown scheme: " + scheme);
+                if (Constants.DEBUG)
+                    Log.d(TAG, "Received intent but unknown scheme: " +
+                            scheme);
             }
         } else {
-            Log.d(TAG, "Started with null intent");
+            if (Constants.DEBUG)
+                Log.d(TAG, "Started with null intent");
         }
     }
 
     @Override
     public void onAccessTokenReady(OAuth accessToken) {
         persistAccessToken(accessToken);
-        Log.d(TAG, "Got token, saved to disk, good to start MainActivity");
+        if (Constants.DEBUG)
+            Log.d(TAG, "Got token, saved to disk, good to start MainActivity");
         Toast.makeText(this, "Logged In!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, MainActivity.class));
     }

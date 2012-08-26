@@ -74,7 +74,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity
             boolean enableNotifications = sharedPreferences.getBoolean(
                     Constants.KEY_ENABLE_NOTIFICATIONS, false);
             if (!enableNotifications) {
-                Log.d(TAG, "Cancelling alarms");
+                if (Constants.DEBUG)
+                    Log.d(TAG, "Cancelling alarms");
                 AppService.cancelAlarms(this);
             } else {
                 WakefulIntentService.scheduleAlarms(new AppListener(), this,
@@ -99,7 +100,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity
         } else if (listPrefValue.equals("1440")) {
             summaryString = getString(R.string.once_a_day);
         } else {
-            Log.e(TAG, "updateIntervalSummary: unknown value for " +
+            if (Constants.DEBUG)
+                Log.e(TAG, "updateIntervalSummary: unknown value for " +
                     "ListPreference entry: " + listPrefValue);
         }
         mIntervalsListPreference.setSummary(summaryString);

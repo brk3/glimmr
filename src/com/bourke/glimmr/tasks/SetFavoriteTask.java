@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 
 import com.googlecode.flickrjandroid.Flickr;

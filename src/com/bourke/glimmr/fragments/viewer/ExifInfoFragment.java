@@ -18,6 +18,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadExifInfoTask;
 
@@ -55,7 +56,8 @@ public final class ExifInfoFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        Log.d(getLogTag(), "startTask()");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "startTask()");
         mTask = new LoadExifInfoTask(mActivity, this, mPhoto);
         mTask.execute(mOAuth);
     }
@@ -65,7 +67,8 @@ public final class ExifInfoFragment extends BaseFragment
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
-            Log.d(TAG, "onPause: cancelling task");
+            if (Constants.DEBUG)
+                Log.d(TAG, "onPause: cancelling task");
         }
     }
 
@@ -101,7 +104,8 @@ public final class ExifInfoFragment extends BaseFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo) {
-        Log.d(getLogTag(), "onExifInfoReady, exifInfo.size(): "
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onExifInfoReady, exifInfo.size(): "
                 + exifInfo.size());
         mAq.id(R.id.progressIndicator).gone();
         for (Exif e : exifInfo) {

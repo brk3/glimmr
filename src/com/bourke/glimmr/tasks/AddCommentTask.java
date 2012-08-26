@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.ICommentAddedListener;
 
 import com.googlecode.flickrjandroid.Flickr;
@@ -55,13 +56,15 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
     @Override
     protected void onPostExecute(final String result) {
         if (result == null) {
-            Log.e(TAG, "Error adding comment, result is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "Error adding comment, result is null");
         }
         mListener.onCommentAdded(result);
     }
 
     @Override
     protected void onCancelled(final String result) {
-        Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG)
+            Log.d(TAG, "onCancelled");
     }
 }

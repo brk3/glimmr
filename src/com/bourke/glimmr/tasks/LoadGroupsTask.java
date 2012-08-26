@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IGroupListReadyListener;
 
 import com.googlecode.flickrjandroid.Flickr;
@@ -63,7 +64,8 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
     protected void onPostExecute(final Collection<Group> result) {
         GroupList ret = new GroupList();
         if (result == null) {
-            Log.e(TAG, "Error fetching groups, result is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "Error fetching groups, result is null");
         } else {
             ret.addAll(result);
         }
@@ -73,6 +75,7 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
 
     @Override
     protected void onCancelled(final Collection<Group> result) {
-        Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG)
+            Log.d(TAG, "onCancelled");
     }
 }

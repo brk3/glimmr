@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
 
 import com.googlecode.flickrjandroid.Flickr;
@@ -66,7 +67,8 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
     @Override
     protected void onPostExecute(final Photosets result) {
         if (result == null) {
-            Log.e(TAG, "Error fetching photosets, result is null");
+            if (Constants.DEBUG)
+                Log.e(TAG, "Error fetching photosets, result is null");
         }
         mListener.onPhotosetsReady(result);
         ((BaseActivity) mActivity).showProgressIcon(false);

@@ -65,7 +65,8 @@ public class PhotosetsFragment extends BaseFragment
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
-            Log.d(TAG, "onPause: cancelling task");
+            if (Constants.DEBUG)
+                Log.d(TAG, "onPause: cancelling task");
         }
     }
 
@@ -80,11 +81,13 @@ public class PhotosetsFragment extends BaseFragment
 
     private void startPhotosetViewer(Photoset photoset) {
         if (photoset == null) {
-            Log.e(getLogTag(),
+            if (Constants.DEBUG)
+                Log.e(getLogTag(),
                     "Cannot start SetViewerActivity, photoset is null");
             return;
         }
-        Log.d(getLogTag(), "Starting SetViewerActivity for "
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "Starting SetViewerActivity for "
                 + photoset.getTitle());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_PHOTOSET,
@@ -103,7 +106,8 @@ public class PhotosetsFragment extends BaseFragment
 
     @Override
     public void onPhotosetsReady(Photosets photoSets) {
-        Log.d(getLogTag(), "onPhotosetListReady");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onPhotosetListReady");
 
         if (photoSets == null) {
             mAq.id(R.id.no_connection_layout).visible();

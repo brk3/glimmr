@@ -49,7 +49,8 @@ public class PhotosetGridFragment extends PhotoGridFragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Constants.NEWEST_PHOTOSET_PHOTO_ID, photo.getId());
         editor.commit();
-        Log.d(getLogTag(), "Updated most recent photoset photo id to " +
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "Updated most recent photoset photo id to " +
                 photo.getId());
     }
 

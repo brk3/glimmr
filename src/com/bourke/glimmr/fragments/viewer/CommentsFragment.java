@@ -71,14 +71,16 @@ public final class CommentsFragment extends BaseFragment
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
-            Log.d(TAG, "onPause: cancelling task");
+            if (Constants.DEBUG)
+                Log.d(TAG, "onPause: cancelling task");
         }
     }
 
     @Override
     protected void startTask() {
         super.startTask();
-        Log.d(getLogTag(), "startTask()");
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "startTask()");
         mTask = new LoadCommentsTask(mActivity, this, mPhoto);
         mTask.execute(mOAuth);
     }
@@ -87,11 +89,13 @@ public final class CommentsFragment extends BaseFragment
         String commentText = mAq.id(R.id.editText).getText().toString();
         if (commentText.isEmpty()) {
             // TODO: alert user
-            Log.d(getLogTag(), "Comment text empty, do nothing");
+            if (Constants.DEBUG)
+                Log.d(getLogTag(), "Comment text empty, do nothing");
             return;
         }
 
-        Log.d(getLogTag(), "Starting AddCommentTask: " + commentText);
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "Starting AddCommentTask: " + commentText);
         new AddCommentTask(mActivity, this, mPhoto, commentText)
             .execute(mOAuth);
 
@@ -110,7 +114,8 @@ public final class CommentsFragment extends BaseFragment
 
     @Override
     public void onUserReady(User user) {
-        Log.d(getLogTag(), "onUserReady: " + user.getId());
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onUserReady: " + user.getId());
         mUsers.put(user.getId(), new UserItem(user, false));
         mAdapter.notifyDataSetChanged();
     }
@@ -118,13 +123,16 @@ public final class CommentsFragment extends BaseFragment
     @Override
     public void onCommentAdded(String commentId) {
         // TODO: show toast / update list
-        Log.d(getLogTag(), "Sucessfully added comment with id: " + commentId);
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "Sucessfully added comment with id: " +
+                    commentId);
         startTask();
     }
 
     @Override
     public void onCommentsReady(List<Comment> comments) {
-        Log.d(getLogTag(), "onCommentsReady, comments.size(): "
+        if (Constants.DEBUG)
+            Log.d(getLogTag(), "onCommentsReady, comments.size(): "
                 + comments.size());
 
         mAdapter = new ArrayAdapter<Comment>(mActivity,
