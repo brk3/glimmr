@@ -11,8 +11,10 @@
         android:id="@+id/abTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
         android:layout_marginBottom="-10dp"
         android:scrollHorizontally="true"
+        android:includeFontPadding="false"
         android:textSize="26sp"
         android:textColor="@android:color/white" />
 
@@ -21,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/abTitle"
+        android:includeFontPadding="false"
         android:textSize="@dimen/text_size_medium"
         android:textColor="@android:color/white" />
 
