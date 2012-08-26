@@ -41,13 +41,6 @@
                     android:text="@string/aperture" />
             </TableRow>
 
-            <ProgressBar
-                android:id="@+id/progressIndicator"
-                android:layout_width="30dip"
-                android:layout_height="30dip"
-                android:visibility="gone"
-                android:gravity="center" />
-
             <TableRow>
                 <TextView
                     android:id="@+id/textViewISOValue"
@@ -70,8 +63,15 @@
                     android:layout_span="3"
                     android:background="@color/flickr_blue" />
             </TableRow>
-
         </TableLayout>
+
+        <ProgressBar
+            android:id="@+id/progressIndicator"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_marginTop="5dip"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
 
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"

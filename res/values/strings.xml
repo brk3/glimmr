@@ -31,6 +31,7 @@
     <string name="pref_notification_intervals_title">Sync Interval</string>
     <string name="set_preferences">Set Preferences</string>
     <string name="sets">Sets</string>
+    <string name="photoset">Photoset</string>
     <string name="thirty_mins">30 minutes</string>
     <string name="week">week</string>
     <string name="year">year</string>
@@ -42,4 +43,6 @@
     <string name="welcome">Welcome\nto\nGlimmr.</string>
     <string name="login">Login</string>
     <string name="please_wait">Please wait…</string>
+    <string name="untitled">Untitled</string>
+    <string name="by">by</string>
 </resources>
