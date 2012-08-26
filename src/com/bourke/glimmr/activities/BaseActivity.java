@@ -144,11 +144,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity
 
     public void showProgressIcon(boolean show) {
         if (mMenuItemProgress != null && mMenuItemRefresh != null) {
-            if(show) {
+            if (show) {
                 mMenuItemProgress.setVisible(true);
                 mMenuItemRefresh.setVisible(false);
-            }
-            else {
+            } else {
                 mMenuItemRefresh.setVisible(true);
                 mMenuItemProgress.setVisible(false);
             }

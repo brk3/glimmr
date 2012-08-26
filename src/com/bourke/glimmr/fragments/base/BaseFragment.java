@@ -24,7 +24,11 @@ import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -74,6 +78,9 @@ public abstract class BaseFragment extends SherlockFragment {
     /**
      * Start the PhotoViewerActivity with a list of photos to view and an index
      * to start at in the list.
+     *
+     * In the case of large list of photos(>=20), take 10 either side of the
+     * selected image.
      */
     protected void startPhotoViewer(PhotoList photos, int pos) {
         if (photos == null) {
@@ -82,14 +89,43 @@ public abstract class BaseFragment extends SherlockFragment {
             return;
         }
         if (Constants.DEBUG)
-            Log.d(getLogTag(), "starting photo viewer with " + photos.size()
+            Log.d(getLogTag(), "Starting photo viewer with " + photos.size()
                 + " ids");
         Bundle bundle = new Bundle();
+        //PhotoList subList = makeBalancedSublist(photos, pos);
+        //bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, subList);
         bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photos);
         bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
         Intent photoViewer = new Intent(mActivity, PhotoViewerActivity.class);
         photoViewer.putExtras(bundle);
         mActivity.startActivity(photoViewer);
+    }
+
+    /**
+     * Return a sublist that pivots around a index.  Ideally, there will be an
+     * equal number of items either side of the pivot.
+     * - If the min or max overruns the bounds of the list, the other side
+     *   will be padded.
+     * - If the isn't big enough to make up both sides, just return the list.
+     */
+    private PhotoList makeBalancedSublist(PhotoList photos, int pivot) {
+        final int SIDE_SIZE = 10;
+        if (photos.size() < SIDE_SIZE*2) {
+                return photos;
+        }
+        int right = pivot + SIDE_SIZE;
+        int left = pivot - SIDE_SIZE;
+        if (right > photos.size()) {
+            left -= right - photos.size();
+            right = photos.size();
+        }
+        if (left < 0) {
+            right += SIDE_SIZE-pivot;
+            left = 0;
+        }
+        PhotoList ret = new PhotoList();
+        ret.addAll(photos.subList(left, right));
+        return ret;
     }
 
     protected void startProfileViewer(User user) {
