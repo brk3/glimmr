@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.androidquery.util.AQUtility;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
+import com.bourke.glimmr.fragments.dialog.AboutDialogFragment;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -138,6 +140,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity
                         PreferencesActivity.class);
                 startActivity(preferencesActivity);
                 return true;
+
+            case R.id.menu_about:
+                showAboutDialog();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -152,6 +158,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity
                 mMenuItemProgress.setVisible(false);
             }
         }
+    }
+
+    public void showAboutDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        AboutDialogFragment aboutDialog = new AboutDialogFragment();
+        aboutDialog.show(fm, "About");
     }
 
     @Override
