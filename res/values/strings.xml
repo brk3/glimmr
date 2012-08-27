@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about">About</string>
+    <string name="about_body">bar</string>
+    <string name="about_header">foo</string>
+    <string name="aperture">APERTURE</string>
     <string name="app_name">Glimmr</string>
+    <string name="by">by</string>
     <string name="comments">Comments and Favs</string>
-    <string name="contacts">Contacts</string>
     <string name="contacts">Contacts</string>
     <string name="edit_text_hint">Add your comment…</string>
     <string name="exif_info">Exif Info</string>
@@ -11,8 +14,11 @@
     <string name="fifteen_mins">15 minutes</string>
     <string name="four_hours">4 hours</string>
     <string name="groups">Groups</string>
+    <string name="iso">ISO</string>
     <string name="just_a_moment">Just a moment…</string>
     <string name="last">Last</string>
+    <string name="login">Login</string>
+    <string name="menu_about">About</string>
     <string name="menu_favorite">Mark as Favorite</string>
     <string name="menu_preferences">Preferences</string>
     <string name="menu_refresh">Refresh</string>
@@ -23,26 +29,22 @@
     <string name="once_a_day">Once a day</string>
     <string name="one_hour">1 hour</string>
     <string name="photos">Photos</string>
+    <string name="photoset">Photoset</string>
+    <string name="please_wait">Please wait…</string>
     <string name="pool">Pool</string>
     <string name="pref_category_notifications">Notifications</string>
+    <string name="pref_checkbox_enable">Enable Notifications</string>
     <string name="pref_checkbox_enable_contacts">Contacts Uploads</string>
     <string name="pref_checkbox_enable_contacts_summary">Notify when contacts upload new photos</string>
-    <string name="pref_checkbox_enable">Enable Notifications</string>
     <string name="pref_notification_intervals_title">Sync Interval</string>
     <string name="set_preferences">Set Preferences</string>
     <string name="sets">Sets</string>
-    <string name="photoset">Photoset</string>
+    <string name="shutter">SHUTTER</string>
     <string name="thirty_mins">30 minutes</string>
+    <string name="untitled">Untitled</string>
     <string name="week">week</string>
+    <string name="welcome">Welcome\nto\nGlimmr.</string>
     <string name="year">year</string>
     <string name="yesterday">Yesterday</string>
     <string name="you">You</string>
-    <string name="iso">ISO</string>
-    <string name="aperture">APERTURE</string>
-    <string name="shutter">SHUTTER</string>
-    <string name="welcome">Welcome\nto\nGlimmr.</string>
-    <string name="login">Login</string>
-    <string name="please_wait">Please wait…</string>
-    <string name="untitled">Untitled</string>
-    <string name="by">by</string>
 </resources>
