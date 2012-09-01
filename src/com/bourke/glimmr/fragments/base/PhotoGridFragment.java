@@ -65,6 +65,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         mAq = new AQuery(mActivity, mLayout);
         mAq.id(R.id.gridview).adapter(mAdapter).itemClicked(this,
                 "startPhotoViewer");
+        mAq.id(R.id.gridview).invisible();
         return mLayout;
     }
 
@@ -75,6 +76,7 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.d(getLogTag(), "onResume");
         if (mPhotos != null && !mPhotos.isEmpty()) {
             mAq.id(android.R.id.empty).invisible();
+            mAq.id(R.id.gridview).visible();
         }
     }
 
