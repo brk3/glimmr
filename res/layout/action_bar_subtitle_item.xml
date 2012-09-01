@@ -23,7 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/abTitle"
+        android:ellipsize="end"
         android:includeFontPadding="false"
+        android:singleLine="true"
         android:textSize="@dimen/text_size_medium"
         android:textColor="@android:color/white" />
 

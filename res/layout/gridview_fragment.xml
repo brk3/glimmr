@@ -15,6 +15,7 @@
         android:horizontalSpacing="1dp"
         android:verticalSpacing="1dp"
         android:stretchMode="columnWidth"
+        android:visibility="gone"
         android:listSelector="@null"
         android:gravity="center" />
 
