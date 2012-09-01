@@ -102,7 +102,7 @@ public class GroupListFragment extends BaseFragment
         if (Constants.DEBUG)
             Log.d(getLogTag(), "onGroupListReady");
 
-        if (groups == null || groups.isEmpty()) {
+        if (groups == null) {
             mAq.id(R.id.no_connection_layout).visible();
             mAq.id(R.id.list).gone();
         } else {
