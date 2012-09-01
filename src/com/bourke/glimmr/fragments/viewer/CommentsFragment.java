@@ -153,8 +153,8 @@ public final class CommentsFragment extends BaseFragment
 
                 // TODO: if your username replace with "You"
                 aq.id(R.id.userName).text(comment.getAuthorName());
-                aq.id(R.id.commentDate).text(new PrettyDate(comment
-                            .getDateCreate()).toString());
+                PrettyDate p = new PrettyDate(comment.getDateCreate());
+                aq.id(R.id.commentDate).text(p.localisedPrettyDate(mActivity));
                 aq.id(R.id.commentText).text(comment.getText());
 
                 UserItem author = mUsers.get(comment.getAuthor());
