@@ -1,5 +1,7 @@
 package com.bourke.glimmr.activities;
 
+import com.sbstrm.appirater.Appirater;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 
@@ -66,6 +68,7 @@ public class MainActivity extends BaseActivity {
                 WakefulIntentService.scheduleAlarms(
                         new AppListener(), this, false);
             }
+            Appirater.appLaunched(this);
         }
     }
 
