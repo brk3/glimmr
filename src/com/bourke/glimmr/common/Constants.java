@@ -115,4 +115,7 @@ public class Constants {
     public static final int NOTIFICATION_NEW_CONTACTS_PHOTOS = 0;
     public static final String NOTIFICATION_NEWEST_CONTACT_PHOTO_ID =
         "glimmr_notification_newest_contact_photo_id";
+
+    /* DialogBuilder dialogs */
+    public static final int DIALOG_ABOUT = 0;
 }

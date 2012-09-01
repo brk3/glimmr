@@ -1,15 +1,26 @@
 package com.bourke.glimmr.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 
+import android.text.SpannableString;
+import android.text.util.Linkify;
+
 import android.util.Log;
+import android.util.Log;
+
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -21,7 +32,6 @@ import com.androidquery.util.AQUtility;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
-import com.bourke.glimmr.fragments.dialog.AboutDialogFragment;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -122,6 +132,45 @@ public abstract class BaseActivity extends SherlockFragmentActivity
     }
 
     @Override
+    public Dialog onCreateDialog(int id) {
+        switch (id) {
+            case Constants.DIALOG_ABOUT:
+                return showAboutDialog();
+        }
+        return null;
+    }
+
+    private Dialog showAboutDialog() {
+        PackageInfo pInfo;
+        String versionInfo = "Unknown";
+        try {
+            pInfo = getPackageManager().getPackageInfo(
+                    getPackageName(), PackageManager.GET_META_DATA);
+            versionInfo = pInfo.versionName;
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String aboutTitle = String.format("About %s",
+                getString(R.string.app_name));
+        String versionString = String.format("Version: %s", versionInfo);
+
+        final TextView message = new TextView(this);
+        message.setPadding(5, 5, 5, 5);
+        SpannableString aboutText = new SpannableString(
+                getString(R.string.about_text));
+        message.setText(versionString + "\n\n" + aboutText);
+        message.setTextSize(16);
+        Linkify.addLinks(message, Linkify.ALL);
+
+        return new AlertDialog.Builder(this).
+                setTitle(aboutTitle).
+                setCancelable(true).
+                setIcon(R.drawable.ic_launcher).
+                setPositiveButton(getString(android.R.string.ok), null).
+                        setView(message).create();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -142,7 +191,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
                 return true;
 
             case R.id.menu_about:
-                showAboutDialog();
+                showDialog(Constants.DIALOG_ABOUT);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -158,12 +207,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity
                 mMenuItemProgress.setVisible(false);
             }
         }
-    }
-
-    public void showAboutDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        AboutDialogFragment aboutDialog = new AboutDialogFragment();
-        aboutDialog.show(fm, "About");
     }
 
     @Override
