@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -37,6 +38,7 @@ import com.bourke.glimmr.R;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
+import android.net.Uri;
 
 public abstract class BaseActivity extends SherlockFragmentActivity
         implements ViewPager.OnPageChangeListener {
@@ -163,11 +165,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         Linkify.addLinks(message, Linkify.ALL);
 
         return new AlertDialog.Builder(this).
-                setTitle(aboutTitle).
-                setCancelable(true).
-                setIcon(R.drawable.ic_launcher).
-                setPositiveButton(getString(android.R.string.ok), null).
-                        setView(message).create();
+            setTitle(aboutTitle).
+            setCancelable(true).
+            setIcon(R.drawable.ic_launcher).
+            setNegativeButton(getString(R.string.pro_donate),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }
+                })
+            .setPositiveButton(getString(android.R.string.ok), null).
+            setView(message).create();
     }
 
     @Override

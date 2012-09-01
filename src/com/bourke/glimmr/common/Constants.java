@@ -14,30 +14,6 @@ public class Constants {
     public static final int CACHE_TRIM_TARGET_SIZE = 5000000;  // 5MB
 
     /* Fonts */
-    public static final String FONT_RANCHO =
-        "fonts/Rancho-Regular.ttf";
-    public static final String FONT_ACME_REGULAR =
-        "fonts/Acme-Regular.ttf";
-    public static final String FONT_ARIMO_BOLDITALIC =
-        "fonts/Arimo-Bolditalic.ttf";
-    public static final String FONT_ARIMO_BOLD =
-        "fonts/Arimo-Bold.ttf";
-    public static final String FONT_ARIMO_ITALIC =
-        "fonts/Arimo-Italic.ttf";
-    public static final String FONT_ARIMO_REGULAR =
-        "fonts/Arimo-Regular.ttf";
-    public static final String FONT_GIVEYOUGLORY =
-        "fonts/GiveYouGlory.ttf";
-    public static final String FONT_LECKERLIONE_REGULAR =
-        "fonts/LeckerliOne-Regular.ttf";
-    public static final String FONT_LONDRINASOLID_REGULAR =
-        "fonts/Londrinasolid-Regular.ttf";
-    public static final String FONT_MAIDENORANGE =
-        "fonts/Maidenorange.ttf";
-    public static final String FONT_RANCHO_REGULAR =
-        "fonts/Rancho-Regular.ttf";
-    public static final String FONT_REENIEBEANIE =
-        "fonts/ReenieBeanie.ttf";
     public static final String FONT_SHADOWSINTOLIGHT =
         "fonts/ShadowsIntoLight.ttf";
 
@@ -118,4 +94,8 @@ public class Constants {
 
     /* DialogBuilder dialogs */
     public static final int DIALOG_ABOUT = 0;
+
+    // TODO: update link
+    public static final String PRO_MARKET_LINK =
+        "market://details?id=com.bourke.roidragepro";
 }
