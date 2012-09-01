@@ -1,5 +1,11 @@
 package com.bourke.glimmr.common;
 
+import android.content.Context;
+
+import android.util.Log;
+
+import com.bourke.glimmr.R;
+
 import java.util.Date;
 
 /**
@@ -10,6 +16,8 @@ import java.util.Date;
  */
 public class PrettyDate {
     private Date date;
+
+    private static final String TAG = "Glimmr/PrettyDate";
 
     public PrettyDate() {
         this(new Date());
@@ -75,11 +83,51 @@ public class PrettyDate {
                     || what.equals("year")) {
                 return "Last " + what;
             }
-        }
-        else {
+        } else {
             what += "s";
         }
 
         return amount + " " + what + " ago";
+    }
+
+    public String localisedPrettyDate(Context context) {
+        String prettyDate = this.toString();
+        if (prettyDate.equalsIgnoreCase("Just now")) {
+            return context.getString(R.string.just_now);
+        }
+        if (prettyDate.equalsIgnoreCase("Yesterday")) {
+            return context.getString(R.string.yesterday);
+        }
+        if (prettyDate.equalsIgnoreCase("Last week")) {
+            return context.getString(R.string.last_week);
+        }
+        if (prettyDate.equalsIgnoreCase("Last month")) {
+            return context.getString(R.string.last_month);
+        }
+        if (prettyDate.equalsIgnoreCase("Last year")) {
+            return context.getString(R.string.last_year);
+        }
+        if (prettyDate.endsWith("days ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("days ago", "").trim(),
+                    context.getString(R.string.n_days_ago));
+        }
+        if (prettyDate.endsWith("weeks ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("weeks ago", "").trim(),
+                    context.getString(R.string.n_weeks_ago));
+        }
+        if (prettyDate.endsWith("months ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("months ago", "").trim(),
+                    context.getString(R.string.n_months_ago));
+        }
+        if (prettyDate.endsWith("years ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("years ago", "").trim(),
+                    context.getString(R.string.n_years_ago));
+        }
+        Log.e(TAG, "Unknown PrettyDate string: " + prettyDate);
+        return prettyDate;
     }
 }
