@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.services.AppService;
 import com.sbstrm.appirater.Appirater;
 
 import android.content.Intent;
@@ -65,8 +66,14 @@ public class MainActivity extends BaseActivity {
             boolean enableNotifications = defaultSharedPrefs.getBoolean(
                     Constants.KEY_ENABLE_NOTIFICATIONS, false);
             if (enableNotifications) {
+                if (Constants.DEBUG)
+                    Log.d(TAG, "Scheduling alarms");
                 WakefulIntentService.scheduleAlarms(
                         new AppListener(), this, false);
+            } else {
+                if (Constants.DEBUG)
+                    Log.d(TAG, "Cancelling alarms");
+                AppService.cancelAlarms(this);
             }
             Appirater.appLaunched(this);
         }

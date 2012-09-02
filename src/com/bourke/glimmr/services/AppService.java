@@ -1,6 +1,5 @@
 package com.bourke.glimmr.services;
 
-import android.net.ConnectivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -30,11 +29,18 @@ import com.jakewharton.notificationcompat2.NotificationCompat2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import android.net.NetworkInfo;
 
+/**
+ * TODO: This Service currently deals with new contact's photos.  It should
+ * eventually be abstracted with subclasses to deal with other categories of
+ * photos.
+ */
 public class AppService extends WakefulIntentService {
 
     private static final String TAG = "Glimmr/AppService";
+
+    private SharedPreferences mPrefs;
+    private SharedPreferences.Editor mPrefsEditor;
 
     public AppService() {
         super("AppService");
@@ -45,9 +51,10 @@ public class AppService extends WakefulIntentService {
         if (Constants.DEBUG)
             Log.d(TAG, "doWakefulWork");
 
-        SharedPreferences prefs = getSharedPreferences(Constants
+        mPrefs = getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        OAuth oauth = BaseActivity.loadAccessToken(prefs);
+        mPrefsEditor = mPrefs.edit();
+        OAuth oauth = BaseActivity.loadAccessToken(mPrefs);
         if (oauth == null) {
             if (Constants.DEBUG)
                 Log.e(TAG, "doWakefulWork: oauth from intent is null");
@@ -57,10 +64,17 @@ public class AppService extends WakefulIntentService {
         PhotoList photos = fetchPhotos(oauth);
         List<Photo> newPhotos = checkForNewPhotos(photos);
         if (newPhotos != null && !newPhotos.isEmpty()) {
-            showNotification(newPhotos);
+            /* Avoid duplicate notifications */
+            String latestIdNotifiedAbout = getNewestNotificationPhotoId();
+            Photo latestPhoto = newPhotos.get(0);
+            if (!latestIdNotifiedAbout.equals(latestPhoto.getId())) {
+                showNotification(newPhotos);
+                storeNewestNotificationPhotoId(latestPhoto);
+            }
         }
     }
 
+    // TODO: move strings to strings.xml
     protected void showNotification(List<Photo> newPhotos) {
         final NotificationManager mgr = (NotificationManager)
             getSystemService(NOTIFICATION_SERVICE);
@@ -73,9 +87,9 @@ public class AppService extends WakefulIntentService {
                 newContactsPhotos);
     }
 
+    // TODO: make notification sound/vibrate configurable in preferences
     private Notification getNotification(final String tickerText,
             final String titleText, final String contentText) {
-        // TODO: make notification sound/vibrate configurable in preferences
         return new NotificationCompat2.Builder(this)
             .setSmallIcon(R.drawable.ic_notification)
             .setAutoCancel(true)
@@ -87,7 +101,13 @@ public class AppService extends WakefulIntentService {
             .build();
     }
 
+    /**
+     * Passed to NotificationCompat2.Builder.setContentIntent to start
+     * MainActivity when the notification is pressed.
+     */
     private PendingIntent getPendingIntent() {
+        if (Constants.DEBUG)
+            Log.d(TAG, "getPendingIntent");
         Intent i = new Intent(this, MainActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(this, 0, i, 0);
@@ -113,6 +133,11 @@ public class AppService extends WakefulIntentService {
         return photos;
     }
 
+    /**
+     * Check if the most recent photo id we have stored is present in the
+     * list of photos passed in.  If so, new photos are the sublist from 0
+     * to the found id.
+     */
     protected List<Photo> checkForNewPhotos(PhotoList photos) {
         if (photos == null || photos.isEmpty()) {
             if (Constants.DEBUG)
@@ -121,59 +146,48 @@ public class AppService extends WakefulIntentService {
         }
 
         List<Photo> newPhotos = new ArrayList<Photo>();
-        SharedPreferences prefs = getSharedPreferences(Constants
-                .PREFS_NAME, Context.MODE_PRIVATE);
-
-        /* Check if the most recent photo id we have stored is present in the
-         * list of photos passed in.  If so, new photos are the sublist from 0
-         * to the found id. */
-        String newestId = getNewestPhotoId();
-        if (newestId != null) {
-            for (int i=0; i < photos.size(); i++) {
-                Photo p = photos.get(i);
-                if (p.getId().equals(newestId)) {
-                    newPhotos = photos.subList(0, i);
-                    if (Constants.DEBUG)
-                        Log.d(TAG, String.format("Found %d new photos",
-                                newPhotos.size()));
-                    break;
-                }
+        String newestId = getNewestViewedPhotoId();
+        for (int i=0; i < photos.size(); i++) {
+            Photo p = photos.get(i);
+            if (p.getId().equals(newestId)) {
+                newPhotos = photos.subList(0, i);
+                break;
             }
         }
-
-        /* Update the newest photo id we know about */
-        if (newPhotos != null && !newPhotos.isEmpty()) {
-            storeNewestPhotoId(newPhotos.get(0));
-        } else {
-            if (Constants.DEBUG)
-                Log.d(TAG, "newPhotos null or empty, using most recent " +
-                    "fetched photo as newest");
-            storeNewestPhotoId(photos.get(0));
-        }
-
+        if (Constants.DEBUG)
+            Log.d(TAG, String.format("Found %d new photos", newPhotos.size()));
         return newPhotos;
     }
 
-    protected String getNewestPhotoId() {
-        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
-                Context.MODE_PRIVATE);
-        String newestId = prefs.getString(
-                Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID, null);
+    /**
+     * Returns the id the of the most recent photo the user has viewed.
+     */
+    protected String getNewestViewedPhotoId() {
+        String newestId = mPrefs.getString(
+                Constants.NEWEST_CONTACT_PHOTO_ID, "");
         if (Constants.DEBUG)
-            Log.d(TAG, String.format("getNewestPhotoId: newest is %s",
-                        newestId));
+            Log.d(TAG, "getNewestViewedPhotoId: " + newestId);
         return newestId;
     }
 
-    protected void storeNewestPhotoId(Photo photo) {
-        SharedPreferences prefs = getSharedPreferences(Constants
-                .PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
+    /**
+     * Returns the id the of the most recent photo in the list of photo's we've
+     * notified about.
+     */
+    protected String getNewestNotificationPhotoId() {
+        String newestId = mPrefs.getString(
+                Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID, "");
+        if (Constants.DEBUG)
+            Log.d(TAG, "getNewestNotificationPhotoId: " + newestId);
+        return newestId;
+    }
+
+    protected void storeNewestNotificationPhotoId(Photo photo) {
+        mPrefsEditor.putString(Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
                 photo.getId());
-        editor.commit();
+        mPrefsEditor.commit();
         if (Constants.DEBUG)
             Log.d(TAG, "Updated most recent contact photo id to " +
-                    photo.getId());
+                    photo.getId() + " (notification)");
     }
 }
