@@ -181,8 +181,7 @@ public abstract class BaseFragment extends SherlockFragment {
     }
 
     protected void refresh() {
-        Log.d(getLogTag(), "refresh");
-        startTask();
+        Log.e(getLogTag(), "refresh");
     }
 
     protected String getLogTag() {

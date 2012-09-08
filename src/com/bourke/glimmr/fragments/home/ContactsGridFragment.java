@@ -40,7 +40,7 @@ public class ContactsGridFragment extends PhotoGridFragment {
 
     @Override
     protected void refresh() {
-        Log.d(getLogTag(), "refresh");
+        super.refresh();
         mTask = new LoadContactsPhotosTask(this, this);
         mTask.execute(mOAuth);
     }

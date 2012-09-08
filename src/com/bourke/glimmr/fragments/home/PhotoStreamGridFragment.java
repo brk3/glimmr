@@ -45,6 +45,13 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
     }
 
     @Override
+    protected void refresh() {
+        super.refresh();
+        mTask = new LoadPhotostreamTask(this, this, mUser, mPage);
+        mTask.execute(mOAuth);
+    }
+
+    @Override
     public void onPhotosReady(PhotoList photos) {
         super.onPhotosReady(photos);
         if (photos != null && photos.isEmpty()) {
