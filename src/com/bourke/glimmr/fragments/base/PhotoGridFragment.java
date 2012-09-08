@@ -98,6 +98,13 @@ public abstract class PhotoGridFragment extends BaseFragment
         mAq.id(android.R.id.empty).invisible();
     }
 
+    @Override
+    protected void refresh() {
+        Log.d(getLogTag(), "refresh");
+        mPhotos.clear();
+        mPage = 1;
+    }
+
     public abstract String getNewestPhotoId();
     public abstract void storeNewestPhotoId(Photo photo);
 
