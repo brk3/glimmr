@@ -81,7 +81,7 @@ public final class CommentsFragment extends BaseFragment
         super.startTask();
         if (Constants.DEBUG)
             Log.d(getLogTag(), "startTask()");
-        mTask = new LoadCommentsTask(mActivity, this, mPhoto);
+        mTask = new LoadCommentsTask(this, this, mPhoto);
         mTask.execute(mOAuth);
     }
 
@@ -96,7 +96,7 @@ public final class CommentsFragment extends BaseFragment
 
         if (Constants.DEBUG)
             Log.d(getLogTag(), "Starting AddCommentTask: " + commentText);
-        new AddCommentTask(mActivity, this, mPhoto, commentText)
+        new AddCommentTask(this, this, mPhoto, commentText)
             .execute(mOAuth);
 
         /* Clear the editText and hide keyboard */

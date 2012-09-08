@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.SharedPreferences;
 
+import android.net.Uri;
+
 import android.os.Bundle;
 
 import android.support.v4.view.ViewPager;
@@ -19,14 +21,11 @@ import android.text.SpannableString;
 import android.text.util.Linkify;
 
 import android.util.Log;
-import android.util.Log;
 
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
 import com.androidquery.util.AQUtility;
@@ -38,7 +37,7 @@ import com.bourke.glimmr.R;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
-import android.net.Uri;
+import com.actionbarsherlock.view.MenuItem;
 
 public abstract class BaseActivity extends SherlockFragmentActivity
         implements ViewPager.OnPageChangeListener {
@@ -53,9 +52,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity
     protected AQuery mAq;
 
     protected ActionBar mActionBar;
-
-    private MenuItem mMenuItemProgress;
-    private MenuItem mMenuItemRefresh;
 
     private GlimmrAbCustomTitle mActionbarTitle;
 
@@ -125,12 +121,30 @@ public abstract class BaseActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-        mMenuItemProgress = menu.findItem(R.id.menu_progress);
-        mMenuItemRefresh = menu.findItem(R.id.menu_refresh);
-        showProgressIcon(false);
-        return true;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                 /* This is called when the Home (Up) button is pressed
+                  * in the Action Bar. */
+                Intent parentActivityIntent = new Intent(this,
+                        MainActivity.class);
+                parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(parentActivityIntent);
+                finish();
+                return true;
+
+            case R.id.menu_preferences:
+                Intent preferencesActivity = new Intent(getBaseContext(),
+                        PreferencesActivity.class);
+                startActivity(preferencesActivity);
+                return true;
+
+            case R.id.menu_about:
+                showDialog(Constants.DIALOG_ABOUT);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -180,45 +194,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity
                 })
             .setPositiveButton(getString(android.R.string.ok), null).
             setView(message).create();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                /* This is called when the Home (Up) button is pressed
-                 * in the Action Bar. */
-                Intent parentActivityIntent = new Intent(this,
-                        MainActivity.class);
-                parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(parentActivityIntent);
-                finish();
-                return true;
-
-            case R.id.menu_preferences:
-                Intent preferencesActivity = new Intent(getBaseContext(),
-                        PreferencesActivity.class);
-                startActivity(preferencesActivity);
-                return true;
-
-            case R.id.menu_about:
-                showDialog(Constants.DIALOG_ABOUT);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void showProgressIcon(boolean show) {
-        if (mMenuItemProgress != null && mMenuItemRefresh != null) {
-            if (show) {
-                mMenuItemProgress.setVisible(true);
-                mMenuItemRefresh.setVisible(false);
-            } else {
-                mMenuItemRefresh.setVisible(true);
-                mMenuItemProgress.setVisible(false);
-            }
-        }
     }
 
     @Override

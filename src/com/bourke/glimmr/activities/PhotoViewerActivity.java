@@ -120,7 +120,8 @@ public class PhotoViewerActivity extends BaseActivity
                     Log.d(getLogTag(), String.format(
                             "Starting SetFavoriteTask, id/index:"
                             + "%s/%s", currentPhoto.getId(), mSelectedIndex));
-                new SetFavoriteTask(this, this, currentPhoto).execute(mOAuth);
+                new SetFavoriteTask(currentFragment, this, currentPhoto)
+                    .execute(mOAuth);
             } else {
                 if (Constants.DEBUG)
                     Log.e(TAG, "onFavoriteButtonClick: currentPhoto is null");

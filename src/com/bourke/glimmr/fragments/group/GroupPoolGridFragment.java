@@ -43,7 +43,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadGroupPoolTask(mActivity, this, mGroup, page);
+        mTask = new LoadGroupPoolTask(this, this, mGroup, page);
         mTask.execute(mOAuth);
     }
 

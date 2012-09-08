@@ -1,12 +1,12 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IUserReadyListener;
@@ -15,6 +15,7 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
+import android.app.Activity;
 
 public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
 
@@ -34,7 +35,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((BaseActivity) mActivity).showProgressIcon(true);
+        //mActivity.showProgressIcon(true);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
                 Log.e(TAG, "Error fetching user info, result is null");
         }
         mListener.onUserReady(result);
-        ((BaseActivity) mActivity).showProgressIcon(false);
+        //mBaseFragment.showProgressIcon(false);
     }
 
     @Override

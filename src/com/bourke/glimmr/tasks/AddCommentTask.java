@@ -1,13 +1,12 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
-
 import android.os.AsyncTask;
 
 import android.util.Log;
 
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.event.Events.ICommentAddedListener;
 
 import com.googlecode.flickrjandroid.Flickr;
@@ -22,11 +21,11 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
     private ICommentAddedListener mListener;
     private Photo mPhoto;
     private String mCommentText;
-    private Activity mActivity;
+    private BaseFragment mBaseFragment;
 
-    public AddCommentTask(Activity a, ICommentAddedListener listener,
+    public AddCommentTask(BaseFragment a, ICommentAddedListener listener,
             Photo photo, String commentText) {
-        mActivity = a;
+        mBaseFragment = a;
         mListener = listener;
         mPhoto = photo;
         mCommentText = commentText;

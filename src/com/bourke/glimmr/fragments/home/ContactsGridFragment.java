@@ -27,16 +27,22 @@ public class ContactsGridFragment extends PhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        // TODO: add clause for refresh button
         if (mPhotos != null && !mPhotos.isEmpty()) {
             if (Constants.DEBUG)
                 Log.d(getLogTag(), "mPhotos occupied, not starting task");
         } else {
             if (Constants.DEBUG)
                 Log.d(getLogTag(), "mPhotos null or empty, starting task");
-            mTask = new LoadContactsPhotosTask(mActivity, this);
+            mTask = new LoadContactsPhotosTask(this, this);
             mTask.execute(mOAuth);
         }
+    }
+
+    @Override
+    protected void refresh() {
+        Log.d(getLogTag(), "refresh");
+        mTask = new LoadContactsPhotosTask(this, this);
+        mTask.execute(mOAuth);
     }
 
     @Override

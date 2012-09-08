@@ -30,7 +30,7 @@ public class PhotosetGridFragment extends PhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        new LoadPhotosetTask(mActivity, this, mPhotoset).execute(mOAuth);
+        new LoadPhotosetTask(this, this, mPhotoset).execute(mOAuth);
     }
 
     @Override

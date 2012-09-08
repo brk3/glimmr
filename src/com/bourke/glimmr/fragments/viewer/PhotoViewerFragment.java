@@ -47,13 +47,13 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Constants.DEBUG)
-            Log.d(TAG, "onCreate");
+        if (Constants.DEBUG) Log.d(TAG, "onCreate");
+        setHasOptionsMenu(false);
     }
 
     @Override
     public void onResume() {
-        mTask = new LoadPhotoInfoTask(mActivity, this, mBasePhoto);
+        mTask = new LoadPhotoInfoTask(this, this, mBasePhoto);
         super.onResume();
     }
 
@@ -168,11 +168,9 @@ public final class PhotoViewerFragment extends BaseFragment
         if (Constants.DEBUG)
             Log.d(getLogTag(), "refreshFavoriteIcon");
         if (mTask != null) {
-            if (Constants.DEBUG)
-                Log.d(getLogTag(), "mTask not null");
+            if (Constants.DEBUG) Log.d(getLogTag(), "mTask not null");
             if (mTask.getStatus() == AsyncTask.Status.FINISHED) {
-                if (Constants.DEBUG)
-                    Log.d(getLogTag(), "mTask finished");
+                if (Constants.DEBUG) Log.d(getLogTag(), "mTask finished");
                 ((PhotoViewerActivity) mActivity).updateFavoriteButtonIcon(
                     mPhoto.isFavorite());
             }

@@ -1,12 +1,12 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
@@ -23,11 +23,11 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
 
     private IPhotoInfoReadyListener mListener;
     private Photo mPhoto;
-    private Activity mActivity;
+    private BaseFragment mBaseFragment;
 
-    public LoadPhotoInfoTask(Activity a, IPhotoInfoReadyListener listener,
+    public LoadPhotoInfoTask(BaseFragment a, IPhotoInfoReadyListener listener,
             Photo photo) {
-        mActivity = a;
+        mBaseFragment = a;
         mListener = listener;
         mPhoto = photo;
     }
@@ -35,7 +35,7 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((BaseActivity) mActivity).showProgressIcon(true);
+        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
                 Log.e(TAG, "Error fetching photo info, result is null");
         }
         mListener.onPhotoInfoReady(result);
-        ((BaseActivity) mActivity).showProgressIcon(false);
+        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

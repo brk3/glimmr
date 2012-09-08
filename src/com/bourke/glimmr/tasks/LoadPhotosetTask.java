@@ -1,12 +1,12 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
@@ -26,11 +26,11 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private IPhotoListReadyListener mListener;
     private Photoset mPhotoset;
-    private Activity mActivity;
+    private BaseFragment mBaseFragment;
 
-    public LoadPhotosetTask(Activity a, IPhotoListReadyListener listener,
+    public LoadPhotosetTask(BaseFragment a, IPhotoListReadyListener listener,
             Photoset photoset) {
-        mActivity = a;
+        mBaseFragment = a;
         mListener = listener;
         mPhotoset = photoset;
     }
@@ -38,7 +38,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((BaseActivity) mActivity).showProgressIcon(true);
+        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -71,6 +71,6 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
                 Log.e(TAG, "Error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
-        ((BaseActivity) mActivity).showProgressIcon(false);
+        mBaseFragment.showProgressIcon(false);
     }
 }

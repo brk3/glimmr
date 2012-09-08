@@ -1,12 +1,12 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
@@ -26,21 +26,21 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private IPhotoListReadyListener mListener;
     private User mUser;
-    private Activity mActivity;
+    private BaseFragment mBaseFragment;
     private int mPage;
 
-    public LoadPhotostreamTask(Activity a, IPhotoListReadyListener listener,
-            User user, int page) {
+    public LoadPhotostreamTask(BaseFragment a,
+            IPhotoListReadyListener listener, User user, int page) {
         mListener = listener;
         mUser = user;
-        mActivity = a;
+        mBaseFragment = a;
         mPage = page;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((BaseActivity) mActivity).showProgressIcon(true);
+        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
                 Log.e(TAG, "Error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
-        ((BaseActivity) mActivity).showProgressIcon(false);
+        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

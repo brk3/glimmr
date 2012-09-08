@@ -1,12 +1,12 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IGroupListReadyListener;
@@ -28,17 +28,17 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
     private static final String TAG = "Glimmr/LoadGroupsTask";
 
     private IGroupListReadyListener mListener;
-    private Activity mActivity;
+    private BaseFragment mBaseFragment;
 
-    public LoadGroupsTask(Activity a, IGroupListReadyListener listener) {
-        mActivity = a;
+    public LoadGroupsTask(BaseFragment a, IGroupListReadyListener listener) {
+        mBaseFragment = a;
         mListener = listener;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((BaseActivity) mActivity).showProgressIcon(true);
+        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
             ret.addAll(result);
         }
         mListener.onGroupListReady(ret);
-        ((BaseActivity) mActivity).showProgressIcon(false);
+        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
@@ -28,18 +28,18 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
     private static final String TAG = "Glimmr/LoadContactsPhotosTask";
 
     private IPhotoListReadyListener mListener;
-    private Activity mActivity;
+    private BaseFragment mBaseFragment;
 
-    public LoadContactsPhotosTask(Activity a,
+    public LoadContactsPhotosTask(BaseFragment a,
             IPhotoListReadyListener listener) {
         mListener = listener;
-        mActivity = a;
+        mBaseFragment = a;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((BaseActivity) mActivity).showProgressIcon(true);
+        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
                 Log.e(TAG, "Error fetching contacts photos, result is null");
         }
         mListener.onPhotosReady(result);
-        ((BaseActivity) mActivity).showProgressIcon(false);
+        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

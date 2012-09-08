@@ -1,10 +1,10 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
-import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
@@ -19,12 +19,12 @@ public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
     private static final String TAG = "Glimmr/SetFavoriteTask";
 
     private IFavoriteReadyListener mListener;
-    private Activity mActivity;
+    private BaseFragment mBaseFragment;
     private Photo mPhoto;
 
-    public SetFavoriteTask(Activity a, IFavoriteReadyListener listener,
+    public SetFavoriteTask(BaseFragment a, IFavoriteReadyListener listener,
             Photo photo) {
-        mActivity = a;
+        mBaseFragment = a;
         mListener = listener;
         mPhoto = photo;
     }
@@ -32,7 +32,7 @@ public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((BaseActivity) mActivity).showProgressIcon(true);
+        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -56,6 +56,6 @@ public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
     @Override
     protected void onPostExecute(final Exception result) {
         mListener.onFavoriteComplete(result);
-        ((BaseActivity) mActivity).showProgressIcon(false);
+        mBaseFragment.showProgressIcon(false);
     }
 }

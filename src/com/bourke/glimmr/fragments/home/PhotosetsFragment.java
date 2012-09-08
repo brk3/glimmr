@@ -56,7 +56,7 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        mTask = new LoadPhotosetsTask(mActivity, this, mUser);
+        mTask = new LoadPhotosetsTask(this, this, mUser);
         mTask.execute(mOAuth);
     }
 

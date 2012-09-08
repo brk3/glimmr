@@ -1,12 +1,12 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
@@ -27,11 +27,11 @@ public class LoadExifInfoTask
 
     private IExifInfoReadyListener mListener;
     private Photo mPhoto;
-    private Activity mActivity;
+    private BaseFragment mBaseFragment;
 
-    public LoadExifInfoTask(Activity a, IExifInfoReadyListener listener,
+    public LoadExifInfoTask(BaseFragment a, IExifInfoReadyListener listener,
             Photo photo) {
-        mActivity = a;
+        mBaseFragment = a;
         mListener = listener;
         mPhoto = photo;
     }
@@ -39,7 +39,7 @@ public class LoadExifInfoTask
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((BaseActivity) mActivity).showProgressIcon(true);
+        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -66,6 +66,6 @@ public class LoadExifInfoTask
                 Log.e(TAG, "Error fetching exif info, result is null");
             // TODO: alert user / recover
         }
-        ((BaseActivity) mActivity).showProgressIcon(false);
+        mBaseFragment.showProgressIcon(false);
     }
 }
