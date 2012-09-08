@@ -1,6 +1,7 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import android.os.AsyncTask;
+import android.content.Intent;
+
 import android.os.Bundle;
 
 import android.util.Log;
@@ -11,36 +12,43 @@ import android.view.ViewGroup;
 
 import android.widget.RelativeLayout;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.activities.PhotoViewerActivity;
+import com.bourke.glimmr.activities.CommentsDialogActivity;
+import com.bourke.glimmr.activities.ExifInfoDialogActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
+import com.bourke.glimmr.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 
 public final class PhotoViewerFragment extends BaseFragment
-        implements IPhotoInfoReadyListener {
+        implements IPhotoInfoReadyListener, IFavoriteReadyListener {
 
     protected String TAG = "Glimmr/PhotoViewerFragment";
 
     private Photo mBasePhoto;
     private Photo mPhoto;
     private AQuery mAq;
-    private int mId;
+
+    private MenuItem mFavoriteButton;
 
     private LoadPhotoInfoTask mTask;
 
-    public static PhotoViewerFragment newInstance(Photo photo, int id) {
+    public static PhotoViewerFragment newInstance(Photo photo) {
         if (Constants.DEBUG)
             Log.d("Glimmr/PhotoViewerFragment", "newInstance");
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
         photoFragment.mBasePhoto = photo;
-        photoFragment.mId = id;
         return photoFragment;
     }
 
@@ -48,7 +56,103 @@ public final class PhotoViewerFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Constants.DEBUG) Log.d(TAG, "onCreate");
-        setHasOptionsMenu(false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (Constants.DEBUG) Log.d(getLogTag(), "onCreateOptionsMenu");
+        inflater.inflate(R.menu.photoviewer_menu, menu);
+        mFavoriteButton = menu.findItem(R.id.menu_favorite);
+        /* The task could return before this has inflated, so make sure it's up
+         * to date */
+        if (mPhoto != null) {
+            updateFavoriteButtonIcon(mPhoto.isFavorite());
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_view_comments:
+                onCommentsButtonClick();
+                return true;
+            case R.id.menu_favorite:
+                onFavoriteButtonClick();
+                return true;
+            case R.id.menu_view_exif:
+                onExifButtonClick();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void onCommentsButtonClick() {
+        Intent activity = new Intent(mActivity, CommentsDialogActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.COMMENTS_DIALOG_ACTIVITY_PHOTO,
+                mPhoto);
+        activity.putExtras(bundle);
+        startActivity(activity);
+    }
+
+    // TODO: add lock around this
+    public void onFavoriteButtonClick() {
+        if (mPhoto != null) {
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "Starting SetFavoriteTask for photo: "
+                        + mPhoto.getId());
+            }
+            new SetFavoriteTask(this, this, mPhoto).execute(mOAuth);
+            updateFavoriteButtonIcon(mPhoto.isFavorite());
+        } else {
+            Log.e(TAG, "onFavoriteButtonClick: mPhoto is null");
+        }
+    }
+
+    public void onExifButtonClick() {
+        Intent exifActivity =
+            new Intent(mActivity, ExifInfoDialogActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO,
+                mPhoto);
+        exifActivity.putExtras(bundle);
+        startActivity(exifActivity);
+    }
+
+    @Override
+    public void onFavoriteComplete(Exception e) {
+        if (e != null) {
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "Error setting favorite on photo");
+            }
+            return;
+        } else {
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "Successfully favorited/unfavorited photo");
+            }
+            mPhoto.setFavorite(!mPhoto.isFavorite());
+        }
+    }
+
+    /**
+     * Update the icon the favorites button based on the state of the current
+     * photo.
+     */
+    public void updateFavoriteButtonIcon(boolean favorite) {
+        if (Constants.DEBUG) {
+            Log.d(getLogTag(), "updateFavoriteButtonIcon: " + favorite);
+        }
+        if (mFavoriteButton != null) {
+            if (favorite) {
+                mFavoriteButton.setIcon(R.drawable.ic_rating_important_dark);
+            } else {
+                mFavoriteButton.setIcon(
+                        R.drawable.ic_rating_not_important_dark);
+            }
+        } else {
+            if (Constants.DEBUG) Log.d(getLogTag(), "mFavoriteButton null");
+        }
     }
 
     @Override
@@ -60,22 +164,19 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public void onPause() {
         super.onPause();
-        if (Constants.DEBUG)
-            Log.d(TAG, "onPause");
+        if (Constants.DEBUG) Log.d(TAG, "onPause");
         if (mTask != null) {
             mTask.cancel(true);
-            if (Constants.DEBUG)
-                Log.d(TAG, "onPause: cancelling task");
+            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onCreateView");
-        mLayout = (RelativeLayout) inflater.inflate(R.layout
-                .photoviewer_fragment, container, false);
+        if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
+        mLayout = (RelativeLayout) inflater.inflate(
+                R.layout.photoviewer_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
         return mLayout;
     }
@@ -83,10 +184,8 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onSaveInstanceState");
+        if (Constants.DEBUG) Log.d(getLogTag(), "onSaveInstanceState");
         outState.putSerializable(Constants.KEY_PHOTOVIEWER_URL, mBasePhoto);
-        outState.putInt("glimmr_photoviewer_id", mId);
      }
 
     /**
@@ -96,8 +195,7 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onActivityCreated");
+        if (Constants.DEBUG) Log.d(getLogTag(), "onActivityCreated");
         mPhoto = null;
     }
 
@@ -113,15 +211,10 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @Override
     public void onPhotoInfoReady(Photo photo) {
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onPhotoInfoReady");
+        if (Constants.DEBUG) Log.d(getLogTag(), "onPhotoInfoReady");
         mPhoto = photo;
-        /* If we're currently showing, update the favorite button icon */
-        if (mId == ((PhotoViewerActivity) mActivity).getSelectedFragmentId()) {
-            ((PhotoViewerActivity) mActivity).updateFavoriteButtonIcon(
-                mPhoto.isFavorite());
-        }
         displayImage();
+        updateFavoriteButtonIcon(mPhoto.isFavorite());
     }
 
     private void displayImage() {
@@ -162,27 +255,6 @@ public final class PhotoViewerFragment extends BaseFragment
                 mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
             }
         }
-    }
-
-    public void refreshFavoriteIcon() {
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "refreshFavoriteIcon");
-        if (mTask != null) {
-            if (Constants.DEBUG) Log.d(getLogTag(), "mTask not null");
-            if (mTask.getStatus() == AsyncTask.Status.FINISHED) {
-                if (Constants.DEBUG) Log.d(getLogTag(), "mTask finished");
-                ((PhotoViewerActivity) mActivity).updateFavoriteButtonIcon(
-                    mPhoto.isFavorite());
-            }
-        } else {
-            /* Do nothing, it will update when it's done */
-            if (Constants.DEBUG)
-                Log.d(getLogTag(), "mTask null or not finished");
-        }
-    }
-
-    public Photo getPhoto() {
-        return mBasePhoto;
     }
 
     @Override
