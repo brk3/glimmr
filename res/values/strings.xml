@@ -21,7 +21,6 @@
     <string name="last_week">Last Week</string>
     <string name="last_year">Last Year</string>
     <string name="login">Login</string>
-    <string name="menu_about">About</string>
     <string name="menu_favorite">Mark as Favorite</string>
     <string name="menu_preferences">Preferences</string>
     <string name="menu_refresh">Refresh</string>
@@ -30,6 +29,9 @@
     <string name="n_days_ago">days ago</string>
     <string name="n_months_ago">months ago</string>
     <string name="no_connection">No internet connection</string>
+    <string name="notification_contacts_content">from your contacts.</string>
+    <string name="notification_contacts_ticker">Your Flickr contacts have posted new photos</string>
+    <string name="notification_contacts_title">New photos</string>
     <string name="n_weeks_ago">weeks ago</string>
     <string name="n_years_ago">years ago</string>
     <string name="once_a_day">Once a day</string>

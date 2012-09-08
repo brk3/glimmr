@@ -13,7 +13,7 @@
 
     <item android:id="@+id/menu_about"
           android:icon="@drawable/ic_action_about_dark"
-          android:title="@string/menu_about" />
+          android:title="@string/about" />
 
     <!--
     <item android:id="@+id/menu_upload"

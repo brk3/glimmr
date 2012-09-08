@@ -74,13 +74,13 @@ public class AppService extends WakefulIntentService {
         }
     }
 
-    // TODO: move strings to strings.xml
     protected void showNotification(List<Photo> newPhotos) {
         final NotificationManager mgr = (NotificationManager)
             getSystemService(NOTIFICATION_SERVICE);
-        String tickerText = "Your Flickr contacts have posted new photos";
-        String titleText = newPhotos.size()+" New photos";
-        String contentText = "from your contacts.";
+        String tickerText = getString(R.string.notification_contacts_ticker);
+        String titleText = String.format("%d %s", newPhotos.size(),
+                getString(R.string.notification_contacts_title));
+        String contentText = getString(R.string.notification_contacts_content);
         Notification newContactsPhotos = getNotification(tickerText, titleText,
                 contentText);
         mgr.notify(Constants.NOTIFICATION_NEW_CONTACTS_PHOTOS,
