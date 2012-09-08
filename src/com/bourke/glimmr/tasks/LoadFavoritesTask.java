@@ -1,12 +1,12 @@
 package com.bourke.glimmr.tasks;
 
-import android.app.Activity;
+
 
 import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
@@ -27,12 +27,12 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private IPhotoListReadyListener mListener;
     private User mUser;
-    private Activity mActivity;
+    private BaseFragment mBaseFragment;
     private int mPage;
 
-    public LoadFavoritesTask(Activity a, IPhotoListReadyListener listener,
+    public LoadFavoritesTask(BaseFragment a, IPhotoListReadyListener listener,
             User user, int page) {
-        mActivity = a;
+        mBaseFragment = a;
         mListener = listener;
         mUser = user;
         mPage = page;
@@ -41,7 +41,7 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        ((BaseActivity) mActivity).showProgressIcon(true);
+        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
                 Log.e(TAG, "Error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
-        ((BaseActivity) mActivity).showProgressIcon(false);
+        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

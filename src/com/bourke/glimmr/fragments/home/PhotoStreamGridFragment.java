@@ -40,7 +40,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadPhotostreamTask(mActivity, this, mUser, page);
+        mTask = new LoadPhotostreamTask(this, this, mUser, page);
         mTask.execute(mOAuth);
     }
 

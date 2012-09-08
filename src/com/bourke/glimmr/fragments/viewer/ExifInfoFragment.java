@@ -58,7 +58,7 @@ public final class ExifInfoFragment extends BaseFragment
         super.startTask();
         if (Constants.DEBUG)
             Log.d(getLogTag(), "startTask()");
-        mTask = new LoadExifInfoTask(mActivity, this, mPhoto);
+        mTask = new LoadExifInfoTask(this, this, mPhoto);
         mTask.execute(mOAuth);
     }
 

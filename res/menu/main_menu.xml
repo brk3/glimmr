@@ -2,28 +2,10 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-    <item android:id="@+id/menu_upload"
-          android:icon="@drawable/ic_action_upload_dark"
-          android:title="Upload" />
-    -->
-
     <item android:id="@+id/menu_refresh"
           android:title="@string/menu_refresh"
           android:icon="@drawable/ic_action_refresh_dark"
-          android:showAsAction="always"
-          android:visible="false" />
-
-    <item android:id="@+id/menu_progress"
-          android:showAsAction="always"
-          android:visible="true"
-          android:actionLayout="@layout/menu_item_progress" />
-
-    <!--
-    <item android:id="@+id/menu_search"
-          android:icon="@drawable/ic_action_search_dark"
-          android:title="Search" />
-    -->
+          android:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_preferences"
           android:icon="@android:drawable/ic_menu_preferences"
@@ -32,4 +14,16 @@
     <item android:id="@+id/menu_about"
           android:icon="@drawable/ic_action_about_dark"
           android:title="@string/menu_about" />
+
+    <!--
+    <item android:id="@+id/menu_upload"
+          android:icon="@drawable/ic_action_upload_dark"
+          android:title="Upload" />
+    -->
+
+    <!--
+    <item android:id="@+id/menu_search"
+          android:icon="@drawable/ic_action_search_dark"
+          android:title="Search" />
+    -->
 </menu>

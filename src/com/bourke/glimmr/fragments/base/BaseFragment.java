@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
@@ -24,11 +25,8 @@ import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
-import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.actionbarsherlock.view.MenuInflater;
 
 /**
  *
@@ -50,6 +48,8 @@ public abstract class BaseFragment extends SherlockFragment {
     protected ActionBar mActionBar;
     protected AQuery mAq;
     protected ViewGroup mLayout;
+
+    protected boolean mRefreshing = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,31 @@ public abstract class BaseFragment extends SherlockFragment {
         /* Update our reference to the activity as it may have changed */
         mActivity = (BaseActivity) getSherlockActivity();
         startTask();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.main_menu, menu);
+		if (mRefreshing) {
+			menu.findItem(R.id.menu_refresh).setActionView(
+					R.layout.action_bar_indeterminate_progress);
+		}
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                refresh();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showProgressIcon(boolean show) {
+        mRefreshing = show;
+        mActivity.invalidateOptionsMenu();
     }
 
     /**
@@ -155,16 +180,9 @@ public abstract class BaseFragment extends SherlockFragment {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_refresh:
-                if (Constants.DEBUG)
-                    Log.d(getLogTag(), "refresh");
-                startTask();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    protected void refresh() {
+        Log.d(getLogTag(), "refresh");
+        startTask();
     }
 
     protected String getLogTag() {

@@ -61,7 +61,7 @@ public class GroupListFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        mTask = new LoadGroupsTask(mActivity, this);
+        mTask = new LoadGroupsTask(this, this);
         mTask.execute(mOAuth);
     }
 
