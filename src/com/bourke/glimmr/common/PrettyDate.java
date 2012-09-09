@@ -10,14 +10,22 @@ import java.util.Date;
 
 /**
  * Class for human-readable, pretty date formatting.
- * http://lea.verou.me/2009/04/java-pretty-dates/
+ * Original code from http://lea.verou.me/2009/04/java-pretty-dates/
  *
  * @author Lea Verou
+ * @author Paul Bourke
  */
 public class PrettyDate {
     private Date date;
 
     private static final String TAG = "Glimmr/PrettyDate";
+
+    private static final int MINUTE = 60;
+    private static final int HOUR = 3600;
+    private static final int DAY = 86400;
+    private static final int WEEK = 604800;
+    private static final int MONTH = 2592000;
+    private static final int YEAR = 31536000;
 
     public PrettyDate() {
         this(new Date());
@@ -28,43 +36,34 @@ public class PrettyDate {
     }
 
     public String toString() {
-        long current = (new Date()).getTime(),
-            timestamp = date.getTime(),
-            diff = (current - timestamp)/1000;
+        long current = (new Date()).getTime();
+        long timestamp = date.getTime();
+        long diff = (current - timestamp)/1000;
         int amount = 0;
         String what = "";
 
-        /**
-         * Second counts
-         * 3600: hour
-         * 86400: day
-         * 604800: week
-         * 2592000: month
-         * 31536000: year
-         */
-
-        if(diff > 31536000) {
-            amount = (int)(diff/31536000);
+        if(diff > YEAR) {
+            amount = (int)(diff/YEAR);
             what = "year";
         }
-        else if(diff > 31536000) {
-            amount = (int)(diff/31536000);
+        else if(diff > MONTH) {
+            amount = (int)(diff/MONTH);
             what = "month";
         }
-        else if(diff > 604800) {
-            amount = (int)(diff/604800);
+        else if(diff > WEEK) {
+            amount = (int)(diff/WEEK);
             what = "week";
         }
-        else if(diff > 86400) {
-            amount = (int)(diff/86400);
+        else if(diff > DAY) {
+            amount = (int)(diff/DAY);
             what = "day";
         }
-        else if(diff > 3600) {
-            amount = (int)(diff/3600);
+        else if(diff > HOUR) {
+            amount = (int)(diff/HOUR);
             what = "hour";
         }
-        else if(diff > 60) {
-            amount = (int)(diff/60);
+        else if(diff > MINUTE) {
+            amount = (int)(diff/MINUTE);
             what = "minute";
         }
         else {

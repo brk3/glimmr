@@ -107,7 +107,8 @@ public class LoginActivity extends SherlockFragmentActivity
         persistAccessToken(accessToken);
         if (Constants.DEBUG)
             Log.d(TAG, "Got token, saved to disk, good to start MainActivity");
-        Toast.makeText(this, "Logged In!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.logged_in),
+                Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, MainActivity.class));
     }
 
