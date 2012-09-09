@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import android.util.Log;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadExifInfoTask;
 
@@ -26,7 +26,6 @@ import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
-import android.view.Gravity;
 
 public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {

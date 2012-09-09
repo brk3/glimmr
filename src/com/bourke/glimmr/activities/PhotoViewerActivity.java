@@ -12,8 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.event.Events.IOverlayVisbilityListener;
+import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.photos.Photo;
