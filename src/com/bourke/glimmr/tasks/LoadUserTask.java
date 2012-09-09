@@ -33,7 +33,6 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        //mActivity.showProgressIcon(true);
     }
 
     @Override
@@ -59,7 +58,6 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
                 Log.e(TAG, "Error fetching user info, result is null");
         }
         mListener.onUserReady(result);
-        //mBaseFragment.showProgressIcon(false);
     }
 
     @Override

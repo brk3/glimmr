@@ -34,7 +34,6 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        // TODO: show progress icon
     }
 
     @Override
@@ -55,15 +54,15 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
     @Override
     protected void onPostExecute(final String result) {
         if (result == null) {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.e(TAG, "Error adding comment, result is null");
+            }
         }
         mListener.onCommentAdded(result);
     }
 
     @Override
     protected void onCancelled(final String result) {
-        if (Constants.DEBUG)
-            Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }
