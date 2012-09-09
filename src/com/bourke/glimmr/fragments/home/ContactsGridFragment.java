@@ -28,8 +28,9 @@ public class ContactsGridFragment extends PhotoGridFragment {
     protected void startTask() {
         super.startTask();
         if (mPhotos != null && !mPhotos.isEmpty()) {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.d(getLogTag(), "mPhotos occupied, not starting task");
+            }
         } else {
             if (Constants.DEBUG)
                 Log.d(getLogTag(), "mPhotos null or empty, starting task");

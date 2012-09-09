@@ -30,6 +30,21 @@ public class PhotosetGridFragment extends PhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
+        if (mPhotos != null && !mPhotos.isEmpty()) {
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "mPhotos occupied, not starting task");
+            }
+        } else {
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "mPhotos null or empty, starting task");
+            }
+            new LoadPhotosetTask(this, this, mPhotoset).execute(mOAuth);
+        }
+    }
+
+    @Override
+    protected void refresh() {
+        super.refresh();
         new LoadPhotosetTask(this, this, mPhotoset).execute(mOAuth);
     }
 
