@@ -1,8 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.services.AppService;
-import com.sbstrm.appirater.Appirater;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 
@@ -27,8 +24,11 @@ import com.bourke.glimmr.fragments.home.PhotosetsFragment;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.services.AppListener;
+import com.bourke.glimmr.services.AppService;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
+
+import com.sbstrm.appirater.Appirater;
 
 import com.viewpagerindicator.TitlePageIndicator;
 

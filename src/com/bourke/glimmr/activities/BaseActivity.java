@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
 import com.androidquery.util.AQUtility;
@@ -37,7 +38,6 @@ import com.bourke.glimmr.R;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
-import com.actionbarsherlock.view.MenuItem;
 
 public abstract class BaseActivity extends SherlockFragmentActivity
         implements ViewPager.OnPageChangeListener {
