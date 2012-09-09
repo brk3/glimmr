@@ -23,6 +23,7 @@ import com.bourke.glimmr.activities.ExifInfoDialogActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
+import com.bourke.glimmr.event.Events.IOverlayVisbilityListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
@@ -41,18 +42,18 @@ public final class PhotoViewerFragment extends BaseFragment
     private Photo mBasePhoto;
     private Photo mPhoto;
     private AQuery mAq;
-
     private MenuItem mFavoriteButton;
-
     private LoadPhotoInfoTask mTask;
-
     private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
+    private IOverlayVisbilityListener mVisibilityListener;
 
-    public static PhotoViewerFragment newInstance(Photo photo) {
+    public static PhotoViewerFragment newInstance(Photo photo,
+            IOverlayVisbilityListener visiblityListener) {
         if (Constants.DEBUG)
             Log.d("Glimmr/PhotoViewerFragment", "newInstance");
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
         photoFragment.mBasePhoto = photo;
+        photoFragment.mVisibilityListener = visiblityListener;
         return photoFragment;
     }
 
@@ -60,6 +61,26 @@ public final class PhotoViewerFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Constants.DEBUG) Log.d(TAG, "onCreate");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
+        mLayout = (RelativeLayout) inflater.inflate(
+                R.layout.photoviewer_fragment, container, false);
+        mAq = new AQuery(mActivity, mLayout);
+        mAq.id(R.id.image).clicked(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        /* Set our own visiblity and update others */
+                        setOverlayVisibility(mActionBar.isShowing());
+                        mVisibilityListener.onVisibilityChanged();
+                    }
+                });
+        refreshOverlayVisibility();
+        return mLayout;
     }
 
     @Override
@@ -183,16 +204,6 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
-        mLayout = (RelativeLayout) inflater.inflate(
-                R.layout.photoviewer_fragment, container, false);
-        mAq = new AQuery(mActivity, mLayout);
-        return mLayout;
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (Constants.DEBUG) Log.d(getLogTag(), "onSaveInstanceState");
@@ -249,22 +260,38 @@ public final class PhotoViewerFragment extends BaseFragment
         }
     }
 
-    public void toggleOverlayVisibility(boolean on) {
+    public void setOverlayVisibility(boolean on) {
         boolean honeycombOrGreater =
             (android.os.Build.VERSION.SDK_INT >=
              android.os.Build.VERSION_CODES.HONEYCOMB);
         if (on) {
-            mAq.id(R.id.textViewTitle).visible();
-            mAq.id(R.id.textViewAuthor).visible();
-            if (honeycombOrGreater) {
-                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            }
-        } else {
             mAq.id(R.id.textViewTitle).invisible();
             mAq.id(R.id.textViewAuthor).invisible();
+            mActionBar.hide();
             if (honeycombOrGreater) {
                 mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
             }
+        } else {
+            mAq.id(R.id.textViewTitle).visible();
+            mAq.id(R.id.textViewAuthor).visible();
+            mActionBar.show();
+            if (honeycombOrGreater) {
+                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            }
+        }
+    }
+
+    /**
+     * The hidden actionbar persists throughout fragments but the other hidden
+     * elements do not, so this is used to rehide/unhide them.
+     */
+    public void refreshOverlayVisibility() {
+        if (mActionBar.isShowing()) {
+            mAq.id(R.id.textViewTitle).visible();
+            mAq.id(R.id.textViewAuthor).visible();
+        } else {
+            mAq.id(R.id.textViewTitle).invisible();
+            mAq.id(R.id.textViewAuthor).invisible();
         }
     }
 
