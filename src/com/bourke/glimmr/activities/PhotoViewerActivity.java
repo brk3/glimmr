@@ -13,12 +13,15 @@ import android.util.Log;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
+import com.bourke.glimmr.event.Events.IOverlayVisbilityListener;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import com.viewpagerindicator.LinePageIndicator;
 import com.viewpagerindicator.PageIndicator;
+
+import java.lang.ref.WeakReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,7 @@ import java.util.List;
  * a startIndex in a zoomable ImageView.
  */
 public class PhotoViewerActivity extends BaseActivity
-        implements ViewPager.OnPageChangeListener {
+        implements ViewPager.OnPageChangeListener, IOverlayVisbilityListener {
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
 
@@ -38,6 +41,8 @@ public class PhotoViewerActivity extends BaseActivity
 
     private PhotoViewerPagerAdapter mAdapter;
     private ViewPager mPager;
+    private List<WeakReference<Fragment>> mFragList =
+        new ArrayList<WeakReference<Fragment>>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +95,26 @@ public class PhotoViewerActivity extends BaseActivity
         return TAG;
     }
 
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+    }
+
+    @Override
+    public void onAttachFragment (Fragment fragment) {
+        mFragList.add(new WeakReference(fragment));
+    }
+
+    @Override
+    public void onVisibilityChanged() {
+        for (WeakReference<Fragment> ref : mFragList) {
+            PhotoViewerFragment f = (PhotoViewerFragment) ref.get();
+            if (f != null) {
+                f.refreshOverlayVisibility();
+            }
+        }
+    }
+
     class PhotoViewerPagerAdapter extends FragmentStatePagerAdapter {
         public PhotoViewerPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -97,7 +122,8 @@ public class PhotoViewerActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int position) {
-            return PhotoViewerFragment.newInstance(mPhotos.get(position));
+            return PhotoViewerFragment.newInstance(
+                    mPhotos.get(position), PhotoViewerActivity.this);
         }
 
         @Override

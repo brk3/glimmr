@@ -60,4 +60,8 @@ public class Events {
     public interface ICommentAddedListener {
         void onCommentAdded(String commentId);
     }
+
+    public interface IOverlayVisbilityListener {
+        void onVisibilityChanged();
+    }
 }
