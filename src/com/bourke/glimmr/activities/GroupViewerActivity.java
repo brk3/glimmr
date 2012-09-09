@@ -51,8 +51,8 @@ public class GroupViewerActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CONTENT = new String[] { getString(R.string.pool),
-            getString(R.string.about) };
+        CONTENT = new String[] { getString(R.string.pool) };
+            //,getString(R.string.about) };
 
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));
