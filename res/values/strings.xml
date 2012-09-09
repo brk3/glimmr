@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about">About</string>
-    <string name="about_text">Thanks for supporting Glimmr!\n\nFollow Me: http://twitter.com/brk3\nContact: pauldbourke@gmail.com</string>
+    <string name="about_text">Thanks for supporting Glimmr!\n\nFollow Me: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nTranslators:\n*Lars Gellrich</string>
     <string name="aperture">APERTURE</string>
     <string name="app_name">Glimmr</string>
     <string name="by">by</string>
@@ -16,7 +16,6 @@
     <string name="iso">ISO</string>
     <string name="just_a_moment">Just a moment…</string>
     <string name="just_now">Just now</string>
-    <string name="last">Last</string>
     <string name="last_month">Last Month</string>
     <string name="last_week">Last Week</string>
     <string name="last_year">Last Year</string>
