@@ -31,6 +31,8 @@ import com.bourke.glimmr.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener {
 
@@ -43,6 +45,8 @@ public final class PhotoViewerFragment extends BaseFragment
     private MenuItem mFavoriteButton;
 
     private LoadPhotoInfoTask mTask;
+
+    private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
 
     public static PhotoViewerFragment newInstance(Photo photo) {
         if (Constants.DEBUG)
@@ -96,8 +100,13 @@ public final class PhotoViewerFragment extends BaseFragment
         startActivity(activity);
     }
 
-    // TODO: add lock around this
     public void onFavoriteButtonClick() {
+        if (mIsFavoriting.get()) {
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "Favorite operation currently in progress");
+            }
+            return;
+        }
         if (mPhoto != null) {
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Starting SetFavoriteTask for photo: "
@@ -105,6 +114,7 @@ public final class PhotoViewerFragment extends BaseFragment
             }
             new SetFavoriteTask(this, this, mPhoto).execute(mOAuth);
             updateFavoriteButtonIcon(mPhoto.isFavorite());
+            mIsFavoriting.set(true);
         } else {
             Log.e(TAG, "onFavoriteButtonClick: mPhoto is null");
         }
@@ -133,6 +143,7 @@ public final class PhotoViewerFragment extends BaseFragment
             }
             mPhoto.setFavorite(!mPhoto.isFavorite());
         }
+        mIsFavoriting.set(false);
     }
 
     /**
