@@ -1,7 +1,7 @@
 #!/bin/bash
 
 android update lib-project -p \
-    libs/JakeWharton-Android-ViewPagerIndicator-0439759/library/ -t android-4
+    libs/JakeWharton-Android-ViewPagerIndicator-98a5218/library/ -t android-16
 
 android update lib-project -p \
     libs/JakeWharton-ActionBarSherlock-88fc341/library/ -t android-14
