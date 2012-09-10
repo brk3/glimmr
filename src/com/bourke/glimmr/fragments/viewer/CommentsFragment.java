@@ -63,6 +63,7 @@ public final class CommentsFragment extends BaseFragment
                 R.layout.comments_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
         mAq.id(R.id.submitButton).clicked(this, "submitButtonClicked");
+        mAq.id(R.id.progressIndicator).visible();
         return mLayout;
     }
 
@@ -134,6 +135,8 @@ public final class CommentsFragment extends BaseFragment
         if (Constants.DEBUG)
             Log.d(getLogTag(), "onCommentsReady, comments.size(): "
                 + comments.size());
+
+        mAq.id(R.id.progressIndicator).gone();
 
         mAdapter = new ArrayAdapter<Comment>(mActivity,
                 R.layout.comment_list_row, (ArrayList<Comment>) comments) {
