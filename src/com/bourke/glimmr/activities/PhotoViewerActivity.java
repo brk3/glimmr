@@ -72,11 +72,14 @@ public class PhotoViewerActivity extends BaseActivity
                 new PhotoViewerPagerAdapter(getSupportFragmentManager());
             mPager = (ViewPager) findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
-            PageIndicator indicator =
-                (LinePageIndicator) findViewById(R.id.indicator);
-            indicator.setOnPageChangeListener(this);
-            indicator.setViewPager(mPager);
-            indicator.setCurrentItem(startIndex);
+            /* Don't show the PageIndicator if there's a lot of items */
+            if (mPhotos.size() <= Constants.LINE_PAGE_INDICATOR_LIMIT) {
+                PageIndicator indicator =
+                    (LinePageIndicator) findViewById(R.id.indicator);
+                indicator.setOnPageChangeListener(this);
+                indicator.setViewPager(mPager);
+                indicator.setCurrentItem(startIndex);
+            }
         } else {
             if (Constants.DEBUG)
                 Log.e(getLogTag(), "Photos from intent are null");
