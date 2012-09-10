@@ -106,25 +106,65 @@ public class PrettyDate {
         if (prettyDate.equalsIgnoreCase("Last year")) {
             return context.getString(R.string.last_year);
         }
+        if (prettyDate.endsWith("minutes ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("minutes ago", "").trim(),
+                    context.getString(R.string.n_minutes_ago));
+        }
+        if (prettyDate.endsWith("minute ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("minute ago", "").trim(),
+                    context.getString(R.string.one_minute_ago));
+        }
+        if (prettyDate.endsWith("hours ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("hours ago", "").trim(),
+                    context.getString(R.string.n_hours_ago));
+        }
+        if (prettyDate.endsWith("hour ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("hour ago", "").trim(),
+                    context.getString(R.string.one_hour_ago));
+        }
         if (prettyDate.endsWith("days ago")) {
             return String.format("%s %s",
                     prettyDate.replace("days ago", "").trim(),
                     context.getString(R.string.n_days_ago));
+        }
+        if (prettyDate.endsWith("day ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("day ago", "").trim(),
+                    context.getString(R.string.one_day_ago));
         }
         if (prettyDate.endsWith("weeks ago")) {
             return String.format("%s %s",
                     prettyDate.replace("weeks ago", "").trim(),
                     context.getString(R.string.n_weeks_ago));
         }
+        if (prettyDate.endsWith("week ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("week ago", "").trim(),
+                    context.getString(R.string.one_week_ago));
+        }
         if (prettyDate.endsWith("months ago")) {
             return String.format("%s %s",
                     prettyDate.replace("months ago", "").trim(),
                     context.getString(R.string.n_months_ago));
         }
+        if (prettyDate.endsWith("month ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("month ago", "").trim(),
+                    context.getString(R.string.one_month_ago));
+        }
         if (prettyDate.endsWith("years ago")) {
             return String.format("%s %s",
                     prettyDate.replace("years ago", "").trim(),
                     context.getString(R.string.n_years_ago));
+        }
+        if (prettyDate.endsWith("year ago")) {
+            return String.format("%s %s",
+                    prettyDate.replace("year ago", "").trim(),
+                    context.getString(R.string.one_year_ago));
         }
         Log.e(TAG, "Unknown PrettyDate string: " + prettyDate);
         return prettyDate;
