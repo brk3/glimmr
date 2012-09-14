@@ -54,15 +54,15 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     @Override
     protected void onPostExecute(final User result) {
         if (result == null) {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.e(TAG, "Error fetching user info, result is null");
+            }
         }
         mListener.onUserReady(result);
     }
 
     @Override
     protected void onCancelled(final User result) {
-        if (Constants.DEBUG)
-            Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }
