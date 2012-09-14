@@ -65,9 +65,10 @@ public class PhotoViewerActivity extends BaseActivity
         int startIndex = bundle.getInt(Constants.KEY_PHOTOVIEWER_START_INDEX);
 
         if (mPhotos != null) {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Got list of photo urls, size: "
                     + mPhotos.size());
+            }
             mAdapter =
                 new PhotoViewerPagerAdapter(getSupportFragmentManager());
             mPager = (ViewPager) findViewById(R.id.pager);
@@ -79,10 +80,13 @@ public class PhotoViewerActivity extends BaseActivity
                 indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(mPager);
                 indicator.setCurrentItem(startIndex);
+            } else {
+                mPager.setCurrentItem(startIndex);
             }
         } else {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.e(getLogTag(), "Photos from intent are null");
+            }
             // TODO: show error / recovery
         }
     }

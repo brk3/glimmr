@@ -2,6 +2,7 @@ package com.bourke.glimmr.fragments.viewer;
 
 import android.content.Context;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -49,6 +50,7 @@ public final class CommentsFragment extends BaseFragment
     private ArrayAdapter<Comment> mAdapter;
     private Map<String, UserItem> mUsers = Collections.synchronizedMap(
             new HashMap<String, UserItem>());
+    private List<LoadUserTask> mLoadUserTasks = new ArrayList<LoadUserTask>();
 
     public static CommentsFragment newInstance(Photo photo) {
         CommentsFragment newFragment = new CommentsFragment();
@@ -70,10 +72,15 @@ public final class CommentsFragment extends BaseFragment
     @Override
     public void onPause() {
         super.onPause();
+        if (Constants.DEBUG) Log.d(TAG, "onPause");
+
         if (mTask != null) {
             mTask.cancel(true);
-            if (Constants.DEBUG)
-                Log.d(TAG, "onPause: cancelling task");
+        }
+
+        /* Also stop any remaining LoadUserTasks */
+        for (AsyncTask loadUserTask : mLoadUserTasks) {
+            loadUserTask.cancel(true);
         }
     }
 
@@ -163,8 +170,10 @@ public final class CommentsFragment extends BaseFragment
                 UserItem author = mUsers.get(comment.getAuthor());
                 if (author == null) {
                     mUsers.put(comment.getAuthor(), new UserItem(null, true));
-                    new LoadUserTask(mActivity, CommentsFragment.this,
-                            comment.getAuthor()).execute(mOAuth);
+                    LoadUserTask loadUserTask = new LoadUserTask(mActivity,
+                            CommentsFragment.this, comment.getAuthor());
+                    loadUserTask.execute(mOAuth);
+                    mLoadUserTasks.add(loadUserTask);
                 } else {
                     if (!author.isLoading) {
                         aq.id(R.id.userIcon).image(

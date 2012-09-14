@@ -51,8 +51,7 @@ public class ContactsGridFragment extends PhotoGridFragment {
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
-            if (Constants.DEBUG)
-                Log.d(TAG, "onPause: cancelling task");
+            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
         }
     }
 
