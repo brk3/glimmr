@@ -87,7 +87,9 @@ public class MainActivity extends BaseActivity {
         SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
                 Context.MODE_PRIVATE);
         mOAuth = loadAccessToken(prefs);
-        mUser = mOAuth.getUser();
+        if (mOAuth != null) {
+            mUser = mOAuth.getUser();
+        }
     }
 
     private void initViewPager() {
