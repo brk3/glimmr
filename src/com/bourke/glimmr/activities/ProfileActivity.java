@@ -57,6 +57,7 @@ public class ProfileActivity extends BaseActivity
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
             setContentView(R.layout.main);
             mAq = new AQuery(this);
             handleIntent(getIntent());
