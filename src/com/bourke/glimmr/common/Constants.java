@@ -119,7 +119,6 @@ public class Constants {
     /* DialogBuilder dialog ids */
     public static final int DIALOG_ABOUT = 0;
 
-    // TODO: update link
     public static final String PRO_MARKET_LINK =
-        "market://details?id=com.bourke.roidragepro";
+        "market://details?id=com.bourke.glimmrpro";
 }
