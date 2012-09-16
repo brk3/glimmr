@@ -18,9 +18,8 @@ public class FavoritesGridFragment extends PhotoGridFragment {
 
     private LoadFavoritesTask mTask;
 
-    public static FavoritesGridFragment newInstance(User user) {
+    public static FavoritesGridFragment newInstance() {
         FavoritesGridFragment newFragment = new FavoritesGridFragment();
-        newFragment.mUser = user;
         return newFragment;
     }
 
@@ -37,7 +36,7 @@ public class FavoritesGridFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadFavoritesTask(this, this, mUser, page);
+        mTask = new LoadFavoritesTask(this, this, mActivity.getUser(), page);
         mTask.execute(mOAuth);
     }
 

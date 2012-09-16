@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.googlecode.flickrjandroid.people.User;
 
 /**
  * Activity for viewing photos.
@@ -89,6 +90,11 @@ public class PhotoViewerActivity extends BaseActivity
             }
             // TODO: show error / recovery
         }
+    }
+
+    @Override
+    public User getUser() {
+        return mUser;
     }
 
     @Override

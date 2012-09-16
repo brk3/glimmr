@@ -14,6 +14,7 @@ import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.people.User;
 
 /**
  *
@@ -33,6 +34,11 @@ public class CommentsDialogActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         handleIntent(intent);
+    }
+
+    @Override
+    public User getUser() {
+        return mUser;
     }
 
     private void handleIntent(Intent intent) {

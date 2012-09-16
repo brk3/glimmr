@@ -39,12 +39,6 @@ public class GroupViewerActivity extends BaseActivity {
      */
     private Group mGroup = new Group();
 
-    /**
-     * User who's profile we're displaying, as distinct from the authorized
-     * user.
-     */
-    private User mUser;
-
     private GlimmrAbCustomSubTitle mActionbarSubTitle;
 
     @Override
@@ -107,6 +101,11 @@ public class GroupViewerActivity extends BaseActivity {
         handleIntent(intent);
     }
 
+    @Override
+    public User getUser() {
+        return mUser;
+    }
+
     class GroupPagerAdapter extends FragmentPagerAdapter {
         public GroupPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -116,7 +115,7 @@ public class GroupViewerActivity extends BaseActivity {
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case GROUP_POOL_PAGE:
-                    return GroupPoolGridFragment.newInstance(mGroup, mUser);
+                    return GroupPoolGridFragment.newInstance(mGroup);
                 case GROUP_ABOUT_PAGE:
                     return GroupAboutFragment.newInstance();
             }

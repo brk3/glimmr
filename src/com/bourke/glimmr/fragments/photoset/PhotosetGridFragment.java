@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
+import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.tasks.LoadPhotosetTask;
 
 import com.googlecode.flickrjandroid.people.User;
@@ -17,13 +18,11 @@ public class PhotosetGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/PhotosetGridFragment";
 
-    private Photoset mPhotoset = new Photoset();
+    private Photoset mPhotoset;
 
-    public static PhotosetGridFragment newInstance(Photoset photoset,
-            User user) {
+    public static PhotosetGridFragment newInstance(Photoset photoset) {
         PhotosetGridFragment newFragment = new PhotosetGridFragment();
         newFragment.mPhotoset = photoset;
-        newFragment.mUser = user;
         return newFragment;
     }
 
@@ -38,7 +37,41 @@ public class PhotosetGridFragment extends PhotoGridFragment {
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "mPhotos null or empty, starting task");
             }
+            if (mPhotoset == null) {
+                loadPhotoset();
+            }
             new LoadPhotosetTask(this, this, mPhotoset).execute(mOAuth);
+        }
+    }
+
+    /**
+     * Load the last viewed photoset from storage for when the fragment gets
+     * destroyed.
+     */
+    public void loadPhotoset() {
+        SharedPreferences sp = mActivity.getSharedPreferences(
+                Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        String photosetId = sp.getString(
+                Constants.PHOTOSET_FRAGMENT_SET_ID, null);
+        if (photosetId != null) {
+            mPhotoset = new Photoset();
+            mPhotoset.setId(photosetId);
+            if (Constants.DEBUG) Log.d(getLogTag(), "Restored mPhotoset");
+        } else {
+            Log.e(getLogTag(), "Could not restore mPhotoset");
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mPhotoset != null) {
+            SharedPreferences sp = mActivity.getSharedPreferences(
+                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(Constants.PHOTOSET_FRAGMENT_SET_ID,
+                    mPhotoset.getId());
+            editor.commit();
         }
     }
 

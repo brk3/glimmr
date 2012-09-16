@@ -123,8 +123,8 @@ public class LoginActivity extends SherlockFragmentActivity
         editor.putString(Constants.KEY_OAUTH_TOKEN, token.getOauthToken());
         editor.putString(Constants.KEY_TOKEN_SECRET, token
                 .getOauthTokenSecret());
-        editor.putString(Constants.KEY_USER_NAME, user.getUsername());
-        editor.putString(Constants.KEY_USER_ID, user.getId());
+        editor.putString(Constants.KEY_ACCOUNT_USER_NAME, user.getUsername());
+        editor.putString(Constants.KEY_ACCOUNT_USER_ID, user.getId());
         editor.commit();
     }
 }

@@ -21,9 +21,8 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
 
     private LoadPhotostreamTask mTask;
 
-    public static PhotoStreamGridFragment newInstance(User user) {
+    public static PhotoStreamGridFragment newInstance() {
         PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
-        newFragment.mUser = user;
         return newFragment;
     }
 
@@ -40,14 +39,15 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadPhotostreamTask(this, this, mUser, page);
+        mTask = new LoadPhotostreamTask(this, this, mActivity.getUser(), page);
         mTask.execute(mOAuth);
     }
 
     @Override
     protected void refresh() {
         super.refresh();
-        mTask = new LoadPhotostreamTask(this, this, mUser, mPage);
+        mTask = new LoadPhotostreamTask(this, this, mActivity.getUser(),
+                mPage);
         mTask.execute(mOAuth);
     }
 

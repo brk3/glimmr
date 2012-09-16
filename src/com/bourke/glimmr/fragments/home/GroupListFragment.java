@@ -39,12 +39,10 @@ public class GroupListFragment extends BaseFragment
     private static final String TAG = "Glimmr/GroupListFragment";
 
     private GroupList mGroups = new GroupList();
-    private User mUser;
     private LoadGroupsTask mTask;
 
-    public static GroupListFragment newInstance(User user) {
+    public static GroupListFragment newInstance() {
         GroupListFragment newFragment = new GroupListFragment();
-        newFragment.mUser = user;
         return newFragment;
     }
 
@@ -86,7 +84,8 @@ public class GroupListFragment extends BaseFragment
                 group.getName());
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_GROUPVIEWER_GROUP, group);
-        bundle.putSerializable(Constants.KEY_GROUPVIEWER_USER, mUser);
+        bundle.putSerializable(Constants.KEY_GROUPVIEWER_USER,
+                mActivity.getUser());
         Intent groupViewer = new Intent(mActivity, GroupViewerActivity.class);
         groupViewer.putExtras(bundle);
         mActivity.startActivity(groupViewer);

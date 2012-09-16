@@ -23,6 +23,8 @@ import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 
 import com.viewpagerindicator.TitlePageIndicator;
+import android.content.SharedPreferences;
+import android.content.Context;
 
 public class PhotosetViewerActivity extends BaseActivity {
 
@@ -38,12 +40,6 @@ public class PhotosetViewerActivity extends BaseActivity {
      * The Photoset this activity is concerned with
      */
     private Photoset mPhotoset = new Photoset();
-
-    /**
-     * User who's profile we're displaying, as distinct from the authorized
-     * user.
-     */
-    private User mUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +60,11 @@ public class PhotosetViewerActivity extends BaseActivity {
 
             handleIntent(getIntent());
         }
+    }
+
+    @Override
+    public User getUser() {
+        return mUser;
     }
 
     private void handleIntent(Intent intent) {
@@ -104,6 +105,38 @@ public class PhotosetViewerActivity extends BaseActivity {
         handleIntent(intent);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mUser != null) {
+            SharedPreferences sp = getSharedPreferences(
+                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(Constants.KEY_USER_NAME, mUser.getUsername());
+            editor.putString(Constants.KEY_USER_ID, mUser.getId());
+            editor.commit();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences prefs = getSharedPreferences(
+                Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        String userName = prefs.getString(Constants.KEY_USER_NAME, null);
+        String userId = prefs.getString(Constants.KEY_USER_ID, null);
+        if (userName != null && userId != null) {
+            mUser = new User();
+            mUser.setUsername(userName);
+            mUser.setId(userId);
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "Restored mUser to " + userName);
+            }
+        } else {
+            Log.e(getLogTag(), "Could not restore mUser");
+        }
+    }
+
     class GroupPagerAdapter extends FragmentPagerAdapter {
         public GroupPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -113,7 +146,7 @@ public class PhotosetViewerActivity extends BaseActivity {
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case PHOTOSET_PAGE:
-                    return PhotosetGridFragment.newInstance(mPhotoset, mUser);
+                    return PhotosetGridFragment.newInstance(mPhotoset);
             }
             return null;
         }

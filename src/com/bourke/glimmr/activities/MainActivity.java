@@ -31,6 +31,8 @@ import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.sbstrm.appirater.Appirater;
 
 import com.viewpagerindicator.TitlePageIndicator;
+import com.googlecode.flickrjandroid.people.User;
+import android.content.Context;
 
 public class MainActivity extends BaseActivity {
 
@@ -79,6 +81,15 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mOAuth = loadAccessToken(prefs);
+        mUser = mOAuth.getUser();
+    }
+
     private void initViewPager() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
@@ -90,6 +101,11 @@ public class MainActivity extends BaseActivity {
         indicator.setViewPager(viewPager);
     }
 
+    @Override
+    public User getUser() {
+        return mUser;
+    }
+
     class GlimmrPagerAdapter extends FragmentPagerAdapter {
         public GlimmrPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -99,17 +115,16 @@ public class MainActivity extends BaseActivity {
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case PHOTOSTREAM_PAGE:
-                    return PhotoStreamGridFragment.newInstance(
-                            mOAuth.getUser());
+                    return PhotoStreamGridFragment.newInstance();
 
                 case CONTACTS_PAGE:
-                    return ContactsGridFragment.newInstance(mOAuth.getUser());
+                    return ContactsGridFragment.newInstance();
 
                 case GROUPS_PAGE:
-                    return GroupListFragment.newInstance(mOAuth.getUser());
+                    return GroupListFragment.newInstance();
 
                 case SETS_PAGE:
-                    return PhotosetsFragment.newInstance(mOAuth.getUser());
+                    return PhotosetsFragment.newInstance();
             }
             return null;
         }

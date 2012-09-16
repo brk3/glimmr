@@ -67,11 +67,11 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onResume");
+        if (Constants.DEBUG) Log.d(getLogTag(), "onResume");
 
         /* Update our reference to the activity as it may have changed */
         mActivity = (BaseActivity) getSherlockActivity();
+
         startTask();
     }
 
@@ -103,9 +103,6 @@ public abstract class BaseFragment extends SherlockFragment {
     /**
      * Start the PhotoViewerActivity with a list of photos to view and an index
      * to start at in the list.
-     *
-     * In the case of large list of photos(>=20), take 10 either side of the
-     * selected image.
      */
     protected void startPhotoViewer(PhotoList photos, int pos) {
         if (photos == null) {
