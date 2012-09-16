@@ -167,7 +167,7 @@ public final class CommentsFragment extends BaseFragment
                 aq.id(R.id.commentDate).text(p.localisedPrettyDate(mActivity));
                 aq.id(R.id.commentText).text(comment.getText());
 
-                UserItem author = mUsers.get(comment.getAuthor());
+                final UserItem author = mUsers.get(comment.getAuthor());
                 if (author == null) {
                     mUsers.put(comment.getAuthor(), new UserItem(null, true));
                     LoadUserTask loadUserTask = new LoadUserTask(mActivity,
@@ -181,6 +181,13 @@ public final class CommentsFragment extends BaseFragment
                                 Constants.USE_MEMORY_CACHE,
                                 Constants.USE_FILE_CACHE, 0, 0, null,
                                 AQuery.FADE_IN_NETWORK);
+                        aq.id(R.id.userIcon).clicked(
+                                new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startProfileViewer(author.user);
+                            }
+                        });
                     }
                 }
                 return convertView;
