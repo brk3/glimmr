@@ -1,4 +1,4 @@
-package com.bourke.glimmr.services;
+package com.bourke.glimmrpro.services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,11 +10,11 @@ import android.content.SharedPreferences;
 
 import android.util.Log;
 
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.activities.MainActivity;
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.FlickrHelper;
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.activities.BaseActivity;
+import com.bourke.glimmrpro.activities.MainActivity;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
+import com.bourke.glimmrpro.R;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 

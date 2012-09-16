@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.base;
+package com.bourke.glimmrpro.fragments.base;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,9 +22,9 @@ import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmrpro.R;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
 

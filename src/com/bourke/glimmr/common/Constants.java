@@ -1,4 +1,4 @@
-package com.bourke.glimmr.common;
+package com.bourke.glimmrpro.common;
 
 public class Constants {
 
@@ -120,5 +120,5 @@ public class Constants {
     public static final int DIALOG_ABOUT = 0;
 
     public static final String PRO_MARKET_LINK =
-        "market://details?id=com.bourke.glimmrpro";
+        "market://details?id=com.bourke.glimmrpropro";
 }

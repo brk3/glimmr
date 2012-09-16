@@ -1,4 +1,4 @@
-package com.bourke.glimmr.event;
+package com.bourke.glimmrpro.event;
 
 import com.googlecode.flickrjandroid.groups.GroupList;
 import com.googlecode.flickrjandroid.oauth.OAuth;

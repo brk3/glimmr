@@ -1,4 +1,4 @@
-package com.bourke.glimmr.common;
+package com.bourke.glimmrpro.common;
 
 import com.googlecode.flickrjandroid.contacts.ContactsInterface;
 import com.googlecode.flickrjandroid.favorites.FavoritesInterface;

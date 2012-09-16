@@ -1,13 +1,13 @@
-package com.bourke.glimmr.fragments.home;
+package com.bourke.glimmrpro.fragments.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import android.util.Log;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadContactsPhotosTask;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
+import com.bourke.glimmrpro.tasks.LoadContactsPhotosTask;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;

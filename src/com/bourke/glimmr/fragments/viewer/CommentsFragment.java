@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.viewer;
+package com.bourke.glimmrpro.fragments.viewer;
 
 import android.content.Context;
 
@@ -18,16 +18,16 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.PrettyDate;
-import com.bourke.glimmr.event.Events.ICommentAddedListener;
-import com.bourke.glimmr.event.Events.ICommentsReadyListener;
-import com.bourke.glimmr.event.Events.IUserReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.R;
-import com.bourke.glimmr.tasks.AddCommentTask;
-import com.bourke.glimmr.tasks.LoadCommentsTask;
-import com.bourke.glimmr.tasks.LoadUserTask;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.PrettyDate;
+import com.bourke.glimmrpro.event.Events.ICommentAddedListener;
+import com.bourke.glimmrpro.event.Events.ICommentsReadyListener;
+import com.bourke.glimmrpro.event.Events.IUserReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.tasks.AddCommentTask;
+import com.bourke.glimmrpro.tasks.LoadCommentsTask;
+import com.bourke.glimmrpro.tasks.LoadUserTask;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.comments.Comment;

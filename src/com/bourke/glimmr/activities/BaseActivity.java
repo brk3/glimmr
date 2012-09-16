@@ -1,4 +1,4 @@
-package com.bourke.glimmr.activities;
+package com.bourke.glimmrpro.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -31,9 +31,9 @@ import com.actionbarsherlock.view.MenuItem;
 import com.androidquery.AQuery;
 import com.androidquery.util.AQUtility;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.GlimmrAbCustomTitle;
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.GlimmrAbCustomTitle;
+import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;

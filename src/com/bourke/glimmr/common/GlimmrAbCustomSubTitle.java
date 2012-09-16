@@ -1,4 +1,4 @@
-package com.bourke.glimmr.common;
+package com.bourke.glimmrpro.common;
 
 import android.content.Context;
 
@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.R;
 
 public class GlimmrAbCustomSubTitle extends GlimmrAbCustomTitle {
 
