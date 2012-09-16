@@ -70,7 +70,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
                 Context.MODE_PRIVATE);
         mOAuth = loadAccessToken(prefs);
-        mUser = mOAuth.getUser();
+        if (mOAuth != null) {
+            mUser = mOAuth.getUser();
+        }
 
         /* Set custom title on action bar (it will be null for dialog
          * activities */
