@@ -188,18 +188,11 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     @Override
-    public void onResume() {
-        mTask = new LoadPhotoInfoTask(this, this, mBasePhoto);
-        super.onResume();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         if (Constants.DEBUG) Log.d(TAG, "onPause");
         if (mTask != null) {
             mTask.cancel(true);
-            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
         }
     }
 
@@ -227,6 +220,7 @@ public final class PhotoViewerFragment extends BaseFragment
         /* Start a task to fetch more detailed info about the photo if we don't
          * already have it (required for favorite status) */
         if (mPhoto == null) {
+            mTask = new LoadPhotoInfoTask(this, this, mBasePhoto);
             mTask.execute(mOAuth);
         }
     }
@@ -236,12 +230,13 @@ public final class PhotoViewerFragment extends BaseFragment
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotoInfoReady");
         mPhoto = photo;
         displayImage();
-        updateFavoriteButtonIcon(mPhoto.isFavorite());
+        if (mPhoto != null) {
+            updateFavoriteButtonIcon(mPhoto.isFavorite());
+        }
     }
 
     private void displayImage() {
-        if (Constants.DEBUG)
-            Log.d(TAG, "displayImage()");
+        if (Constants.DEBUG) Log.d(TAG, "displayImage()");
         if (mPhoto != null) {
             mAq.id(R.id.image).progress(R.id.progress).image(
                     mPhoto.getLargeUrl(), Constants.USE_MEMORY_CACHE,
