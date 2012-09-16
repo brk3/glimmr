@@ -64,6 +64,12 @@ public class GroupListFragment extends BaseFragment
     }
 
     @Override
+    protected void refresh() {
+        super.refresh();
+        startTask();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(
@@ -98,13 +104,14 @@ public class GroupListFragment extends BaseFragment
 
     @Override
     public void onGroupListReady(GroupList groups) {
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onGroupListReady");
+        if (Constants.DEBUG) Log.d(getLogTag(), "onGroupListReady");
 
         if (groups == null) {
             mAq.id(R.id.no_connection_layout).visible();
             mAq.id(R.id.list).gone();
         } else {
+            mAq.id(R.id.list).visible();
+            mAq.id(R.id.no_connection_layout).gone();
             mGroups = (GroupList) groups;
             GroupListAdapter adapter = new GroupListAdapter(mActivity,
                     R.layout.group_list_row, (ArrayList<Group>)groups);
