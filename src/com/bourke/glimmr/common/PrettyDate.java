@@ -1,10 +1,10 @@
-package com.bourke.glimmr.common;
+package com.bourke.glimmrpro.common;
 
 import android.content.Context;
 
 import android.util.Log;
 
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.R;
 
 import java.util.Date;
 

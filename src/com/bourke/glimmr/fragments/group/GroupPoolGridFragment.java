@@ -1,14 +1,14 @@
-package com.bourke.glimmr.fragments.group;
+package com.bourke.glimmrpro.fragments.group;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import android.util.Log;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadGroupPoolTask;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
+import com.bourke.glimmrpro.tasks.LoadGroupPoolTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.people.User;

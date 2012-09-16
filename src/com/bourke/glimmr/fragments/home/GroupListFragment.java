@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.home;
+package com.bourke.glimmrpro.fragments.home;
 
 import android.content.Intent;
 
@@ -16,13 +16,13 @@ import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.activities.GroupViewerActivity;
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IGroupListReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.R;
-import com.bourke.glimmr.tasks.LoadGroupsTask;
+import com.bourke.glimmrpro.activities.BaseActivity;
+import com.bourke.glimmrpro.activities.GroupViewerActivity;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.tasks.LoadGroupsTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.GroupList;

@@ -1,14 +1,14 @@
-package com.bourke.glimmr.fragments.photoset;
+package com.bourke.glimmrpro.fragments.photoset;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import android.util.Log;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.tasks.LoadPhotosetTask;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
+import com.bourke.glimmrpro.activities.BaseActivity;
+import com.bourke.glimmrpro.tasks.LoadPhotosetTask;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;

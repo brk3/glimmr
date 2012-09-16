@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.viewer;
+package com.bourke.glimmrpro.fragments.viewer;
 
 import android.os.Bundle;
 
@@ -16,11 +16,11 @@ import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.R;
-import com.bourke.glimmr.tasks.LoadExifInfoTask;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.event.Events.IExifInfoReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.tasks.LoadExifInfoTask;
 
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;

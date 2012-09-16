@@ -1,4 +1,4 @@
-package com.bourke.glimmr.activities;
+package com.bourke.glimmrpro.activities;
 
 import android.content.Intent;
 
@@ -9,9 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 
 import android.util.Log;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.fragments.viewer.CommentsFragment;
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.fragments.viewer.CommentsFragment;
+import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.people.User;

@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.base;
+package com.bourke.glimmrpro.fragments.base;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,11 +18,11 @@ import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.activities.PhotoViewerActivity;
-import com.bourke.glimmr.activities.ProfileActivity;
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.activities.BaseActivity;
+import com.bourke.glimmrpro.activities.PhotoViewerActivity;
+import com.bourke.glimmrpro.activities.ProfileActivity;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;

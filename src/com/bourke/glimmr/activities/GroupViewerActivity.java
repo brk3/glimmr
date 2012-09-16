@@ -1,4 +1,4 @@
-package com.bourke.glimmr.activities;
+package com.bourke.glimmrpro.activities;
 
 import android.content.Intent;
 
@@ -14,11 +14,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.GlimmrAbCustomSubTitle;
-import com.bourke.glimmr.fragments.group.GroupAboutFragment;
-import com.bourke.glimmr.fragments.group.GroupPoolGridFragment;
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.GlimmrAbCustomSubTitle;
+import com.bourke.glimmrpro.fragments.group.GroupAboutFragment;
+import com.bourke.glimmrpro.fragments.group.GroupPoolGridFragment;
+import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.people.User;

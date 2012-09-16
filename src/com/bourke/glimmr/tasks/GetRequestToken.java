@@ -1,4 +1,4 @@
-package com.bourke.glimmr.tasks;
+package com.bourke.glimmrpro.tasks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -12,10 +12,10 @@ import android.net.Uri;
 
 import android.os.AsyncTask;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.FlickrHelper;
-import com.bourke.glimmr.event.Events.IRequestTokenReadyListener;
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
+import com.bourke.glimmrpro.event.Events.IRequestTokenReadyListener;
+import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.auth.Permission;
 import com.googlecode.flickrjandroid.Flickr;

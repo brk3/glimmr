@@ -1,10 +1,10 @@
-package com.bourke.glimmr.tasks;
+package com.bourke.glimmrpro.tasks;
 
 import android.os.AsyncTask;
 
-import com.bourke.glimmr.common.FlickrHelper;
-import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.common.FlickrHelper;
+import com.bourke.glimmrpro.event.Events.IFavoriteReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;

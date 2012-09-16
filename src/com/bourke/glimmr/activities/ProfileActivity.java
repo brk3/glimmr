@@ -1,4 +1,4 @@
-package com.bourke.glimmr.activities;
+package com.bourke.glimmrpro.activities;
 
 import android.content.Intent;
 
@@ -14,13 +14,13 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IUserReadyListener;
-import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
-import com.bourke.glimmr.fragments.home.PhotosetsFragment;
-import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmr.R;
-import com.bourke.glimmr.tasks.LoadUserTask;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.event.Events.IUserReadyListener;
+import com.bourke.glimmrpro.fragments.home.FavoritesGridFragment;
+import com.bourke.glimmrpro.fragments.home.PhotosetsFragment;
+import com.bourke.glimmrpro.fragments.home.PhotoStreamGridFragment;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.tasks.LoadUserTask;
 
 import com.googlecode.flickrjandroid.people.User;
 

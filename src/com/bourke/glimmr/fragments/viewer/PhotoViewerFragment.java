@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.viewer;
+package com.bourke.glimmrpro.fragments.viewer;
 
 import android.content.Intent;
 
@@ -18,17 +18,17 @@ import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.activities.CommentsDialogActivity;
-import com.bourke.glimmr.activities.ExifInfoDialogActivity;
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
-import com.bourke.glimmr.event.Events.IOverlayVisbilityListener;
-import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
-import com.bourke.glimmr.R;
-import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
-import com.bourke.glimmr.tasks.SetFavoriteTask;
+import com.bourke.glimmrpro.activities.CommentsDialogActivity;
+import com.bourke.glimmrpro.activities.ExifInfoDialogActivity;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.event.Events.IFavoriteReadyListener;
+import com.bourke.glimmrpro.event.Events.IOverlayVisbilityListener;
+import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.viewer.PhotoViewerFragment;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
+import com.bourke.glimmrpro.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 

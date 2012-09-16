@@ -1,6 +1,6 @@
-package com.bourke.glimmr.fragments.group;
+package com.bourke.glimmrpro.fragments.group;
 
-import com.bourke.glimmr.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
 
 public class GroupAboutFragment extends BaseFragment {
 

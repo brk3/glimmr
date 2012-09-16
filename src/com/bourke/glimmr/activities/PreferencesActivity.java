@@ -1,4 +1,4 @@
-package com.bourke.glimmr.activities;
+package com.bourke.glimmrpro.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,10 +13,10 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.R;
-import com.bourke.glimmr.services.AppListener;
-import com.bourke.glimmr.services.AppService;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.services.AppListener;
+import com.bourke.glimmrpro.services.AppService;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
