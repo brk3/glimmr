@@ -53,7 +53,6 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected int mPage = 1;
     protected boolean mMorePages = true;
     protected boolean mShowProfileOverlay = false;
-    protected User mUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

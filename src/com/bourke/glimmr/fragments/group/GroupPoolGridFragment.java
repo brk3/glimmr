@@ -23,10 +23,9 @@ public class GroupPoolGridFragment extends PhotoGridFragment
     private Group mGroup;
     private LoadGroupPoolTask mTask;
 
-    public static GroupPoolGridFragment newInstance(Group group, User user) {
+    public static GroupPoolGridFragment newInstance(Group group) {
         GroupPoolGridFragment newFragment = new GroupPoolGridFragment();
         newFragment.mGroup = group;
-        newFragment.mUser = user;
         return newFragment;
     }
 
@@ -43,6 +42,9 @@ public class GroupPoolGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
+        if (mGroup == null) {
+            loadGroup();
+        }
         mTask = new LoadGroupPoolTask(this, this, mGroup, page);
         mTask.execute(mOAuth);
     }
@@ -52,6 +54,37 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         super.onPhotosReady(photos);
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;
+        }
+    }
+
+    /**
+     * Load the last viewed group from storage for when the fragment gets
+     * destroyed.
+     */
+    public void loadGroup() {
+        SharedPreferences sp = mActivity.getSharedPreferences(
+                Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        String groupId = sp.getString(
+                Constants.GROUP_FRAGMENT_GROUP_ID, null);
+        if (groupId != null) {
+            mGroup = new Group();
+            mGroup.setId(groupId);
+            if (Constants.DEBUG) Log.d(getLogTag(), "Restored mGroup");
+        } else {
+            Log.e(getLogTag(), "Could not restore mGroup");
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mGroup != null) {
+            SharedPreferences sp = mActivity.getSharedPreferences(
+                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(Constants.GROUP_FRAGMENT_GROUP_ID,
+                    mGroup.getId());
+            editor.commit();
         }
     }
 

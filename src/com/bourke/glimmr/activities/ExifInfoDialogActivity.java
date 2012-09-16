@@ -14,6 +14,7 @@ import com.bourke.glimmr.fragments.viewer.ExifInfoFragment;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.people.User;
 
 /**
  * Simple dialog themed Activity that floats over another.  Contains a fragment
@@ -34,6 +35,11 @@ public class ExifInfoDialogActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         handleIntent(intent);
+    }
+
+    @Override
+    public User getUser() {
+        return mUser;
     }
 
     private void handleIntent(Intent intent) {

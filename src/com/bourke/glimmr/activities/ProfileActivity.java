@@ -25,6 +25,8 @@ import com.bourke.glimmr.tasks.LoadUserTask;
 import com.googlecode.flickrjandroid.people.User;
 
 import com.viewpagerindicator.TitlePageIndicator;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 /**
  * Requires a User object to be passed in via an intent.
@@ -44,12 +46,6 @@ public class ProfileActivity extends BaseActivity
 
     public static String[] CONTENT;
 
-    /**
-     * User who's profile we're displaying, as distinct from the authorized
-     * user.
-     */
-    private User mUser;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +61,11 @@ public class ProfileActivity extends BaseActivity
             mAq = new AQuery(this);
             handleIntent(getIntent());
         }
+    }
+
+    @Override
+    public User getUser() {
+        return mUser;
     }
 
     protected void startTask() {
@@ -84,6 +85,38 @@ public class ProfileActivity extends BaseActivity
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
+        }
+        if (mUser != null) {
+            SharedPreferences sp = getSharedPreferences(
+                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(Constants.KEY_PROFILE_USER_NAME,
+                    mUser.getUsername());
+            editor.putString(Constants.KEY_PROFILE_USER_ID, mUser.getId());
+            editor.commit();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mUser == null) {
+            SharedPreferences prefs = getSharedPreferences(
+                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
+            String userName = prefs.getString(
+                    Constants.KEY_PROFILE_USER_NAME, null);
+            String userId = prefs.getString(
+                    Constants.KEY_PROFILE_USER_ID, null);
+            if (userName != null && userId != null) {
+                mUser = new User();
+                mUser.setUsername(userName);
+                mUser.setId(userId);
+                if (Constants.DEBUG) {
+                    Log.d(getLogTag(), "Restored mUser to " + userName);
+                }
+            } else {
+                Log.e(getLogTag(), "Could not restore mUser");
+            }
         }
     }
 
@@ -157,17 +190,17 @@ public class ProfileActivity extends BaseActivity
         public SherlockFragment getItem(int position) {
             switch (position) {
                 case PHOTO_STREAM_PAGE:
-                    return PhotoStreamGridFragment.newInstance(mUser);
+                    return PhotoStreamGridFragment.newInstance();
 
                 case FAVORITES_STREAM_PAGE:
-                    return FavoritesGridFragment.newInstance(mUser);
+                    return FavoritesGridFragment.newInstance();
 
                 case SETS_PAGE:
-                    return PhotosetsFragment.newInstance(mUser);
+                    return PhotosetsFragment.newInstance();
 
                 case CONTACTS_PAGE:
                     // TODO
-                    return PhotoStreamGridFragment.newInstance(mUser);
+                    return PhotoStreamGridFragment.newInstance();
             }
             return null;
         }

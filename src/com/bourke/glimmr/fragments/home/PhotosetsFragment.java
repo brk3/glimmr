@@ -45,18 +45,16 @@ public class PhotosetsFragment extends BaseFragment
 
     private LoadPhotosetsTask mTask;
     private List<Photoset> mPhotosets = new ArrayList<Photoset>();
-    private User mUser;
 
-    public static PhotosetsFragment newInstance(User user) {
+    public static PhotosetsFragment newInstance() {
         PhotosetsFragment newFragment = new PhotosetsFragment();
-        newFragment.mUser = user;
         return newFragment;
     }
 
     @Override
     protected void startTask() {
         super.startTask();
-        mTask = new LoadPhotosetsTask(this, this, mUser);
+        mTask = new LoadPhotosetsTask(this, this, mActivity.getUser());
         mTask.execute(mOAuth);
     }
 
@@ -92,7 +90,8 @@ public class PhotosetsFragment extends BaseFragment
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_PHOTOSET,
                 photoset);
-        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_USER, mUser);
+        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_USER,
+                mActivity.getUser());
         Intent photosetViewer = new Intent(mActivity, PhotosetViewerActivity
                 .class);
         photosetViewer.putExtras(bundle);

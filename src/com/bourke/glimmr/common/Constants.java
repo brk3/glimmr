@@ -13,6 +13,9 @@ public class Constants {
     public static final int CACHE_TRIM_TRIGGER_SIZE = 8000000;  // 8MB
     public static final int CACHE_TRIM_TARGET_SIZE = 5000000;  // 5MB
 
+    public static final String KEY_USER_NAME = "glimmr_user_name";
+    public static final String KEY_USER_ID = "glimmr_user_id";
+
     /* Fonts */
     public static final String FONT_SHADOWSINTOLIGHT =
         "fonts/ShadowsIntoLight.ttf";
@@ -28,16 +31,22 @@ public class Constants {
     public static final String CALLBACK_SCHEME = "glimmr-oauth-callback";
     public static final String KEY_OAUTH_TOKEN = "glimmr_oauthtoken";
     public static final String KEY_TOKEN_SECRET = "glimmr_tokensecret";
-    public static final String KEY_USER_NAME = "glimmr_username";
-    public static final String KEY_USER_ID = "glimmr_userid";
+    public static final String KEY_ACCOUNT_USER_NAME = "glimmr_acc_user_name";
+    public static final String KEY_ACCOUNT_USER_ID = "glimmr_acc_user_id";
 
     /* Photo viewer state */
     public static final String KEY_PHOTOVIEWER_LIST = "glimmr_photolist";
     public static final String KEY_PHOTOVIEWER_URL = "glimmr_photoviewer_url";
     public static final String KEY_PHOTOVIEWER_START_INDEX =
         "glimmr_photoviewer_index";
+
+    /* Profile viewer state */
+    // TODO: can probably deprecate this serialised USER key for the two below
     public static final String KEY_PROFILEVIEWER_USER =
         "glimmr_profileviewer_user";
+    public static final String KEY_PROFILE_USER_NAME =
+        "glimmr_profile_user_name";
+    public static final String KEY_PROFILE_USER_ID = "glimmr_profile_user_id";
 
     /* Group viewer state */
     public static final String KEY_GROUPVIEWER_GROUP =
@@ -48,8 +57,13 @@ public class Constants {
     /* Photoset viewer state */
     public static final String KEY_PHOTOSETVIEWER_PHOTOSET =
         "glimmr_photosetviewer_photoset";
+    // TODO: can probably deprecate this serialised USER key for the two below
     public static final String KEY_PHOTOSETVIEWER_USER =
         "glimmr_photosetviewer_user";
+    public static final String KEY_PHOTOSETVIEWER_USER_NAME =
+        "glimmr_profile_user_name";
+    public static final String KEY_PHOTOSETVIEWER_USER_ID =
+        "glimmr_profile_user_id";
 
     /* Contacts fragment state */
     public static final String NEWEST_CONTACT_PHOTO_ID =
@@ -66,10 +80,14 @@ public class Constants {
     /* GroupPool fragment state */
     public static final String NEWEST_GROUPPOOL_PHOTO_ID =
         "glimmr_newest_grouppool_photo_id";
+    public static final String GROUP_FRAGMENT_GROUP_ID =
+        "glimmr_grouppool_group_id";
 
     /* Photoset fragment state */
     public static final String NEWEST_PHOTOSET_PHOTO_ID =
         "glimmr_newest_photoset_photo_id";
+    public static final String PHOTOSET_FRAGMENT_SET_ID =
+        "glimmr_photoset_fragment_set_id";
 
     /* Exif dialog state */
     public static final String KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO =

@@ -18,9 +18,8 @@ public class ContactsGridFragment extends PhotoGridFragment {
 
     private LoadContactsPhotosTask mTask;
 
-    public static ContactsGridFragment newInstance(User user) {
+    public static ContactsGridFragment newInstance() {
         ContactsGridFragment newFragment = new ContactsGridFragment();
-        newFragment.mUser = user;
         return newFragment;
     }
 

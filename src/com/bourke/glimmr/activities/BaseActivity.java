@@ -45,15 +45,23 @@ public abstract class BaseActivity extends SherlockFragmentActivity
     private static final String TAG = "Glimmr/BaseActivity";
 
     /**
-     * Should contain current user and valid access token for that user.
+     * Account owner and valid access token for that user.
      */
     protected OAuth mOAuth;
+
+    /**
+     * User who's profile we're displaying, as distinct from the authorized
+     * user.
+     */
+    protected User mUser;
 
     protected AQuery mAq;
 
     protected ActionBar mActionBar;
 
     private GlimmrAbCustomTitle mActionbarTitle;
+
+    public abstract User getUser();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +70,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
                 Context.MODE_PRIVATE);
         mOAuth = loadAccessToken(prefs);
-        mActionBar = getSupportActionBar();
+        mUser = mOAuth.getUser();
 
         /* Set custom title on action bar (it will be null for dialog
          * activities */
@@ -96,8 +104,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         String oauthTokenString = prefs.getString(Constants.KEY_OAUTH_TOKEN,
                 null);
         String tokenSecret = prefs.getString(Constants.KEY_TOKEN_SECRET, null);
-        String userName = prefs.getString(Constants.KEY_USER_NAME, null);
-        String userId = prefs.getString(Constants.KEY_USER_ID, null);
+        String userName = prefs.getString(Constants.KEY_ACCOUNT_USER_NAME,
+                null);
+        String userId = prefs.getString(Constants.KEY_ACCOUNT_USER_ID, null);
 
         OAuth oauth = null;
         if (oauthTokenString != null && tokenSecret != null && userName != null
