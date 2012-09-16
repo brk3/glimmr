@@ -59,6 +59,12 @@ public class PhotosetsFragment extends BaseFragment
     }
 
     @Override
+    protected void refresh() {
+        super.refresh();
+        startTask();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (mTask != null) {
@@ -105,13 +111,14 @@ public class PhotosetsFragment extends BaseFragment
 
     @Override
     public void onPhotosetsReady(Photosets photoSets) {
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onPhotosetListReady");
+        if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
 
         if (photoSets == null) {
             mAq.id(R.id.no_connection_layout).visible();
             mAq.id(R.id.list).gone();
         } else {
+            mAq.id(R.id.list).visible();
+            mAq.id(R.id.no_connection_layout).gone();
             mPhotosets = new ArrayList<Photoset>(photoSets.getPhotosets());
             SetListAdapter adapter = new SetListAdapter(
                     mActivity, R.layout.photoset_list_item,
