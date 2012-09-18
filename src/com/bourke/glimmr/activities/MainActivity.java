@@ -66,15 +66,13 @@ public class MainActivity extends BaseActivity {
             SharedPreferences defaultSharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(this);
             boolean enableNotifications = defaultSharedPrefs.getBoolean(
-                    Constants.KEY_ENABLE_NOTIFICATIONS, false);
+                    Constants.KEY_ENABLE_NOTIFICATIONS, true);
             if (enableNotifications) {
-                if (Constants.DEBUG)
-                    Log.d(TAG, "Scheduling alarms");
+                if (Constants.DEBUG) Log.d(TAG, "Scheduling alarms");
                 WakefulIntentService.scheduleAlarms(
                         new AppListener(), this, false);
             } else {
-                if (Constants.DEBUG)
-                    Log.d(TAG, "Cancelling alarms");
+                if (Constants.DEBUG) Log.d(TAG, "Cancelling alarms");
                 AppService.cancelAlarms(this);
             }
             Appirater.appLaunched(this);
