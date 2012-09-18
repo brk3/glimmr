@@ -78,7 +78,7 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.fragment_main_menu, menu);
 		if (mRefreshing) {
 			menu.findItem(R.id.menu_refresh).setActionView(
 					R.layout.action_bar_indeterminate_progress);
