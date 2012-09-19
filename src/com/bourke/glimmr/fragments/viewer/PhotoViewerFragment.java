@@ -1,5 +1,7 @@
 package com.bourke.glimmrpro.fragments.viewer;
 
+import android.app.WallpaperManager;
+
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -31,6 +34,12 @@ import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
 import com.bourke.glimmrpro.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -106,6 +115,9 @@ public final class PhotoViewerFragment extends BaseFragment
                 return true;
             case R.id.menu_view_exif:
                 onExifButtonClick();
+                return true;
+            case R.id.menu_set_wallpaper:
+                onWallpaperButtonClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -287,6 +299,32 @@ public final class PhotoViewerFragment extends BaseFragment
         } else {
             mAq.id(R.id.textViewTitle).invisible();
             mAq.id(R.id.textViewAuthor).invisible();
+        }
+    }
+
+    private void onWallpaperButtonClick() {
+        if (mPhoto != null) {
+            File imageFile = mAq.getCachedFile(mPhoto.getLargeUrl());
+            if (imageFile != null) {
+                InputStream is;
+                try {
+                    is = new FileInputStream(imageFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                WallpaperManager wallpaperManager =
+                    WallpaperManager.getInstance(mActivity);
+                try {
+                    wallpaperManager.setStream(is);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                Toast.makeText(mActivity,
+                        mActivity.getString(R.string.setting_wallpaper),
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
