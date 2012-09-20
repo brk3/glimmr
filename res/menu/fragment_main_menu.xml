@@ -5,25 +5,16 @@
     <item android:id="@+id/menu_refresh"
           android:title="@string/menu_refresh"
           android:icon="@drawable/ic_action_refresh_dark"
+          android:orderInCategory="4"
           android:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_preferences"
           android:icon="@android:drawable/ic_menu_preferences"
+          android:orderInCategory="9"
           android:title="@string/menu_preferences" />
 
     <item android:id="@+id/menu_about"
           android:icon="@drawable/ic_action_about_dark"
+          android:orderInCategory="10"
           android:title="@string/about" />
-
-    <!--
-    <item android:id="@+id/menu_upload"
-          android:icon="@drawable/ic_action_upload_dark"
-          android:title="Upload" />
-    -->
-
-    <!--
-    <item android:id="@+id/menu_search"
-          android:icon="@drawable/ic_action_search_dark"
-          android:title="Search" />
-    -->
 </menu>
