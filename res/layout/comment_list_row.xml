@@ -38,16 +38,7 @@
         android:layout_marginTop="5dp"
         android:textSize="@dimen/text_size_micro" />
 
-    <WebView
-        android:id="@+id/commentText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/userName"
-        android:layout_margin="5dp"
-        android:paddingBottom="10dp"
-        android:layout_toRightOf="@id/userIcon" />
-
-    <!--<TextView
+    <TextView
         android:id="@+id/commentText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,6 +46,6 @@
         android:layout_below="@id/userName"
         android:layout_margin="5dp"
         android:paddingBottom="10dp"
-        android:layout_toRightOf="@id/userIcon" />-->
+        android:layout_toRightOf="@id/userIcon" />
 
 </RelativeLayout>
