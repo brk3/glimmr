@@ -26,6 +26,7 @@ import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
+import com.googlecode.flickrjandroid.FlickrException;
 
 public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {
@@ -35,6 +36,9 @@ public final class ExifInfoFragment extends BaseFragment
     private Photo mPhoto = new Photo();
     private AQuery mAq;
     private LoadExifInfoTask mTask;
+
+    /* http://www.flickr.com/services/api/flickr.photos.getExif.html */
+    private static final String ERR_PERMISSION_DENIED = "2";
 
     public static ExifInfoFragment newInstance(Photo photo) {
         ExifInfoFragment photoFragment = new ExifInfoFragment();
@@ -103,11 +107,36 @@ public final class ExifInfoFragment extends BaseFragment
         tl.addView(tr);
     }
 
-    public void onExifInfoReady(List<Exif> exifInfo) {
-        if (Constants.DEBUG)
+    public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
+        mAq.id(R.id.progressIndicator).gone();
+
+        if (Constants.DEBUG) {
             Log.d(getLogTag(), "onExifInfoReady, exifInfo.size(): "
                 + exifInfo.size());
-        mAq.id(R.id.progressIndicator).gone();
+        }
+
+        /* Something went wrong, show message and return */
+        if (exc != null) {
+            mAq.id(R.id.textViewErrorMessage).visible();
+            if (exc instanceof FlickrException) {
+                String errCode = ((FlickrException) exc).getErrorCode();
+                if (Constants.DEBUG) Log.d(getLogTag(), "errCode: " + errCode);
+                if (errCode != null && errCode.equals(ERR_PERMISSION_DENIED)) {
+                    mAq.id(R.id.textViewErrorMessage).text(
+                            mActivity.getString(R.string.no_exif_permission));
+                } else {
+                    mAq.id(R.id.textViewErrorMessage).text(
+                            mActivity.getString(R.string.no_connection));
+                }
+            } else {
+                // TODO: add more appropriate error message
+                mAq.id(R.id.textViewErrorMessage).text(
+                        mActivity.getString(R.string.no_connection));
+            }
+            return;
+        }
+
+        /* Populate table with exif info */
         for (Exif e : exifInfo) {
             if (e.getTag().equals("ISO")) {
                 mAq.id(R.id.textViewISOValue).text(e.getRaw());
@@ -116,15 +145,15 @@ public final class ExifInfoFragment extends BaseFragment
             } else if (e.getTag().equals("FNumber")) {
                 mAq.id(R.id.textViewApertureValue).text(e.getRaw());
             } else {
-               /* Convert camel case key to space delimited:
-                * http://stackoverflow.com/a/2560017/663370 */
+                /* Convert camel case key to space delimited:
+                 * http://stackoverflow.com/a/2560017/663370 */
                 String rawTag = e.getTag();
                 String tagConverted = rawTag.replaceAll(
-                    String.format("%s|%s|%s",
-                        "(?<=[A-Z])(?=[A-Z][a-z])",
-                        "(?<=[^A-Z])(?=[A-Z])",
-                        "(?<=[A-Za-z])(?=[^A-Za-z])"), " "
-                    );
+                        String.format("%s|%s|%s",
+                            "(?<=[A-Z])(?=[A-Z][a-z])",
+                            "(?<=[^A-Z])(?=[A-Z])",
+                            "(?<=[A-Za-z])(?=[^A-Za-z])"), " "
+                        );
                 addKeyValueRow(tagConverted, e.getRaw());
             }
         }
