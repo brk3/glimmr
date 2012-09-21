@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.text.Html;
+
 import android.util.Log;
 
 import android.view.inputmethod.InputMethodManager;
@@ -38,7 +40,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import android.webkit.WebView;
 
 public final class CommentsFragment extends BaseFragment
         implements ICommentsReadyListener, ICommentAddedListener,
@@ -167,10 +168,7 @@ public final class CommentsFragment extends BaseFragment
                 PrettyDate p = new PrettyDate(comment.getDateCreate());
                 aq.id(R.id.commentDate).text(p.localisedPrettyDate(mActivity));
 
-                WebView commentText =
-                    (WebView) convertView.findViewById(R.id.commentText);
-                commentText.setBackgroundColor(0); /* Make it transparent */
-                commentText.loadData(comment.getText(), "text/html", null);
+                aq.id(R.id.commentText).text(Html.fromHtml(comment.getText()));
 
                 final UserItem author = mUsers.get(comment.getAuthor());
                 if (author == null) {
