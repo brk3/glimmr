@@ -54,8 +54,7 @@ public abstract class BaseFragment extends SherlockFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onCreate");
+        if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
 
         mActivity = (BaseActivity) getSherlockActivity();
         mActionBar = mActivity.getSupportActionBar();
@@ -71,6 +70,7 @@ public abstract class BaseFragment extends SherlockFragment {
 
         /* Update our reference to the activity as it may have changed */
         mActivity = (BaseActivity) getSherlockActivity();
+        mActionBar = mActivity.getSupportActionBar();
 
         startTask();
     }
