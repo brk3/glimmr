@@ -26,6 +26,7 @@ public class LoadExifInfoTask
     private IExifInfoReadyListener mListener;
     private Photo mPhoto;
     private BaseFragment mBaseFragment;
+    private Exception mException = null;
 
     public LoadExifInfoTask(BaseFragment a, IExifInfoReadyListener listener,
             Photo photo) {
@@ -50,6 +51,7 @@ public class LoadExifInfoTask
             return f.getPhotosInterface().getExif(mPhoto.getId(),
                     mPhoto.getSecret());
         } catch (Exception e) {
+            mException = e;
             e.printStackTrace();
         }
         return null;
@@ -58,11 +60,9 @@ public class LoadExifInfoTask
     @Override
     protected void onPostExecute(final Collection<Exif> result) {
         if (result != null) {
-            mListener.onExifInfoReady(new ArrayList<Exif>(result));
+            mListener.onExifInfoReady(new ArrayList<Exif>(result), mException);
         } else {
-            if (Constants.DEBUG)
-                Log.e(TAG, "Error fetching exif info, result is null");
-            // TODO: alert user / recover
+            mListener.onExifInfoReady(new ArrayList<Exif>(), mException);
         }
         mBaseFragment.showProgressIcon(false);
     }

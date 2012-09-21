@@ -57,7 +57,7 @@
             <TableRow>
                 <View
                     android:id="@+id/seperator"
-                    android:layout_height="1dp"
+                    android:layout_height="1dip"
                     android:layout_span="3"
                     android:background="@color/flickr_blue" />
             </TableRow>
@@ -71,12 +71,22 @@
             android:visibility="gone"
             android:layout_gravity="center_horizontal" />
 
+        <TextView
+            android:id="@+id/textViewErrorMessage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/flickr_pink"
+            android:gravity="center_horizontal"
+            android:visibility="gone" />
+
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/extraExifInfo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="5dip"
             android:shrinkColumns="*"
             android:stretchColumns="*" />
     </LinearLayout>

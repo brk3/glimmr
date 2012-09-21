@@ -31,6 +31,7 @@
     <string name="n_minutes_ago">minutes ago</string>
     <string name="n_months_ago">months ago</string>
     <string name="no_connection">Something went wrong.\nTry refreshing?</string>
+    <string name="no_exif_permission">The owner of the photo does not want to share EXIF data.</string>
     <string name="notification_contacts_content">from your contacts.</string>
     <string name="notification_contacts_ticker">Your Flickr contacts have posted new photos</string>
     <string name="notification_contacts_title">New photos</string>

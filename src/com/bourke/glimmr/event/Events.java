@@ -26,7 +26,7 @@ public class Events {
     }
 
     public interface IExifInfoReadyListener {
-        void onExifInfoReady(List<Exif> exifItems);
+        void onExifInfoReady(List<Exif> exifItems, Exception e);
     }
 
     public interface IGroupListReadyListener {
