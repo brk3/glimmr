@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
@@ -96,25 +98,30 @@ public final class CommentsFragment extends BaseFragment
     }
 
     public void submitButtonClicked(View view) {
-        String commentText = mAq.id(R.id.editText).getText().toString();
+        TextView editText = (TextView) mLayout.findViewById(R.id.editText);
+        String commentText = editText.getText().toString();
         if (commentText.isEmpty()) {
             // TODO: alert user
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Comment text empty, do nothing");
+            }
             return;
         }
 
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(getLogTag(), "Starting AddCommentTask: " + commentText);
+        }
         new AddCommentTask(this, this, mPhoto, commentText)
             .execute(mOAuth);
 
         /* Clear the editText and hide keyboard */
-        mAq.id(R.id.editText).getEditText().setText("");
+        editText.setText("");
         InputMethodManager inputManager = (InputMethodManager)
             mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(mActivity.getCurrentFocus()
                 .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        Toast.makeText(mActivity, mActivity.getString(R.string.comment_sent),
+                Toast.LENGTH_SHORT).show();
     }
 
     public void itemClicked(AdapterView<?> parent, View view, int position,
@@ -132,18 +139,19 @@ public final class CommentsFragment extends BaseFragment
 
     @Override
     public void onCommentAdded(String commentId) {
-        // TODO: show toast / update list
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(getLogTag(), "Sucessfully added comment with id: " +
                     commentId);
+        }
         startTask();
     }
 
     @Override
     public void onCommentsReady(List<Comment> comments) {
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(getLogTag(), "onCommentsReady, comments.size(): "
                 + comments.size());
+        }
 
         mAq.id(R.id.progressIndicator).gone();
 
