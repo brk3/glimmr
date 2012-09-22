@@ -21,8 +21,9 @@
         android:visibility="invisible"
         android:src="@drawable/ribbon_corner" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/imageOverlay"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="32dp"
         android:layout_gravity="bottom"
@@ -31,25 +32,23 @@
 
         <TextView
             android:id="@+id/viewsText"
+            android:gravity="bottom"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="3dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
             android:duplicateParentState="true"
             android:textSize="@dimen/gridview_item_text_size"
             android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/ownerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:gravity="bottom|right"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_margin="3dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
             android:duplicateParentState="true"
             android:textSize="@dimen/gridview_item_text_size"
             android:textColor="@android:color/white" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>
