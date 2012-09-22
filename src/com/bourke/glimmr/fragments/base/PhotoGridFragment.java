@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,7 +29,6 @@ import com.bourke.glimmr.R;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
 
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
@@ -194,7 +194,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                 convertView = mActivity.getLayoutInflater().inflate(
                         R.layout.gridview_item, null);
                 holder = new ViewHolder();
-                holder.imageOverlay = (RelativeLayout) convertView
+                holder.imageOverlay = (LinearLayout) convertView
                     .findViewById(R.id.imageOverlay);
                 holder.image = (ImageView) convertView.findViewById(
                         R.id.image_item);
@@ -275,7 +275,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         }
 
         class ViewHolder {
-            RelativeLayout imageOverlay;
+            LinearLayout imageOverlay;
             ImageView image;
             ImageView imageNewRibbon;
             TextView ownerText;
