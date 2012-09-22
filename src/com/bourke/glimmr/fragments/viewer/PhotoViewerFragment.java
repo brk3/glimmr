@@ -243,7 +243,7 @@ public final class PhotoViewerFragment extends BaseFragment
                     Constants.USE_FILE_CACHE, 0, 0, null,
                     AQuery.FADE_IN_NETWORK);
             String photoTitle = mPhoto.getTitle();
-            if (photoTitle == null || photoTitle.isEmpty()) {
+            if (photoTitle == null || photoTitle.length() == 0) {
                 photoTitle = mActivity.getString(R.string.untitled);
             }
             mAq.id(R.id.textViewTitle).text(photoTitle);
