@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about">About</string>
-    <string name="about_text">Thanks for supporting Glimmr!\n\nFollow Me: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nTranslators:\n*Lars Gellrich</string>
+    <string name="about_text">Thanks for supporting Glimmr!\n\nFollow Me: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nTranslators:\n*Lars Gellrich\n*Kuźniarski Jacek</string>
     <string name="aperture">APERTURE</string>
     <string name="app_name">Glimmr</string>
     <string name="by">by</string>
@@ -58,9 +58,12 @@
     <string name="pro_donate">Pro/Donate</string>
     <string name="set_preferences">Set Preferences</string>
     <string name="sets">Sets</string>
+    <string name="set_wallpaper">Set Wallpaper</string>
+    <string name="setting_wallpaper">Setting Wallpaper…</string>
     <string name="shutter">SHUTTER</string>
     <string name="thirty_mins">30 minutes</string>
     <string name="untitled">Untitled</string>
+    <string name="views">Views</string>
     <string name="welcome">Welcome\nto\nGlimmr.</string>
     <string name="yesterday">Yesterday</string>
     <string name="you">You</string>
