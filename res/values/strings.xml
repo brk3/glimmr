@@ -25,6 +25,7 @@
     <string name="menu_favorite">Mark as Favorite</string>
     <string name="menu_preferences">Preferences</string>
     <string name="menu_refresh">Refresh</string>
+    <string name="menu_share">Share</string>
     <string name="menu_view_comments">Comments</string>
     <string name="menu_view_exif">View Exif Info</string>
     <string name="n_days_ago">days ago</string>
@@ -58,8 +59,8 @@
     <string name="pro_donate">Pro/Donate</string>
     <string name="set_preferences">Set Preferences</string>
     <string name="sets">Sets</string>
-    <string name="set_wallpaper">Set Wallpaper</string>
     <string name="setting_wallpaper">Setting Wallpaper…</string>
+    <string name="set_wallpaper">Set Wallpaper</string>
     <string name="shutter">SHUTTER</string>
     <string name="thirty_mins">30 minutes</string>
     <string name="untitled">Untitled</string>
