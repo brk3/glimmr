@@ -25,12 +25,14 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
     private IPhotoListReadyListener mListener;
     private Photoset mPhotoset;
     private BaseFragment mBaseFragment;
+    private int mPage;
 
     public LoadPhotosetTask(BaseFragment a, IPhotoListReadyListener listener,
-            Photoset photoset) {
+            Photoset photoset, int page) {
         mBaseFragment = a;
         mListener = listener;
         mPhotoset = photoset;
+        mPage = page;
     }
 
     @Override
@@ -49,13 +51,14 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
         extras.add("url_q");
         extras.add("url_l");
         extras.add("views");
-
-        final int perPage = 20;
-        int page = 1;
+        if (Constants.DEBUG) {
+            Log.d(TAG, "Fetching page " + mPage);
+        }
 
         try {
             return f.getPhotosetsInterface().getPhotos(""+mPhotoset.getId(),
-                    extras, Flickr.PRIVACY_LEVEL_NO_FILTER, perPage, page);
+                    extras, Flickr.PRIVACY_LEVEL_NO_FILTER,
+                    Constants.FETCH_PER_PAGE, mPage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,12 +66,20 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected void onPostExecute(final PhotoList result) {
+    protected void onPostExecute(PhotoList result) {
         if (result == null) {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.e(TAG, "Error fetching photolist, result is null");
+            }
+            result = new PhotoList();
         }
         mListener.onPhotosReady(result);
         mBaseFragment.showProgressIcon(false);
+    }
+
+    @Override
+    protected void onCancelled(final PhotoList result) {
+        if (Constants.DEBUG)
+            Log.d(TAG, "onCancelled");
     }
 }
