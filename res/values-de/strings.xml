@@ -1,19 +1,19 @@
 <resources>
   <string name="about">Über</string>
-  <string name="about_text">Danke, dass Du Glimmr unterstützt!\n\nFolge mir:http://twitter.com/brk3\nKontakt: pauldbourke@gmail.com\n\nÜbersetzer:\n*Lars Gellrich</string>
+  <string name="about_text">Danke, dass Sie Glimmr unterstützen!\n\nFolgen Sie mir:http://twitter.com/brk3\nKontakt: pauldbourke@gmail.com\n\nÜbersetzer:\n*Lars Gellrich\n*Kuźniarski Jacek</string>
   <string name="aperture">BLENDE</string>
   <string name="app_name">Glimmr</string>
   <string name="by">von</string>
   <string name="comments">Kommentare und Favoriten</string>
   <string name="contacts">Kontakte</string>
-  <string name="edit_text_hint">Kommentar hinzufügen...</string>
+  <string name="edit_text_hint">Kommentar hinzufügen…</string>
   <string name="exif_info">Exif Informationen</string>
   <string name="favorites">Favoriten</string>
   <string name="fifteen_mins">15 Minuten</string>
   <string name="four_hours">4 Stunden</string>
   <string name="groups">Gruppen</string>
   <string name="iso">ISO</string>
-  <string name="just_a_moment">Einen Moment...</string>
+  <string name="just_a_moment">Einen Moment…</string>
   <string name="just_now">Gerade eben</string>
   <string name="last_month">Letzten Monat</string>
   <string name="last_week">Letzte Woche</string>
@@ -36,7 +36,7 @@
   <string name="one_hour">1 Stunde</string>
   <string name="photoset">Fotoalbum</string>
   <string name="photos">Fotos</string>
-  <string name="please_wait">Bitte warten...</string>
+  <string name="please_wait">Bitte warten…</string>
   <string name="pool">Pool</string>
   <string name="pref_category_notifications">Benachrichtigungen</string>
   <string name="pref_checkbox_enable_contacts">Uploads von Kontakten</string>
