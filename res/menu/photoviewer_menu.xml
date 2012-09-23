@@ -6,20 +6,24 @@
           android:title="@string/menu_view_comments"
           android:icon="@drawable/ic_social_chat_dark"
           android:showAsAction="ifRoom|withText"
-          android:orderInCategory="0"
-          android:visible="true" />
+          android:orderInCategory="0" />
 
     <item android:id="@+id/menu_favorite"
           android:title="@string/menu_favorite"
           android:icon="@drawable/ic_rating_not_important_dark"
           android:showAsAction="ifRoom"
-          android:orderInCategory="1"
-          android:visible="true" />
+          android:orderInCategory="1" />
 
     <item android:id="@+id/menu_view_exif"
           android:title="@string/menu_view_exif"
           android:icon="@drawable/ic_action_about_dark"
           android:showAsAction="ifRoom|withText"
-          android:orderInCategory="2"
-          android:visible="true" />
+          android:orderInCategory="2" />
+
+    <item android:id="@+id/menu_share"
+          android:title="@string/menu_share"
+          android:showAsAction="ifRoom"
+          android:actionProviderClass=
+            "com.actionbarsherlock.widget.ShareActionProvider"
+          android:orderInCategory="3" />
 </menu>
