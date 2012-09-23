@@ -6,19 +6,21 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
-import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.tasks.LoadPhotosetTask;
 
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photos.PhotoList;
 
-public class PhotosetGridFragment extends PhotoGridFragment {
+public class PhotosetGridFragment extends PhotoGridFragment
+        implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/PhotosetGridFragment";
 
     private Photoset mPhotoset;
+    private LoadPhotosetTask mTask;
 
     public static PhotosetGridFragment newInstance(Photoset photoset) {
         PhotosetGridFragment newFragment = new PhotosetGridFragment();
@@ -26,40 +28,21 @@ public class PhotosetGridFragment extends PhotoGridFragment {
         return newFragment;
     }
 
+    /**
+     * Once the parent binds the adapter it will trigger cacheInBackground
+     * for us as it will be empty when first bound.  So we don't need to
+     * override startTask().
+     */
     @Override
-    protected void startTask() {
-        super.startTask();
-        if (mPhotos != null && !mPhotos.isEmpty()) {
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "mPhotos occupied, not starting task");
-            }
-        } else {
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "mPhotos null or empty, starting task");
-            }
-            if (mPhotoset == null) {
-                loadPhotoset();
-            }
-            new LoadPhotosetTask(this, this, mPhotoset).execute(mOAuth);
-        }
+    protected boolean cacheInBackground() {
+        startTask(mPage++);
+        return mMorePages;
     }
 
-    /**
-     * Load the last viewed photoset from storage for when the fragment gets
-     * destroyed.
-     */
-    public void loadPhotoset() {
-        SharedPreferences sp = mActivity.getSharedPreferences(
-                Constants.PREFS_NAME, Context.MODE_PRIVATE);
-        String photosetId = sp.getString(
-                Constants.PHOTOSET_FRAGMENT_SET_ID, null);
-        if (photosetId != null) {
-            mPhotoset = new Photoset();
-            mPhotoset.setId(photosetId);
-            if (Constants.DEBUG) Log.d(getLogTag(), "Restored mPhotoset");
-        } else {
-            Log.e(getLogTag(), "Could not restore mPhotoset");
-        }
+    private void startTask(int page) {
+        super.startTask();
+        mTask = new LoadPhotosetTask(this, this, mPhotoset, page);
+        mTask.execute(mOAuth);
     }
 
     @Override
@@ -73,12 +56,24 @@ public class PhotosetGridFragment extends PhotoGridFragment {
                     mPhotoset.getId());
             editor.commit();
         }
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
+    }
+
+    @Override
+    public void onPhotosReady(PhotoList photos) {
+        super.onPhotosReady(photos);
+        if (photos != null && photos.isEmpty()) {
+            mMorePages = false;
+        }
     }
 
     @Override
     protected void refresh() {
         super.refresh();
-        new LoadPhotosetTask(this, this, mPhotoset).execute(mOAuth);
+        mTask = new LoadPhotosetTask(this, this, mPhotoset, mPage);
+        mTask.execute(mOAuth);
     }
 
     @Override
