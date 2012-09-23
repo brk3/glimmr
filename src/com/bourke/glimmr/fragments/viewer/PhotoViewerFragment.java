@@ -2,7 +2,6 @@ package com.bourke.glimmrpro.fragments.viewer;
 
 import android.app.WallpaperManager;
 
-import com.actionbarsherlock.widget.ShareActionProvider;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 
 import com.androidquery.AQuery;
 
@@ -26,7 +27,6 @@ import com.bourke.glimmrpro.activities.CommentsDialogActivity;
 import com.bourke.glimmrpro.activities.ExifInfoDialogActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IFavoriteReadyListener;
-import com.bourke.glimmrpro.event.Events.IOverlayVisbilityListener;
 import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import com.bourke.glimmrpro.fragments.viewer.PhotoViewerFragment;
@@ -35,6 +35,8 @@ import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
 import com.bourke.glimmrpro.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
+
+import com.polites.android.GestureImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,15 +57,15 @@ public final class PhotoViewerFragment extends BaseFragment
     private MenuItem mFavoriteButton;
     private LoadPhotoInfoTask mTask;
     private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
-    private IOverlayVisbilityListener mVisibilityListener;
+    private IPhotoViewerCallbacks mListener;
 
     public static PhotoViewerFragment newInstance(Photo photo,
-            IOverlayVisbilityListener visiblityListener) {
+            IPhotoViewerCallbacks listener) {
         if (Constants.DEBUG)
             Log.d("Glimmr/PhotoViewerFragment", "newInstance");
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
         photoFragment.mBasePhoto = photo;
-        photoFragment.mVisibilityListener = visiblityListener;
+        photoFragment.mListener = listener;
         return photoFragment;
     }
 
@@ -80,16 +82,28 @@ public final class PhotoViewerFragment extends BaseFragment
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
-        mAq.id(R.id.image).clicked(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        /* Set our own visiblity and update others */
-                        setOverlayVisibility(mActionBar.isShowing());
-                        mVisibilityListener.onVisibilityChanged();
-                    }
-                });
+
+        mAq.id(R.id.image).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* Set our own visiblity and update others */
+                setOverlayVisibility(mActionBar.isShowing());
+                mListener.onVisibilityChanged();
+            }
+        });
+
+        final GestureImageView i =
+            (GestureImageView) mLayout.findViewById(R.id.image);
+        i.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mListener.onZoomed(i.isZoomed());
+                return false;
+            }
+        });
+
         refreshOverlayVisibility();
+
         return mLayout;
     }
 
@@ -357,5 +371,10 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     protected String getLogTag() {
         return TAG;
+    }
+
+    public interface IPhotoViewerCallbacks {
+        void onVisibilityChanged();
+        void onZoomed(boolean isZoomed);
     }
 }
