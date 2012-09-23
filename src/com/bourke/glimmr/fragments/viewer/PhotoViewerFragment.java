@@ -2,6 +2,7 @@ package com.bourke.glimmrpro.fragments.viewer;
 
 import android.app.WallpaperManager;
 
+import com.actionbarsherlock.widget.ShareActionProvider;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -102,6 +103,31 @@ public final class PhotoViewerFragment extends BaseFragment
         if (mPhoto != null) {
             updateFavoriteButtonIcon(mPhoto.isFavorite());
         }
+        /* Set file with share history to the provider and set the share
+         * intent. */
+        MenuItem shareActionItem = menu.findItem(R.id.menu_share);
+        ShareActionProvider shareActionProvider =
+            (ShareActionProvider) shareActionItem.getActionProvider();
+        shareActionProvider.setShareHistoryFileName(
+                ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+        shareActionProvider.setShareIntent(createShareIntent());
+    }
+
+    /**
+     * Creates a sharing {@link Intent}.
+     *
+     * @return The sharing intent.
+     */
+    private Intent createShareIntent() {
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        String text = String.format("\"%s\" %s %s: %s", mBasePhoto.getTitle(),
+                mActivity.getString(R.string.by),
+                mBasePhoto.getOwner().getUsername(),
+                mBasePhoto.getUrl());
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        return intent;
     }
 
     @Override
