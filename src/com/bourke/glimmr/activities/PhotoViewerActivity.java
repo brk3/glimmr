@@ -7,12 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import com.bourke.glimmr.common.ViewPagerDisable;
 
 import android.util.Log;
 
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IOverlayVisbilityListener;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
 
@@ -26,6 +25,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import com.googlecode.flickrjandroid.people.User;
+import android.support.v4.view.ViewPager;
 
 /**
  * Activity for viewing photos.
@@ -34,14 +34,15 @@ import com.googlecode.flickrjandroid.people.User;
  * a startIndex in a zoomable ImageView.
  */
 public class PhotoViewerActivity extends BaseActivity
-        implements ViewPager.OnPageChangeListener, IOverlayVisbilityListener {
+        implements ViewPager.OnPageChangeListener,
+                   PhotoViewerFragment.IPhotoViewerCallbacks {
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
 
     private List<Photo> mPhotos = new ArrayList<Photo>();
 
     private PhotoViewerPagerAdapter mAdapter;
-    private ViewPager mPager;
+    private ViewPagerDisable mPager;
     private List<WeakReference<Fragment>> mFragList =
         new ArrayList<WeakReference<Fragment>>();
 
@@ -72,7 +73,7 @@ public class PhotoViewerActivity extends BaseActivity
             }
             mAdapter =
                 new PhotoViewerPagerAdapter(getSupportFragmentManager());
-            mPager = (ViewPager) findViewById(R.id.pager);
+            mPager = (ViewPagerDisable) findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
             /* Don't show the PageIndicator if there's a lot of items */
             if (mPhotos.size() <= Constants.LINE_PAGE_INDICATOR_LIMIT) {
@@ -126,6 +127,11 @@ public class PhotoViewerActivity extends BaseActivity
                 f.refreshOverlayVisibility();
             }
         }
+    }
+
+    @Override
+    public void onZoomed(boolean isZoomed) {
+        mPager.setPagingEnabled(!isZoomed);
     }
 
     class PhotoViewerPagerAdapter extends FragmentStatePagerAdapter {

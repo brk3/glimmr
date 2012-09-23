@@ -1,6 +1,8 @@
 package com.bourke.glimmr.fragments.viewer;
 
+import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.actionbarsherlock.widget.ShareActionProvider;
+import com.polites.android.GestureImageView;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -23,7 +25,6 @@ import com.bourke.glimmr.activities.CommentsDialogActivity;
 import com.bourke.glimmr.activities.ExifInfoDialogActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
-import com.bourke.glimmr.event.Events.IOverlayVisbilityListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
@@ -34,6 +35,7 @@ import com.bourke.glimmr.tasks.SetFavoriteTask;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import android.view.MotionEvent;
 
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener {
@@ -46,15 +48,15 @@ public final class PhotoViewerFragment extends BaseFragment
     private MenuItem mFavoriteButton;
     private LoadPhotoInfoTask mTask;
     private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
-    private IOverlayVisbilityListener mVisibilityListener;
+    private IPhotoViewerCallbacks mListener;
 
     public static PhotoViewerFragment newInstance(Photo photo,
-            IOverlayVisbilityListener visiblityListener) {
+            IPhotoViewerCallbacks listener) {
         if (Constants.DEBUG)
             Log.d("Glimmr/PhotoViewerFragment", "newInstance");
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
         photoFragment.mBasePhoto = photo;
-        photoFragment.mVisibilityListener = visiblityListener;
+        photoFragment.mListener = listener;
         return photoFragment;
     }
 
@@ -71,16 +73,28 @@ public final class PhotoViewerFragment extends BaseFragment
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
-        mAq.id(R.id.image).clicked(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        /* Set our own visiblity and update others */
-                        setOverlayVisibility(mActionBar.isShowing());
-                        mVisibilityListener.onVisibilityChanged();
-                    }
-                });
+
+        mAq.id(R.id.image).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* Set our own visiblity and update others */
+                setOverlayVisibility(mActionBar.isShowing());
+                mListener.onVisibilityChanged();
+            }
+        });
+
+        final GestureImageView i =
+            (GestureImageView) mLayout.findViewById(R.id.image);
+        i.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mListener.onZoomed(i.isZoomed());
+                return false;
+            }
+        });
+
         refreshOverlayVisibility();
+
         return mLayout;
     }
 
@@ -319,5 +333,10 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     protected String getLogTag() {
         return TAG;
+    }
+
+    public interface IPhotoViewerCallbacks {
+        void onVisibilityChanged();
+        void onZoomed(boolean isZoomed);
     }
 }
