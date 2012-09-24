@@ -48,6 +48,8 @@
             android:layout_margin="3dp"
             android:duplicateParentState="true"
             android:textSize="@dimen/gridview_item_text_size"
+            android:lines="1"
+            android:ellipsize="end"
             android:textColor="@android:color/white" />
     </LinearLayout>
 
