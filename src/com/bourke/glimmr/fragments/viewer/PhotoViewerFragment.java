@@ -127,10 +127,15 @@ public final class PhotoViewerFragment extends BaseFragment
         Intent intent = new Intent(android.content.Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        String text = String.format("\"%s\" %s %s: %s", mBasePhoto.getTitle(),
-                mActivity.getString(R.string.by),
-                mBasePhoto.getOwner().getUsername(),
-                mBasePhoto.getUrl());
+        String text = "";
+        try {
+            text = String.format("\"%s\" %s %s: %s", mBasePhoto.getTitle(),
+                    mActivity.getString(R.string.by),
+                    mBasePhoto.getOwner().getUsername(),
+                    mBasePhoto.getUrl());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         intent.putExtra(Intent.EXTRA_TEXT, text);
         return intent;
     }
