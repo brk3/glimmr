@@ -31,6 +31,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
 import com.androidquery.util.AQUtility;
+import com.androidquery.callback.BitmapAjaxCallback;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
@@ -81,6 +82,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         if (mActionBar != null) {
             mActionbarTitle = new GlimmrAbCustomTitle(getBaseContext());
             mActionbarTitle.init(mActionBar);
+        }
+
+        if (isTaskRoot()) {
+            BitmapAjaxCallback.setCacheLimit(Constants.IMAGE_CACHE_LIMIT);
+            BitmapAjaxCallback.setMaxPixelLimit(Constants.MEM_CACHE_PX_SIZE);
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "IMAGE_CACHE_LIMIT: " +
+                        Constants.IMAGE_CACHE_LIMIT);
+                Log.d(getLogTag(), "MEM_CACHE_PX_SIZE: " +
+                        Constants.MEM_CACHE_PX_SIZE);
+            }
         }
     }
 
@@ -212,6 +224,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity
                 })
             .setPositiveButton(getString(android.R.string.ok), null).
             setView(message).create();
+    }
+
+    @Override
+    public void onLowMemory() {
+        if (Constants.DEBUG) {
+            Log.d(getLogTag(), "onLowMemory: clearing mem cache");
+        }
+        BitmapAjaxCallback.clearCache();
     }
 
     @Override
