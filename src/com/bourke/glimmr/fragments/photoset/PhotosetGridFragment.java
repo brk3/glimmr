@@ -13,6 +13,7 @@ import com.bourke.glimmrpro.tasks.LoadPhotosetTask;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
+import com.googlecode.flickrjandroid.people.User;
 
 public class PhotosetGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
@@ -63,10 +64,18 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     @Override
     public void onPhotosReady(PhotoList photos) {
-        super.onPhotosReady(photos);
+        User owner = mPhotoset.getOwner();
+        if (owner != null) {
+            for (Photo p : photos) {
+                p.setOwner(owner);
+                p.setUrl(String.format("%s%s%s%s", "http://flickr.com/photos/",
+                            owner.getId(), "/", p.getId()));
+            }
+        }
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;
         }
+        super.onPhotosReady(photos);
     }
 
     @Override
