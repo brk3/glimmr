@@ -75,9 +75,11 @@ public class PhotosetViewerActivity extends BaseActivity {
             mUser = (User) bundle.getSerializable(
                     Constants.KEY_PHOTOSETVIEWER_USER);
             if (mPhotoset != null && mUser != null) {
-                if (Constants.DEBUG)
+                if (Constants.DEBUG) {
                     Log.d(TAG, "Got photoset to view: " +
                             mPhotoset.getTitle());
+                }
+                mPhotoset.setOwner(mUser);
                 ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
                 GroupPagerAdapter adapter = new GroupPagerAdapter(
                         getSupportFragmentManager());
