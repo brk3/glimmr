@@ -12,6 +12,8 @@ public class Constants {
     public static final boolean USE_MEMORY_CACHE = true;
     public static final int CACHE_TRIM_TRIGGER_SIZE = 8000000;  // 8MB
     public static final int CACHE_TRIM_TARGET_SIZE = 5000000;  // 5MB
+    public static final int IMAGE_CACHE_LIMIT = 100;  // Images
+    public static final int MEM_CACHE_PX_SIZE = 3000000;  // 3M pixels
 
     public static final String KEY_USER_NAME = "glimmr_user_name";
     public static final String KEY_USER_ID = "glimmr_user_id";
