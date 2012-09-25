@@ -246,8 +246,10 @@ public abstract class PhotoGridFragment extends BaseFragment
                 });
 
                 /* Set the overlay views and owner info */
-                aq.id(holder.viewsText).text("Views: " + String.valueOf(photo
-                            .getViews()));
+                String viewsText = String.format("%s: %s",
+                        mActivity.getString(R.string.views),
+                        String.valueOf(photo.getViews()));
+                aq.id(holder.viewsText).text(viewsText);
                 if (photo.getOwner() != null) {
                     aq.id(holder.ownerText).text(photo.getOwner()
                             .getUsername());
