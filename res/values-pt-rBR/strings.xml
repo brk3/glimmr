@@ -20,7 +20,7 @@
   <string name="last_week">Última Semana</string>
   <string name="last_year">Último Ano</string>
   <string name="logged_in">Logado!</string>
-  <string name="login">Entrou!</string>
+  <string name="login">Entrou</string>
   <string name="menu_favorite">Marque como Favorito</string>
   <string name="menu_preferences">Preferências</string>
   <string name="menu_refresh">Atualizar</string>
@@ -63,7 +63,7 @@
   <string name="thirty_mins">30 minutos</string>
   <string name="untitled">Sem título</string>
   <string name="views">Visualizações</string>
-  <string name="welcome">Bem vindo ao Glimmr</string>
+  <string name="welcome">Bem vindo\nao\nGlimmr.</string>
   <string name="yesterday">Ontem</string>
   <string name="you">Você</string>
 </resources>
