@@ -7,14 +7,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import com.bourke.glimmr.common.ViewPagerDisable;
+import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import com.actionbarsherlock.view.Window;
+
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.ViewPagerDisable;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
 
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import com.viewpagerindicator.LinePageIndicator;
@@ -24,8 +28,6 @@ import java.lang.ref.WeakReference;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.googlecode.flickrjandroid.people.User;
-import android.support.v4.view.ViewPager;
 
 /**
  * Activity for viewing photos.
@@ -48,7 +50,13 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        /* Must be called before adding content */
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+
         super.onCreate(savedInstanceState);
+
+        mActionBar.setBackgroundDrawable(getResources().getDrawable(
+                    R.drawable.ab_bg_black));
 
         setContentView(R.layout.photoviewer);
         mActionBar.setDisplayHomeAsUpEnabled(true);

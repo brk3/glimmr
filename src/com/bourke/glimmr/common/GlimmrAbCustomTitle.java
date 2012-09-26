@@ -14,6 +14,9 @@ import com.actionbarsherlock.app.ActionBar;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
 
+/**
+ * Use to create an actionbar with a custom title font.
+ */
 public class GlimmrAbCustomTitle {
 
     protected TextView mAbTitle;

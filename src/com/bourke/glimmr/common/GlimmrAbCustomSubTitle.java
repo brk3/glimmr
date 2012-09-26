@@ -14,6 +14,9 @@ import com.actionbarsherlock.app.ActionBar;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
 
+/**
+ * Extends GlimmrAbCustomTitle to add a subtitle to the custom actionbar.
+ */
 public class GlimmrAbCustomSubTitle extends GlimmrAbCustomTitle {
 
     private TextView mAbSubTitle;
