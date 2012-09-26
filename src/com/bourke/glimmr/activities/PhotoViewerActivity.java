@@ -11,12 +11,11 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
-import com.bourke.glimmrpro.common.Constants;
+import com.actionbarsherlock.view.Window;
+
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.ViewPagerDisable;
 import com.bourke.glimmrpro.fragments.viewer.PhotoViewerFragment;
-import com.bourke.glimmrpro.fragments.viewer.PhotoViewerFragment;
-import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.people.User;
@@ -51,7 +50,13 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        /* Must be called before adding content */
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+
         super.onCreate(savedInstanceState);
+
+        mActionBar.setBackgroundDrawable(getResources().getDrawable(
+                    R.drawable.ab_bg_black));
 
         setContentView(R.layout.photoviewer);
         mActionBar.setDisplayHomeAsUpEnabled(true);
