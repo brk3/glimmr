@@ -3,18 +3,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:paddingLeft="20dip"
-    android:background="@android:color/background_light">
+    android:paddingLeft="20dip">
 
     <TextView
         android:id="@+id/textWelcome"
-        android:background="@android:color/background_light"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="35sp"
-        android:textColor="@color/text_faded"
         android:text="@string/welcome"
-        android:paddingBottom="40dp"
+        android:paddingBottom="30dp"
         android:paddingTop="100dip" />
     <!--
     <TextView
@@ -32,6 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textWelcome"
         android:layout_alignLeft="@id/textWelcome"
+        android:padding="15dp"
+        android:background="@drawable/login_button"
         android:onClick="loginUser"
         android:text="@string/login" />
 
