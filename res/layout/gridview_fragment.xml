@@ -7,7 +7,6 @@
 
     <GridView
         android:id="@+id/gridview"
-        android:background="@drawable/bg_tint"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:columnWidth="@dimen/gridview_item_size"
