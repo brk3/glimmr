@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <color name="text_faded">#ff7c7c7c</color>
+    <color name="text_light">#ffbbbbbb</color>
+    <color name="text_primary">#fff1f1f1</color>
+
+    <color name="transparent_black">#32000000</color>
+    <color name="dark_gray">#ff444444</color>
+
+    <color name="flickr_pink">#ffff0084</color>
+    <color name="flickr_blue">#ff0063dc</color>
+    <color name="flickr_blue_transparent">#b40063dc</color>
+
+    <drawable name="ab_bg_black">#aa000000</drawable>
+    <drawable name="flickr_pink">#ffff0084</drawable>
+    <drawable name="flickr_blue">#ff0063dc</drawable>
+</resources>
