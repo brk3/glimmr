@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
-            setContentView(R.layout.main);
+            setContentView(R.layout.main_activity);
             mAq = new AQuery(this);
             initViewPager();
 

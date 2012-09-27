@@ -58,7 +58,7 @@ public class PhotoViewerActivity extends BaseActivity
         mActionBar.setBackgroundDrawable(getResources().getDrawable(
                     R.drawable.ab_bg_black));
 
-        setContentView(R.layout.photoviewer);
+        setContentView(R.layout.photoviewer_activity);
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
         handleIntent(getIntent());

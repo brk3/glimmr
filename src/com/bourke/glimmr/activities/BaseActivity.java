@@ -74,6 +74,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         mOAuth = loadAccessToken(prefs);
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
+            if (Constants.DEBUG) {
+                if (mUser == null) {
+                    Log.d(getLogTag(), "onCreate: mUser is null, " +
+                            "proceeding unauthenticated");
+                }
+            }
         }
 
         /* Set custom title on action bar (it will be null for dialog
