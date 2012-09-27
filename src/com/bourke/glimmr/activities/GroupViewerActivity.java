@@ -51,7 +51,7 @@ public class GroupViewerActivity extends BaseActivity {
         if (mOAuth == null) {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
-            setContentView(R.layout.main);
+            setContentView(R.layout.main_activity);
 
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionbarSubTitle = new GlimmrAbCustomSubTitle(getBaseContext());
