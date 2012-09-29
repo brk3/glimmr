@@ -53,6 +53,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected int mPage = 1;
     protected boolean mMorePages = true;
     protected boolean mShowProfileOverlay = false;
+    protected boolean mShowDetailsOverlay = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -220,7 +221,11 @@ public abstract class PhotoGridFragment extends BaseFragment
                 aq.id(holder.imageOverlay).invisible();
             } else {
                 /* Fetch the main photo */
-                aq.id(holder.imageOverlay).visible();
+                if (mShowDetailsOverlay) {
+                    aq.id(holder.imageOverlay).visible();
+                } else {
+                    aq.id(holder.imageOverlay).invisible();
+                }
                 aq.id(holder.image).image(photo.getLargeSquareUrl(),
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);

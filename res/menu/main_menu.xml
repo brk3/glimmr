@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!-- Fragments will clear the menu and add these items, but for activities
+     without fragments these base items should always appear -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:id="@+id/menu_preferences"
           android:icon="@android:drawable/ic_menu_preferences"
           android:orderInCategory="9"

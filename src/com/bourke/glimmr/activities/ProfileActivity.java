@@ -55,7 +55,7 @@ public class ProfileActivity extends BaseActivity
             getString(R.string.sets) };//, getString(R.string.contacts) };
 
         if (mOAuth == null) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, ExploreActivity.class));
         } else {
             mActionBar.setDisplayHomeAsUpEnabled(true);
             setContentView(R.layout.main_activity);
