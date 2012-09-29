@@ -48,7 +48,7 @@ public class PhotosetViewerActivity extends BaseActivity {
         CONTENT = new String[] { getString(R.string.photoset) };
 
         if (mOAuth == null) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, ExploreActivity.class));
         } else {
             setContentView(R.layout.main_activity);
 

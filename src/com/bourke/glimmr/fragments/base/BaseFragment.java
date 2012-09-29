@@ -83,6 +83,11 @@ public abstract class BaseFragment extends SherlockFragment {
 			menu.findItem(R.id.menu_refresh).setActionView(
 					R.layout.action_bar_indeterminate_progress);
 		}
+        if (mActivity.getUser() == null) {
+            menu.findItem(R.id.menu_login).setVisible(true);
+        } else {
+            menu.findItem(R.id.menu_login).setVisible(false);
+        }
     }
 
     @Override

@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
                 getString(R.string.groups) };
 
         if (mOAuth == null) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, ExploreActivity.class));
         } else {
             setContentView(R.layout.main_activity);
             mAq = new AQuery(this);

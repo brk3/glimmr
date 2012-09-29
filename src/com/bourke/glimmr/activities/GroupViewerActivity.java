@@ -49,7 +49,7 @@ public class GroupViewerActivity extends BaseActivity {
             //,getString(R.string.about) };
 
         if (mOAuth == null) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, ExploreActivity.class));
         } else {
             setContentView(R.layout.main_activity);
 
