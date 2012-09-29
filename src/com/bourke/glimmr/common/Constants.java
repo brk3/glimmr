@@ -21,6 +21,10 @@ public class Constants {
     /* Fonts */
     public static final String FONT_SHADOWSINTOLIGHT =
         "fonts/ShadowsIntoLight.ttf";
+    public static final String FONT_ROBOTOREGULAR =
+        "fonts/Roboto-Regular.ttf";
+    public static final String FONT_ROBOTOTHIN =
+        "fonts/Roboto-Thin.ttf";
 
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;

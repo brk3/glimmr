@@ -14,15 +14,17 @@
     <string name="fifteen_mins">15 minutes</string>
     <string name="four_hours">4 hours</string>
     <string name="groups">Groups</string>
-    <string name="last_7_days">ISO</string>
     <string name="iso">ISO</string>
     <string name="just_a_moment">Just a moment…</string>
     <string name="just_now">Just now</string>
+    <string name="last_7_days">ISO</string>
     <string name="last_month">Last Month</string>
     <string name="last_week">Last Week</string>
     <string name="last_year">Last Year</string>
     <string name="logged_in">Logged In!</string>
-    <string name="login">LOGIN TO FLICKR</string>
+    <string name="login_later">You can login anytime from the menu</string>
+    <string name="login">Login</string>
+    <string name="login_to_flickr">LOGIN TO FLICKR</string>
     <string name="menu_favorite">Mark as Favorite</string>
     <string name="menu_preferences">Preferences</string>
     <string name="menu_refresh">Refresh</string>
@@ -38,6 +40,7 @@
     <string name="notification_contacts_content">from your contacts.</string>
     <string name="notification_contacts_ticker">Your Flickr contacts have posted new photos</string>
     <string name="notification_contacts_title">New photos</string>
+    <string name="not_now">or, just browse some photos…</string>
     <string name="n_weeks_ago">weeks ago</string>
     <string name="n_years_ago">years ago</string>
     <string name="once_a_day">Once a day</string>
@@ -64,9 +67,10 @@
     <string name="set_wallpaper">Set Wallpaper</string>
     <string name="shutter">SHUTTER</string>
     <string name="thirty_mins">30 minutes</string>
+    <string name="to">to</string>
     <string name="untitled">Untitled</string>
     <string name="views">Views</string>
-    <string name="welcome">Welcome\nto\nGlimmr.</string>
+    <string name="welcome">Welcome</string>
     <string name="yesterday">Yesterday</string>
     <string name="you">You</string>
 </resources>

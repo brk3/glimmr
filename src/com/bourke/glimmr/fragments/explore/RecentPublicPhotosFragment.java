@@ -1,8 +1,14 @@
-package com.bourke.glimmr.fragments.explore;
+package com.bourke.glimmrpro.fragments.explore;
 
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadPublicPhotosTask;
+import android.os.Bundle;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
+import com.bourke.glimmrpro.tasks.LoadPublicPhotosTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
@@ -16,6 +22,12 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment
 
     public static RecentPublicPhotosFragment newInstance() {
         return new RecentPublicPhotosFragment();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mShowDetailsOverlay = false;
     }
 
     /**

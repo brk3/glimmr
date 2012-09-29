@@ -28,7 +28,7 @@
         android:id="@+id/loginFragment"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="15dip" />
 
 </RelativeLayout>
