@@ -39,14 +39,24 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
     @Override
     protected Photo doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        OAuthToken token = oauth.getToken();
-        try {
-            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                    token.getOauthToken(), token.getOauthTokenSecret());
-            return f.getPhotosInterface().getInfo(mPhoto.getId(),
-                    mPhoto.getSecret());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            try {
+                Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                        token.getOauthToken(), token.getOauthTokenSecret());
+                return f.getPhotosInterface().getInfo(mPhoto.getId(),
+                        mPhoto.getSecret());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            /* unauthenticated call */
+            try {
+                return FlickrHelper.getInstance().getPhotosInterface()
+                    .getInfo(mPhoto.getId(), mPhoto.getSecret());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
