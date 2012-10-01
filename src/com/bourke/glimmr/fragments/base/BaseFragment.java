@@ -6,9 +6,14 @@ import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
+import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
+
 import android.util.Log;
 
 import android.view.ViewGroup;
+
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -184,6 +189,15 @@ public abstract class BaseFragment extends SherlockFragment {
 
     protected void refresh() {
         Log.e(getLogTag(), "refresh");
+    }
+
+    protected void colorTextViewSpan(TextView view, String fulltext,
+            String subtext, int color) {
+        view.setText(fulltext, TextView.BufferType.SPANNABLE);
+        Spannable str = (Spannable) view.getText();
+        int i = fulltext.indexOf(subtext);
+        str.setSpan(new ForegroundColorSpan(color), i, i+subtext.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     protected String getLogTag() {

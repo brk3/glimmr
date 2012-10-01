@@ -33,6 +33,7 @@ import com.bourke.glimmrpro.tasks.GetRequestToken;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
+import android.view.MotionEvent;
 
 /**
  * Presents a welcome to user and a button to login.
@@ -71,21 +72,8 @@ public final class LoginFragment extends BaseFragment
                 R.layout.login_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
 
-        setTextViewFonts();
+        setupTextViews();
 
-        mAq.id(R.id.btnLogin).clicked(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new GetRequestToken(LoginFragment.this, mActivity).execute();
-            }
-        });
-
-        mAq.id(R.id.textNotNow).clicked(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mNotNowListener.onNotNowClicked();
-            }
-        });
 
         return mLayout;
     }
@@ -133,7 +121,8 @@ public final class LoginFragment extends BaseFragment
         editor.commit();
     }
 
-    private void setTextViewFonts() {
+    private void setupTextViews() {
+        /* Set fonts */
         Typeface robotoRegular = Typeface.createFromAsset(
                 mActivity.getAssets(), Constants.FONT_ROBOTOREGULAR);
         Typeface robotoThin = Typeface.createFromAsset(mActivity.getAssets(),
@@ -146,6 +135,45 @@ public final class LoginFragment extends BaseFragment
             .setTypeface(robotoRegular);
         ((TextView) mLayout.findViewById(R.id.textNotNow))
             .setTypeface(robotoThin);
+
+        mAq.id(R.id.btnLogin).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GetRequestToken(LoginFragment.this, mActivity).execute();
+            }
+        });
+
+        final TextView tvNotNow = (TextView) mLayout.findViewById(
+                R.id.textNotNow);
+        colorTextViewSpan(tvNotNow, tvNotNow.getText().toString(),
+                mActivity.getString(R.string.browse),
+                mActivity.getResources().getColor(
+                    R.color.abs__holo_blue_light));
+
+        tvNotNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNotNowListener.onNotNowClicked();
+            }
+        });
+
+        tvNotNow.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    colorTextViewSpan(tvNotNow, tvNotNow.getText().toString(),
+                        mActivity.getString(R.string.browse),
+                        mActivity.getResources().getColor(
+                            R.color.flickr_pink));
+                } else {
+                    colorTextViewSpan(tvNotNow, tvNotNow.getText().toString(),
+                        mActivity.getString(R.string.browse),
+                        mActivity.getResources().getColor(
+                            R.color.abs__holo_blue_light));
+                }
+                return false;
+            }
+        });
     }
 
     @Override

@@ -4,6 +4,7 @@
     <string name="about_text">Thanks for supporting Glimmr!\n\nFollow Me: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nTranslators:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson</string>
     <string name="aperture">APERTURE</string>
     <string name="app_name">Glimmr-L</string>
+    <string name="browse">browse</string>
     <string name="by">by</string>
     <string name="comments">Comments and Favs</string>
     <string name="comment_sent">Comment Sent!</string>
@@ -22,9 +23,9 @@
     <string name="last_week">Last Week</string>
     <string name="last_year">Last Year</string>
     <string name="logged_in">Logged In!</string>
-    <string name="login_required">You need to be logged in to do that!</string>
     <string name="login_later">You can login anytime from the menu!</string>
     <string name="login">Login</string>
+    <string name="login_required">You need to be logged in to do that!</string>
     <string name="login_to_flickr">LOGIN TO FLICKR</string>
     <string name="menu_favorite">Mark as Favorite</string>
     <string name="menu_preferences">Preferences</string>

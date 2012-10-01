@@ -50,8 +50,8 @@
 
     <TextView
         android:id="@+id/textNotNow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@id/btnLogin"
         android:layout_marginTop="60dip"
         android:layout_centerInParent="true"
