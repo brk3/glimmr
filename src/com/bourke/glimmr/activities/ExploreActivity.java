@@ -57,6 +57,7 @@ public class ExploreActivity extends BaseActivity
         mLoginFragment.setNotNowListener(this);
         initViewPager();
 
+        handleIntent(getIntent());
         //Appirater.appLaunched(this);
     }
 
@@ -79,7 +80,13 @@ public class ExploreActivity extends BaseActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        if (Constants.DEBUG) Log.d(getLogTag(), "onNewIntent");
 
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
         if (intent != null) {
             String scheme = intent.getScheme();
             if (Constants.CALLBACK_SCHEME.equals(scheme)) {
@@ -96,9 +103,10 @@ public class ExploreActivity extends BaseActivity
                 new GetAccessTokenTask(mLoginFragment).execute(oauthToken,
                         oAuthSecret, oauthVerifier);
             } else {
-                if (Constants.DEBUG)
+                if (Constants.DEBUG) {
                     Log.d(TAG, "Received intent but unknown scheme: " +
                             scheme);
+                }
             }
         } else {
             if (Constants.DEBUG)
