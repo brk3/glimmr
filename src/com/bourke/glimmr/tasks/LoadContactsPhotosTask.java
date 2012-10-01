@@ -41,33 +41,34 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected PhotoList doInBackground(OAuth... arg0) {
-        OAuthToken token = arg0[0].getToken();
-        Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                token.getOauthToken(), token.getOauthTokenSecret());
-        User user = arg0[0].getUser();
+    protected PhotoList doInBackground(OAuth... params) {
+        OAuth oauth = params[0];
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            User user = oauth.getUser();
 
-        try {
-            /* Flickr api doc says max allowed is 50, but seems to allow
-             * more... For some reason pagination doesn't seem to be an
-             * option. */
-            int amountToFetch = 50;
-            Set<String> extras = new HashSet<String>();
-            extras.add("owner_name");
-            extras.add("url_q");
-            extras.add("url_l");
-            extras.add("views");
-            boolean justFriends = false;
-            boolean singlePhoto = false;
-            boolean includeSelf = false;
-            return f.getPhotosInterface().getContactsPhotos(amountToFetch,
-                    extras, justFriends, singlePhoto, includeSelf);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FlickrException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                    token.getOauthToken(), token.getOauthTokenSecret());
+            try {
+                /* Flickr api doc says max allowed is 50, but seems to allow
+                 * more... For some reason pagination doesn't seem to be an
+                 * option. */
+                int amountToFetch = 50;
+                Set<String> extras = new HashSet<String>();
+                extras.add("owner_name");
+                extras.add("url_q");
+                extras.add("url_l");
+                extras.add("views");
+                boolean justFriends = false;
+                boolean singlePhoto = false;
+                boolean includeSelf = false;
+                return f.getPhotosInterface().getContactsPhotos(amountToFetch,
+                        extras, justFriends, singlePhoto, includeSelf);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e(TAG, "LoadContactsPhotosTask requires authentication");
         }
         return null;
     }

@@ -74,11 +74,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity
         mOAuth = loadAccessToken(prefs);
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
-            if (Constants.DEBUG) {
-                if (mUser == null) {
-                    Log.d(getLogTag(), "onCreate: mUser is null, " +
-                            "proceeding unauthenticated");
-                }
+        }
+        if (Constants.DEBUG) {
+            if (mUser == null || mOAuth == null) {
+                Log.d(getLogTag(), "Proceeding unauthenticated");
             }
         }
 

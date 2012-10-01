@@ -98,6 +98,11 @@ public final class CommentsFragment extends BaseFragment
     }
 
     public void submitButtonClicked(View view) {
+        if (mActivity.getUser() == null) {
+            Toast.makeText(mActivity, getString(R.string.login_required),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         TextView editText = (TextView) mLayout.findViewById(R.id.editText);
         String commentText = editText.getText().toString();
         if (commentText.isEmpty()) {

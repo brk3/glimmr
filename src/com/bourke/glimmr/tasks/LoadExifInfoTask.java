@@ -44,15 +44,26 @@ public class LoadExifInfoTask
     @Override
     protected Collection<Exif> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        OAuthToken token = oauth.getToken();
-        try {
-            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                    token.getOauthToken(), token.getOauthTokenSecret());
-            return f.getPhotosInterface().getExif(mPhoto.getId(),
-                    mPhoto.getSecret());
-        } catch (Exception e) {
-            mException = e;
-            e.printStackTrace();
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            try {
+                Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                        token.getOauthToken(), token.getOauthTokenSecret());
+                return f.getPhotosInterface().getExif(mPhoto.getId(),
+                        mPhoto.getSecret());
+            } catch (Exception e) {
+                mException = e;
+                e.printStackTrace();
+            }
+        } else {
+            if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
+            try {
+                return FlickrHelper.getInstance().getPhotosInterface()
+                    .getExif(mPhoto.getId(), mPhoto.getSecret());
+            } catch (Exception e) {
+                mException = e;
+                e.printStackTrace();
+            }
         }
         return null;
     }

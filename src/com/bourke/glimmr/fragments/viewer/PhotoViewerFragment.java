@@ -10,10 +10,12 @@ import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -179,6 +181,11 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     public void onFavoriteButtonClick() {
+        if (mActivity.getUser() == null) {
+            Toast.makeText(mActivity, getString(R.string.login_required),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (mIsFavoriting.get()) {
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Favorite operation currently in progress");

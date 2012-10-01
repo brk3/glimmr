@@ -39,14 +39,18 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
     @Override
     protected String doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        OAuthToken token = oauth.getToken();
-        try {
-            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                    token.getOauthToken(), token.getOauthTokenSecret());
-            return f.getCommentsInterface().addComment(mPhoto.getId(),
-                    mCommentText);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            try {
+                Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                        token.getOauthToken(), token.getOauthTokenSecret());
+                return f.getCommentsInterface().addComment(mPhoto.getId(),
+                        mCommentText);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e(TAG, "AddCommentTask requires authentication");
         }
         return null;
     }
