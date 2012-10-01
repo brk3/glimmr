@@ -44,7 +44,7 @@ public final class PhotoViewerFragment extends BaseFragment
     protected String TAG = "Glimmr/PhotoViewerFragment";
 
     private Photo mBasePhoto;
-    private Photo mPhoto;
+    private Photo mPhotoExtendedInfo;
     private AQuery mAq;
     private MenuItem mFavoriteButton;
     private LoadPhotoInfoTask mTask;
@@ -53,8 +53,9 @@ public final class PhotoViewerFragment extends BaseFragment
 
     public static PhotoViewerFragment newInstance(Photo photo,
             IPhotoViewerCallbacks listener) {
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d("Glimmr/PhotoViewerFragment", "newInstance");
+        }
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
         photoFragment.mBasePhoto = photo;
         photoFragment.mListener = listener;
@@ -95,6 +96,7 @@ public final class PhotoViewerFragment extends BaseFragment
         });
 
         refreshOverlayVisibility();
+        displayImage();
 
         return mLayout;
     }
@@ -106,8 +108,8 @@ public final class PhotoViewerFragment extends BaseFragment
         mFavoriteButton = menu.findItem(R.id.menu_favorite);
         /* The task could return before this has inflated, so make sure it's up
          * to date */
-        if (mPhoto != null) {
-            updateFavoriteButtonIcon(mPhoto.isFavorite());
+        if (mPhotoExtendedInfo != null) {
+            updateFavoriteButtonIcon(mPhotoExtendedInfo.isFavorite());
         }
         /* Set file with share history to the provider and set the share
          * intent. */
@@ -159,12 +161,17 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     public void onCommentsButtonClick() {
-        Intent activity = new Intent(mActivity, CommentsDialogActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.COMMENTS_DIALOG_ACTIVITY_PHOTO,
-                mPhoto);
-        activity.putExtras(bundle);
-        startActivity(activity);
+        if (mBasePhoto != null) {
+            Intent activity = new Intent(mActivity,
+                    CommentsDialogActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constants.COMMENTS_DIALOG_ACTIVITY_PHOTO,
+                    mBasePhoto);
+            activity.putExtras(bundle);
+            startActivity(activity);
+        } else {
+            Log.e(TAG, "onCommentsButtonClick: mBasePhoto is null");
+        }
     }
 
     public void onFavoriteButtonClick() {
@@ -179,27 +186,34 @@ public final class PhotoViewerFragment extends BaseFragment
             }
             return;
         }
-        if (mPhoto != null) {
+        if (mPhotoExtendedInfo != null) {
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Starting SetFavoriteTask for photo: "
-                        + mPhoto.getId());
+                        + mPhotoExtendedInfo.getId());
             }
-            new SetFavoriteTask(this, this, mPhoto).execute(mOAuth);
-            updateFavoriteButtonIcon(mPhoto.isFavorite());
+            new SetFavoriteTask(this, this, mPhotoExtendedInfo)
+                .execute(mOAuth);
+            updateFavoriteButtonIcon(mPhotoExtendedInfo.isFavorite());
             mIsFavoriting.set(true);
         } else {
-            Log.e(TAG, "onFavoriteButtonClick: mPhoto is null");
+            Log.e(TAG, "onFavoriteButtonClick: mPhotoExtendedInfo is null");
         }
     }
 
     public void onExifButtonClick() {
-        Intent exifActivity =
-            new Intent(mActivity, ExifInfoDialogActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO,
-                mPhoto);
-        exifActivity.putExtras(bundle);
-        startActivity(exifActivity);
+        if (mBasePhoto != null) {
+            Intent exifActivity =
+                new Intent(mActivity, ExifInfoDialogActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(
+                    Constants.KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO, mBasePhoto);
+            exifActivity.putExtras(bundle);
+            startActivity(exifActivity);
+        } else {
+            if (Constants.DEBUG) {
+                Log.d(TAG, "onExifButtonClick: mBasePhoto is null");
+            }
+        }
     }
 
     @Override
@@ -213,7 +227,7 @@ public final class PhotoViewerFragment extends BaseFragment
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Successfully favorited/unfavorited photo");
             }
-            mPhoto.setFavorite(!mPhoto.isFavorite());
+            mPhotoExtendedInfo.setFavorite(!mPhotoExtendedInfo.isFavorite());
         }
         mIsFavoriting.set(false);
     }
@@ -262,7 +276,7 @@ public final class PhotoViewerFragment extends BaseFragment
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
         if (Constants.DEBUG) Log.d(getLogTag(), "onActivityCreated");
-        mPhoto = null;
+        mPhotoExtendedInfo = null;
     }
 
     @Override
@@ -270,7 +284,7 @@ public final class PhotoViewerFragment extends BaseFragment
         super.startTask();
         /* Start a task to fetch more detailed info about the photo if we don't
          * already have it (required for favorite status) */
-        if (mPhoto == null) {
+        if (mPhotoExtendedInfo == null) {
             mTask = new LoadPhotoInfoTask(this, this, mBasePhoto);
             mTask.execute(mOAuth);
         }
@@ -279,30 +293,29 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public void onPhotoInfoReady(Photo photo) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotoInfoReady");
-        mPhoto = photo;
-        displayImage();
-        if (mPhoto != null) {
-            updateFavoriteButtonIcon(mPhoto.isFavorite());
+        mPhotoExtendedInfo = photo;
+        if (mPhotoExtendedInfo != null) {
+            updateFavoriteButtonIcon(mPhotoExtendedInfo.isFavorite());
         }
     }
 
     private void displayImage() {
         if (Constants.DEBUG) Log.d(TAG, "displayImage()");
-        if (mPhoto != null) {
+        if (mBasePhoto != null) {
             mAq.id(R.id.image).progress(R.id.progress).image(
-                    mPhoto.getLargeUrl(), Constants.USE_MEMORY_CACHE,
+                    mBasePhoto.getLargeUrl(), Constants.USE_MEMORY_CACHE,
                     Constants.USE_FILE_CACHE, 0, 0, null,
                     AQuery.FADE_IN_NETWORK);
-            String photoTitle = mPhoto.getTitle();
+            String photoTitle = mBasePhoto.getTitle();
             if (photoTitle == null || photoTitle.length() == 0) {
                 photoTitle = mActivity.getString(R.string.untitled);
             }
             mAq.id(R.id.textViewTitle).text(photoTitle);
             mAq.id(R.id.textViewAuthor).text(mActivity.getString(R.string.by) +
-                    " " + mPhoto.getOwner().getUsername());
+                    " " + mBasePhoto.getOwner().getUsername());
         } else {
             if (Constants.DEBUG)
-                Log.e(getLogTag(), "displayImage: mPhoto is null");
+                Log.e(getLogTag(), "displayImage: mBasePhoto is null");
         }
     }
 
