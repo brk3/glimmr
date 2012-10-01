@@ -40,20 +40,24 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
     }
 
     @Override
-    protected Collection<Group> doInBackground(OAuth... arg0) {
-        OAuthToken token = arg0[0].getToken();
-        Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                token.getOauthToken(), token.getOauthTokenSecret());
-        User user = arg0[0].getUser();
-
-        try {
-            return f.getPoolsInterface().getGroups();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FlickrException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+    protected Collection<Group> doInBackground(OAuth... params) {
+        OAuth oauth = null;
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                    token.getOauthToken(), token.getOauthTokenSecret());
+            User user = oauth.getUser();
+            try {
+                return f.getPoolsInterface().getGroups();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (FlickrException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e(TAG, "LoadGroupsTask requires authentication");
         }
         return null;
     }

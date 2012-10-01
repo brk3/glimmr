@@ -42,23 +42,30 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
     }
 
     @Override
-    protected Photosets doInBackground(OAuth... arg0) {
-        OAuthToken token = arg0[0].getToken();
-        Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                token.getOauthToken(), token.getOauthTokenSecret());
+    protected Photosets doInBackground(OAuth... params) {
+        OAuth oauth = params[0];
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                    token.getOauthToken(), token.getOauthTokenSecret());
 
-        /* "Currently all sets are returned, but this behaviour may change in
-         * future."
-         * (http://www.flickr.com/services/api/flickr.photosets.getList.html)
-         */
-        try {
-            return f.getPhotosetsInterface().getList(mUser.getId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FlickrException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            /* "Currently all sets are returned, but this behaviour may change
+             * in future."
+             * (http://flickr.com/services/api/flickr.photosets.getList.html)
+             */
+            try {
+                return f.getPhotosetsInterface().getList(mUser.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
+            try {
+                return FlickrHelper.getInstance()
+                    .getPhotosetsInterface().getList(mUser.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

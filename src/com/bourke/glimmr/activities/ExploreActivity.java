@@ -115,7 +115,7 @@ public class ExploreActivity extends BaseActivity
 
     @Override
     public User getUser() {
-        return null;
+        return mUser;
     }
 
     class ExplorePagerAdapter extends FragmentPagerAdapter {

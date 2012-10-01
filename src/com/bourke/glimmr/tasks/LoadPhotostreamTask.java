@@ -42,23 +42,27 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected PhotoList doInBackground(OAuth... arg0) {
-        OAuthToken token = arg0[0].getToken();
-        Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                token.getOauthToken(), token.getOauthTokenSecret());
-        Set<String> extras = new HashSet<String>();
-        extras.add("owner_name");
-        extras.add("url_q");
-        extras.add("url_l");
-        extras.add("views");
-        if (Constants.DEBUG)
-            Log.d(TAG, "Fetching page " + mPage);
+    protected PhotoList doInBackground(OAuth... params) {
+        OAuth oauth = params[0];
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                    token.getOauthToken(), token.getOauthTokenSecret());
+            Set<String> extras = new HashSet<String>();
+            extras.add("owner_name");
+            extras.add("url_q");
+            extras.add("url_l");
+            extras.add("views");
+            if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
 
-        try {
-            return f.getPeopleInterface().getPhotos(mUser.getId(), extras,
-                    Constants.FETCH_PER_PAGE, mPage);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                return f.getPeopleInterface().getPhotos(mUser.getId(), extras,
+                        Constants.FETCH_PER_PAGE, mPage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e(TAG, "LoadPhotostreamTask requires authentication");
         }
         return null;
     }

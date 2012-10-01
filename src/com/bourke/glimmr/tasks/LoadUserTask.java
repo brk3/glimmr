@@ -38,15 +38,24 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     @Override
     protected User doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        User user = oauth.getUser();
-        OAuthToken token = oauth.getToken();
-
-        try {
-            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                    token.getOauthToken(), token.getOauthTokenSecret());
-            return f.getPeopleInterface().getInfo(mUserId);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (oauth != null) {
+            User user = oauth.getUser();
+            OAuthToken token = oauth.getToken();
+            try {
+                Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                        token.getOauthToken(), token.getOauthTokenSecret());
+                return f.getPeopleInterface().getInfo(mUserId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
+            try {
+                return FlickrHelper.getInstance().getPeopleInterface()
+                    .getInfo(mUserId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
