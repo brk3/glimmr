@@ -36,6 +36,7 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener {
@@ -167,6 +168,11 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     public void onFavoriteButtonClick() {
+        if (mActivity.getUser() == null) {
+            Toast.makeText(mActivity, getString(R.string.login_required),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (mIsFavoriting.get()) {
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Favorite operation currently in progress");

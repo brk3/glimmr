@@ -22,7 +22,8 @@
     <string name="last_week">Last Week</string>
     <string name="last_year">Last Year</string>
     <string name="logged_in">Logged In!</string>
-    <string name="login_later">You can login anytime from the menu</string>
+    <string name="login_required">You need to be logged in to do that!</string>
+    <string name="login_later">You can login anytime from the menu!</string>
     <string name="login">Login</string>
     <string name="login_to_flickr">LOGIN TO FLICKR</string>
     <string name="menu_favorite">Mark as Favorite</string>

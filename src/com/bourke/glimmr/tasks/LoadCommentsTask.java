@@ -43,16 +43,28 @@ public class LoadCommentsTask
     @Override
     protected List<Comment> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        OAuthToken token = oauth.getToken();
-        try {
-            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                    token.getOauthToken(), token.getOauthTokenSecret());
-            Date minCommentDate = null;
-            Date maxCommentDate = null;
-            return f.getCommentsInterface().getList(mPhoto.getId(),
-                    minCommentDate, maxCommentDate);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            try {
+                Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                        token.getOauthToken(), token.getOauthTokenSecret());
+                Date minCommentDate = null;
+                Date maxCommentDate = null;
+                return f.getCommentsInterface().getList(mPhoto.getId(),
+                        minCommentDate, maxCommentDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
+            try {
+                Date minCommentDate = null;
+                Date maxCommentDate = null;
+                return FlickrHelper.getInstance().getCommentsInterface()
+                    .getList(mPhoto.getId(), minCommentDate, maxCommentDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

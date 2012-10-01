@@ -50,7 +50,7 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
                 e.printStackTrace();
             }
         } else {
-            /* unauthenticated call */
+            if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
             try {
                 return FlickrHelper.getInstance().getPhotosInterface()
                     .getInfo(mPhoto.getId(), mPhoto.getSecret());

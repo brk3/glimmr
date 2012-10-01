@@ -43,24 +43,30 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected PhotoList doInBackground(OAuth... arg0) {
-        OAuthToken token = arg0[0].getToken();
-        Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                token.getOauthToken(), token.getOauthTokenSecret());
-        Date minFavDate = null;
-        Date maxFavDate = null;
-        Set<String> extras = new HashSet<String>();
-        extras.add("owner_name");
-        extras.add("url_q");
-        extras.add("url_l");
-        extras.add("views");
-        if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
+    protected PhotoList doInBackground(OAuth... params) {
+        OAuth oauth = params[0];
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                    token.getOauthToken(), token.getOauthTokenSecret());
+            Date minFavDate = null;
+            Date maxFavDate = null;
+            Set<String> extras = new HashSet<String>();
+            extras.add("owner_name");
+            extras.add("url_q");
+            extras.add("url_l");
+            extras.add("views");
+            if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
 
-        try {
-            return f.getFavoritesInterface().getList(mUser.getId(), minFavDate,
-                    maxFavDate, Constants.FETCH_PER_PAGE, mPage, extras);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                return f.getFavoritesInterface().getList(
+                    mUser.getId(), minFavDate, maxFavDate,
+                    Constants.FETCH_PER_PAGE, mPage, extras);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e(TAG, "LoadFavoritesTask requires authentication");
         }
         return null;
     }

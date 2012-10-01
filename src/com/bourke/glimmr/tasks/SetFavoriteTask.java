@@ -10,6 +10,7 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
+import android.util.Log;
 
 public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
 
@@ -33,19 +34,24 @@ public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
     }
 
     @Override
-    protected Exception doInBackground(OAuth... arg0) {
-        OAuthToken token = arg0[0].getToken();
-        Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-                token.getOauthToken(), token.getOauthTokenSecret());
-        try {
-            if (mPhoto.isFavorite()) {
-                f.getFavoritesInterface().remove(mPhoto.getId());
-            } else {
-                f.getFavoritesInterface().add(mPhoto.getId());
+    protected Exception doInBackground(OAuth... params) {
+        OAuth oauth = params[0];
+        if (oauth != null) {
+            OAuthToken token = oauth.getToken();
+            Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
+                    token.getOauthToken(), token.getOauthTokenSecret());
+            try {
+                if (mPhoto.isFavorite()) {
+                    f.getFavoritesInterface().remove(mPhoto.getId());
+                } else {
+                    f.getFavoritesInterface().add(mPhoto.getId());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return e;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return e;
+        } else {
+            Log.e(TAG, "SetFavoriteTask requires authentication");
         }
         return null;
     }
