@@ -41,7 +41,7 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
 
     @Override
     protected Collection<Group> doInBackground(OAuth... params) {
-        OAuth oauth = null;
+        OAuth oauth = params[0];
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
