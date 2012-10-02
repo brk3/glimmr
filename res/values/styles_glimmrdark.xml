@@ -18,7 +18,7 @@
 
 <resources>
 
-    <style name="Theme.glimmrdark" parent="@style/Theme.Sherlock">
+    <style name="Theme.glimmrdark" parent="@style/Theme.Sherlock.ForceOverflow">
         <item name="actionBarItemBackground">@drawable/selectable_background_glimmrdark</item>
         <item name="popupMenuStyle">@style/glimmrdark_PopupMenu</item>
         <item name="dropDownListViewStyle">@style/glimmrdark_DropDownListView</item>
