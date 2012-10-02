@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="loginPrimaryTextSize">50sp</dimen>
+    <dimen name="loginButtonTextSize">18sp</dimen>
+    <dimen name="loginButtonTopMargin">50sp</dimen>
+    <dimen name="loginButtonPadding">16sp</dimen>
+    <dimen name="secondaryTextTopMargin">50sp</dimen>
+    <dimen name="secondaryTextSize">18sp</dimen>
+</resources>
+
