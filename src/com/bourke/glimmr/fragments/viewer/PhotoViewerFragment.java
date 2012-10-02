@@ -368,8 +368,8 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     private void onWallpaperButtonClick() {
-        if (mPhoto != null) {
-            File imageFile = mAq.getCachedFile(mPhoto.getLargeUrl());
+        if (mBasePhoto != null) {
+            File imageFile = mAq.getCachedFile(mBasePhoto.getLargeUrl());
             if (imageFile != null) {
                 InputStream is;
                 try {
