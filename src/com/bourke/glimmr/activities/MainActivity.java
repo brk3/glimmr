@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity {
             SharedPreferences defaultSharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(this);
             boolean enableNotifications = defaultSharedPrefs.getBoolean(
-                    Constants.KEY_ENABLE_NOTIFICATIONS, true);
+                    Constants.KEY_ENABLE_NOTIFICATIONS, false);
             if (enableNotifications) {
                 if (Constants.DEBUG) Log.d(TAG, "Scheduling alarms");
                 WakefulIntentService.scheduleAlarms(
