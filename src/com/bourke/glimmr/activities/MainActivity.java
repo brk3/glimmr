@@ -1,5 +1,6 @@
 package com.bourke.glimmrpro.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
@@ -18,6 +19,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmrpro.fragments.home.ContactsGridFragment;
 import com.bourke.glimmrpro.fragments.home.GroupListFragment;
 import com.bourke.glimmrpro.fragments.home.PhotosetsFragment;
@@ -28,11 +30,11 @@ import com.bourke.glimmrpro.services.AppService;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
+import com.googlecode.flickrjandroid.people.User;
+
 import com.sbstrm.appirater.Appirater;
 
 import com.viewpagerindicator.TitlePageIndicator;
-import com.googlecode.flickrjandroid.people.User;
-import android.content.Context;
 
 public class MainActivity extends BaseActivity {
 
@@ -42,6 +44,7 @@ public class MainActivity extends BaseActivity {
     public static final int PHOTOSTREAM_PAGE = 1;
     public static final int SETS_PAGE = 2;
     public static final int GROUPS_PAGE = 3;
+    public static final int EXPLORE_PAGE = 4;
 
     public static String[] CONTENT;
 
@@ -52,7 +55,8 @@ public class MainActivity extends BaseActivity {
 
         CONTENT = new String[] { getString(R.string.contacts),
                 getString(R.string.you), getString(R.string.sets),
-                getString(R.string.groups) };
+                getString(R.string.groups), getString(R.string.explore)
+        };
 
         if (mOAuth == null) {
             startActivity(new Intent(this, ExploreActivity.class));
@@ -124,6 +128,9 @@ public class MainActivity extends BaseActivity {
 
                 case SETS_PAGE:
                     return PhotosetsFragment.newInstance();
+
+                case EXPLORE_PAGE:
+                    return RecentPublicPhotosFragment.newInstance();
             }
             return null;
         }
