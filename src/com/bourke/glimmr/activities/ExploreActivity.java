@@ -27,6 +27,7 @@ import com.bourke.glimmr.fragments.LoginFragment;
 
 import com.googlecode.flickrjandroid.people.User;
 import android.widget.Toast;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * Hosts fragments that don't require log in.
@@ -64,6 +65,23 @@ public class ExploreActivity extends BaseActivity
     @Override
     public void onResume() {
         super.onResume();
+        refreshLoginFragment();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_login:
+                mAq.id(R.id.loginFragment).visible();
+                SharedPreferences sp = getSharedPreferences(
+                        Constants.PREFS_NAME, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean(Constants.LOGIN_LATER_SELECTED, false);
+                editor.commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void initViewPager() {
@@ -117,8 +135,25 @@ public class ExploreActivity extends BaseActivity
     @Override
     public void onNotNowClicked() {
         mAq.id(R.id.loginFragment).invisible();
+        SharedPreferences sp =
+            getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(Constants.LOGIN_LATER_SELECTED, true);
+        editor.commit();
         Toast.makeText(this, getString(R.string.login_later),
                 Toast.LENGTH_LONG).show();
+    }
+
+    private void refreshLoginFragment() {
+        SharedPreferences sp =
+            getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        boolean loginLater =
+            sp.getBoolean(Constants.LOGIN_LATER_SELECTED, false);
+        if (loginLater) {
+            mAq.id(R.id.loginFragment).invisible();
+        } else {
+            mAq.id(R.id.loginFragment).visible();
+        }
     }
 
     @Override
