@@ -49,7 +49,7 @@ public class Appirater {
 	        int appVersionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
 	        if(prefs.getInt("versioncode", 0)  != appVersionCode){
 	        	//Reset the launch count to help assure users are rating based on the latest version. 
-	        	launch_count = 0;
+	        	//launch_count = 0;
 	        }
 	        editor.putInt("versioncode", appVersionCode);
         }catch(Exception e){
