@@ -119,6 +119,10 @@ public class Constants {
     public static final String NOTIFICATION_NEWEST_CONTACT_PHOTO_ID =
         "glimmr_notification_newest_contact_photo_id";
 
+    /* ExploreActivity state */
+    public static final String LOGIN_LATER_SELECTED =
+        "glimmr_login_later_selected";
+
     /* Notification ids */
     public static final int NOTIFICATION_NEW_CONTACTS_PHOTOS = 0;
 

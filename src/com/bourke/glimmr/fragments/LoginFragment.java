@@ -74,7 +74,6 @@ public final class LoginFragment extends BaseFragment
 
         setupTextViews();
 
-
         return mLayout;
     }
 
