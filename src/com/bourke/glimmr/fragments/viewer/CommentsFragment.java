@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.common.Constants;
-import com.bourke.glimmrpro.common.PrettyDate;
 import com.bourke.glimmrpro.event.Events.ICommentAddedListener;
 import com.bourke.glimmrpro.event.Events.ICommentsReadyListener;
 import com.bourke.glimmrpro.event.Events.IUserReadyListener;
@@ -41,7 +40,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import org.ocpsoft.pretty.time.PrettyTime;
 
 public final class CommentsFragment extends BaseFragment
         implements ICommentsReadyListener, ICommentAddedListener,
@@ -55,10 +57,12 @@ public final class CommentsFragment extends BaseFragment
     private Map<String, UserItem> mUsers = Collections.synchronizedMap(
             new HashMap<String, UserItem>());
     private List<LoadUserTask> mLoadUserTasks = new ArrayList<LoadUserTask>();
+    private PrettyTime mPrettyTime;
 
     public static CommentsFragment newInstance(Photo photo) {
         CommentsFragment newFragment = new CommentsFragment();
         newFragment.mPhoto = photo;
+        newFragment.mPrettyTime = new PrettyTime(Locale.getDefault());
         return newFragment;
     }
 
@@ -178,8 +182,9 @@ public final class CommentsFragment extends BaseFragment
 
                 // TODO: if your username replace with "You"
                 aq.id(R.id.userName).text(comment.getAuthorName());
-                PrettyDate p = new PrettyDate(comment.getDateCreate());
-                aq.id(R.id.commentDate).text(p.localisedPrettyDate(mActivity));
+
+                String pTime = mPrettyTime.format(comment.getDateCreate());
+                aq.id(R.id.commentDate).text(pTime);
 
                 aq.id(R.id.commentText).text(Html.fromHtml(comment.getText()));
 
