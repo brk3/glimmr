@@ -14,24 +14,15 @@
   <string name="groups">Gruppen</string>
   <string name="iso">ISO</string>
   <string name="just_a_moment">Einen Moment…</string>
-  <string name="just_now">Gerade eben</string>
-  <string name="last_month">Letzten Monat</string>
-  <string name="last_week">Letzte Woche</string>
-  <string name="last_year">Letztes Jahr</string>
   <string name="login">Einloggen</string>
   <string name="menu_favorite">Als Favorit markieren</string>
   <string name="menu_preferences">Einstellungen</string>
   <string name="menu_refresh">Aktualisieren</string>
   <string name="menu_view_comments">Kommentare</string>
-  <string name="menu_view_exif">Exif Informationen ansehen</string>
-  <string name="n_days_ago">Tage zuvor</string>
-  <string name="n_months_ago">Monate zuvor</string>
-  <string name="no_connection">Keine Internetverbindung</string>
-  <string name="notification_contacts_content">deiner Kontakte.</string>
+  <string name="menu_view_exif">Exif-Infos anzeigen</string>
+  <string name="notification_contacts_content">Ihrer Kontakte.</string>
   <string name="notification_contacts_ticker">Deine Flickr Kontakte haben neue Fotos veröffentlicht</string>
-  <string name="notification_contacts_title">neue Fotos</string>
-  <string name="n_weeks_ago">Wochen zuvor</string>
-  <string name="n_years_ago">Jahre zuvor</string>
+  <string name="notification_contacts_title">Neue Fotos</string>
   <string name="once_a_day">Einmal täglich</string>
   <string name="one_hour">1 Stunde</string>
   <string name="photoset">Fotoalbum</string>
@@ -49,7 +40,7 @@
   <string name="shutter">VERSCHLUSS</string>
   <string name="thirty_mins">30 Minuten</string>
   <string name="untitled">Unbenannt</string>
-  <string name="welcome">Willkommen\nbei\nGlimmr.</string>
+  <string name="welcome">Willkommen</string>
   <string name="yesterday">Gestern</string>
-  <string name="you">Du</string>
+  <string name="you">Sie</string>
 </resources>
