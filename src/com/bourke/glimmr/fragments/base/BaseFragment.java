@@ -196,8 +196,16 @@ public abstract class BaseFragment extends SherlockFragment {
         view.setText(fulltext, TextView.BufferType.SPANNABLE);
         Spannable str = (Spannable) view.getText();
         int i = fulltext.indexOf(subtext);
-        str.setSpan(new ForegroundColorSpan(color), i, i+subtext.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        try {
+            str.setSpan(new ForegroundColorSpan(color), i, i+subtext.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "fulltext: " + fulltext);
+                Log.d(getLogTag(), "subtext: " + subtext);
+            }
+        }
     }
 
     protected String getLogTag() {
