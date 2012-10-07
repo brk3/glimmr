@@ -44,7 +44,6 @@
         android:gravity="center"
         android:textSize="22sp"
         android:padding="16dip"
-        android:onClick="loginUser"
         android:background="@drawable/login_button"
         android:textColor="@android:color/white"
         android:text="@string/login_to_flickr" />

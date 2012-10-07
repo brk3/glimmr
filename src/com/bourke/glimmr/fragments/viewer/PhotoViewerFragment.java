@@ -1,5 +1,7 @@
 package com.bourke.glimmrpro.fragments.viewer;
 
+import android.annotation.SuppressLint;
+
 import android.app.WallpaperManager;
 
 import android.content.Intent;
@@ -332,6 +334,7 @@ public final class PhotoViewerFragment extends BaseFragment
         }
     }
 
+    @SuppressLint("NewApi")
     public void setOverlayVisibility(boolean on) {
         boolean honeycombOrGreater =
             (android.os.Build.VERSION.SDK_INT >=
