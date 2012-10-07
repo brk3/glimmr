@@ -52,7 +52,6 @@
             android:layout_marginLeft="16dip"
             android:textSize="@dimen/loginButtonTextSize"
             android:padding="@dimen/loginButtonPadding"
-            android:onClick="loginUser"
             android:background="@drawable/login_button"
             android:layout_weight="1"
             android:textColor="@android:color/white"

@@ -6,6 +6,8 @@
     android:layout_height="wrap_content">
 
     <ListView
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:ignore="PxUsage"
         android:id="@+id/list"
         android:divider="@color/flickr_pink"
         android:layout_marginLeft="15dp"
