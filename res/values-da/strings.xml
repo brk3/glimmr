@@ -15,10 +15,6 @@
   <string name="groups">Grupper</string>
   <string name="iso">ISO</string>
   <string name="just_a_moment">Lige et øjeblik…</string>
-  <string name="just_now">Netop nu</string>
-  <string name="last_month">Sidste måned</string>
-  <string name="last_week">Sidste uge</string>
-  <string name="last_year">Sidste år</string>
   <string name="logged_in">Logget ind!</string>
   <string name="login">Login</string>
   <string name="menu_favorite">Marker som favorit</string>
@@ -26,25 +22,13 @@
   <string name="menu_refresh">Opdater</string>
   <string name="menu_view_comments">Kommentarer og favoritter</string>
   <string name="menu_view_exif">Se Exit info</string>
-  <string name="n_days_ago">dage siden</string>
-  <string name="n_hours_ago">timer siden</string>
-  <string name="n_minutes_ago">minutter siden</string>
-  <string name="n_months_ago">måneder siden</string>
   <string name="no_connection">Noget gik galt.\nPrøv at opdatere?</string>
   <string name="no_exif_permission">Ejeren af billedet ønsker ikke at dele EXIT-data.</string>
   <string name="notification_contacts_content">fra dine kontakter</string>
   <string name="notification_contacts_ticker">Dine Flickr-kontakter har postet nye billeder</string>
   <string name="notification_contacts_title">Nye billeder</string>
-  <string name="n_weeks_ago">uger siden</string>
-  <string name="n_years_ago">r siden</string>
   <string name="once_a_day">En gang om dagen</string>
-  <string name="one_day_ago">dag siden</string>
   <string name="one_hour">1 time</string>
-  <string name="one_hour_ago">time siden</string>
-  <string name="one_minute_ago">minut siden</string>
-  <string name="one_month_ago">måned siden</string>
-  <string name="one_week_ago">uge siden</string>
-  <string name="one_year_ago">år siden</string>
   <string name="photoset">Album</string>
   <string name="photos">Billeder</string>
   <string name="please_wait">Vent venligst…</string>
@@ -63,7 +47,7 @@
   <string name="thirty_mins">30 minutter</string>
   <string name="untitled">Unavngivet</string>
   <string name="views">Gange set</string>
-  <string name="welcome">Velkommen\ntil\nGlimmr.</string>
+  <string name="welcome">Velkommen</string>
   <string name="yesterday">I går</string>
   <string name="you">Dig</string>
 </resources>
