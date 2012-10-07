@@ -1,8 +1,7 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import com.bourke.glimmr.activities.PhotoViewerActivity;
-import com.actionbarsherlock.widget.ShareActionProvider;
-import com.polites.android.GestureImageView;
+import android.annotation.SuppressLint;
+
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -10,14 +9,17 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 
 import com.androidquery.AQuery;
 
@@ -34,9 +36,9 @@ import com.bourke.glimmr.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 
+import com.polites.android.GestureImageView;
+
 import java.util.concurrent.atomic.AtomicBoolean;
-import android.view.MotionEvent;
-import android.widget.Toast;
 
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener {
@@ -319,6 +321,7 @@ public final class PhotoViewerFragment extends BaseFragment
         }
     }
 
+    @SuppressLint("NewApi")
     public void setOverlayVisibility(boolean on) {
         boolean honeycombOrGreater =
             (android.os.Build.VERSION.SDK_INT >=
