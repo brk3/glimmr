@@ -108,7 +108,7 @@ public final class CommentsFragment extends BaseFragment
         }
         TextView editText = (TextView) mLayout.findViewById(R.id.editText);
         String commentText = editText.getText().toString();
-        if (commentText.isEmpty()) {
+        if (commentText.equals("")) {
             // TODO: alert user
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Comment text empty, do nothing");

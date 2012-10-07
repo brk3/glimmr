@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="Overdraw"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/ab_bg_black"
@@ -44,7 +46,6 @@
         android:gravity="center"
         android:textSize="@dimen/loginButtonTextSize"
         android:padding="16dip"
-        android:onClick="loginUser"
         android:background="@drawable/login_button"
         android:textColor="@android:color/white"
         android:text="@string/login_to_flickr" />
