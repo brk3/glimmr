@@ -1,0 +1,4 @@
+Release Checklist
+=================
+* Set Constants.DEBUG to false
+* Make sure dex is set to non optimised
