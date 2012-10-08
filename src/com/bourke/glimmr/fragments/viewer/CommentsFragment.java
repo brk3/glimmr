@@ -183,6 +183,11 @@ public final class CommentsFragment extends BaseFragment
                 aq.id(R.id.userName).text(comment.getAuthorName());
 
                 String pTime = mPrettyTime.format(comment.getDateCreate());
+                /* keep Oliver happy */
+                Log.d(TAG, "XXX:" + Locale.getDefault().getLanguage());
+                if (Locale.getDefault().getLanguage().equals("es")) {
+                    pTime = capitaliseWord(pTime);
+                }
                 aq.id(R.id.commentDate).text(pTime);
 
                 aq.id(R.id.commentText).text(Html.fromHtml(comment.getText()));
@@ -216,6 +221,15 @@ public final class CommentsFragment extends BaseFragment
 
         mAq.id(R.id.list).adapter(mAdapter).itemClicked(this,
                 "itemClicked");
+    }
+
+    private String capitaliseWord(String word) {
+        if (word == null || word.length() == 0) {
+            return word;
+        }
+        StringBuilder sb = new StringBuilder(word);
+        sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+        return sb.toString();
     }
 
     @Override
