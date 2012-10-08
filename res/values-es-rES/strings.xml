@@ -1,15 +1,16 @@
 <resources>
   <string name="about">Acerca de Glimmr</string>
   <string name="about_text">Gracias por vuestro apoyo a Glimmr!\n\nSígueme en Twitter: http://twitter.com/brk3\nContacto: pauldbourke@gmail.com\n\nTraductoress:\n*Lars Gellrich (DE)\n*Kuźniarski Jacek (PO)\n*Giuliano Ribeiro (PT)\n*Vidar Thorlaksson (DK)\n*Oliver Carreira (ES)</string>
-  <string name="aperture">APERTURE</string>
-  <string name="app_name">Glimmr-L</string>
+  <string name="aperture">APERTURA</string>
+  <string name="app_name">Glimmr</string>
   <string name="browse">examinar</string>
   <string name="by">Por</string>
   <string name="comments">Comentarios y favoritos</string>
   <string name="comment_sent">Comentario enviado</string>
   <string name="contacts">Contactos</string>
-  <string name="edit_text_hint">Agregar comentario…</string>
+  <string name="edit_text_hint">Añadir comentario…</string>
   <string name="exif_info">Información Exif</string>
+  <string name="explore">Explorar</string>
   <string name="favorites">Favoritos</string>
   <string name="fifteen_mins">15 minutos</string>
   <string name="four_hours">4 horas</string>
@@ -20,7 +21,7 @@
   <string name="login_later">Puedes iniciar sesión en cualquier momento a través del menú</string>
   <string name="login">Iniciar sesión</string>
   <string name="login_required">Para hacer eso, tienes que iniciar sesión</string>
-  <string name="login_to_flickr">INICIAR SESIÓN EN FLICKR</string>
+  <string name="login_to_flickr">INICIA SESIÓN EN FLICKR</string>
   <string name="menu_favorite">Marcar como favorito</string>
   <string name="menu_preferences">Preferencias</string>
   <string name="menu_refresh">Actualizar</string>
@@ -43,12 +44,12 @@
   <string name="pref_checkbox_enable_contacts">Cargas de contactos</string>
   <string name="pref_checkbox_enable_contacts_summary">Notificarme cuando los contactos carguen fotos nuevas</string>
   <string name="pref_checkbox_enable">Habilitar notificaciones</string>
-  <string name="pref_notification_intervals_title">Intervalo de sincronización</string>
+  <string name="pref_notification_intervals_title">Periodo de sincronización</string>
   <string name="pro_donate">Pro/Donar</string>
   <string name="set_preferences">Configurar preferencias</string>
   <string name="sets">Álbumes</string>
-  <string name="setting_wallpaper">Configurar fondo de pantalla</string>
-  <string name="set_wallpaper">Estableciendo fondo de pantalla…</string>
+  <string name="set_wallpaper">Configurar como fondo de pantalla</string>
+  <string name="setting_wallpaper">Configurando fondo de pantalla…</string>
   <string name="shutter">OBTURADOR</string>
   <string name="thirty_mins">30 minutos</string>
   <string name="to">a</string>
