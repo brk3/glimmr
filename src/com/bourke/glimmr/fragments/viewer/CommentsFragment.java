@@ -185,7 +185,6 @@ public final class CommentsFragment extends BaseFragment
 
                 String pTime = mPrettyTime.format(comment.getDateCreate());
                 /* keep Oliver happy */
-                Log.d(TAG, "XXX:" + Locale.getDefault().getLanguage());
                 if (Locale.getDefault().getLanguage().equals("es")) {
                     pTime = capitaliseWord(pTime);
                 }
