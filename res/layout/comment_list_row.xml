@@ -24,12 +24,14 @@
         android:layout_height="wrap_content"
         android:textColor="@color/flickr_blue"
         android:layout_toRightOf="@id/userIcon"
+        android:layout_below="@+id/commentDate"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_alignTop="@id/userIcon"
+        android:layout_marginTop="5dp"
         android:textSize="@dimen/text_size_medium" />
 
     <TextView
-        android:id="@+id/commentDate"
+        android:id="@id/commentDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/text_light"
