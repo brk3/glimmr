@@ -15,7 +15,8 @@
         android:verticalSpacing="1dp"
         android:stretchMode="columnWidth"
         android:visibility="gone"
-        android:listSelector="@null"
+        android:listSelector="@drawable/gridview_item_selector"
+        android:drawSelectorOnTop="true"
         android:gravity="center" />
 
     <include
