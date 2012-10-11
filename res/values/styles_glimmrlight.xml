@@ -18,7 +18,7 @@
 
 <resources>
 
-    <style name="Theme.glimmrlight" parent="@style/Theme.Sherlock.Light.DarkActionBar.ForceOverflow">
+    <style name="Theme.glimmrlight" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_glimmrlight</item>
         <item name="popupMenuStyle">@style/glimmrlight_PopupMenu</item>
         <item name="dropDownListViewStyle">@style/glimmrlight_DropDownListView</item>
