@@ -4,18 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 
 import android.os.Bundle;
 
 import android.util.Log;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,6 +30,7 @@ import com.bourke.glimmr.R;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
 
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
@@ -46,6 +48,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
+    private GridView mGridView;
     private EndlessGridAdapter mAdapter;
 
     protected PhotoList mPhotos = new PhotoList();
@@ -60,12 +63,8 @@ public abstract class PhotoGridFragment extends BaseFragment
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
                 container, false);
-        mAdapter = new EndlessGridAdapter(mPhotos);
-        mAdapter.setRunInBackground(false);
         mAq = new AQuery(mActivity, mLayout);
-        mAq.id(R.id.gridview).adapter(mAdapter).itemClicked(this,
-                "startPhotoViewer");
-        mAq.id(R.id.gridview).invisible();
+        initGridView();
         return mLayout;
     }
 
@@ -103,6 +102,51 @@ public abstract class PhotoGridFragment extends BaseFragment
         Log.d(getLogTag(), "refresh");
         mPhotos.clear();
         mPage = 1;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+            ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(mActivity.getString(R.string.view_profile));
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+            (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int index = info.position;
+
+        String viewProfile = mActivity.getString(R.string.view_profile);
+        if (item.toString().equals(viewProfile)) {
+            Photo p = mPhotos.get(index);
+            if (p != null) {
+                User owner = p.getOwner();
+                if (owner != null) {
+                    startProfileViewer(owner);
+                }
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initGridView() {
+        mAdapter = new EndlessGridAdapter(mPhotos);
+        mAdapter.setRunInBackground(false);
+        mGridView = (GridView) mLayout.findViewById(R.id.gridview);
+        mGridView.setAdapter(mAdapter);
+        mGridView.setOnItemClickListener(new GridView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                    int position, long id) {
+                startPhotoViewer(mPhotos, position);
+            }
+        });
+        /* If we're authenticated add a context menu */
+        if (mActivity.getUser() != null) {
+            registerForContextMenu(mGridView);
+        }
+        mAq.id(R.id.gridview).invisible();
     }
 
     public abstract String getNewestPhotoId();
@@ -220,35 +264,16 @@ public abstract class PhotoGridFragment extends BaseFragment
                 aq.id(holder.image).image(placeholder);
                 aq.id(holder.imageOverlay).invisible();
             } else {
-                /* Fetch the main photo */
                 if (mShowDetailsOverlay) {
                     aq.id(holder.imageOverlay).visible();
                 } else {
                     aq.id(holder.imageOverlay).invisible();
                 }
+
+                /* Fetch the main photo */
                 aq.id(holder.image).image(photo.getLargeSquareUrl(),
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);
-                aq.id(holder.image).clicked(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startPhotoViewer(mPhotos, position);
-                    }
-                });
-
-                /* Set tint on the image to flickr_blue when clicked */
-                holder.image.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            ((ImageView) v).setColorFilter(Color.argb(
-                                    100, 0, 99, 220));
-                        } else {
-                            ((ImageView) v).setColorFilter(null);
-                        }
-                        return false;
-                    }
-                });
 
                 /* Set the overlay views and owner info */
                 String viewsText = String.format("%s: %s",

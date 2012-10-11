@@ -2,9 +2,8 @@
 
 <resources>
     <color name="text_light">#ffbbbbbb</color>
-
     <color name="transparent_black">#32000000</color>
-
+    <color name="transparent_flickr_pink">#aaff0084</color>
     <color name="flickr_pink">#ffff0084</color>
     <color name="flickr_blue">#ff0063dc</color>
 
