@@ -31,12 +31,18 @@ public class GlimmrAbCustomTitle {
             mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.action_bar_title_item, null);
         mAbTitle = (TextView) v.findViewById(R.id.abTitle);
-        Typeface typeface = Typeface.createFromAsset(mContext.getAssets(),
-                Constants.FONT_SHADOWSINTOLIGHT);
-        mAbTitle.setTypeface(typeface);
-        mAbTitle.setText(mContext.getString(R.string.app_name));
-        actionbar.setDisplayShowCustomEnabled(true);
-        actionbar.setDisplayShowTitleEnabled(false);
-        actionbar.setCustomView(v);
+        /* Large screens don't use a custom title in landscape as it sits to
+         * the right of the tabs */
+        if (mAbTitle != null) {
+            Typeface typeface = Typeface.createFromAsset(mContext.getAssets(),
+                    Constants.FONT_SHADOWSINTOLIGHT);
+            mAbTitle.setTypeface(typeface);
+            mAbTitle.setText(mContext.getString(R.string.app_name));
+            actionbar.setDisplayShowCustomEnabled(true);
+            actionbar.setDisplayShowTitleEnabled(false);
+            actionbar.setCustomView(v);
+        } else {
+            actionbar.setTitle("");
+        }
     }
 }
