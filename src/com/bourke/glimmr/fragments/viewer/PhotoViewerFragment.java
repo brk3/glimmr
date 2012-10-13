@@ -23,7 +23,6 @@ import com.actionbarsherlock.widget.ShareActionProvider;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.activities.CommentsDialogActivity;
 import com.bourke.glimmr.activities.ExifInfoDialogActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
@@ -149,7 +148,7 @@ public final class PhotoViewerFragment extends BaseFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_view_comments:
-                onCommentsButtonClick();
+                mListener.onCommentsButtonClick(mBasePhoto);
                 return true;
             case R.id.menu_favorite:
                 onFavoriteButtonClick();
@@ -159,20 +158,6 @@ public final class PhotoViewerFragment extends BaseFragment
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void onCommentsButtonClick() {
-        if (mBasePhoto != null) {
-            Intent activity = new Intent(mActivity,
-                    CommentsDialogActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(Constants.COMMENTS_DIALOG_ACTIVITY_PHOTO,
-                    mBasePhoto);
-            activity.putExtras(bundle);
-            startActivity(activity);
-        } else {
-            Log.e(TAG, "onCommentsButtonClick: mBasePhoto is null");
         }
     }
 
@@ -365,5 +350,6 @@ public final class PhotoViewerFragment extends BaseFragment
     public interface IPhotoViewerCallbacks {
         void onVisibilityChanged();
         void onZoomed(boolean isZoomed);
+        void onCommentsButtonClick(Photo photo);
     }
 }
