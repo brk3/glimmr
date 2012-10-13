@@ -15,6 +15,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GlimmrTabsAdapter;
 import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
 import com.bourke.glimmr.fragments.home.PhotosetsFragment;
@@ -27,6 +28,7 @@ import com.googlecode.flickrjandroid.people.User;
 import com.viewpagerindicator.TitlePageIndicator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.actionbarsherlock.app.ActionBar;
 
 /**
  * Requires a User object to be passed in via an intent.
@@ -149,27 +151,49 @@ public class ProfileActivity extends BaseActivity
             mUser = (User) bundle.getSerializable(
                     Constants.KEY_PROFILEVIEWER_USER);
             if (mUser != null) {
-                if (Constants.DEBUG)
+                if (Constants.DEBUG) {
                     Log.d(TAG, "Got user to view: " + mUser.getUsername());
-                ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-                ProfilePagerAdapter adapter = new ProfilePagerAdapter(
-                        getSupportFragmentManager());
-                viewPager.setAdapter(adapter);
-                TitlePageIndicator indicator = (TitlePageIndicator)
-                    findViewById(R.id.indicator);
-                indicator.setOnPageChangeListener(this);
-                indicator.setViewPager(viewPager);
-
+                }
+                initViewPager();
                 startTask();
             } else {
-                if (Constants.DEBUG)
-                    Log.e(TAG, "User from intent is null");
+                if (Constants.DEBUG) Log.e(TAG, "User from intent is null");
                 // TODO: show error / recovery
             }
         } else {
-            if (Constants.DEBUG)
-                Log.e(TAG, "Bundle is null, ProfileActivity requires an " +
-                    "intent containing a User");
+            Log.e(TAG, "Bundle is null, ProfileActivity requires an " +
+                "intent containing a User");
+        }
+    }
+
+    private void initViewPager() {
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        TitlePageIndicator indicator =
+            (TitlePageIndicator) findViewById(R.id.indicator);
+
+        /* Bind the ViewPager to a TitlePageIndicator, or if on larger screens,
+         * set up actionbar tabs. */
+        if (indicator != null) {
+            ProfilePagerAdapter adapter =
+                new ProfilePagerAdapter(getSupportFragmentManager());
+            viewPager.setAdapter(adapter);
+            indicator.setOnPageChangeListener(this);
+            indicator.setViewPager(viewPager);
+        } else {
+            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            GlimmrTabsAdapter tabsAdapter =
+                new GlimmrTabsAdapter(this, viewPager);
+            tabsAdapter.addTab(
+                    mActionBar.newTab().setText(CONTENT[PHOTO_STREAM_PAGE]),
+                    PhotoStreamGridFragment.class, null);
+            tabsAdapter.addTab(
+                    mActionBar.newTab().setText(CONTENT[FAVORITES_STREAM_PAGE]),
+                    FavoritesGridFragment.class, null);
+            tabsAdapter.addTab(
+                    mActionBar.newTab().setText(CONTENT[SETS_PAGE]),
+                    PhotosetsFragment.class, null);
+            viewPager.setAdapter(tabsAdapter);
+            viewPager.setOnPageChangeListener(tabsAdapter);
         }
     }
 
