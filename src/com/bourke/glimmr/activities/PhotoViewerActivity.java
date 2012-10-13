@@ -50,6 +50,7 @@ public class PhotoViewerActivity extends BaseActivity
     private List<WeakReference<Fragment>> mFragList =
         new ArrayList<WeakReference<Fragment>>();
     private CommentsFragment mCommentsFragment;
+    private boolean mCommentsFragmentShowing = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,9 +124,16 @@ public class PhotoViewerActivity extends BaseActivity
         showCommentsFragment(photo, animateTransition);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mCommentsFragmentShowing = false;
+    }
+
     private void showCommentsFragment(Photo photo, boolean animate) {
         if (Constants.DEBUG) Log.d(getLogTag(), "showCommentsFragment");
         if (photo != null) {
+            mCommentsFragmentShowing = true;
             mCommentsFragment = CommentsFragment.newInstance(photo);
             FragmentTransaction ft =
                 getSupportFragmentManager().beginTransaction();
@@ -196,9 +204,10 @@ public class PhotoViewerActivity extends BaseActivity
 
         @Override
         public void onPageSelected(int position) {
-            /* If comments fragment is showing update it for the current photo
+            /*
+             * If comments fragment is showing update it for the current photo
              */
-            if (mCommentsFragment != null && !mCommentsFragment.isHidden()) {
+            if (mCommentsFragment != null && mCommentsFragmentShowing) {
                 getSupportFragmentManager().popBackStack();
                 boolean animateTransition = false;
                 showCommentsFragment(mPhotos.get(position), animateTransition);

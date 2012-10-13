@@ -130,5 +130,5 @@ public class Constants {
     public static final int DIALOG_ABOUT = 0;
 
     public static final String PRO_MARKET_LINK =
-        "market://details?id=com.bourke.glimmrpropro";
+        "market://details?id=com.bourke.glimmrpro";
 }
