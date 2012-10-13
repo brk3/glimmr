@@ -119,11 +119,11 @@ public class MainActivity extends BaseActivity {
             GlimmrTabsAdapter tabsAdapter =
                 new GlimmrTabsAdapter(this, viewPager);
             tabsAdapter.addTab(
-                    mActionBar.newTab().setText(CONTENT[PHOTOSTREAM_PAGE]),
-                    PhotoStreamGridFragment.class, null);
-            tabsAdapter.addTab(
                     mActionBar.newTab().setText(CONTENT[CONTACTS_PAGE]),
                     ContactsGridFragment.class, null);
+            tabsAdapter.addTab(
+                    mActionBar.newTab().setText(CONTENT[PHOTOSTREAM_PAGE]),
+                    PhotoStreamGridFragment.class, null);
             tabsAdapter.addTab(
                     mActionBar.newTab().setText(CONTENT[GROUPS_PAGE]),
                     GroupListFragment.class, null);

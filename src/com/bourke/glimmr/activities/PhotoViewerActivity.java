@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.actionbarsherlock.view.Window;
 
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.ViewPagerDisable;
+import com.bourke.glimmrpro.fragments.viewer.CommentsFragment;
 import com.bourke.glimmrpro.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmrpro.R;
 
@@ -47,9 +49,12 @@ public class PhotoViewerActivity extends BaseActivity
     private ViewPagerDisable mPager;
     private List<WeakReference<Fragment>> mFragList =
         new ArrayList<WeakReference<Fragment>>();
+    private CommentsFragment mCommentsFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
+
         /* Must be called before adding content */
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 
@@ -57,7 +62,6 @@ public class PhotoViewerActivity extends BaseActivity
 
         mActionBar.setBackgroundDrawable(getResources().getDrawable(
                     R.drawable.ab_bg_black));
-
         setContentView(R.layout.photoviewer_activity);
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -83,6 +87,7 @@ public class PhotoViewerActivity extends BaseActivity
                 new PhotoViewerPagerAdapter(getSupportFragmentManager());
             mPager = (ViewPagerDisable) findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
+            mPager.setOnPageChangeListener(mAdapter);
             /* Don't show the PageIndicator if there's a lot of items */
             if (mPhotos.size() <= Constants.LINE_PAGE_INDICATOR_LIMIT) {
                 PageIndicator indicator =
@@ -113,6 +118,36 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     @Override
+    public void onCommentsButtonClick(Photo photo) {
+        boolean animateTransition = true;
+        showCommentsFragment(photo, animateTransition);
+    }
+
+    private void showCommentsFragment(Photo photo, boolean animate) {
+        if (Constants.DEBUG) Log.d(getLogTag(), "showCommentsFragment");
+        if (photo != null) {
+            mCommentsFragment = CommentsFragment.newInstance(photo);
+            FragmentTransaction ft =
+                getSupportFragmentManager().beginTransaction();
+            if (animate) {
+                ft.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+            }
+            ft.replace(R.id.commentsFragment, mCommentsFragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        } else {
+            Log.e(TAG, "showCommentsFragment: photo is null");
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        /* Avoid IllegalStateException after rotate (commitAllowingStateLoss
+         * doesn't help) - http://stackoverflow.com/a/10261438/663370 */
+    }
+
+    @Override
     protected String getLogTag() {
         return TAG;
     }
@@ -123,7 +158,7 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     @Override
-    public void onAttachFragment (Fragment fragment) {
+    public void onAttachFragment(Fragment fragment) {
         mFragList.add(new WeakReference(fragment));
     }
 
@@ -142,7 +177,8 @@ public class PhotoViewerActivity extends BaseActivity
         mPager.setPagingEnabled(!isZoomed);
     }
 
-    class PhotoViewerPagerAdapter extends FragmentStatePagerAdapter {
+    class PhotoViewerPagerAdapter extends FragmentStatePagerAdapter
+            implements ViewPager.OnPageChangeListener {
         public PhotoViewerPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -151,6 +187,26 @@ public class PhotoViewerActivity extends BaseActivity
         public Fragment getItem(int position) {
             return PhotoViewerFragment.newInstance(
                     mPhotos.get(position), PhotoViewerActivity.this);
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset,
+                int positionOffsetPixels) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            /* If comments fragment is showing update it for the current photo
+             */
+            if (mCommentsFragment != null && !mCommentsFragment.isHidden()) {
+                getSupportFragmentManager().popBackStack();
+                boolean animateTransition = false;
+                showCommentsFragment(mPhotos.get(position), animateTransition);
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
         }
 
         @Override
