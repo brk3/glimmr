@@ -2,6 +2,8 @@ package com.bourke.glimmrpro.fragments.viewer;
 
 import android.content.Context;
 
+import android.graphics.Typeface;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -52,18 +54,18 @@ public final class CommentsFragment extends BaseFragment
     protected String TAG = "Glimmr/CommentsFragment";
 
     private LoadCommentsTask mTask;
-    private Photo mPhoto = new Photo();
+    private Photo mPhoto;
     private ArrayAdapter<Comment> mAdapter;
     private Map<String, UserItem> mUsers = Collections.synchronizedMap(
             new HashMap<String, UserItem>());
     private List<LoadUserTask> mLoadUserTasks = new ArrayList<LoadUserTask>();
     private PrettyTime mPrettyTime;
 
-    public static CommentsFragment newInstance(Photo photo) {
-        CommentsFragment newFragment = new CommentsFragment();
-        newFragment.mPhoto = photo;
-        newFragment.mPrettyTime = new PrettyTime(Locale.getDefault());
-        return newFragment;
+    public static CommentsFragment newInstance(Photo p) {
+        CommentsFragment f = new CommentsFragment();
+        f.mPhoto = p;
+        f.mPrettyTime = new PrettyTime(Locale.getDefault());
+        return f;
     }
 
     @Override
@@ -74,6 +76,15 @@ public final class CommentsFragment extends BaseFragment
         mAq = new AQuery(mActivity, mLayout);
         mAq.id(R.id.submitButton).clicked(this, "submitButtonClicked");
         mAq.id(R.id.progressIndicator).visible();
+
+        /* Set title text to uppercase and roboto font */
+        Typeface robotoRegular = Typeface.createFromAsset(
+                mActivity.getAssets(), Constants.FONT_ROBOTOREGULAR);
+        TextView titleText = (TextView) mLayout.findViewById(R.id.titleText);
+        titleText.setTypeface(robotoRegular);
+        String title = mActivity.getString(R.string.menu_view_comments);
+        titleText.setText(title.toUpperCase());
+
         return mLayout;
     }
 
@@ -95,10 +106,15 @@ public final class CommentsFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "startTask()");
-        mTask = new LoadCommentsTask(this, this, mPhoto);
-        mTask.execute(mOAuth);
+        if (mPhoto != null) {
+            if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
+            mTask = new LoadCommentsTask(this, this, mPhoto);
+            mTask.execute(mOAuth);
+        } else {
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "startTask: mPhoto is null");
+            }
+        }
     }
 
     public void submitButtonClicked(View view) {
@@ -157,12 +173,16 @@ public final class CommentsFragment extends BaseFragment
 
     @Override
     public void onCommentsReady(List<Comment> comments) {
+        mAq.id(R.id.progressIndicator).gone();
+
+        if (comments == null) {
+            Log.e(TAG, "onCommentsReady: comments are null");
+            return;
+        }
         if (Constants.DEBUG) {
             Log.d(getLogTag(), "onCommentsReady, comments.size(): "
                 + comments.size());
         }
-
-        mAq.id(R.id.progressIndicator).gone();
 
         mAdapter = new ArrayAdapter<Comment>(mActivity,
                 R.layout.comment_list_row, (ArrayList<Comment>) comments) {

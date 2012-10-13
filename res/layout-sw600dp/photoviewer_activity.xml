@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <com.bourke.glimmrpro.common.ViewPagerDisable
+    <com.bourke.glimmr.common.ViewPagerDisable
         android:id="@+id/pager"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
@@ -21,10 +21,10 @@
 
     <FrameLayout
         android:id="@+id/commentsFragment"
-        android:layout_width="wrap_content"
+        android:layout_width="400dip"
         android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
         android:paddingTop="5dp"
-        android:layout_centerInParent="true"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="15dip"
         android:layout_marginRight="15dip" />

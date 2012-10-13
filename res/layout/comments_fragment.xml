@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:focusable="true"
+    android:background="@drawable/ab_bg_black"
+    android:padding="20dip"
     android:focusableInTouchMode="true">
+
+    <View
+        android:id="@+id/separator"
+        android:background="@android:color/white"
+        android:layout_width = "fill_parent"
+        android:layout_height="2dip"
+        android:layout_below="@+id/titleText" />
+
+    <TextView
+        android:id="@id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@android:color/secondary_text_dark"
+        android:text="@string/menu_view_comments" />
 
     <ProgressBar
         android:id="@+id/progressIndicator"
@@ -24,6 +41,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_above="@+id/editText"
+        android:layout_below="@+id/titleText"
         android:dividerHeight="1px" />
 
     <EditText
@@ -42,6 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_social_send_now_light" />
+        android:src="@drawable/ic_social_send_now_dark" />
 
 </RelativeLayout>
