@@ -187,7 +187,8 @@ public class ProfileActivity extends BaseActivity
                     mActionBar.newTab().setText(CONTENT[PHOTO_STREAM_PAGE]),
                     PhotoStreamGridFragment.class, null);
             tabsAdapter.addTab(
-                    mActionBar.newTab().setText(CONTENT[FAVORITES_STREAM_PAGE]),
+                    mActionBar.newTab().setText(
+                        CONTENT[FAVORITES_STREAM_PAGE]),
                     FavoritesGridFragment.class, null);
             tabsAdapter.addTab(
                     mActionBar.newTab().setText(CONTENT[SETS_PAGE]),
