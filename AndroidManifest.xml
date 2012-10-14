@@ -55,8 +55,7 @@
         <activity android:name=".activities.PhotosetViewerActivity"
             android:label="@string/app_name" />
 
-        <activity
-            android:name=".activities.PreferencesActivity"
+        <activity android:name=".activities.PreferencesActivity"
             android:label="@string/set_preferences" />
 
 		<receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
