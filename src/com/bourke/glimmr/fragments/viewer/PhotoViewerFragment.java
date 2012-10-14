@@ -27,7 +27,6 @@ import com.actionbarsherlock.widget.ShareActionProvider;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmrpro.activities.ExifInfoDialogActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
@@ -164,7 +163,7 @@ public final class PhotoViewerFragment extends BaseFragment
                 onFavoriteButtonClick();
                 return true;
             case R.id.menu_view_exif:
-                onExifButtonClick();
+                mListener.onExifButtonClick(mBasePhoto);
                 return true;
             case R.id.menu_set_wallpaper:
                 onWallpaperButtonClick();
@@ -197,22 +196,6 @@ public final class PhotoViewerFragment extends BaseFragment
             mIsFavoriting.set(true);
         } else {
             Log.e(TAG, "onFavoriteButtonClick: mPhotoExtendedInfo is null");
-        }
-    }
-
-    public void onExifButtonClick() {
-        if (mBasePhoto != null) {
-            Intent exifActivity =
-                new Intent(mActivity, ExifInfoDialogActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(
-                    Constants.KEY_EXIF_INFO_DIALOG_ACTIVITY_PHOTO, mBasePhoto);
-            exifActivity.putExtras(bundle);
-            startActivity(exifActivity);
-        } else {
-            if (Constants.DEBUG) {
-                Log.d(TAG, "onExifButtonClick: mBasePhoto is null");
-            }
         }
     }
 
@@ -390,5 +373,6 @@ public final class PhotoViewerFragment extends BaseFragment
         void onVisibilityChanged();
         void onZoomed(boolean isZoomed);
         void onCommentsButtonClick(Photo photo);
+        void onExifButtonClick(Photo photo);
     }
 }

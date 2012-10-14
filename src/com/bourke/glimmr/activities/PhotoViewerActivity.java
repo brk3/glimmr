@@ -17,6 +17,7 @@ import com.actionbarsherlock.view.Window;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.ViewPagerDisable;
 import com.bourke.glimmrpro.fragments.viewer.CommentsFragment;
+import com.bourke.glimmrpro.fragments.viewer.ExifInfoFragment;
 import com.bourke.glimmrpro.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmrpro.R;
 
@@ -50,7 +51,9 @@ public class PhotoViewerActivity extends BaseActivity
     private List<WeakReference<Fragment>> mFragList =
         new ArrayList<WeakReference<Fragment>>();
     private CommentsFragment mCommentsFragment;
+    private ExifInfoFragment mExifFragment;
     private boolean mCommentsFragmentShowing = false;
+    private boolean mExifFragmentShowing = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,31 +124,71 @@ public class PhotoViewerActivity extends BaseActivity
     @Override
     public void onCommentsButtonClick(Photo photo) {
         boolean animateTransition = true;
-        showCommentsFragment(photo, animateTransition);
+        if (mExifFragmentShowing) {
+            setExifFragmentVisibility(photo, false, animateTransition);
+        }
+        setCommentsFragmentVisibility(photo, true, animateTransition);
+    }
+
+    @Override
+    public void onExifButtonClick(Photo photo) {
+        boolean animateTransition = true;
+        if (mCommentsFragmentShowing) {
+            setCommentsFragmentVisibility(photo, false, animateTransition);
+        }
+        setExifFragmentVisibility(photo, true, animateTransition);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         mCommentsFragmentShowing = false;
+        mExifFragmentShowing = false;
     }
 
-    private void showCommentsFragment(Photo photo, boolean animate) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "showCommentsFragment");
+    private void setCommentsFragmentVisibility(Photo photo, boolean show,
+            boolean animate) {
         if (photo != null) {
-            mCommentsFragmentShowing = true;
-            mCommentsFragment = CommentsFragment.newInstance(photo);
             FragmentTransaction ft =
                 getSupportFragmentManager().beginTransaction();
             if (animate) {
                 ft.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
             }
-            ft.replace(R.id.commentsFragment, mCommentsFragment);
-            ft.addToBackStack(null);
+            if (show) {
+                mCommentsFragment = CommentsFragment.newInstance(photo);
+                ft.replace(R.id.commentsFragment, mCommentsFragment);
+                ft.addToBackStack(null);
+            } else {
+                ft.hide(mCommentsFragment);
+            }
+            mCommentsFragmentShowing = show;
             ft.commit();
         } else {
-            Log.e(TAG, "showCommentsFragment: photo is null");
+            Log.e(TAG, "setCommentsFragmentVisibility: photo is null");
+        }
+    }
+
+    private void setExifFragmentVisibility(Photo photo, boolean show,
+            boolean animate) {
+        if (photo != null) {
+            FragmentTransaction ft =
+                getSupportFragmentManager().beginTransaction();
+            if (animate) {
+                ft.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+            }
+            if (show) {
+                mExifFragment = ExifInfoFragment.newInstance(photo);
+                ft.replace(R.id.exifFragment, mExifFragment);
+                ft.addToBackStack(null);
+            } else {
+                ft.hide(mExifFragment);
+            }
+            mExifFragmentShowing = show;
+            ft.commit();
+        } else {
+            Log.e(TAG, "setExifFragmentVisibility: photo is null");
         }
     }
 
@@ -210,7 +253,16 @@ public class PhotoViewerActivity extends BaseActivity
             if (mCommentsFragment != null && mCommentsFragmentShowing) {
                 getSupportFragmentManager().popBackStack();
                 boolean animateTransition = false;
-                showCommentsFragment(mPhotos.get(position), animateTransition);
+                boolean show = true;
+                setCommentsFragmentVisibility(mPhotos.get(position), show,
+                        animateTransition);
+            /* Likewise for exif */
+            } else if (mExifFragment != null && mExifFragmentShowing) {
+                getSupportFragmentManager().popBackStack();
+                boolean animateTransition = false;
+                boolean show = true;
+                setExifFragmentVisibility(mPhotos.get(position), show,
+                        animateTransition);
             }
         }
 
