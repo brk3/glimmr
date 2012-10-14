@@ -10,14 +10,17 @@ import android.os.Bundle;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
 import android.widget.Toast;
 import android.widget.Toast;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
@@ -73,7 +76,7 @@ public class ExploreActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_login:
-                mAq.id(R.id.loginFragment).visible();
+                setLoginFragmentVisibility(true);
                 SharedPreferences sp = getSharedPreferences(
                         Constants.PREFS_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
@@ -135,7 +138,7 @@ public class ExploreActivity extends BaseActivity
 
     @Override
     public void onNotNowClicked() {
-        mAq.id(R.id.loginFragment).invisible();
+        setLoginFragmentVisibility(false);
         SharedPreferences sp =
             getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
@@ -145,15 +148,28 @@ public class ExploreActivity extends BaseActivity
                 Toast.LENGTH_LONG).show();
     }
 
+    private void setLoginFragmentVisibility(boolean show) {
+        FragmentTransaction ft =
+            getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        if (show) {
+            ft.show(mLoginFragment);
+        } else {
+            ft.hide(mLoginFragment);
+        }
+        ft.commit();
+    }
+
     private void refreshLoginFragment() {
         SharedPreferences sp =
             getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
         boolean loginLater =
             sp.getBoolean(Constants.LOGIN_LATER_SELECTED, false);
         if (loginLater) {
-            mAq.id(R.id.loginFragment).invisible();
+            setLoginFragmentVisibility(false);
         } else {
-            mAq.id(R.id.loginFragment).visible();
+            setLoginFragmentVisibility(true);
         }
     }
 
