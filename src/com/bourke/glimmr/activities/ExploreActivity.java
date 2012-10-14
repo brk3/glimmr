@@ -20,6 +20,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.GetAccessTokenTask;
@@ -87,13 +88,32 @@ public class ExploreActivity extends BaseActivity
 
     private void initViewPager() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ExplorePagerAdapter adapter = new ExplorePagerAdapter(
-                getSupportFragmentManager());
+        GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
+                getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
+            @Override
+            public SherlockFragment getItemImpl(int position) {
+                switch (position) {
+                    case INTERESTING_PAGE:
+                        return RecentPublicPhotosFragment.newInstance();
+                }
+                return null;
+            }
+        };
         viewPager.setAdapter(adapter);
-        //TitlePageIndicator indicator = (TitlePageIndicator) findViewById(
-        //        R.id.indicator);
-        //indicator.setOnPageChangeListener(this);
-        //indicator.setViewPager(viewPager);
+
+        //TitlePageIndicator indicator =
+            //(TitlePageIndicator) findViewById(R.id.indicator);
+        //if (indicator != null) {
+            //indicator.setViewPager(viewPager);
+        //} else {
+            //mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            //viewPager.setOnPageChangeListener(adapter);
+            //for (String title : CONTENT) {
+                //ActionBar.Tab newTab = mActionBar.newTab().setText(title);
+                //newTab.setTabListener(adapter);
+                //mActionBar.addTab(newTab);
+            //}
+        //}
     }
 
     @Override
@@ -173,31 +193,5 @@ public class ExploreActivity extends BaseActivity
     @Override
     public User getUser() {
         return mUser;
-    }
-
-    class ExplorePagerAdapter extends FragmentPagerAdapter {
-        public ExplorePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public SherlockFragment getItem(int position) {
-            switch (position) {
-                case INTERESTING_PAGE:
-                    return RecentPublicPhotosFragment.newInstance();
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return ExploreActivity.CONTENT.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return ExploreActivity.CONTENT[
-                position % ExploreActivity.CONTENT.length].toUpperCase();
-        }
     }
 }

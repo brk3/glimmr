@@ -77,8 +77,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPostExecute(final PhotoList result) {
         if (result == null) {
-            if (Constants.DEBUG)
-                Log.e(TAG, "error fetching photolist, result is null");
+            Log.e(TAG, "error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
         mBaseFragment.showProgressIcon(false);

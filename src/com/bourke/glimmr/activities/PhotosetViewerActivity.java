@@ -1,6 +1,8 @@
 package com.bourke.glimmr.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
@@ -10,12 +12,14 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomSubTitle;
+import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.photoset.PhotosetGridFragment;
 import com.bourke.glimmr.R;
 
@@ -23,8 +27,6 @@ import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 
 import com.viewpagerindicator.TitlePageIndicator;
-import android.content.SharedPreferences;
-import android.content.Context;
 
 public class PhotosetViewerActivity extends BaseActivity {
 
@@ -80,15 +82,7 @@ public class PhotosetViewerActivity extends BaseActivity {
                             mPhotoset.getTitle());
                 }
                 mPhotoset.setOwner(mUser);
-                ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-                GroupPagerAdapter adapter = new GroupPagerAdapter(
-                        getSupportFragmentManager());
-                viewPager.setAdapter(adapter);
-                TitlePageIndicator indicator = (TitlePageIndicator)
-                    findViewById(R.id.indicator);
-                indicator.setOnPageChangeListener(this);
-                indicator.setViewPager(viewPager);
-
+                initViewPager();
                 mActionbarSubTitle.setActionBarSubtitle(mPhotoset.getTitle());
             } else {
                 Log.e(TAG, "Photoset/User from intent is null");
@@ -98,6 +92,36 @@ public class PhotosetViewerActivity extends BaseActivity {
             if (Constants.DEBUG)
                 Log.e(TAG, "Bundle is null, PhotosetViewerActivity requires " +
                     "an intent containing a Photoset and a User");
+        }
+    }
+
+    private void initViewPager() {
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
+                getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
+            @Override
+            public SherlockFragment getItemImpl(int position) {
+                switch (position) {
+                    case PHOTOSET_PAGE:
+                        return PhotosetGridFragment.newInstance(mPhotoset);
+                }
+                return null;
+            }
+        };
+        viewPager.setAdapter(adapter);
+
+        TitlePageIndicator indicator =
+            (TitlePageIndicator) findViewById(R.id.indicator);
+        if (indicator != null) {
+            indicator.setViewPager(viewPager);
+        } else {
+            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            viewPager.setOnPageChangeListener(adapter);
+            for (String title : CONTENT) {
+                ActionBar.Tab newTab = mActionBar.newTab().setText(title);
+                newTab.setTabListener(adapter);
+                mActionBar.addTab(newTab);
+            }
         }
     }
 

@@ -31,8 +31,9 @@ public class GlimmrAbCustomTitle {
             mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.action_bar_title_item, null);
         mAbTitle = (TextView) v.findViewById(R.id.abTitle);
-        /* Large screens don't use a custom title in landscape as it sits to
-         * the right of the tabs */
+
+        /* NOTE: Large screens don't use a custom title in landscape as there's
+         * a problem/bug where it sits to the right of the tabs */
         if (mAbTitle != null) {
             Typeface typeface = Typeface.createFromAsset(mContext.getAssets(),
                     Constants.FONT_SHADOWSINTOLIGHT);
