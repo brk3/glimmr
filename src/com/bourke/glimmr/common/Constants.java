@@ -25,6 +25,8 @@ public class Constants {
         "fonts/Roboto-Regular.ttf";
     public static final String FONT_ROBOTOTHIN =
         "fonts/Roboto-Thin.ttf";
+    public static final String FONT_ROBOTOLIGHT =
+        "fonts/Roboto-Light.ttf";
 
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;
