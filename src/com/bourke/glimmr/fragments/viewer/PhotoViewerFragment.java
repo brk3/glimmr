@@ -23,7 +23,6 @@ import com.actionbarsherlock.widget.ShareActionProvider;
 
 import com.androidquery.AQuery;
 
-import com.bourke.glimmr.activities.ExifInfoDialogActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
