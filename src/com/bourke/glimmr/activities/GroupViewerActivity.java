@@ -4,18 +4,18 @@ import android.content.Intent;
 
 import android.os.Bundle;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomSubTitle;
+import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.group.GroupAboutFragment;
 import com.bourke.glimmr.fragments.group.GroupPoolGridFragment;
 import com.bourke.glimmr.R;
@@ -71,27 +71,49 @@ public class GroupViewerActivity extends BaseActivity {
             mUser = (User) bundle.getSerializable(
                     Constants.KEY_GROUPVIEWER_USER);
             if (mGroup != null && mUser != null) {
-                if (Constants.DEBUG)
+                if (Constants.DEBUG) {
                     Log.d(TAG, "Got group to view: " + mGroup.getName());
-                ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-                GroupPagerAdapter adapter = new GroupPagerAdapter(
-                        getSupportFragmentManager());
-                viewPager.setAdapter(adapter);
-                TitlePageIndicator indicator = (TitlePageIndicator)
-                    findViewById(R.id.indicator);
-                indicator.setOnPageChangeListener(this);
-                indicator.setViewPager(viewPager);
-
+                }
+                initViewPager();
                 mActionbarSubTitle.setActionBarSubtitle(mGroup.getName());
             } else {
-                if (Constants.DEBUG)
-                    Log.e(TAG, "Group/User from intent is null");
-                // TODO: show error / recovery
+                Log.e(TAG, "Group/User from intent is null");
             }
         } else {
-            if (Constants.DEBUG)
-                Log.e(TAG, "Bundle is null, GroupViewerActivity requires an " +
-                    "intent containing a Group and a User");
+            Log.e(TAG, "Bundle is null, GroupViewerActivity requires an " +
+                "intent containing a Group and a User");
+        }
+    }
+
+    private void initViewPager() {
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
+                getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
+            @Override
+            public SherlockFragment getItemImpl(int position) {
+                switch (position) {
+                    case GROUP_POOL_PAGE:
+                        return GroupPoolGridFragment.newInstance(mGroup);
+                    case GROUP_ABOUT_PAGE:
+                        return GroupAboutFragment.newInstance();
+                }
+                return null;
+            }
+        };
+        viewPager.setAdapter(adapter);
+
+        TitlePageIndicator indicator =
+            (TitlePageIndicator) findViewById(R.id.indicator);
+        if (indicator != null) {
+            indicator.setViewPager(viewPager);
+        } else {
+            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            viewPager.setOnPageChangeListener(adapter);
+            for (String title : CONTENT) {
+                ActionBar.Tab newTab = mActionBar.newTab().setText(title);
+                newTab.setTabListener(adapter);
+                mActionBar.addTab(newTab);
+            }
         }
     }
 
@@ -104,33 +126,5 @@ public class GroupViewerActivity extends BaseActivity {
     @Override
     public User getUser() {
         return mUser;
-    }
-
-    class GroupPagerAdapter extends FragmentPagerAdapter {
-        public GroupPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public SherlockFragment getItem(int position) {
-            switch (position) {
-                case GROUP_POOL_PAGE:
-                    return GroupPoolGridFragment.newInstance(mGroup);
-                case GROUP_ABOUT_PAGE:
-                    return GroupAboutFragment.newInstance();
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return GroupViewerActivity.CONTENT.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return GroupViewerActivity.CONTENT[position %
-                GroupViewerActivity.CONTENT.length].toUpperCase();
-        }
     }
 }

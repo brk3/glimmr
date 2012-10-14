@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.common.GlimmrTabsAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,23 +8,18 @@ import android.os.Bundle;
 
 import android.preference.PreferenceManager;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmr.fragments.home.ContactsGridFragment;
 import com.bourke.glimmr.fragments.home.GroupListFragment;
@@ -42,8 +36,6 @@ import com.googlecode.flickrjandroid.people.User;
 import com.sbstrm.appirater.Appirater;
 
 import com.viewpagerindicator.TitlePageIndicator;
-
-import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
 
@@ -104,81 +96,48 @@ public class MainActivity extends BaseActivity {
 
     private void initViewPager() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        TitlePageIndicator indicator = (TitlePageIndicator) findViewById(
-                R.id.indicator);
+        GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
+                getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
+            @Override
+            public SherlockFragment getItemImpl(int position) {
+                switch (position) {
+                    case PHOTOSTREAM_PAGE:
+                        return PhotoStreamGridFragment.newInstance();
 
-        /* Bind the ViewPager to a TitlePageIndicator, or if on larger screens,
-         * set up actionbar tabs. */
+                    case CONTACTS_PAGE:
+                        return ContactsGridFragment.newInstance();
+
+                    case GROUPS_PAGE:
+                        return GroupListFragment.newInstance();
+
+                    case SETS_PAGE:
+                        return PhotosetsFragment.newInstance();
+
+                    case EXPLORE_PAGE:
+                        return RecentPublicPhotosFragment.newInstance();
+                }
+                return null;
+            }
+        };
+        viewPager.setAdapter(adapter);
+
+        TitlePageIndicator indicator =
+            (TitlePageIndicator) findViewById(R.id.indicator);
         if (indicator != null) {
-            GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
-                    getSupportFragmentManager());
-            viewPager.setAdapter(adapter);
-            indicator.setOnPageChangeListener(this);
             indicator.setViewPager(viewPager);
         } else {
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            GlimmrTabsAdapter tabsAdapter =
-                new GlimmrTabsAdapter(this, viewPager);
-            tabsAdapter.addTab(
-                    mActionBar.newTab().setText(CONTENT[CONTACTS_PAGE]),
-                    ContactsGridFragment.class, null);
-            tabsAdapter.addTab(
-                    mActionBar.newTab().setText(CONTENT[PHOTOSTREAM_PAGE]),
-                    PhotoStreamGridFragment.class, null);
-            tabsAdapter.addTab(
-                    mActionBar.newTab().setText(CONTENT[GROUPS_PAGE]),
-                    GroupListFragment.class, null);
-            tabsAdapter.addTab(
-                    mActionBar.newTab().setText(CONTENT[SETS_PAGE]),
-                    PhotosetsFragment.class, null);
-            tabsAdapter.addTab(
-                    mActionBar.newTab().setText(CONTENT[EXPLORE_PAGE]),
-                    RecentPublicPhotosFragment.class, null);
-            viewPager.setAdapter(tabsAdapter);
-            viewPager.setOnPageChangeListener(tabsAdapter);
+            viewPager.setOnPageChangeListener(adapter);
+            for (String title : CONTENT) {
+                ActionBar.Tab newTab = mActionBar.newTab().setText(title);
+                newTab.setTabListener(adapter);
+                mActionBar.addTab(newTab);
+            }
         }
     }
 
     @Override
     public User getUser() {
         return mUser;
-    }
-
-    class GlimmrPagerAdapter extends FragmentPagerAdapter {
-        public GlimmrPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public SherlockFragment getItem(int position) {
-            switch (position) {
-                case PHOTOSTREAM_PAGE:
-                    return PhotoStreamGridFragment.newInstance();
-
-                case CONTACTS_PAGE:
-                    return ContactsGridFragment.newInstance();
-
-                case GROUPS_PAGE:
-                    return GroupListFragment.newInstance();
-
-                case SETS_PAGE:
-                    return PhotosetsFragment.newInstance();
-
-                case EXPLORE_PAGE:
-                    return RecentPublicPhotosFragment.newInstance();
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return MainActivity.CONTENT.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return MainActivity.CONTENT[position % MainActivity.CONTENT.length]
-                .toUpperCase();
-        }
     }
 }
