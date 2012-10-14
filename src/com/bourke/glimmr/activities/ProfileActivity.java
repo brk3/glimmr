@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
@@ -18,7 +16,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.common.Constants;
-import com.bourke.glimmrpro.common.GlimmrTabsAdapter;
+import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.event.Events.IUserReadyListener;
 import com.bourke.glimmrpro.fragments.home.FavoritesGridFragment;
 import com.bourke.glimmrpro.fragments.home.PhotosetsFragment;
@@ -168,33 +166,41 @@ public class ProfileActivity extends BaseActivity
 
     private void initViewPager() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
+                getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
+            @Override
+            public SherlockFragment getItemImpl(int position) {
+                switch (position) {
+                    case PHOTO_STREAM_PAGE:
+                        return PhotoStreamGridFragment.newInstance();
+
+                    case FAVORITES_STREAM_PAGE:
+                        return FavoritesGridFragment.newInstance();
+
+                    case SETS_PAGE:
+                        return PhotosetsFragment.newInstance();
+
+                    case CONTACTS_PAGE:
+                        // TODO
+                        return PhotoStreamGridFragment.newInstance();
+                }
+                return null;
+            }
+        };
+        viewPager.setAdapter(adapter);
+
         TitlePageIndicator indicator =
             (TitlePageIndicator) findViewById(R.id.indicator);
-
-        /* Bind the ViewPager to a TitlePageIndicator, or if on larger screens,
-         * set up actionbar tabs. */
         if (indicator != null) {
-            ProfilePagerAdapter adapter =
-                new ProfilePagerAdapter(getSupportFragmentManager());
-            viewPager.setAdapter(adapter);
-            indicator.setOnPageChangeListener(this);
             indicator.setViewPager(viewPager);
         } else {
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            GlimmrTabsAdapter tabsAdapter =
-                new GlimmrTabsAdapter(this, viewPager);
-            tabsAdapter.addTab(
-                    mActionBar.newTab().setText(CONTENT[PHOTO_STREAM_PAGE]),
-                    PhotoStreamGridFragment.class, null);
-            tabsAdapter.addTab(
-                    mActionBar.newTab().setText(
-                        CONTENT[FAVORITES_STREAM_PAGE]),
-                    FavoritesGridFragment.class, null);
-            tabsAdapter.addTab(
-                    mActionBar.newTab().setText(CONTENT[SETS_PAGE]),
-                    PhotosetsFragment.class, null);
-            viewPager.setAdapter(tabsAdapter);
-            viewPager.setOnPageChangeListener(tabsAdapter);
+            viewPager.setOnPageChangeListener(adapter);
+            for (String title : CONTENT) {
+                ActionBar.Tab newTab = mActionBar.newTab().setText(title);
+                newTab.setTabListener(adapter);
+                mActionBar.addTab(newTab);
+            }
         }
     }
 
@@ -202,44 +208,5 @@ public class ProfileActivity extends BaseActivity
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         handleIntent(intent);
-    }
-
-    /**
-     * Should only be bound once we have a valid userId
-     */
-    class ProfilePagerAdapter extends FragmentPagerAdapter {
-        public ProfilePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public SherlockFragment getItem(int position) {
-            switch (position) {
-                case PHOTO_STREAM_PAGE:
-                    return PhotoStreamGridFragment.newInstance();
-
-                case FAVORITES_STREAM_PAGE:
-                    return FavoritesGridFragment.newInstance();
-
-                case SETS_PAGE:
-                    return PhotosetsFragment.newInstance();
-
-                case CONTACTS_PAGE:
-                    // TODO
-                    return PhotoStreamGridFragment.newInstance();
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return ProfileActivity.CONTENT.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return ProfileActivity.CONTENT[
-                position % ProfileActivity.CONTENT.length].toUpperCase();
-        }
     }
 }

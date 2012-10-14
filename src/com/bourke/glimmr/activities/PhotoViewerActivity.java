@@ -39,8 +39,7 @@ import java.util.List;
  * a startIndex in a zoomable ImageView.
  */
 public class PhotoViewerActivity extends BaseActivity
-        implements ViewPager.OnPageChangeListener,
-                   PhotoViewerFragment.IPhotoViewerCallbacks {
+        implements PhotoViewerFragment.IPhotoViewerCallbacks {
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
 
@@ -96,7 +95,6 @@ public class PhotoViewerActivity extends BaseActivity
             if (mPhotos.size() <= Constants.LINE_PAGE_INDICATOR_LIMIT) {
                 PageIndicator indicator =
                     (LinePageIndicator) findViewById(R.id.indicator);
-                indicator.setOnPageChangeListener(this);
                 indicator.setViewPager(mPager);
                 indicator.setCurrentItem(startIndex);
             } else {
@@ -201,11 +199,6 @@ public class PhotoViewerActivity extends BaseActivity
     @Override
     protected String getLogTag() {
         return TAG;
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        super.onPageSelected(position);
     }
 
     @Override

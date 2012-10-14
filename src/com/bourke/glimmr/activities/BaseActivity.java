@@ -41,8 +41,7 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 
-public abstract class BaseActivity extends SherlockFragmentActivity
-        implements ViewPager.OnPageChangeListener {
+public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private static final String TAG = "Glimmr/BaseActivity";
 
@@ -243,15 +242,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
     }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {}
-
-    @Override
-    public void onPageScrolled(int pos, float posOffset, int posOffsetPx) {}
-
-    @Override
-    public void onPageSelected(int pos) {}
 
     protected String getLogTag() {
         return TAG;
