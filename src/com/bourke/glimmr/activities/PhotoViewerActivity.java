@@ -203,7 +203,9 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onAttachFragment(Fragment fragment) {
-        mFragList.add(new WeakReference(fragment));
+        if (fragment instanceof PhotoViewerFragment) {
+            mFragList.add(new WeakReference(fragment));
+        }
     }
 
     @Override
