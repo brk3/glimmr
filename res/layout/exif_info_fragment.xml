@@ -6,6 +6,7 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:background="@drawable/ab_bg_black"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
