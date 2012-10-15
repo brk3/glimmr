@@ -47,6 +47,8 @@ public class Constants {
     public static final String KEY_PHOTOVIEWER_URL = "glimmr_photoviewer_url";
     public static final String KEY_PHOTOVIEWER_START_INDEX =
         "glimmr_photoviewer_index";
+    public static final String KEY_PHOTOVIEWER_ACTIONBAR_SHOW =
+        "glimmr_photoviewer_actionbar_show";
 
     /* Profile viewer state */
     // TODO: can probably deprecate this serialised USER key for the two below
