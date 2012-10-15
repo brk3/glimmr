@@ -1,6 +1,6 @@
 <resources>
   <string name="about">Sobre</string>
-  <string name="about_text">Obrigado por usar o Glimmr!\n\nSiga me: http://twitter.com/brk3\nContato: pauldbourke@gmail.com\n\nTraduções:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson</string>
+  <string name="about_text">Obrigado por usar o Glimmr!\n\nSiga me: http://twitter.com/brk3\nContato: pauldbourke@gmail.com\n\nTraduções:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer</string>
   <string name="aperture">ABERTURA</string>
   <string name="app_name">Glimmr-L</string>
   <string name="by">por</string>
@@ -42,12 +42,13 @@
   <string name="pro_donate">Pro/Doação</string>
   <string name="set_preferences">Preferências</string>
   <string name="sets">Álbums</string>
-  <string name="setting_wallpaper">Configurar como Papel de Parede</string>
-  <string name="set_wallpaper">Configurando o papel de parede</string>
+  <string name="set_wallpaper">Configurar como Papel de Parede</string>
+  <string name="setting_wallpaper">Configurando o papel de parede</string>
   <string name="shutter">EXPOSIÇÃO</string>
   <string name="thirty_mins">30 minutos</string>
   <string name="untitled">Sem título</string>
   <string name="views">Visualizações</string>
+  <string name="view_profile">Exibir Perfil</string>
   <string name="welcome">Bem vindo</string>
   <string name="yesterday">Ontem</string>
   <string name="you">Você</string>
