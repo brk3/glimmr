@@ -2,11 +2,8 @@ package com.bourke.glimmr.fragments.viewer;
 
 import android.annotation.SuppressLint;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-
-import android.graphics.Typeface;
 
 import android.os.Bundle;
 
@@ -18,10 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -56,7 +51,7 @@ public final class PhotoViewerFragment extends BaseFragment
     private LoadPhotoInfoTask mTask;
     private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
     private IPhotoViewerCallbacks mListener;
-    private ActionBarTitle mActionbarTitle;
+    private Configuration mConfiguration;
 
     public static PhotoViewerFragment newInstance(Photo photo,
             IPhotoViewerCallbacks listener) {
@@ -69,8 +64,9 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         if (Constants.DEBUG) Log.d(TAG, "onCreate");
+        super.onCreate(savedInstanceState);
+        mConfiguration = mActivity.getResources().getConfiguration();
     }
 
     @Override
@@ -80,12 +76,6 @@ public final class PhotoViewerFragment extends BaseFragment
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
-
-        mActionbarTitle = new ActionBarTitle(mActivity);
-        Configuration config = mActivity.getResources().getConfiguration();
-        if (config.smallestScreenWidthDp >= 600) {
-            mActionbarTitle.init(mActionBar);
-        }
 
         mAq.id(R.id.image).clicked(new View.OnClickListener() {
             @Override
@@ -264,24 +254,18 @@ public final class PhotoViewerFragment extends BaseFragment
                     Constants.USE_FILE_CACHE, 0, 0, null,
                     AQuery.FADE_IN_NETWORK);
 
-            /* Set the photo title and author text */
-            String photoTitle = mBasePhoto.getTitle();
-            if (photoTitle == null || photoTitle.length() == 0) {
-                photoTitle = mActivity.getString(R.string.untitled);
-            }
-            String authorText = String.format("%s %s",
-                    mActivity.getString(R.string.by),
-                    mBasePhoto.getOwner().getUsername());
-
-            /* If sw600dp then show the title/author in the actionbar,
-             * otherwise overlay them on the photo */
-            Configuration config = mActivity.getResources().getConfiguration();
-            if (config.smallestScreenWidthDp >= 600) {
-                mActionbarTitle.setPhotoTitle(photoTitle);
-                mActionbarTitle.setAuthorText(authorText);
-            } else {
-                mAq.id(R.id.textViewTitle).text(photoTitle);
-                mAq.id(R.id.textViewAuthor).text(authorText);
+            /* Set the photo title and author text.  If sw600dp then the parent
+             * activity will handle adding them to the actionbar instead */
+            if (mConfiguration.smallestScreenWidthDp < 600) {
+                String photoTitle = mBasePhoto.getTitle();
+                if (photoTitle == null || photoTitle.length() == 0) {
+                    photoTitle = mActivity.getString(R.string.untitled);
+                }
+                String authorText = String.format("%s %s",
+                        mActivity.getString(R.string.by),
+                        mBasePhoto.getOwner().getUsername());
+                    mAq.id(R.id.textViewTitle).text(photoTitle);
+                    mAq.id(R.id.textViewAuthor).text(authorText);
             }
         } else {
             Log.e(getLogTag(), "displayImage: mBasePhoto is null");
@@ -319,40 +303,5 @@ public final class PhotoViewerFragment extends BaseFragment
     public interface IPhotoViewerCallbacks {
         void onVisibilityChanged(boolean on);
         void onZoomed(boolean isZoomed);
-    }
-
-    class ActionBarTitle {
-        private TextView mPhotoTitle;
-        private TextView mPhotoAuthor;
-        private Context mContext;
-
-        public ActionBarTitle(Context context) {
-            mContext = context;
-        }
-
-        public void init(ActionBar actionbar) {
-            LayoutInflater inflator = (LayoutInflater)
-                mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View v = inflator.inflate(R.layout.photoviewer_action_bar, null);
-            mPhotoTitle = (TextView) v.findViewById(R.id.photoTitle);
-            mPhotoAuthor = (TextView) v.findViewById(R.id.photoAuthor);
-            Typeface robotoThin = Typeface.createFromAsset(
-                    mContext.getAssets(), Constants.FONT_ROBOTOTHIN);
-            Typeface robotoLight = Typeface.createFromAsset(
-                    mContext.getAssets(), Constants.FONT_ROBOTOLIGHT);
-            mPhotoTitle.setTypeface(robotoLight);
-            mPhotoAuthor.setTypeface(robotoThin);
-            actionbar.setDisplayShowCustomEnabled(true);
-            actionbar.setDisplayShowTitleEnabled(false);
-            actionbar.setCustomView(v);
-        }
-
-        public void setPhotoTitle(String title) {
-            mPhotoTitle.setText(title);
-        }
-
-        public void setAuthorText(String author) {
-            mPhotoAuthor.setText(author);
-        }
     }
 }
