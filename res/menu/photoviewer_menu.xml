@@ -2,23 +2,11 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_view_comments"
-          android:title="@string/menu_view_comments"
-          android:icon="@drawable/ic_social_chat_dark"
-          android:showAsAction="ifRoom"
-          android:orderInCategory="0" />
-
     <item android:id="@+id/menu_favorite"
           android:title="@string/menu_favorite"
           android:icon="@drawable/ic_rating_not_important_dark"
           android:showAsAction="ifRoom"
           android:orderInCategory="1" />
-
-    <item android:id="@+id/menu_view_exif"
-          android:title="@string/menu_view_exif"
-          android:icon="@drawable/ic_action_about_dark"
-          android:showAsAction="ifRoom"
-          android:orderInCategory="2" />
 
     <item android:id="@+id/menu_set_wallpaper"
           android:title="@string/set_wallpaper"
