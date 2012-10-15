@@ -1,6 +1,6 @@
 <resources>
   <string name="about">O Glimmr</string>
-  <string name="about_text">Dzięki za wspieranie Glimmr!\n Dodaj mnie: http://twitter.com/brk3\nKontakt: pauldbourke@gmail.com\n\nTranslacja:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson</string>
+  <string name="about_text">Dzięki za wspieranie Glimmr!\n Dodaj mnie: http://twitter.com/brk3\nKontakt: pauldbourke@gmail.com\n\nTranslacja:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer</string>
   <string name="aperture">APERTURE</string>
   <string name="app_name">Glimmr-L</string>
   <string name="by">od</string>
@@ -9,6 +9,7 @@
   <string name="contacts">Kontakty</string>
   <string name="edit_text_hint">Dodaj komentarz…</string>
   <string name="exif_info">Dane Exif</string>
+  <string name="explore">Eksploruj</string>
   <string name="favorites">Ulubione</string>
   <string name="fifteen_mins">15 minut</string>
   <string name="four_hours">4 godziny</string>
@@ -20,6 +21,7 @@
   <string name="menu_favorite">Dodaj do Ulubionych</string>
   <string name="menu_preferences">Preferencje</string>
   <string name="menu_refresh">Odśwież</string>
+  <string name="menu_share">Udostępnić</string>
   <string name="menu_view_comments">Komentarze</string>
   <string name="menu_view_exif">Pokaż dane Exif</string>
   <string name="no_connection">Coś poszło nie tak\nMoże spróbuj odświeżyć?</string>
@@ -41,12 +43,13 @@
   <string name="pro_donate">Pro/Donacja</string>
   <string name="set_preferences">Preferencje</string>
   <string name="sets">Serie</string>
-  <string name="setting_wallpaper">Ustaw jako tapeta</string>
-  <string name="set_wallpaper">Ustawianie tapety</string>
+  <string name="set_wallpaper">Ustaw jako tapeta</string>
+  <string name="setting_wallpaper">Ustawianie tapety…</string>
   <string name="shutter">SHUTTER</string>
   <string name="thirty_mins">30 minut</string>
   <string name="untitled">Bez tytułu</string>
   <string name="views">Wyświetleń</string>
+  <string name="view_profile">Wyświetl Profil</string>
   <string name="welcome">Witaj</string>
   <string name="yesterday">Wczoraj</string>
   <string name="you">Ty</string>

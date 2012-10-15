@@ -1,6 +1,6 @@
 <resources>
   <string name="about">Om Glimmr</string>
-  <string name="about_text">Tak fordi du støtter Glimmr!\n\nFølg mig: http://twitter.com/brk3\nKontakt:pauldbourke@gmail.com\n\nOversættere:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson</string>
+  <string name="about_text">Tak fordi du støtter Glimmr!\n\nFølg mig: http://twitter.com/brk3\nKontakt:pauldbourke@gmail.com\n\nOversættere:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer</string>
   <string name="aperture">BLÆNDE</string>
   <string name="app_name">Glimmr-L</string>
   <string name="by">af</string>
@@ -41,12 +41,13 @@
   <string name="pro_donate">Pro/Donér</string>
   <string name="set_preferences">Sæt præferencer</string>
   <string name="sets">Albums</string>
-  <string name="setting_wallpaper">Sæt wallpaper</string>
-  <string name="set_wallpaper">Sætter wallpaper…</string>
+  <string name="set_wallpaper">Sæt wallpaper</string>
+  <string name="setting_wallpaper">Sætter wallpaper…</string>
   <string name="shutter">LUKKER</string>
   <string name="thirty_mins">30 minutter</string>
   <string name="untitled">Unavngivet</string>
   <string name="views">Gange set</string>
+  <string name="view_profile">Vis Profil</string>
   <string name="welcome">Velkommen</string>
   <string name="yesterday">I går</string>
   <string name="you">Dig</string>
