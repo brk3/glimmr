@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    These options should belong in the PhotoViewerFragment menu.
+
+    There's a bug where fragment transactions for the comments/exif throw
+    exceptions after a rotation.  Calling commit throws an
+    IllegalStateException which is expected, but commitAllowingStateLoss throws
+    an exception about the activity having been destroyed, even though I update
+    the fragment's reference to it in BaseFragment's onResume.
+
+    So, instead of having the fragment call up to the activity to do the
+    hide/show transaction, I'm just giving the PhotoViewerActivity it's own
+    menu.
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_view_comments"
+          android:title="@string/menu_view_comments"
+          android:icon="@drawable/ic_social_chat_dark"
+          android:showAsAction="ifRoom"
+          android:orderInCategory="0" />
+
+    <item android:id="@+id/menu_view_exif"
+          android:title="@string/menu_view_exif"
+          android:icon="@drawable/ic_action_about_dark"
+          android:showAsAction="ifRoom"
+          android:orderInCategory="2" />
+
+    <item android:id="@+id/menu_preferences"
+          android:icon="@android:drawable/ic_menu_preferences"
+          android:orderInCategory="9"
+          android:title="@string/menu_preferences" />
+
+    <item android:id="@+id/menu_about"
+          android:icon="@drawable/ic_action_about_dark"
+          android:orderInCategory="10"
+          android:title="@string/about" />
+</menu>
