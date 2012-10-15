@@ -1,6 +1,10 @@
 package com.bourke.glimmrpro.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+
+import android.graphics.Typeface;
 
 import android.os.Bundle;
 
@@ -12,9 +16,13 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import android.view.LayoutInflater;
+import android.view.View;
+
+import android.widget.TextView;
+
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
@@ -53,11 +61,15 @@ public class PhotoViewerActivity extends BaseActivity
     private ViewPagerDisable mPager;
     private List<WeakReference<Fragment>> mFragList =
         new ArrayList<WeakReference<Fragment>>();
+    private int mCurrentAdapterIndex = 0;
+
     private CommentsFragment mCommentsFragment;
     private ExifInfoFragment mExifFragment;
     private boolean mCommentsFragmentShowing = false;
     private boolean mExifFragmentShowing = false;
-    private int mCurrentAdapterIndex = 0;
+
+    private ActionBarTitle mActionbarTitle;
+    private Configuration mConfiguration;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,11 +79,18 @@ public class PhotoViewerActivity extends BaseActivity
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.photoviewer_activity);
 
+        /* Configure the actionbar.  Set custom layout to show photo
+         * author/title in actionbar for large screens */
         mActionBar.setBackgroundDrawable(getResources().getDrawable(
                     R.drawable.ab_bg_black));
-        setContentView(R.layout.photoviewer_activity);
         mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionbarTitle = new ActionBarTitle(this);
+        mConfiguration = getResources().getConfiguration();
+        if (mConfiguration.smallestScreenWidthDp >= 600) {
+            mActionbarTitle.init(mActionBar);
+        }
 
         handleIntent(getIntent());
     }
@@ -295,6 +314,21 @@ public class PhotoViewerActivity extends BaseActivity
                         animateTransition);
             }
             mCurrentAdapterIndex = position;
+
+            /* If sw600dp then show the title/author in the actionbar,
+             * otherwise the fragment will overlay them on the photo */
+            Photo currentlyShowing = mPhotos.get(mCurrentAdapterIndex);
+            if (mConfiguration.smallestScreenWidthDp >= 600) {
+                String photoTitle = currentlyShowing.getTitle();
+                if (photoTitle == null || photoTitle.length() == 0) {
+                    photoTitle = getString(R.string.untitled);
+                }
+                String authorText = String.format("%s %s",
+                        getString(R.string.by),
+                        currentlyShowing.getOwner().getUsername());
+                mActionbarTitle.setPhotoTitle(photoTitle);
+                mActionbarTitle.setAuthorText(authorText);
+            }
         }
 
         @Override
@@ -304,6 +338,41 @@ public class PhotoViewerActivity extends BaseActivity
         @Override
         public int getCount() {
             return mPhotos.size();
+        }
+    }
+
+    class ActionBarTitle {
+        private TextView mPhotoTitle;
+        private TextView mPhotoAuthor;
+        private Context mContext;
+
+        public ActionBarTitle(Context context) {
+            mContext = context;
+        }
+
+        public void init(ActionBar actionbar) {
+            LayoutInflater inflator = (LayoutInflater)
+                mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View v = inflator.inflate(R.layout.photoviewer_action_bar, null);
+            mPhotoTitle = (TextView) v.findViewById(R.id.photoTitle);
+            mPhotoAuthor = (TextView) v.findViewById(R.id.photoAuthor);
+            Typeface robotoThin = Typeface.createFromAsset(
+                    mContext.getAssets(), Constants.FONT_ROBOTOTHIN);
+            Typeface robotoLight = Typeface.createFromAsset(
+                    mContext.getAssets(), Constants.FONT_ROBOTOLIGHT);
+            mPhotoTitle.setTypeface(robotoLight);
+            mPhotoAuthor.setTypeface(robotoThin);
+            actionbar.setDisplayShowCustomEnabled(true);
+            actionbar.setDisplayShowTitleEnabled(false);
+            actionbar.setCustomView(v);
+        }
+
+        public void setPhotoTitle(String title) {
+            mPhotoTitle.setText(title);
+        }
+
+        public void setAuthorText(String author) {
+            mPhotoAuthor.setText(author);
         }
     }
 }
