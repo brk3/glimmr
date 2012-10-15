@@ -100,9 +100,7 @@ public final class PhotoViewerFragment extends BaseFragment
         mAq.id(R.id.image).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* Set our own visiblity and update others */
-                setOverlayVisibility(mActionBar.isShowing());
-                mListener.onVisibilityChanged();
+                mListener.onVisibilityChanged(!mActionBar.isShowing());
             }
         });
 
@@ -116,7 +114,8 @@ public final class PhotoViewerFragment extends BaseFragment
             }
         });
 
-        refreshOverlayVisibility();
+        setOverlayVisibility(mActionBar.isShowing());
+
         displayImage();
 
         return mLayout;
@@ -303,38 +302,25 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     @SuppressLint("NewApi")
-    public void setOverlayVisibility(boolean on) {
+    public void setOverlayVisibility(final boolean on) {
+        if (Constants.DEBUG) Log.d(getLogTag(), "setOverlayVisibility: " + on);
         boolean honeycombOrGreater =
             (android.os.Build.VERSION.SDK_INT >=
              android.os.Build.VERSION_CODES.HONEYCOMB);
         if (on) {
-            mAq.id(R.id.textViewTitle).invisible();
-            mAq.id(R.id.textViewAuthor).invisible();
-            mActionBar.hide();
-            if (honeycombOrGreater) {
-                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-            }
-        } else {
             mAq.id(R.id.textViewTitle).visible();
             mAq.id(R.id.textViewAuthor).visible();
-            mActionBar.show();
             if (honeycombOrGreater) {
                 mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             }
-        }
-    }
-
-    /**
-     * The hidden actionbar persists throughout fragments but the other hidden
-     * elements do not, so this is used to rehide/unhide them.
-     */
-    public void refreshOverlayVisibility() {
-        if (mActionBar.isShowing()) {
-            mAq.id(R.id.textViewTitle).visible();
-            mAq.id(R.id.textViewAuthor).visible();
+            mActionBar.show();
         } else {
             mAq.id(R.id.textViewTitle).invisible();
             mAq.id(R.id.textViewAuthor).invisible();
+            if (honeycombOrGreater) {
+                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+            }
+            mActionBar.hide();
         }
     }
 
@@ -370,7 +356,7 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     public interface IPhotoViewerCallbacks {
-        void onVisibilityChanged();
+        void onVisibilityChanged(boolean on);
         void onZoomed(boolean isZoomed);
     }
 
