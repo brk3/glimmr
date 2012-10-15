@@ -1,7 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.fragments.viewer.ExifInfoFragment;
-import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -9,14 +7,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.ViewPagerDisable;
+import com.bourke.glimmr.fragments.viewer.CommentsFragment;
+import com.bourke.glimmr.fragments.viewer.ExifInfoFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
 
@@ -30,7 +35,6 @@ import java.lang.ref.WeakReference;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.support.v4.app.FragmentTransaction;
 
 /**
  * Activity for viewing photos.
@@ -53,6 +57,7 @@ public class PhotoViewerActivity extends BaseActivity
     private ExifInfoFragment mExifFragment;
     private boolean mCommentsFragmentShowing = false;
     private boolean mExifFragmentShowing = false;
+    private int mCurrentAdapterIndex = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,10 +106,7 @@ public class PhotoViewerActivity extends BaseActivity
                 mPager.setCurrentItem(startIndex);
             }
         } else {
-            if (Constants.DEBUG) {
-                Log.e(getLogTag(), "Photos from intent are null");
-            }
-            // TODO: show error / recovery
+            Log.e(getLogTag(), "Photos from intent are null");
         }
     }
 
@@ -119,7 +121,6 @@ public class PhotoViewerActivity extends BaseActivity
         handleIntent(intent);
     }
 
-    @Override
     public void onCommentsButtonClick(Photo photo) {
         boolean animateTransition = true;
         if (mExifFragmentShowing) {
@@ -128,7 +129,6 @@ public class PhotoViewerActivity extends BaseActivity
         setCommentsFragmentVisibility(photo, true, animateTransition);
     }
 
-    @Override
     public void onExifButtonClick(Photo photo) {
         boolean animateTransition = true;
         if (mCommentsFragmentShowing) {
@@ -191,9 +191,25 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        /* Avoid IllegalStateException after rotate (commitAllowingStateLoss
-         * doesn't help) - http://stackoverflow.com/a/10261438/663370 */
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.photoviewer_activity_menu,
+                menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Photo currentlyShowing = mPhotos.get(mCurrentAdapterIndex);
+        switch (item.getItemId()) {
+            case R.id.menu_view_comments:
+                onCommentsButtonClick(currentlyShowing);
+                return true;
+            case R.id.menu_view_exif:
+                onExifButtonClick(currentlyShowing);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -259,6 +275,7 @@ public class PhotoViewerActivity extends BaseActivity
                 setExifFragmentVisibility(mPhotos.get(position), show,
                         animateTransition);
             }
+            mCurrentAdapterIndex = position;
         }
 
         @Override
