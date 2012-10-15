@@ -111,6 +111,25 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBoolean(Constants.KEY_PHOTOVIEWER_ACTIONBAR_SHOW,
+                mActionBar.isShowing());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        boolean overlayOn = savedInstanceState.getBoolean(
+                Constants.KEY_PHOTOVIEWER_ACTIONBAR_SHOW, true);
+        if (overlayOn) {
+            mActionBar.show();
+        } else {
+            mActionBar.hide();
+        }
+    }
+
+    @Override
     public User getUser() {
         return mUser;
     }
@@ -225,11 +244,11 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     @Override
-    public void onVisibilityChanged() {
+    public void onVisibilityChanged(final boolean on) {
         for (WeakReference<Fragment> ref : mFragList) {
             PhotoViewerFragment f = (PhotoViewerFragment) ref.get();
             if (f != null) {
-                f.refreshOverlayVisibility();
+                f.setOverlayVisibility(on);
             }
         }
     }
