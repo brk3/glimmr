@@ -167,14 +167,8 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_view_comments:
-                mListener.onCommentsButtonClick(mBasePhoto);
-                return true;
             case R.id.menu_favorite:
                 onFavoriteButtonClick();
-                return true;
-            case R.id.menu_view_exif:
-                mListener.onExifButtonClick(mBasePhoto);
                 return true;
             case R.id.menu_set_wallpaper:
                 onWallpaperButtonClick();
@@ -253,24 +247,6 @@ public final class PhotoViewerFragment extends BaseFragment
         if (mTask != null) {
             mTask.cancel(true);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (Constants.DEBUG) Log.d(getLogTag(), "onSaveInstanceState");
-        outState.putSerializable(Constants.KEY_PHOTOVIEWER_URL, mBasePhoto);
-     }
-
-    /**
-     * Fragments don't seem to have a onRestoreInstanceState so we use this
-     * to restore the photo been viewed in the case of rotate instead.
-     */
-    @Override
-    public void onActivityCreated(Bundle state) {
-        super.onActivityCreated(state);
-        if (Constants.DEBUG) Log.d(getLogTag(), "onActivityCreated");
-        mPhotoExtendedInfo = null;
     }
 
     @Override
@@ -396,8 +372,6 @@ public final class PhotoViewerFragment extends BaseFragment
     public interface IPhotoViewerCallbacks {
         void onVisibilityChanged();
         void onZoomed(boolean isZoomed);
-        void onCommentsButtonClick(Photo photo);
-        void onExifButtonClick(Photo photo);
     }
 
     class ActionBarTitle {
