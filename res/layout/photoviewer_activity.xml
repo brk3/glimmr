@@ -10,15 +10,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-    <!-- Seems to need to come after the ViewPager to display -->
-    <com.viewpagerindicator.LinePageIndicator
-        android:id="@+id/indicator"
-        android:padding="5dip"
-        android:background="@android:color/black"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
-
     <FrameLayout
         android:id="@+id/commentsFragment"
         android:layout_width="wrap_content"
