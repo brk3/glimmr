@@ -10,8 +10,8 @@
     the fragment's reference to it in BaseFragment's onResume.
 
     So, instead of having the fragment call up to the activity to do the
-    hide/show transaction, I'm just giving the PhotoViewerActivity it's own
-    menu.
+    hide/show transaction, I'm just adding options related to these fragments
+    to the the PhotoViewerActivity menu.
 -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
@@ -27,14 +27,4 @@
           android:icon="@drawable/ic_action_about_dark"
           android:showAsAction="ifRoom"
           android:orderInCategory="2" />
-
-    <item android:id="@+id/menu_preferences"
-          android:icon="@android:drawable/ic_menu_preferences"
-          android:orderInCategory="9"
-          android:title="@string/menu_preferences" />
-
-    <item android:id="@+id/menu_about"
-          android:icon="@drawable/ic_action_about_dark"
-          android:orderInCategory="10"
-          android:title="@string/about" />
 </menu>

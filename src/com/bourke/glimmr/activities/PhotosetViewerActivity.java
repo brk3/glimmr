@@ -1,24 +1,17 @@
 package com.bourke.glimmr.activities;
 
-import android.content.Context;
+import com.androidquery.AQuery;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 
-import com.androidquery.AQuery;
-
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.GlimmrAbCustomSubTitle;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.photoset.PhotosetGridFragment;
 import com.bourke.glimmr.R;
@@ -26,50 +19,22 @@ import com.bourke.glimmr.R;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 
-import com.viewpagerindicator.TitlePageIndicator;
+public class PhotosetViewerActivity extends BottomOverlayActivity {
 
-public class PhotosetViewerActivity extends BaseActivity {
-
-    private static final String TAG = "Glimmr/PhotosetViewerActivity";
+    public static final String TAG = "Glimmr/PhotosetViewerActivity";
 
     public static final int PHOTOSET_PAGE = 0;
 
-    public static String[] CONTENT;
-
-    private GlimmrAbCustomSubTitle mActionbarSubTitle;
-
-    /**
-     * The Photoset this activity is concerned with
-     */
     private Photoset mPhotoset = new Photoset();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         CONTENT = new String[] { getString(R.string.photoset) };
-
-        if (mOAuth == null) {
-            startActivity(new Intent(this, ExploreActivity.class));
-        } else {
-            setContentView(R.layout.main_activity);
-
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-            mActionbarSubTitle = new GlimmrAbCustomSubTitle(getBaseContext());
-            mActionbarSubTitle.init(mActionBar);
-
-            mAq = new AQuery(this);
-
-            handleIntent(getIntent());
-        }
+        super.onCreate(savedInstanceState);
     }
 
     @Override
-    public User getUser() {
-        return mUser;
-    }
-
-    private void handleIntent(Intent intent) {
+    protected void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             mPhotoset = (Photoset) bundle.getSerializable(Constants.
@@ -83,19 +48,18 @@ public class PhotosetViewerActivity extends BaseActivity {
                 }
                 mPhotoset.setOwner(mUser);
                 initViewPager();
-                mActionbarSubTitle.setActionBarSubtitle(mPhotoset.getTitle());
+                updateBottomOverlay();
             } else {
                 Log.e(TAG, "Photoset/User from intent is null");
-                // TODO: show error / recovery
             }
         } else {
-            if (Constants.DEBUG)
-                Log.e(TAG, "Bundle is null, PhotosetViewerActivity requires " +
-                    "an intent containing a Photoset and a User");
+            Log.e(TAG, "Bundle is null, PhotosetViewerActivity requires " +
+                "an intent containing a Photoset and a User");
         }
     }
 
-    private void initViewPager() {
+    @Override
+    protected void initViewPager() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
@@ -108,84 +72,19 @@ public class PhotosetViewerActivity extends BaseActivity {
                 return null;
             }
         };
-        viewPager.setAdapter(adapter);
-
-        TitlePageIndicator indicator =
-            (TitlePageIndicator) findViewById(R.id.indicator);
-        if (indicator != null) {
-            indicator.setViewPager(viewPager);
-        } else {
-            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            viewPager.setOnPageChangeListener(adapter);
-            for (String title : CONTENT) {
-                ActionBar.Tab newTab = mActionBar.newTab().setText(title);
-                newTab.setTabListener(adapter);
-                mActionBar.addTab(newTab);
-            }
-        }
+        super.initViewPager();
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        handleIntent(intent);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mUser != null) {
-            SharedPreferences sp = getSharedPreferences(
-                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString(Constants.KEY_USER_NAME, mUser.getUsername());
-            editor.putString(Constants.KEY_USER_ID, mUser.getId());
-            editor.commit();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        SharedPreferences prefs = getSharedPreferences(
-                Constants.PREFS_NAME, Context.MODE_PRIVATE);
-        String userName = prefs.getString(Constants.KEY_USER_NAME, null);
-        String userId = prefs.getString(Constants.KEY_USER_ID, null);
-        if (userName != null && userId != null) {
-            mUser = new User();
-            mUser.setUsername(userName);
-            mUser.setId(userId);
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "Restored mUser to " + userName);
-            }
-        } else {
-            Log.e(getLogTag(), "Could not restore mUser");
-        }
-    }
-
-    class GroupPagerAdapter extends FragmentPagerAdapter {
-        public GroupPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public SherlockFragment getItem(int position) {
-            switch (position) {
-                case PHOTOSET_PAGE:
-                    return PhotosetGridFragment.newInstance(mPhotoset);
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return PhotosetViewerActivity.CONTENT.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return PhotosetViewerActivity.CONTENT[position %
-                PhotosetViewerActivity.CONTENT.length].toUpperCase();
-        }
+    protected void updateBottomOverlay() {
+        mAq.id(R.id.bottomOverlay).visible();
+        String overlayText = String.format("%s %s %s",
+                mPhotoset.getTitle(), getString(R.string.by),
+                mUser.getUsername());
+        mAq.id(R.id.overlayPrimaryText).text(overlayText);
+        mAq.id(R.id.overlayImage).image(
+                mPhotoset.getPrimaryPhoto().getSmallSquareUrl(),
+                Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
+                0, 0, null, AQuery.FADE_IN_NETWORK);
     }
 }

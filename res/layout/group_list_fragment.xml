@@ -12,6 +12,7 @@
         android:divider="@color/flickr_pink"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:listSelector="@drawable/gridview_item_selector"
         android:dividerHeight="1px"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

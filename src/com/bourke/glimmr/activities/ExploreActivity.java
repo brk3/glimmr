@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.actionbarsherlock.view.Menu;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,27 +8,26 @@ import android.net.Uri;
 
 import android.os.Bundle;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import android.widget.Toast;
+
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
+import com.bourke.glimmr.fragments.LoginFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.GetAccessTokenTask;
-import com.bourke.glimmr.fragments.LoginFragment;
 
 import com.googlecode.flickrjandroid.people.User;
-import android.widget.Toast;
-import com.actionbarsherlock.view.MenuItem;
-import android.support.v4.app.FragmentTransaction;
 
 /**
  * Hosts fragments that don't require log in.

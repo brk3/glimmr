@@ -1,4 +1,5 @@
 package com.bourke.glimmr.fragments.viewer;
+
 import android.content.Context;
 
 import android.os.AsyncTask;
