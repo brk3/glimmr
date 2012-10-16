@@ -115,15 +115,7 @@ public class PhotoViewerActivity extends BaseActivity
             mPager = (ViewPagerDisable) findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
             mPager.setOnPageChangeListener(mAdapter);
-            /* Don't show the PageIndicator if there's a lot of items */
-            if (mPhotos.size() <= Constants.LINE_PAGE_INDICATOR_LIMIT) {
-                PageIndicator indicator =
-                    (LinePageIndicator) findViewById(R.id.indicator);
-                indicator.setViewPager(mPager);
-                indicator.setCurrentItem(startIndex);
-            } else {
-                mPager.setCurrentItem(startIndex);
-            }
+            mPager.setCurrentItem(startIndex);
         } else {
             Log.e(getLogTag(), "Photos from intent are null");
         }
@@ -184,48 +176,48 @@ public class PhotoViewerActivity extends BaseActivity
 
     private void setCommentsFragmentVisibility(Photo photo, boolean show,
             boolean animate) {
-        if (photo != null) {
-            FragmentTransaction ft =
-                getSupportFragmentManager().beginTransaction();
-            if (animate) {
-                ft.setCustomAnimations(android.R.anim.fade_in,
-                        android.R.anim.fade_out);
-            }
-            if (show) {
+        FragmentTransaction ft =
+            getSupportFragmentManager().beginTransaction();
+        if (animate) {
+            ft.setCustomAnimations(android.R.anim.fade_in,
+                    android.R.anim.fade_out);
+        }
+        if (show) {
+            if (photo != null) {
                 mCommentsFragment = CommentsFragment.newInstance(photo);
                 ft.replace(R.id.commentsFragment, mCommentsFragment);
                 ft.addToBackStack(null);
             } else {
-                ft.hide(mCommentsFragment);
+                Log.e(TAG, "setCommentsFragmentVisibility: photo is null");
             }
-            mCommentsFragmentShowing = show;
-            ft.commit();
         } else {
-            Log.e(TAG, "setCommentsFragmentVisibility: photo is null");
+            ft.hide(mCommentsFragment);
         }
+        mCommentsFragmentShowing = show;
+        ft.commit();
     }
 
     private void setExifFragmentVisibility(Photo photo, boolean show,
             boolean animate) {
-        if (photo != null) {
-            FragmentTransaction ft =
-                getSupportFragmentManager().beginTransaction();
-            if (animate) {
-                ft.setCustomAnimations(android.R.anim.fade_in,
-                        android.R.anim.fade_out);
-            }
-            if (show) {
+        FragmentTransaction ft =
+            getSupportFragmentManager().beginTransaction();
+        if (animate) {
+            ft.setCustomAnimations(android.R.anim.fade_in,
+                    android.R.anim.fade_out);
+        }
+        if (show) {
+            if (photo != null) {
                 mExifFragment = ExifInfoFragment.newInstance(photo);
                 ft.replace(R.id.exifFragment, mExifFragment);
                 ft.addToBackStack(null);
             } else {
-                ft.hide(mExifFragment);
+                Log.e(TAG, "setExifFragmentVisibility: photo is null");
             }
-            mExifFragmentShowing = show;
-            ft.commit();
         } else {
-            Log.e(TAG, "setExifFragmentVisibility: photo is null");
+            ft.hide(mExifFragment);
         }
+        mExifFragmentShowing = show;
+        ft.commit();
     }
 
     @Override
@@ -264,6 +256,18 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onVisibilityChanged(final boolean on) {
+        /* If overlay is being switched off, and exif/comments fragments are
+         * showing, hide these too */
+        if (!on) {
+            boolean animateTransition = true;
+            if (mExifFragmentShowing) {
+                setExifFragmentVisibility(null, false, true);
+            }
+            if (mCommentsFragmentShowing) {
+                setCommentsFragmentVisibility(null, false, true);
+            }
+        }
+
         for (WeakReference<Fragment> ref : mFragList) {
             PhotoViewerFragment f = (PhotoViewerFragment) ref.get();
             if (f != null) {

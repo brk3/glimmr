@@ -31,10 +31,6 @@ public class Constants {
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;
 
-    /* Max number of items shown in the PhotoViewerActivity before the
-     * LinePageIndicator is hidden */
-    public static final int LINE_PAGE_INDICATOR_LIMIT = 30;
-
     /* OAuth preferences */
     public static final String CALLBACK_SCHEME = "glimmr-oauth-callback";
     public static final String KEY_OAUTH_TOKEN = "glimmr_oauthtoken";
