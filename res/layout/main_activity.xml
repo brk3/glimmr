@@ -5,46 +5,49 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-
     <include layout="@layout/viewpager" />
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/profile_banner"
+        android:id="@+id/bottomOverlay"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/viewPager"
         android:visibility="invisible">
 
         <TextView
-            android:id="@+id/text_screenname"
+            android:id="@+id/overlayPrimaryText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/tiled_noise_flickr_blue"
+            android:background="@drawable/ab_solid_glimmrdark"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/image_profile"
-            android:paddingLeft="3dp"
-            android:textColor="@color/flickr_pink"
+            android:layout_toRightOf="@+id/overlayImage"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="@dimen/text_size_medium" />
 
-        <!-- Filler, uses TextView so it's the same height as text_screenname
-             -->
+        <!-- Fill behind overlayImage, uses TextView so it's the same height as
+             overlayPrimaryText -->
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/noise_flickr_blue"
+            android:background="@drawable/ab_solid_glimmrdark"
             android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@+id/text_screenname"
+            android:layout_toLeftOf="@+id/overlayPrimaryText"
             android:textSize="@dimen/text_size_medium" />
 
         <ImageView
-            android:id="@id/image_profile"
+            android:id="@id/overlayImage"
             android:layout_width="70dip"
             android:layout_height="70dip"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:padding="3dip"
+            android:layout_marginLeft="6dip"
+            android:layout_marginRight="8dip"
+            android:layout_marginBottom="3dip"
+            android:background="@drawable/border"
             android:src="@drawable/ic_contact_picture"
             android:scaleType="centerCrop" />
     </RelativeLayout>

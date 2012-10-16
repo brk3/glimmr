@@ -3,6 +3,8 @@ package com.bourke.glimmrpro.fragments.home;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import android.os.Bundle;
+
 import android.util.Log;
 
 import com.bourke.glimmrpro.common.Constants;
@@ -10,7 +12,6 @@ import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.tasks.LoadPhotostreamTask;
 
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
@@ -24,6 +25,12 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
     public static PhotoStreamGridFragment newInstance() {
         PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
         return newFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mShowDetailsOverlay = false;
     }
 
     /**

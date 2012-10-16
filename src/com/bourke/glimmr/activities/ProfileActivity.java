@@ -1,8 +1,6 @@
 package com.bourke.glimmrpro.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
@@ -10,7 +8,6 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
@@ -26,12 +23,10 @@ import com.bourke.glimmrpro.tasks.LoadUserTask;
 
 import com.googlecode.flickrjandroid.people.User;
 
-import com.viewpagerindicator.TitlePageIndicator;
-
 /**
  * Requires a User object to be passed in via an intent.
  */
-public class ProfileActivity extends BaseActivity
+public class ProfileActivity extends BottomOverlayActivity
         implements IUserReadyListener {
 
     private static final String TAG = "Glimmr/ProfileActivity";
@@ -41,40 +36,25 @@ public class ProfileActivity extends BaseActivity
     public static final int SETS_PAGE = 2;
     public static final int CONTACTS_PAGE = 3;
 
-    protected LoadUserTask mTask;
-    protected AQuery mAq;
-
-    public static String[] CONTENT;
+    private LoadUserTask mTask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         CONTENT = new String[] { getString(R.string.photos),
             getString(R.string.favorites),
             getString(R.string.sets) };//, getString(R.string.contacts) };
-
-        if (mOAuth == null) {
-            startActivity(new Intent(this, ExploreActivity.class));
-        } else {
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-            setContentView(R.layout.main_activity);
-            mAq = new AQuery(this);
-            handleIntent(getIntent());
-        }
+        super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public User getUser() {
-        return mUser;
-    }
-
+    /*
+     * Default user info doesn't include the buddy icon url, so we need to
+     * fetch extra info about the user
+     */
     protected void startTask() {
-        /* Default user info doesn't include the buddy icon url, so we need to
-         * fetch extra info about the user */
         if (mUser == null) {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Cannot start LoadUserTask, mUser is null");
+            }
             return;
         }
         mTask = new LoadUserTask(this, this, mUser.getId());
@@ -82,68 +62,30 @@ public class ProfileActivity extends BaseActivity
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (mTask != null) {
-            mTask.cancel(true);
-        }
-        if (mUser != null) {
-            SharedPreferences sp = getSharedPreferences(
-                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString(Constants.KEY_PROFILE_USER_NAME,
-                    mUser.getUsername());
-            editor.putString(Constants.KEY_PROFILE_USER_ID, mUser.getId());
-            editor.commit();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mUser == null) {
-            SharedPreferences prefs = getSharedPreferences(
-                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
-            String userName = prefs.getString(
-                    Constants.KEY_PROFILE_USER_NAME, null);
-            String userId = prefs.getString(
-                    Constants.KEY_PROFILE_USER_ID, null);
-            if (userName != null && userId != null) {
-                mUser = new User();
-                mUser.setUsername(userName);
-                mUser.setId(userId);
-                if (Constants.DEBUG) {
-                    Log.d(getLogTag(), "Restored mUser to " + userName);
-                }
-            } else {
-                Log.e(getLogTag(), "Could not restore mUser");
-            }
-        }
-    }
-
-    @Override
     public void onUserReady(User user) {
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onUserReady");
+        if (Constants.DEBUG) Log.d(getLogTag(), "onUserReady");
         if (user == null) {
-            if (Constants.DEBUG)
-                Log.e(getLogTag(), "onUserReady: user is null");
+            Log.e(getLogTag(), "onUserReady: user is null");
             return;
         }
         updateUserOverlay(user);
     }
 
-    public void updateUserOverlay(User user) {
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "updateUserOverlay");
-        mAq.id(R.id.profile_banner).visible();
-        mAq.id(R.id.image_profile).image(user.getBuddyIconUrl(),
+    private void updateUserOverlay(User user) {
+        if (Constants.DEBUG) Log.d(getLogTag(), "updateUserOverlay");
+        mAq.id(R.id.bottomOverlay).visible();
+        mAq.id(R.id.overlayImage).image(user.getBuddyIconUrl(),
                 Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
                 null, AQuery.FADE_IN_NETWORK);
-        mAq.id(R.id.text_screenname).text(user.getUsername());
+        mAq.id(R.id.overlayPrimaryText).text(user.getUsername());
     }
 
-    private void handleIntent(Intent intent) {
+    @Override
+    protected void updateBottomOverlay() {
+    }
+
+    @Override
+    protected void handleIntent(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             mUser = (User) bundle.getSerializable(
@@ -156,7 +98,6 @@ public class ProfileActivity extends BaseActivity
                 startTask();
             } else {
                 if (Constants.DEBUG) Log.e(TAG, "User from intent is null");
-                // TODO: show error / recovery
             }
         } else {
             Log.e(TAG, "Bundle is null, ProfileActivity requires an " +
@@ -164,10 +105,11 @@ public class ProfileActivity extends BaseActivity
         }
     }
 
-    private void initViewPager() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
-                getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
+    @Override
+    protected void initViewPager() {
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        mAdapter = new GlimmrPagerAdapter(
+                getSupportFragmentManager(), mViewPager, mActionBar, CONTENT) {
             @Override
             public SherlockFragment getItemImpl(int position) {
                 switch (position) {
@@ -187,26 +129,6 @@ public class ProfileActivity extends BaseActivity
                 return null;
             }
         };
-        viewPager.setAdapter(adapter);
-
-        TitlePageIndicator indicator =
-            (TitlePageIndicator) findViewById(R.id.indicator);
-        if (indicator != null) {
-            indicator.setViewPager(viewPager);
-        } else {
-            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            viewPager.setOnPageChangeListener(adapter);
-            for (String title : CONTENT) {
-                ActionBar.Tab newTab = mActionBar.newTab().setText(title);
-                newTab.setTabListener(adapter);
-                mActionBar.addTab(newTab);
-            }
-        }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        handleIntent(intent);
+        super.initViewPager();
     }
 }

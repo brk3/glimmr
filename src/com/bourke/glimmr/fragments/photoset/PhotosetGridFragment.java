@@ -3,6 +3,8 @@ package com.bourke.glimmrpro.fragments.photoset;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import android.os.Bundle;
+
 import android.util.Log;
 
 import com.bourke.glimmrpro.common.Constants;
@@ -10,10 +12,10 @@ import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.tasks.LoadPhotosetTask;
 
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
-import com.googlecode.flickrjandroid.people.User;
 
 public class PhotosetGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
@@ -27,6 +29,12 @@ public class PhotosetGridFragment extends PhotoGridFragment
         PhotosetGridFragment newFragment = new PhotosetGridFragment();
         newFragment.mPhotoset = photoset;
         return newFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mShowDetailsOverlay = false;
     }
 
     /**
