@@ -116,48 +116,39 @@ public abstract class BaseFragment extends SherlockFragment {
      */
     protected void startPhotoViewer(PhotoList photos, int pos) {
         if (photos == null) {
-            if (Constants.DEBUG)
-                Log.e(getLogTag(), "Cannot start PhotoViewer, photos is null");
+            Log.e(getLogTag(), "Cannot start PhotoViewer, photos is null");
             return;
         }
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "Starting photo viewer with " + photos.size()
-                + " ids");
         Bundle bundle = new Bundle();
-        //PhotoList subList = makeBalancedSublist(photos, pos);
-        //bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, subList);
-        bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photos);
-        bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
+        if (photos.size() > Constants.FETCH_PER_PAGE) {
+            int page = pos / Constants.FETCH_PER_PAGE;
+            int pageStart = page * Constants.FETCH_PER_PAGE;
+            int pageEnd = pageStart + Constants.FETCH_PER_PAGE;
+            if (pageEnd > photos.size()) {
+               pageEnd = photos.size();
+            }
+            int pagePos = pos % Constants.FETCH_PER_PAGE;
+            PhotoList subList = new PhotoList();
+            subList.addAll(photos.subList(pageStart, pageEnd));
+            bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, subList);
+            bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pagePos);
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(),
+                        String.format("Starting photo viewer with %d ids",
+                        subList.size()));
+            }
+        } else {
+            bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photos);
+            bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(),
+                        String.format("Starting photo viewer with %d ids",
+                        photos.size()));
+            }
+        }
         Intent photoViewer = new Intent(mActivity, PhotoViewerActivity.class);
         photoViewer.putExtras(bundle);
         mActivity.startActivity(photoViewer);
-    }
-
-    /**
-     * Return a sublist that pivots around a index.  Ideally, there will be an
-     * equal number of items either side of the pivot.
-     * - If the min or max overruns the bounds of the list, the other side
-     *   will be padded.
-     * - If the isn't big enough to make up both sides, just return the list.
-     */
-    private PhotoList makeBalancedSublist(PhotoList photos, int pivot) {
-        final int SIDE_SIZE = 10;
-        if (photos.size() < SIDE_SIZE*2) {
-                return photos;
-        }
-        int right = pivot + SIDE_SIZE;
-        int left = pivot - SIDE_SIZE;
-        if (right > photos.size()) {
-            left -= right - photos.size();
-            right = photos.size();
-        }
-        if (left < 0) {
-            right += SIDE_SIZE-pivot;
-            left = 0;
-        }
-        PhotoList ret = new PhotoList();
-        ret.addAll(photos.subList(left, right));
-        return ret;
     }
 
     protected void startProfileViewer(User user) {
