@@ -65,20 +65,7 @@ public class MainActivity extends BaseActivity {
             setContentView(R.layout.main_activity);
             mAq = new AQuery(this);
             initViewPager();
-
-            /* Enable alarms */
-            SharedPreferences defaultSharedPrefs =
-                PreferenceManager.getDefaultSharedPreferences(this);
-            boolean enableNotifications = defaultSharedPrefs.getBoolean(
-                    Constants.KEY_ENABLE_NOTIFICATIONS, false);
-            if (enableNotifications) {
-                if (Constants.DEBUG) Log.d(TAG, "Scheduling alarms");
-                WakefulIntentService.scheduleAlarms(
-                        new AppListener(), this, false);
-            } else {
-                if (Constants.DEBUG) Log.d(TAG, "Cancelling alarms");
-                AppService.cancelAlarms(this);
-            }
+            initNotificationAlarms();
             Appirater.appLaunched(this);
         }
     }
@@ -91,6 +78,21 @@ public class MainActivity extends BaseActivity {
         mOAuth = loadAccessToken(prefs);
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
+        }
+    }
+
+    private void initNotificationAlarms() {
+        SharedPreferences defaultSharedPrefs =
+            PreferenceManager.getDefaultSharedPreferences(this);
+        boolean enableNotifications = defaultSharedPrefs.getBoolean(
+                Constants.KEY_ENABLE_NOTIFICATIONS, false);
+        if (enableNotifications) {
+            if (Constants.DEBUG) Log.d(TAG, "Scheduling alarms");
+            WakefulIntentService.scheduleAlarms(
+                    new AppListener(), this, false);
+        } else {
+            if (Constants.DEBUG) Log.d(TAG, "Cancelling alarms");
+            AppService.cancelAlarms(this);
         }
     }
 
