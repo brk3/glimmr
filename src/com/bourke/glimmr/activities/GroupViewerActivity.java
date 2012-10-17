@@ -63,8 +63,8 @@ public class GroupViewerActivity extends BottomOverlayActivity {
     @Override
     protected void initViewPager() {
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
-        mAdapter = new GlimmrPagerAdapter(
-                getSupportFragmentManager(), mViewPager, mActionBar, CONTENT) {
+        mAdapter = new GlimmrPagerAdapter(getSupportFragmentManager(),
+                mViewPager, mActionBar, CONTENT) {
             @Override
             public SherlockFragment getItemImpl(int position) {
                 switch (position) {
