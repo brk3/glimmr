@@ -71,8 +71,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onResume");
+        if (Constants.DEBUG) Log.d(getLogTag(), "onResume");
         if (mPhotos != null && !mPhotos.isEmpty()) {
             mAq.id(android.R.id.empty).invisible();
             mAq.id(R.id.gridview).visible();
@@ -81,9 +80,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     @Override
     public void onPhotosReady(PhotoList photos) {
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "onPhotosReady");
-
+        if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosReady");
         if (photos == null) {
             mAq.id(R.id.no_connection_layout).visible();
             mAq.id(R.id.gridview).gone();
@@ -205,6 +202,10 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     protected String getLogTag() {
         return TAG;
+    }
+
+    public EndlessAdapter getAdapter() {
+        return mAdapter;
     }
 
     class EndlessGridAdapter extends EndlessAdapter {
