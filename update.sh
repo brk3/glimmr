@@ -11,3 +11,4 @@ android update lib-project -p \
 
 android update project -p . -t android-16
 
+android update test-project -p test -m ..
