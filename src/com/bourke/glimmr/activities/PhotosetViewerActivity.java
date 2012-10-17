@@ -45,8 +45,7 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
                     Constants.KEY_PHOTOSETVIEWER_USER);
             if (mPhotoset != null && mUser != null) {
                 if (Constants.DEBUG) {
-                    Log.d(TAG, "Got photoset to view: " +
-                            mPhotoset.getTitle());
+                    Log.d(TAG, "Got photoset to view: " +mPhotoset.getTitle());
                 }
                 mPhotoset.setOwner(mUser);
                 initViewPager();
@@ -62,9 +61,9 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
 
     @Override
     protected void initViewPager() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
-                getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        mAdapter = new GlimmrPagerAdapter(getSupportFragmentManager(),
+                mViewPager, mActionBar, CONTENT) {
             @Override
             public SherlockFragment getItemImpl(int position) {
                 switch (position) {
