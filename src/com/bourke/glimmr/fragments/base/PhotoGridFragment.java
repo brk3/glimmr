@@ -1,6 +1,10 @@
 package com.bourke.glimmrpro.fragments.base;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 
 import android.graphics.Bitmap;
@@ -9,7 +13,6 @@ import android.os.Bundle;
 
 import android.util.Log;
 
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +25,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
 import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmrpro.event.Events.PhotoItemLongClickDialogListener;
 import com.bourke.glimmrpro.R;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
 
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
@@ -44,7 +49,7 @@ import java.util.List;
  * photostreams, favorites, contacts photos, etc.
  */
 public abstract class PhotoGridFragment extends BaseFragment
-        implements IPhotoListReadyListener {
+        implements IPhotoListReadyListener, PhotoItemLongClickDialogListener {
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
@@ -57,6 +62,9 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected boolean mMorePages = true;
     protected boolean mShowProfileOverlay = false;
     protected boolean mShowDetailsOverlay = true;
+
+    public abstract String getNewestPhotoId();
+    public abstract void storeNewestPhotoId(Photo photo);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,53 +109,50 @@ public abstract class PhotoGridFragment extends BaseFragment
         mPage = 1;
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-            ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(mActivity.getString(R.string.view_profile));
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info =
-            (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int index = info.position;
-
-        String viewProfile = mActivity.getString(R.string.view_profile);
-        if (item.toString().equals(viewProfile)) {
-            Photo p = mPhotos.get(index);
-            if (p != null) {
-                User owner = p.getOwner();
-                if (owner != null) {
-                    startProfileViewer(owner);
-                }
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void initGridView() {
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
         mGridView = (GridView) mLayout.findViewById(R.id.gridview);
         mGridView.setAdapter(mAdapter);
         mGridView.setOnItemClickListener(new GridView.OnItemClickListener() {
+            @Override
             public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
                 startPhotoViewer(mPhotos, position);
             }
         });
-        /* If we're authenticated add a context menu */
-        if (mActivity.getUser() != null) {
-            registerForContextMenu(mGridView);
-        }
+        mGridView.setOnItemLongClickListener(
+                new GridView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View v,
+                    int position, long id) {
+                if (position < mPhotos.size()) {
+                    SherlockDialogFragment d = PhotoItemLongClickDialog
+                        .newInstance(mActivity, PhotoGridFragment.this, mPhotos.get(position));
+                    d.show(mActivity.getSupportFragmentManager(),
+                        "photo_item_long_click");
+                } else {
+                    Log.e(getLogTag(), String.format(
+                            "Cannot call showGridItemContextMenu, " +
+                            "mPhotos.size(%d) != position:(%d)",
+                            mPhotos.size(), position));
+                }
+                /* True indicates we're finished with event and triggers haptic
+                 * feedback */
+                return true;
+            }
+        });
         mAq.id(R.id.gridview).invisible();
     }
 
-    public abstract String getNewestPhotoId();
-    public abstract void storeNewestPhotoId(Photo photo);
+    @Override
+    public void onLongClickDialogSelection(Photo photo, int which) {
+        if (photo == null) {
+            Log.e(getLogTag(), "showGridItemContextMenu: photo is null");
+            return;
+        }
+        startProfileViewer(photo.getOwner());
+    }
 
     /**
      * If we have a most recent id stored, see if it exists in the photo
@@ -315,4 +320,33 @@ public abstract class PhotoGridFragment extends BaseFragment
             TextView viewsText;
         }
     }
+
+    static class PhotoItemLongClickDialog extends SherlockDialogFragment {
+        private PhotoItemLongClickDialogListener mListener;
+        private Context mContext;
+        private Photo mPhoto;
+
+        public static PhotoItemLongClickDialog newInstance(Context context,
+                PhotoItemLongClickDialogListener listener, Photo photo) {
+            PhotoItemLongClickDialog newDialog =
+                new PhotoItemLongClickDialog();
+            newDialog.mListener = listener;
+            newDialog.mContext = context;
+            newDialog.mPhoto = photo;
+            return newDialog;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setItems(R.array.photo_item_long_click_dialog_items,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.onLongClickDialogSelection(mPhoto, which);
+                    }
+                });
+            return builder.create();
+        }
+    }
+
 }
