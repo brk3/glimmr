@@ -107,7 +107,12 @@ public abstract class BaseFragment extends SherlockFragment {
 
     public void showProgressIcon(boolean show) {
         mRefreshing = show;
-        mActivity.invalidateOptionsMenu();
+        /* <ICS seems to crash on this call, seems benign */
+        try {
+            mActivity.invalidateOptionsMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
