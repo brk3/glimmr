@@ -105,6 +105,8 @@ public final class PhotoViewerFragment extends BaseFragment
             }
         });
 
+        /* If this fragment is new as part of a set, update it's overlay
+         * visibility based on the state of the actionbar */
         setOverlayVisibility(mActionBar.isShowing());
 
         displayImage();
@@ -288,7 +290,6 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @SuppressLint("NewApi")
     public void setOverlayVisibility(final boolean on) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "setOverlayVisibility: " + on);
         boolean honeycombOrGreater =
             (android.os.Build.VERSION.SDK_INT >=
              android.os.Build.VERSION_CODES.HONEYCOMB);
@@ -341,7 +342,7 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     public interface IPhotoViewerCallbacks {
-        void onVisibilityChanged(boolean on);
-        void onZoomed(boolean isZoomed);
+        void onVisibilityChanged(final boolean on);
+        void onZoomed(final boolean isZoomed);
     }
 }
