@@ -258,7 +258,7 @@ public final class PhotoViewerFragment extends BaseFragment
 
             /* Set the photo title and author text.  If sw600dp then the parent
              * activity will handle adding them to the actionbar instead */
-            if (mConfiguration.smallestScreenWidthDp < 600) {
+            if (!mActivity.getResources().getBoolean(R.bool.sw600dp)) {
                 String photoTitle = mBasePhoto.getTitle();
                 if (photoTitle == null || photoTitle.length() == 0) {
                     photoTitle = mActivity.getString(R.string.untitled);
