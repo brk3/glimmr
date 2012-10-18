@@ -2,7 +2,6 @@ package com.bourke.glimmrpro.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 
 import android.graphics.Typeface;
 
@@ -69,7 +68,6 @@ public class PhotoViewerActivity extends BaseActivity
     private boolean mExifFragmentShowing = false;
 
     private ActionBarTitle mActionbarTitle;
-    private Configuration mConfiguration;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,8 +85,7 @@ public class PhotoViewerActivity extends BaseActivity
                     R.drawable.ab_bg_black));
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionbarTitle = new ActionBarTitle(this);
-        mConfiguration = getResources().getConfiguration();
-        if (mConfiguration.smallestScreenWidthDp >= 600) {
+        if (getResources().getBoolean(R.bool.sw600dp)) {
             mActionbarTitle.init(mActionBar);
         }
 
@@ -330,7 +327,7 @@ public class PhotoViewerActivity extends BaseActivity
             /* If sw600dp then show the title/author in the actionbar,
              * otherwise the fragment will overlay them on the photo */
             Photo currentlyShowing = mPhotos.get(mCurrentAdapterIndex);
-            if (mConfiguration.smallestScreenWidthDp >= 600) {
+            if (getResources().getBoolean(R.bool.sw600dp)) {
                 String photoTitle = currentlyShowing.getTitle();
                 if (photoTitle == null || photoTitle.length() == 0) {
                     photoTitle = getString(R.string.untitled);
