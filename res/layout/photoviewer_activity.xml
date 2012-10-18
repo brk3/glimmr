@@ -13,21 +13,21 @@
     <FrameLayout
         android:id="@+id/commentsFragment"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:paddingTop="5dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="15dip"
-        android:layout_marginRight="15dip" />
+        android:layout_marginRight="15dip"
+        android:paddingTop="20dp" />
 
     <FrameLayout
         android:id="@+id/exifFragment"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:paddingTop="10dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="15dip"
-        android:layout_marginRight="15dip" />
+        android:layout_marginRight="15dip"
+        android:paddingTop="20dp" />
 
 </RelativeLayout>
