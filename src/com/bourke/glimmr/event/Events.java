@@ -60,4 +60,8 @@ public class Events {
     public interface ICommentAddedListener {
         void onCommentAdded(String commentId);
     }
+
+    public interface PhotoItemLongClickDialogListener {
+        public void onLongClickDialogSelection(Photo photo, int which);
+    }
 }
