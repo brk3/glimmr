@@ -256,15 +256,17 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onVisibilityChanged(final boolean on) {
-        /* If overlay is being switched off, and exif/comments fragments are
-         * showing, hide these too */
+        /* If overlay is being switched off and exif/comments fragments are
+         * showing, dismiss(hide) these and return */
         if (!on) {
             boolean animateTransition = true;
             if (mExifFragmentShowing) {
                 setExifFragmentVisibility(null, false, true);
+                return;
             }
             if (mCommentsFragmentShowing) {
                 setCommentsFragmentVisibility(null, false, true);
+                return;
             }
         }
 
