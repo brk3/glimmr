@@ -167,6 +167,10 @@ public class PhotoViewerActivity extends BaseActivity
         setExifFragmentVisibility(photo, true, animateTransition);
     }
 
+    /**
+     * Overlay fragments are hidden/dismissed automatically onBackPressed, so
+     * just need to update the state variables.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -192,6 +196,7 @@ public class PhotoViewerActivity extends BaseActivity
             }
         } else {
             ft.hide(mCommentsFragment);
+            getSupportFragmentManager().popBackStack();
         }
         mCommentsFragmentShowing = show;
         ft.commit();
@@ -215,6 +220,7 @@ public class PhotoViewerActivity extends BaseActivity
             }
         } else {
             ft.hide(mExifFragment);
+            getSupportFragmentManager().popBackStack();
         }
         mExifFragmentShowing = show;
         ft.commit();
@@ -279,7 +285,7 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     @Override
-    public void onZoomed(boolean isZoomed) {
+    public void onZoomed(final boolean isZoomed) {
         mPager.setPagingEnabled(!isZoomed);
     }
 
