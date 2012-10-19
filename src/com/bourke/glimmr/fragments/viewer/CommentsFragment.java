@@ -24,11 +24,12 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmrpro.activities.ProfileActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.ICommentAddedListener;
 import com.bourke.glimmrpro.event.Events.ICommentsReadyListener;
 import com.bourke.glimmrpro.event.Events.IUserReadyListener;
-import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.AddCommentTask;
 import com.bourke.glimmrpro.tasks.LoadCommentsTask;
@@ -47,7 +48,7 @@ import java.util.Map;
 
 import org.ocpsoft.pretty.time.PrettyTime;
 
-public final class CommentsFragment extends BaseFragment
+public final class CommentsFragment extends BaseDialogFragment
         implements ICommentsReadyListener, ICommentAddedListener,
                    IUserReadyListener {
 
@@ -66,6 +67,12 @@ public final class CommentsFragment extends BaseFragment
         f.mPhoto = p;
         f.mPrettyTime = new PrettyTime(Locale.getDefault());
         return f;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NO_TITLE, 0);
     }
 
     @Override
@@ -108,7 +115,7 @@ public final class CommentsFragment extends BaseFragment
         super.startTask();
         if (mPhoto != null) {
             if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
-            mTask = new LoadCommentsTask(this, this, mPhoto);
+            mTask = new LoadCommentsTask(this, mPhoto);
             mTask.execute(mOAuth);
         } else {
             if (Constants.DEBUG) {
@@ -136,8 +143,7 @@ public final class CommentsFragment extends BaseFragment
         if (Constants.DEBUG) {
             Log.d(getLogTag(), "Starting AddCommentTask: " + commentText);
         }
-        new AddCommentTask(this, this, mPhoto, commentText)
-            .execute(mOAuth);
+        new AddCommentTask(this, mPhoto, commentText).execute(mOAuth);
 
         /* Clear the editText and hide keyboard */
         editText.setText("");
@@ -230,7 +236,8 @@ public final class CommentsFragment extends BaseFragment
                                 new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startProfileViewer(author.user);
+                                ProfileActivity.startProfileViewer(
+                                    author.user, mActivity);
                             }
                         });
                     }

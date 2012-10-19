@@ -29,6 +29,8 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 
 import com.androidquery.AQuery;
 
+import com.bourke.glimmrpro.activities.PhotoViewerActivity;
+import com.bourke.glimmrpro.activities.ProfileActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.event.Events.PhotoItemLongClickDialogListener;
@@ -118,7 +120,8 @@ public abstract class PhotoGridFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
-                startPhotoViewer(mPhotos, position);
+                PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
+                    position);
             }
         });
         mGridView.setOnItemLongClickListener(
@@ -127,8 +130,9 @@ public abstract class PhotoGridFragment extends BaseFragment
             public boolean onItemLongClick(AdapterView<?> parent, View v,
                     int position, long id) {
                 if (position < mPhotos.size()) {
-                    SherlockDialogFragment d = PhotoItemLongClickDialog
-                        .newInstance(mActivity, PhotoGridFragment.this, mPhotos.get(position));
+                    SherlockDialogFragment d =
+                        PhotoItemLongClickDialog.newInstance(mActivity,
+                            PhotoGridFragment.this, mPhotos.get(position));
                     d.show(mActivity.getSupportFragmentManager(),
                         "photo_item_long_click");
                 } else {
@@ -151,7 +155,7 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.e(getLogTag(), "showGridItemContextMenu: photo is null");
             return;
         }
-        startProfileViewer(photo.getOwner());
+        ProfileActivity.startProfileViewer(photo.getOwner(), mActivity);
     }
 
     /**
@@ -293,7 +297,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                             new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startProfileViewer(photo.getOwner());
+                            ProfileActivity.startProfileViewer(
+                                photo.getOwner(), mActivity);
                         }
                     });
                 }

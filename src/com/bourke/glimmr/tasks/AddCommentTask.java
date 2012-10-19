@@ -21,11 +21,9 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
     private ICommentAddedListener mListener;
     private Photo mPhoto;
     private String mCommentText;
-    private BaseFragment mBaseFragment;
 
-    public AddCommentTask(BaseFragment a, ICommentAddedListener listener,
+    public AddCommentTask(ICommentAddedListener listener,
             Photo photo, String commentText) {
-        mBaseFragment = a;
         mListener = listener;
         mPhoto = photo;
         mCommentText = commentText;
