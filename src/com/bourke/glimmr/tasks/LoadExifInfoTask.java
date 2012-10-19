@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -25,12 +24,9 @@ public class LoadExifInfoTask
 
     private IExifInfoReadyListener mListener;
     private Photo mPhoto;
-    private BaseFragment mBaseFragment;
     private Exception mException = null;
 
-    public LoadExifInfoTask(BaseFragment a, IExifInfoReadyListener listener,
-            Photo photo) {
-        mBaseFragment = a;
+    public LoadExifInfoTask(IExifInfoReadyListener listener, Photo photo) {
         mListener = listener;
         mPhoto = photo;
     }
@@ -38,7 +34,6 @@ public class LoadExifInfoTask
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -75,6 +70,5 @@ public class LoadExifInfoTask
         } else {
             mListener.onExifInfoReady(new ArrayList<Exif>(), mException);
         }
-        mBaseFragment.showProgressIcon(false);
     }
 }

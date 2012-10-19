@@ -1,5 +1,7 @@
 package com.bourke.glimmr.activities;
 
+import android.app.Activity;
+
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -37,6 +39,21 @@ public class ProfileActivity extends BottomOverlayActivity
     public static final int CONTACTS_PAGE = 3;
 
     private LoadUserTask mTask;
+
+    public static void startProfileViewer(User user, Activity activity) {
+        if (user == null) {
+            Log.e(TAG, "Cannot start ProfileActivity, user is null");
+            return;
+        }
+        if (Constants.DEBUG) {
+            Log.d(TAG, "Starting ProfileActivity for " + user.getUsername());
+        }
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.KEY_PROFILEVIEWER_USER, user);
+        Intent profileViewer = new Intent(activity, ProfileActivity.class);
+        profileViewer.putExtras(bundle);
+        activity.startActivity(profileViewer);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
