@@ -18,23 +18,22 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IExifInfoReadyListener;
-import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.LoadExifInfoTask;
 
+import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
-import com.googlecode.flickrjandroid.FlickrException;
 
-public final class ExifInfoFragment extends BaseFragment
+public final class ExifInfoFragment extends BaseDialogFragment
         implements IExifInfoReadyListener {
 
     protected String TAG = "Glimmr/ExifInfoFragment";
 
     private Photo mPhoto = new Photo();
-    private AQuery mAq;
     private LoadExifInfoTask mTask;
 
     /* http://www.flickr.com/services/api/flickr.photos.getExif.html */
@@ -44,6 +43,12 @@ public final class ExifInfoFragment extends BaseFragment
         ExifInfoFragment photoFragment = new ExifInfoFragment();
         photoFragment.mPhoto = photo;
         return photoFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NO_TITLE, 0);
     }
 
     @Override
@@ -59,9 +64,8 @@ public final class ExifInfoFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "startTask()");
-        mTask = new LoadExifInfoTask(this, this, mPhoto);
+        if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
+        mTask = new LoadExifInfoTask(this, mPhoto);
         mTask.execute(mOAuth);
     }
 
@@ -70,8 +74,7 @@ public final class ExifInfoFragment extends BaseFragment
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
-            if (Constants.DEBUG)
-                Log.d(TAG, "onPause: cancelling task");
+            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
         }
     }
 
@@ -129,7 +132,6 @@ public final class ExifInfoFragment extends BaseFragment
                             mActivity.getString(R.string.no_connection));
                 }
             } else {
-                // TODO: add more appropriate error message
                 mAq.id(R.id.textViewErrorMessage).text(
                         mActivity.getString(R.string.no_connection));
             }

@@ -25,11 +25,8 @@ public class LoadCommentsTask
 
     private ICommentsReadyListener mListener;
     private Photo mPhoto;
-    private BaseFragment mBaseFragment;
 
-    public LoadCommentsTask(BaseFragment a, ICommentsReadyListener listener,
-            Photo photo) {
-        mBaseFragment = a;
+    public LoadCommentsTask(ICommentsReadyListener listener, Photo photo) {
         mListener = listener;
         mPhoto = photo;
     }
@@ -37,7 +34,6 @@ public class LoadCommentsTask
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -76,7 +72,6 @@ public class LoadCommentsTask
                 Log.e(TAG, "Error fetching comments, result is null");
         }
         mListener.onCommentsReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override
