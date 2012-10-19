@@ -1,7 +1,6 @@
 package com.bourke.glimmr.fragments.base;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
@@ -24,14 +23,10 @@ import com.actionbarsherlock.view.MenuItem;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.activities.PhotoViewerActivity;
-import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
-import com.googlecode.flickrjandroid.people.User;
-import com.googlecode.flickrjandroid.photos.PhotoList;
 
 /**
  *
@@ -46,7 +41,7 @@ public abstract class BaseFragment extends SherlockFragment {
     protected BaseActivity mActivity;
 
     /**
-     * Should contain current user and valid access token for that user.
+     * Should contain logged in user and valid access token for that user.
      */
     protected OAuth mOAuth;
 
@@ -113,64 +108,6 @@ public abstract class BaseFragment extends SherlockFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Start the PhotoViewerActivity with a list of photos to view and an index
-     * to start at in the list.
-     */
-    protected void startPhotoViewer(PhotoList photos, int pos) {
-        if (photos == null) {
-            Log.e(getLogTag(), "Cannot start PhotoViewer, photos is null");
-            return;
-        }
-        Bundle bundle = new Bundle();
-        if (photos.size() > Constants.FETCH_PER_PAGE) {
-            int page = pos / Constants.FETCH_PER_PAGE;
-            int pageStart = page * Constants.FETCH_PER_PAGE;
-            int pageEnd = pageStart + Constants.FETCH_PER_PAGE;
-            if (pageEnd > photos.size()) {
-               pageEnd = photos.size();
-            }
-            int pagePos = pos % Constants.FETCH_PER_PAGE;
-            PhotoList subList = new PhotoList();
-            subList.addAll(photos.subList(pageStart, pageEnd));
-            bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, subList);
-            bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pagePos);
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(),
-                        String.format("Starting photo viewer with %d ids",
-                        subList.size()));
-            }
-        } else {
-            bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photos);
-            bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(),
-                        String.format("Starting photo viewer with %d ids",
-                        photos.size()));
-            }
-        }
-        Intent photoViewer = new Intent(mActivity, PhotoViewerActivity.class);
-        photoViewer.putExtras(bundle);
-        mActivity.startActivity(photoViewer);
-    }
-
-    protected void startProfileViewer(User user) {
-        if (user == null) {
-            if (Constants.DEBUG)
-                Log.e(getLogTag(),
-                        "Cannot start ProfileActivity, user is null");
-            return;
-        }
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "Starting ProfileActivity for "
-                + user.getUsername());
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_PROFILEVIEWER_USER, user);
-        Intent profileViewer = new Intent(mActivity, ProfileActivity.class);
-        profileViewer.putExtras(bundle);
-        mActivity.startActivity(profileViewer);
     }
 
     protected void startTask() {

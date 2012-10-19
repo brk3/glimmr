@@ -1,5 +1,7 @@
 package com.bourke.glimmr.activities;
 
+import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -34,9 +36,7 @@ import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-
-import com.viewpagerindicator.LinePageIndicator;
-import com.viewpagerindicator.PageIndicator;
+import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import java.lang.ref.WeakReference;
 
@@ -68,6 +68,47 @@ public class PhotoViewerActivity extends BaseActivity
     private boolean mExifFragmentShowing = false;
 
     private ActionBarTitle mActionbarTitle;
+
+    /**
+     * Start the PhotoViewerActivity with a list of photos to view and an index
+     * to start at in the list.
+     */
+    public static void startPhotoViewer(Activity activity, PhotoList photos,
+            int pos) {
+        if (photos == null) {
+            Log.e(TAG, "Cannot start PhotoViewer, photos is null");
+            return;
+        }
+        Bundle bundle = new Bundle();
+        if (photos.size() > Constants.FETCH_PER_PAGE) {
+            int page = pos / Constants.FETCH_PER_PAGE;
+            int pageStart = page * Constants.FETCH_PER_PAGE;
+            int pageEnd = pageStart + Constants.FETCH_PER_PAGE;
+            if (pageEnd > photos.size()) {
+               pageEnd = photos.size();
+            }
+            int pagePos = pos % Constants.FETCH_PER_PAGE;
+            PhotoList subList = new PhotoList();
+            subList.addAll(photos.subList(pageStart, pageEnd));
+            bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, subList);
+            bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pagePos);
+            if (Constants.DEBUG) {
+                Log.d(TAG, String.format("Starting photo viewer with %d ids",
+                            subList.size()));
+            }
+        } else {
+            bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photos);
+            bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
+            if (Constants.DEBUG) {
+                Log.d(TAG, String.format("Starting photo viewer with %d ids",
+                            photos.size()));
+            }
+        }
+        Intent photoViewer = new Intent(activity, PhotoViewerActivity.class);
+        photoViewer.putExtras(bundle);
+        activity.startActivity(photoViewer);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -149,19 +190,33 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     public void onCommentsButtonClick(Photo photo) {
-        boolean animateTransition = true;
-        if (mExifFragmentShowing) {
-            setExifFragmentVisibility(photo, false, animateTransition);
+        if (getResources().getBoolean(R.bool.sw600dp)) {
+            boolean animateTransition = true;
+            if (mExifFragmentShowing) {
+                setExifFragmentVisibility(photo, false, animateTransition);
+            }
+            setCommentsFragmentVisibility(photo, true, animateTransition);
+        } else {
+            CommentsFragment commentsDialogFrag =
+                CommentsFragment.newInstance(photo);
+            commentsDialogFrag.show(getSupportFragmentManager(),
+                    "CommentsDialogFragment");
         }
-        setCommentsFragmentVisibility(photo, true, animateTransition);
     }
 
     public void onExifButtonClick(Photo photo) {
-        boolean animateTransition = true;
-        if (mCommentsFragmentShowing) {
-            setCommentsFragmentVisibility(photo, false, animateTransition);
+        if (getResources().getBoolean(R.bool.sw600dp)) {
+            boolean animateTransition = true;
+            if (mCommentsFragmentShowing) {
+                setCommentsFragmentVisibility(photo, false, animateTransition);
+            }
+            setExifFragmentVisibility(photo, true, animateTransition);
+        } else {
+            ExifInfoFragment exifInfoDialogFrag =
+                ExifInfoFragment.newInstance(photo);
+            exifInfoDialogFrag.show(getSupportFragmentManager(),
+                    "ExifInfoDialogFragment");
         }
-        setExifFragmentVisibility(photo, true, animateTransition);
     }
 
     /**
