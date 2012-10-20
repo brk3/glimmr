@@ -48,7 +48,6 @@
             android:layout_marginRight="8dip"
             android:layout_marginBottom="3dip"
             android:background="@drawable/border"
-            android:src="@drawable/ic_contact_picture"
             android:scaleType="centerCrop" />
     </RelativeLayout>
 
