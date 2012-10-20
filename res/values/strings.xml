@@ -30,6 +30,7 @@
     <string name="menu_view_comments">Comments</string>
     <string name="menu_view_exif">View Exif Info</string>
     <string name="no_connection">Something went wrong.\nTry refreshing?</string>
+    <string name="no_search_results">No results found.</string>
     <string name="no_exif_permission">The owner of the photo does not want to share EXIF data.</string>
     <string name="notification_contacts_content">from your contacts.</string>
     <string name="notification_contacts_ticker">Your Flickr contacts have posted new photos</string>
@@ -48,8 +49,11 @@
     <string name="cb_high_quality_thumbnails_title">High Quality Thumbnails</string>
     <string name="cb_high_quality_thumbnails_summary">Uses more bandwidth and is slower</string>
     <string name="cb_enable_notifications_title">Enable Notifications</string>
+    <string name="people">People</string>
     <string name="pref_notification_intervals_title">Sync Interval</string>
     <string name="pro_donate">Pro/Donate</string>
+    <string name="menu_search">Search</string>
+    <string name="search_hint">Search images and people</string>
     <string name="set_preferences">Set Preferences</string>
     <string name="sets">Sets</string>
     <string name="set_wallpaper">Set Wallpaper</string>
