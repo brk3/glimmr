@@ -2,9 +2,10 @@ package com.bourke.glimmrpro.fragments.viewer;
 
 import android.os.Bundle;
 
+import android.text.TextUtils;
+
 import android.util.Log;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,26 +85,29 @@ public final class ExifInfoFragment extends BaseDialogFragment
      */
     @SuppressWarnings("deprecation")
     private void addKeyValueRow(String key, String value) {
-        TableLayout tl = (TableLayout)
-            mLayout.findViewById(R.id.extraExifInfo);
+        TableLayout tl = (TableLayout)mLayout.findViewById(R.id.extraExifInfo);
+
         /* Create the TableRow */
         TableRow tr = new TableRow(mActivity);
-        TableRow.LayoutParams tableRowParams = new TableRow.LayoutParams(
-                    TableLayout.LayoutParams.FILL_PARENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT);
-        /* left, top, right, bottom */
-        tableRowParams.setMargins(5, 5, 5, 5);
-        tr.setLayoutParams(tableRowParams);
 
+        /* Create the left column for the key */
         TextView textViewKey =  new TextView(mActivity);
         textViewKey.setText(key);
         tr.addView(textViewKey);
 
+        /* Create the right column for the value */
         TextView textViewValue =  new TextView(mActivity);
         textViewValue.setText(value);
         textViewValue.setTextColor(
                 mActivity.getResources().getColor(R.color.flickr_pink));
-        textViewValue.setGravity(Gravity.RIGHT);
+        textViewValue.setMaxLines(1);
+        textViewValue.setEllipsize(TextUtils.TruncateAt.END);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(
+                TableLayout.LayoutParams.FILL_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT);
+        /* left, top, right, bottom */
+        lp.setMargins(8, 0, 0, 0);
+        textViewValue.setLayoutParams(lp);
         tr.addView(textViewValue);
 
         /* Add the row to the table */
@@ -158,6 +162,17 @@ public final class ExifInfoFragment extends BaseDialogFragment
                         );
                 addKeyValueRow(tagConverted, e.getRaw());
             }
+        }
+        /* If any of the iso/shutter/aperture aren't available, set them to a
+         * question mark */
+        if (mAq.id(R.id.textViewISOValue).getText().equals("")) {
+            mAq.id(R.id.textViewISOValue).text("?");
+        }
+        if (mAq.id(R.id.textViewShutterValue).getText().equals("")) {
+            mAq.id(R.id.textViewShutterValue).text("?");
+        }
+        if (mAq.id(R.id.textViewApertureValue).getText().equals("")) {
+            mAq.id(R.id.textViewApertureValue).text("?");
         }
     }
 
