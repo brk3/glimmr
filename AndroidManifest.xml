@@ -30,6 +30,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".activities.SearchActivity" />
         </activity>
 
         <activity android:name=".activities.ExploreActivity"
@@ -41,23 +43,46 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="@string/callback_scheme" />
             </intent-filter>
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".activities.SearchActivity" />
         </activity>
 
         <activity android:name=".activities.ProfileActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name">
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".activities.SearchActivity" />
+        </activity>
 
         <activity android:name=".activities.PhotoViewerActivity"
             android:uiOptions="splitActionBarWhenNarrow"
-            android:label="@string/app_name" />
+            android:label="@string/app_name">
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".activities.SearchActivity" />
+        </activity>
 
         <activity android:name=".activities.GroupViewerActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name">
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".activities.SearchActivity" />
+        </activity>
 
         <activity android:name=".activities.PhotosetViewerActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name">
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".activities.SearchActivity" />
+        </activity>
 
         <activity android:name=".activities.PreferencesActivity"
             android:label="@string/set_preferences" />
+
+        <activity android:name=".activities.SearchActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                       android:resource="@xml/searchable"/>
+        </activity>
 
 		<receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
 			<intent-filter>

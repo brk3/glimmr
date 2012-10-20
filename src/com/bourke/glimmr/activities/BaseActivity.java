@@ -222,6 +222,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 finish();
                 return true;
 
+            case R.id.menu_search:
+                onSearchRequested();
+                return true;
+
             case R.id.menu_preferences:
                 Intent preferencesActivity = new Intent(getBaseContext(),
                         PreferencesActivity.class);
