@@ -26,6 +26,11 @@
         android:visibility="gone" />
 
     <include
+        layout="@layout/no_search_results"
+        android:id="@+id/no_search_results_layout"
+        android:visibility="gone" />
+
+    <include
         layout="@layout/pending"
         android:id="@android:id/empty" />
 
