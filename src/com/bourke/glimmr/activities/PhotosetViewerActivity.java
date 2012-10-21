@@ -12,6 +12,7 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.photoset.PhotosetGridFragment;
 import com.bourke.glimmr.R;
@@ -26,6 +27,26 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
     public static final int PHOTOSET_PAGE = 0;
 
     private Photoset mPhotoset = new Photoset();
+
+    public static void startPhotosetViewer(BaseActivity activity,
+            Photoset photoset) {
+        if (photoset == null) {
+            Log.e(TAG, "Cannot start SetViewerActivity, photoset is null");
+            return;
+        }
+        if (Constants.DEBUG) {
+            Log.d(TAG, "Starting SetViewerActivity for "+ photoset.getTitle());
+        }
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_PHOTOSET,
+                photoset);
+        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_USER,
+                activity.getUser());
+        Intent photosetViewer = new Intent(activity, PhotosetViewerActivity
+                .class);
+        photosetViewer.putExtras(bundle);
+        activity.startActivity(photosetViewer);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

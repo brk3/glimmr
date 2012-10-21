@@ -43,6 +43,7 @@ import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.graphics.Typeface;
 
 /**
  * Base Fragment that contains a GridView of photos.
@@ -279,6 +280,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                 } else {
                     aq.id(holder.imageOverlay).invisible();
                 }
+
+                mActivity.setFont(holder.ownerText, Constants.FONT_ROBOTOBOLD);
 
                 /* Fetch the main photo */
                 aq.id(holder.image).image(photo.getLargeSquareUrl(),

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="sw600dp">false</bool>
+    <bool name="sw600dp_land">false</bool>
 </resources>
