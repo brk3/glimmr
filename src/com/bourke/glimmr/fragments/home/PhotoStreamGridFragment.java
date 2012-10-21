@@ -30,7 +30,8 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mShowDetailsOverlay = false;
+        /* Set to false to disable overlay */
+        mShowDetailsOverlay = true;
     }
 
     /**
