@@ -420,12 +420,8 @@ public class PhotoViewerActivity extends BaseActivity
             View v = inflator.inflate(R.layout.photoviewer_action_bar, null);
             mPhotoTitle = (TextView) v.findViewById(R.id.photoTitle);
             mPhotoAuthor = (TextView) v.findViewById(R.id.photoAuthor);
-            Typeface robotoThin = Typeface.createFromAsset(
-                    mContext.getAssets(), Constants.FONT_ROBOTOTHIN);
-            Typeface robotoLight = Typeface.createFromAsset(
-                    mContext.getAssets(), Constants.FONT_ROBOTOLIGHT);
-            mPhotoTitle.setTypeface(robotoLight);
-            mPhotoAuthor.setTypeface(robotoThin);
+            setFont(mPhotoTitle, Constants.FONT_ROBOTOLIGHT);
+            setFont(mPhotoAuthor, Constants.FONT_ROBOTOTHIN);
             actionbar.setDisplayShowCustomEnabled(true);
             actionbar.setDisplayShowTitleEnabled(false);
             actionbar.setCustomView(v);

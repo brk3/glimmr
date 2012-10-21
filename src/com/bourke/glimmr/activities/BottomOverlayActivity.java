@@ -51,6 +51,12 @@ public abstract class BottomOverlayActivity extends BaseActivity {
         }
     }
 
+    private void initBottomOverlayFont() {
+        TextView overlayPrimaryText =
+            (TextView) findViewById(R.id.overlayPrimaryText);
+        setFont(overlayPrimaryText, Constants.FONT_ROBOTOLIGHT);
+    }
+
     protected void initViewPager() {
         if (mViewPager == null || mAdapter == null) {
             Log.e(TAG, "mViewPager and mAdapter must be initialised before " +
@@ -82,13 +88,5 @@ public abstract class BottomOverlayActivity extends BaseActivity {
     @Override
     public User getUser() {
         return mUser;
-    }
-
-    private void initBottomOverlayFont() {
-        Typeface robotoLight =
-            Typeface.createFromAsset(getAssets(), Constants.FONT_ROBOTOLIGHT);
-        TextView overlayPrimaryText =
-            (TextView) findViewById(R.id.overlayPrimaryText);
-        overlayPrimaryText.setTypeface(robotoLight);
     }
 }
