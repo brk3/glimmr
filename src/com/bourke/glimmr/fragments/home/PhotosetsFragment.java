@@ -1,7 +1,5 @@
 package com.bourke.glimmr.fragments.home;
 
-import android.content.Intent;
-
 import android.graphics.Bitmap;
 
 import android.os.Bundle;
@@ -28,12 +26,13 @@ import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadPhotosetsTask;
 
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photosets.Photosets;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.widget.LinearLayout;
+import android.graphics.Typeface;
 
 /**
  *
@@ -69,61 +68,50 @@ public class PhotosetsFragment extends BaseFragment
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
-            if (Constants.DEBUG)
-                Log.d(TAG, "onPause: cancelling task");
+            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(R.layout
-                .photoset_list_fragment, container, false);
+        if (getResources().getBoolean(R.bool.sw600dp_land)) {
+            mLayout = (RelativeLayout) inflater.inflate(
+                    R.layout.gridview_fragment, container, false);
+        } else {
+            mLayout = (RelativeLayout) inflater.inflate(
+                    R.layout.listview_fragment, container, false);
+        }
         mAq = new AQuery(mActivity, mLayout);
         return mLayout;
     }
 
-    private void startPhotosetViewer(Photoset photoset) {
-        if (photoset == null) {
-            if (Constants.DEBUG)
-                Log.e(getLogTag(),
-                    "Cannot start SetViewerActivity, photoset is null");
-            return;
-        }
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "Starting SetViewerActivity for "
-                + photoset.getTitle());
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_PHOTOSET,
-                photoset);
-        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_USER,
-                mActivity.getUser());
-        Intent photosetViewer = new Intent(mActivity, PhotosetViewerActivity
-                .class);
-        photosetViewer.putExtras(bundle);
-        mActivity.startActivity(photosetViewer);
-    }
-
     public void itemClicked(AdapterView<?> parent, View view, int position,
             long id) {
-        startPhotosetViewer(mPhotosets.get(position));
+        PhotosetViewerActivity.startPhotosetViewer(mActivity,
+                mPhotosets.get(position));
     }
 
     @Override
     public void onPhotosetsReady(Photosets photoSets) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
 
+        int adapterView = R.id.list;
+        if (getResources().getBoolean(R.bool.sw600dp_land)) {
+            adapterView = R.id.gridview;
+        }
+
         if (photoSets == null) {
             mAq.id(R.id.no_connection_layout).visible();
-            mAq.id(R.id.list).gone();
+            mAq.id(adapterView).gone();
         } else {
-            mAq.id(R.id.list).visible();
+            mAq.id(adapterView).visible();
             mAq.id(R.id.no_connection_layout).gone();
             mPhotosets = new ArrayList<Photoset>(photoSets.getPhotosets());
             SetListAdapter adapter = new SetListAdapter(
-                    mActivity, R.layout.photoset_list_item,
+                    mActivity, R.layout.photoset_cover_item,
                     (ArrayList<Photoset>)mPhotosets);
-            mAq.id(R.id.list).adapter(adapter).itemClicked(this,
+            mAq.id(adapterView).adapter(adapter).itemClicked(this,
                     "itemClicked");
         }
         mAq.id(android.R.id.empty).invisible();
@@ -148,11 +136,11 @@ public class PhotosetsFragment extends BaseFragment
 
             if (convertView == null) {
                 convertView = mActivity.getLayoutInflater().inflate(
-                        R.layout.photoset_list_item, null);
+                        R.layout.photoset_cover_item, null);
                 holder = new ViewHolder();
                 holder.imageItem = (ImageView)
                     convertView.findViewById(R.id.imageItem);
-                holder.imageOverlay = (RelativeLayout)
+                holder.imageOverlay = (LinearLayout)
                     convertView.findViewById(R.id.imageOverlay);
                 holder.photosetNameText = (TextView)
                     convertView.findViewById(R.id.photosetNameText);
@@ -164,6 +152,9 @@ public class PhotosetsFragment extends BaseFragment
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
+
+            mActivity.setFont(holder.photosetNameText,
+                    Constants.FONT_ROBOTOBOLD);
 
             final Photoset photoset = mPhotosets.get(position);
             AQuery aq = mAq.recycle(convertView);
@@ -182,7 +173,8 @@ public class PhotosetsFragment extends BaseFragment
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);
 
-                aq.id(holder.photosetNameText).text(photoset.getTitle());
+                aq.id(holder.photosetNameText).text(
+                        photoset.getTitle().toUpperCase());
                 aq.id(holder.numImagesInSetText).text(
                         ""+photoset.getPhotoCount());
             }
@@ -194,7 +186,7 @@ public class PhotosetsFragment extends BaseFragment
             ImageView numImagesIcon;
             TextView photosetNameText;
             TextView numImagesInSetText;
-            RelativeLayout imageOverlay;
+            LinearLayout imageOverlay;
         }
     }
 }

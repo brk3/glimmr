@@ -85,10 +85,8 @@ public final class CommentsFragment extends BaseDialogFragment
         mAq.id(R.id.progressIndicator).visible();
 
         /* Set title text to uppercase and roboto font */
-        Typeface robotoRegular = Typeface.createFromAsset(
-                mActivity.getAssets(), Constants.FONT_ROBOTOREGULAR);
         TextView titleText = (TextView) mLayout.findViewById(R.id.titleText);
-        titleText.setTypeface(robotoRegular);
+        mActivity.setFont(titleText, Constants.FONT_ROBOTOREGULAR);
         String title = mActivity.getString(R.string.menu_view_comments);
         titleText.setText(title.toUpperCase());
 

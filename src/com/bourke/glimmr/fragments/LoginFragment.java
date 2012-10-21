@@ -122,18 +122,14 @@ public final class LoginFragment extends BaseFragment
 
     private void setupTextViews() {
         /* Set fonts */
-        Typeface robotoRegular = Typeface.createFromAsset(
-                mActivity.getAssets(), Constants.FONT_ROBOTOREGULAR);
-        Typeface robotoThin = Typeface.createFromAsset(mActivity.getAssets(),
+        mActivity.setFont((TextView) mLayout.findViewById(R.id.textWelcome),
                 Constants.FONT_ROBOTOTHIN);
-        ((TextView) mLayout.findViewById(R.id.textWelcome))
-            .setTypeface(robotoThin);
-        ((TextView) mLayout.findViewById(R.id.textTo))
-            .setTypeface(robotoThin);
-        ((TextView) mLayout.findViewById(R.id.textGlimmr))
-            .setTypeface(robotoRegular);
-        ((TextView) mLayout.findViewById(R.id.textNotNow))
-            .setTypeface(robotoThin);
+        mActivity.setFont((TextView) mLayout.findViewById(R.id.textTo),
+                Constants.FONT_ROBOTOTHIN);
+        mActivity.setFont((TextView) mLayout.findViewById(R.id.textGlimmr),
+                Constants.FONT_ROBOTOREGULAR);
+        mActivity.setFont((TextView) mLayout.findViewById(R.id.textNotNow),
+                Constants.FONT_ROBOTOTHIN);
 
         mAq.id(R.id.btnLogin).clicked(new View.OnClickListener() {
             @Override
