@@ -19,14 +19,26 @@ public class Constants {
     public static final String KEY_USER_ID = "glimmr_user_id";
 
     /* Fonts */
-    public static final String FONT_SHADOWSINTOLIGHT =
+    public static final int FONT_SHADOWSINTOLIGHT = 0;
+    public static final String FONT_PATH_SHADOWSINTOLIGHT =
         "fonts/ShadowsIntoLight.ttf";
-    public static final String FONT_ROBOTOREGULAR =
+
+    public static final int FONT_ROBOTOREGULAR = 1;
+    public static final String FONT_PATH_ROBOTOREGULAR =
         "fonts/Roboto-Regular.ttf";
-    public static final String FONT_ROBOTOTHIN =
+
+    public static final int FONT_ROBOTOTHIN = 2;
+    public static final String FONT_PATH_ROBOTOTHIN =
         "fonts/Roboto-Thin.ttf";
-    public static final String FONT_ROBOTOLIGHT =
+
+    public static final int FONT_ROBOTOLIGHT = 3;
+    public static final String FONT_PATH_ROBOTOLIGHT =
         "fonts/Roboto-Light.ttf";
+
+    public static final int FONT_ROBOTOBOLD = 4;
+    public static final String FONT_PATH_ROBOTOBOLD =
+        "fonts/Roboto-Bold.ttf";
+
 
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;

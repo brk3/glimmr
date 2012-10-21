@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/image_layout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
         android:id="@+id/imageItem"
         android:layout_width="fill_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/imageOverlay"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -20,34 +17,33 @@
 
         <TextView
             android:id="@+id/photosetNameText"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_gravity="center_vertical"
+            android:lines="1"
+            android:ellipsize="end"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/numImagesInSetText"
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
+            android:layout_marginRight="4dp"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_medium"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true" />
+            android:textSize="@dimen/text_size_small" />
 
         <ImageView
             android:id="@+id/numImagesIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@id/numImagesInSetText"
-            android:layout_alignParentBottom="true"
             android:src="@drawable/ic_content_picture_dark" />
+    </LinearLayout>
 
-    </RelativeLayout>
-
-</FrameLayout>
+</merge>

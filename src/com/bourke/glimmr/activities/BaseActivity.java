@@ -40,6 +40,7 @@ import com.bourke.glimmrpro.R;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
+import android.graphics.Typeface;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
 
@@ -57,10 +58,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected User mUser;
 
     protected AQuery mAq;
-
     protected ActionBar mActionBar;
 
     private GlimmrAbCustomTitle mActionbarTitle;
+
+    /** Fonts available for use */
+    private Typeface mFontShadowsIntoLight;
+    private Typeface mFontRobotoRegular;
+    private Typeface mFontRobotoThin;
+    private Typeface mFontRobotoLight;
+    private Typeface mFontRobotoBold;
 
     public abstract User getUser();
 
@@ -84,7 +91,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
          * activities */
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
-            mActionbarTitle = new GlimmrAbCustomTitle(getBaseContext());
+            mActionbarTitle = new GlimmrAbCustomTitle(this);
             mActionbarTitle.init(mActionBar);
         }
 
@@ -97,6 +104,53 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 Log.d(getLogTag(), "MEM_CACHE_PX_SIZE: " +
                         Constants.MEM_CACHE_PX_SIZE);
             }
+        }
+    }
+
+    public void setFont(TextView textView, final int font) {
+        switch (font) {
+            case Constants.FONT_SHADOWSINTOLIGHT:
+                if (mFontShadowsIntoLight == null) {
+                    mFontShadowsIntoLight = Typeface.createFromAsset(
+                            getAssets(), Constants.FONT_PATH_SHADOWSINTOLIGHT);
+                }
+                textView.setTypeface(mFontShadowsIntoLight);
+                break;
+
+            case Constants.FONT_ROBOTOREGULAR:
+                if (mFontRobotoRegular == null) {
+                    mFontRobotoRegular = Typeface.createFromAsset(
+                            getAssets(), Constants.FONT_PATH_ROBOTOREGULAR);
+                }
+                textView.setTypeface(mFontRobotoRegular);
+                break;
+
+            case Constants.FONT_ROBOTOTHIN:
+                if (mFontRobotoThin == null) {
+                    mFontRobotoThin = Typeface.createFromAsset(
+                            getAssets(), Constants.FONT_PATH_ROBOTOTHIN);
+                }
+                textView.setTypeface(mFontRobotoThin);
+                break;
+
+            case Constants.FONT_ROBOTOLIGHT:
+                if (mFontRobotoLight == null) {
+                    mFontRobotoLight = Typeface.createFromAsset(
+                            getAssets(), Constants.FONT_PATH_ROBOTOLIGHT);
+                }
+                textView.setTypeface(mFontRobotoLight);
+                break;
+
+            case Constants.FONT_ROBOTOBOLD:
+                if (mFontRobotoBold == null) {
+                    mFontRobotoBold = Typeface.createFromAsset(
+                            getAssets(), Constants.FONT_PATH_ROBOTOBOLD);
+                }
+                textView.setTypeface(mFontRobotoBold);
+                break;
+
+            default:
+                Log.e(getLogTag(), "Unknown font code: " + font);
         }
     }
 
