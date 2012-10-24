@@ -25,13 +25,25 @@ public class AppListener implements WakefulIntentService.AlarmListener {
     @Override
     public void scheduleAlarms(AlarmManager mgr, PendingIntent pendingIntent,
             Context context) {
+        /* If notifications off, ensure alarms are cancelled and return */
+        SharedPreferences prefs =
+            PreferenceManager.getDefaultSharedPreferences(context);
+        boolean enableNotifications =
+            prefs.getBoolean(Constants.KEY_ENABLE_NOTIFICATIONS, false);
+        if (!enableNotifications) {
+            if (Constants.DEBUG) Log.d(TAG, "Cancelling alarms");
+            AppService.cancelAlarms(context);
+            return;
+        }
+
         mMinutes = getMinutes(context);
         mgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime()+mMinutes*60*1000,
                 mMinutes*60*1000, pendingIntent);
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(TAG, String.format("Set alarms for %d minute intervals",
                     mMinutes));
+        }
     }
 
     @Override
@@ -51,12 +63,11 @@ public class AppListener implements WakefulIntentService.AlarmListener {
                 Constants.KEY_INTERVALS_LIST_PREFERENCE, "60");
         try {
             mMinutes = Integer.parseInt(intervalPref);
-            if (Constants.DEBUG)
-                Log.d(TAG, "mMinutes set to " + mMinutes);
+            if (Constants.DEBUG) Log.d(TAG, "mMinutes set to " + mMinutes);
         } catch (NumberFormatException e) {
-            if (Constants.DEBUG)
-                Log.e(TAG, String.format("scheduleAlarms: can't parse '%s' " +
-                    "as intervalPref", intervalPref));
+            Log.e(TAG, String.format("scheduleAlarms: can't parse '%s' " +
+                "as intervalPref", intervalPref));
+            e.printStackTrace();
         }
         return mMinutes;
     }
