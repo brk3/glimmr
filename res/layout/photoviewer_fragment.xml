@@ -11,6 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/black"
+        gesture-image:start-scale="1.0"
         gesture-image:min-scale="0.75"
         gesture-image:max-scale="10.0" />
 
