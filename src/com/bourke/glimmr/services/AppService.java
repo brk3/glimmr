@@ -48,16 +48,14 @@ public class AppService extends WakefulIntentService {
 
     @Override
     protected void doWakefulWork(Intent intent) {
-        if (Constants.DEBUG)
-            Log.d(TAG, "doWakefulWork");
+        if (Constants.DEBUG) Log.d(TAG, "doWakefulWork");
 
         mPrefs = getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
         mPrefsEditor = mPrefs.edit();
         OAuth oauth = BaseActivity.loadAccessToken(mPrefs);
         if (oauth == null) {
-            if (Constants.DEBUG)
-                Log.e(TAG, "doWakefulWork: oauth from intent is null");
+            Log.e(TAG, "doWakefulWork: oauth from intent is null");
             return;
         }
 
@@ -106,8 +104,7 @@ public class AppService extends WakefulIntentService {
      * MainActivity when the notification is pressed.
      */
     private PendingIntent getPendingIntent() {
-        if (Constants.DEBUG)
-            Log.d(TAG, "getPendingIntent");
+        if (Constants.DEBUG) Log.d(TAG, "getPendingIntent");
         Intent i = new Intent(this, MainActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(this, 0, i, 0);
@@ -154,8 +151,9 @@ public class AppService extends WakefulIntentService {
                 break;
             }
         }
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(TAG, String.format("Found %d new photos", newPhotos.size()));
+        }
         return newPhotos;
     }
 
@@ -165,8 +163,7 @@ public class AppService extends WakefulIntentService {
     protected String getNewestViewedPhotoId() {
         String newestId = mPrefs.getString(
                 Constants.NEWEST_CONTACT_PHOTO_ID, "");
-        if (Constants.DEBUG)
-            Log.d(TAG, "getNewestViewedPhotoId: " + newestId);
+        if (Constants.DEBUG) Log.d(TAG, "getNewestViewedPhotoId: " + newestId);
         return newestId;
     }
 
@@ -177,8 +174,9 @@ public class AppService extends WakefulIntentService {
     protected String getNewestNotificationPhotoId() {
         String newestId = mPrefs.getString(
                 Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID, "");
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(TAG, "getNewestNotificationPhotoId: " + newestId);
+        }
         return newestId;
     }
 
@@ -186,8 +184,9 @@ public class AppService extends WakefulIntentService {
         mPrefsEditor.putString(Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
                 photo.getId());
         mPrefsEditor.commit();
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(TAG, "Updated most recent contact photo id to " +
                     photo.getId() + " (notification)");
+        }
     }
 }

@@ -30,7 +30,6 @@ public class PreferencesActivity extends SherlockPreferenceActivity
     private static final String TAG = "Glimmr/PreferenceManager";
 
     private SharedPreferences mSharedPrefs;
-
     private ListPreference mIntervalsListPreference;
 
     @Override
@@ -90,8 +89,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity
             boolean enableNotifications = sharedPreferences.getBoolean(
                     Constants.KEY_ENABLE_NOTIFICATIONS, false);
             if (!enableNotifications) {
-                if (Constants.DEBUG)
-                    Log.d(TAG, "Cancelling alarms");
+                if (Constants.DEBUG) Log.d(TAG, "Cancelling alarms");
                 AppService.cancelAlarms(this);
             } else {
                 WakefulIntentService.scheduleAlarms(new AppListener(), this,
@@ -116,9 +114,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity
         } else if (listPrefValue.equals("1440")) {
             summaryString = getString(R.string.once_a_day);
         } else {
-            if (Constants.DEBUG)
-                Log.e(TAG, "updateIntervalSummary: unknown value for " +
-                    "ListPreference entry: " + listPrefValue);
+            Log.e(TAG, "updateIntervalSummary: unknown value for " +
+                "ListPreference entry: " + listPrefValue);
         }
         mIntervalsListPreference.setSummary(summaryString);
     }
