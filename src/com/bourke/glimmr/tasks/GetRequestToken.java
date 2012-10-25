@@ -30,17 +30,17 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
 
     private static final String TAG = "Glimmr/GetRequestToken";
 
-    private static final Uri OAUTH_CALLBACK_URI = Uri.parse(
-            Constants.CALLBACK_SCHEME + "://oauth");
-
     private ProgressDialog mProgressDialog;
     private Activity mActivity;
     private IRequestTokenReadyListener mListener;
+    private Uri mOAuthCallbackUri;
 
     public GetRequestToken(IRequestTokenReadyListener listener, Activity a) {
         super();
         mListener = listener;
         mActivity = a;
+        mOAuthCallbackUri = Uri.parse(
+                mActivity.getString(R.string.callback_scheme) + "://oauth");
     }
 
     @Override
@@ -64,7 +64,7 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
             Flickr f = FlickrHelper.getInstance().getFlickr();
 
             OAuthToken oauthToken = f.getOAuthInterface().getRequestToken(
-                    OAUTH_CALLBACK_URI.toString());
+                    mOAuthCallbackUri.toString());
             saveRequestToken(null, null, null,
                     oauthToken.getOauthTokenSecret());
 

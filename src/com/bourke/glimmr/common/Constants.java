@@ -44,7 +44,6 @@ public class Constants {
     public static final int FETCH_PER_PAGE = 20;
 
     /* OAuth preferences */
-    public static final String CALLBACK_SCHEME = "glimmr-oauth-callback";
     public static final String KEY_OAUTH_TOKEN = "glimmr_oauthtoken";
     public static final String KEY_TOKEN_SECRET = "glimmr_tokensecret";
     public static final String KEY_ACCOUNT_USER_NAME = "glimmr_acc_user_name";
