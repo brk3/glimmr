@@ -132,7 +132,7 @@ public class ExploreActivity extends BaseActivity
     private void handleIntent(Intent intent) {
         if (intent != null) {
             String scheme = intent.getScheme();
-            if (Constants.CALLBACK_SCHEME.equals(scheme)) {
+            if (getString(R.string.callback_scheme).equals(scheme)) {
                 Uri uri = intent.getData();
                 String[] data = uri.getQuery().split("&");
                 SharedPreferences prefs = getSharedPreferences(Constants
