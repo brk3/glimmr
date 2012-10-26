@@ -2,7 +2,7 @@
   <string name="about">Acerca de Glimmr</string>
   <string name="about_text">Gracias por vuestro apoyo a Glimmr!\n\nSígueme en Twitter: http://twitter.com/brk3\nContacto: pauldbourke@gmail.com\n\nTraductoress:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer</string>
   <string name="aperture">APERTURA</string>
-  <string name="app_name">Glimmr</string>
+  <string name="app_name">Glimmr-L</string>
   <string name="browse">examinar</string>
   <string name="by">Por</string>
   <string name="comments">Comentarios y favoritos</string>
@@ -29,6 +29,7 @@
   <string name="menu_view_comments">Comentarios y favoritos</string>
   <string name="menu_view_exif">Ver información</string>
   <string name="no_connection">Se ha producido un error.\n¿Has intentando actualizar de nuevo?</string>
+  <string name="no_search_results">No se han encontrado resultados.</string>
   <string name="no_exif_permission">El propietario de la foto no quiere compartir la información Exif.</string>
   <string name="notification_contacts_content">de tus contactos.</string>
   <string name="notification_contacts_ticker">Tus contactos de Flickr han publicado fotos nuevas</string>
@@ -46,6 +47,7 @@
   <string name="cb_enable_notifications_title">Habilitar notificaciones</string>
   <string name="pref_notification_intervals_title">Periodo de sincronización</string>
   <string name="pro_donate">Pro/Donar</string>
+  <string name="menu_search">Búsqueda</string>
   <string name="set_preferences">Configurar preferencias</string>
   <string name="sets">Álbumes</string>
   <string name="set_wallpaper">Configurar como fondo de pantalla</string>
@@ -57,6 +59,5 @@
   <string name="views">Vistas</string>
   <string name="view_profile">Ver Perfil</string>
   <string name="welcome">Bienvenido</string>
-  <string name="yesterday">Ayer</string>
   <string name="you">Tú</string>
 </resources>
