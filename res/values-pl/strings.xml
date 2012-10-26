@@ -36,9 +36,9 @@
   <string name="please_wait">Jeszcze chwila…</string>
   <string name="pool">Zbiór</string>
   <string name="pref_category_notifications">Powiadomienia</string>
-  <string name="pref_checkbox_enable_contacts">Uploady Kontaktów</string>
-  <string name="pref_checkbox_enable_contacts_summary">Powiadom mnie, gdy ktoś z kontaktów udostępni nowe obrazy</string>
-  <string name="pref_checkbox_enable">Włącz powiadomienia</string>
+  <string name="cb_enable_contacts_notifications_title">Uploady Kontaktów</string>
+  <string name="cb_enable_contacts_notifications_summary">Powiadom mnie, gdy ktoś z kontaktów udostępni nowe obrazy</string>
+  <string name="cb_enable_notifications_title">Włącz powiadomienia</string>
   <string name="pref_notification_intervals_title">Synchronizuj:</string>
   <string name="pro_donate">Pro/Donacja</string>
   <string name="set_preferences">Preferencje</string>

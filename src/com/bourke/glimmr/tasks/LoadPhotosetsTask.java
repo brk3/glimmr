@@ -10,15 +10,12 @@ import com.bourke.glimmrpro.event.Events.IPhotosetsReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photosets;
 
-import java.io.IOException;
-import java.util.Random;
 
 public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
 

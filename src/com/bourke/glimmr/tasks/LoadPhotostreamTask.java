@@ -15,9 +15,6 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     private static final String TAG = "Glimmr/LoadPhotostreamTask";
@@ -48,16 +45,10 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            Set<String> extras = new HashSet<String>();
-            extras.add("owner_name");
-            extras.add("url_q");
-            extras.add("url_l");
-            extras.add("views");
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
-
             try {
-                return f.getPeopleInterface().getPhotos(mUser.getId(), extras,
-                        Constants.FETCH_PER_PAGE, mPage);
+                return f.getPeopleInterface().getPhotos(mUser.getId(),
+                        Constants.EXTRAS, Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -70,8 +61,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPostExecute(final PhotoList result) {
         if (result == null) {
-            if (Constants.DEBUG)
-                Log.e(TAG, "Error fetching photolist, result is null");
+            Log.e(TAG, "Error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
         mBaseFragment.showProgressIcon(false);
@@ -79,7 +69,6 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     @Override
     protected void onCancelled(final PhotoList result) {
-        if (Constants.DEBUG)
-            Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

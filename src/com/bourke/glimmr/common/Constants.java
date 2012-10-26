@@ -1,5 +1,8 @@
 package com.bourke.glimmrpro.common;
 
+import java.util.Set;
+import java.util.HashSet;
+
 public class Constants {
 
     /* Global app prefs */
@@ -17,6 +20,16 @@ public class Constants {
 
     public static final String KEY_USER_NAME = "glimmr_user_name";
     public static final String KEY_USER_ID = "glimmr_user_id";
+
+    /* Attributes to fetch for a photo */
+    public static final Set<String> EXTRAS = new HashSet<String>();
+    static {
+        EXTRAS.add("owner_name");
+        EXTRAS.add("url_q");
+        EXTRAS.add("url_m");
+        EXTRAS.add("url_l");
+        EXTRAS.add("views");
+    }
 
     /* Fonts */
     public static final int FONT_SHADOWSINTOLIGHT = 0;
@@ -125,6 +138,8 @@ public class Constants {
         = "notificationIntervals";
     public static final String KEY_ENABLE_NOTIFICATIONS
         = "enableNotifications";
+    public static final String KEY_HIGH_QUALITY_THUMBNAILS
+        = "highQualityThumbnails";
 
     /* New contacts photo notifications */
     public static final String NOTIFICATION_NEWEST_CONTACT_PHOTO_ID =

@@ -15,8 +15,6 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
 
@@ -44,11 +42,6 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected PhotoList doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        Set<String> extras = new HashSet<String>();
-        extras.add("owner_name");
-        extras.add("url_q");
-        extras.add("url_l");
-        extras.add("views");
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
@@ -56,7 +49,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return f.getPhotosetsInterface().getPhotos(
-                        ""+mPhotoset.getId(), extras,
+                        ""+mPhotoset.getId(), Constants.EXTRAS,
                         Flickr.PRIVACY_LEVEL_NO_FILTER,
                         Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
@@ -67,7 +60,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return FlickrHelper.getInstance().getPhotosetsInterface()
-                    .getPhotos(""+mPhotoset.getId(), extras,
+                    .getPhotos(""+mPhotoset.getId(), Constants.EXTRAS,
                             Flickr.PRIVACY_LEVEL_NO_FILTER,
                             Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
@@ -80,9 +73,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPostExecute(PhotoList result) {
         if (result == null) {
-            if (Constants.DEBUG) {
-                Log.e(TAG, "Error fetching photolist, result is null");
-            }
+            Log.e(TAG, "Error fetching photolist, result is null");
             result = new PhotoList();
         }
         mListener.onPhotosReady(result);
@@ -91,7 +82,6 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     @Override
     protected void onCancelled(final PhotoList result) {
-        if (Constants.DEBUG)
-            Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

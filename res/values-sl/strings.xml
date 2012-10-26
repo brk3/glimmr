@@ -40,9 +40,9 @@
   <string name="please_wait">Prosim počakaj…</string>
   <string name="pool">Skupina</string>
   <string name="pref_category_notifications">Obvestila</string>
-  <string name="pref_checkbox_enable_contacts">Stiki objavljajo</string>
-  <string name="pref_checkbox_enable_contacts_summary">Obvesti, ko kdo izmed mojih stikov prenese sliko</string>
-  <string name="pref_checkbox_enable">Omogoči obvestila</string>
+  <string name="cb_enable_contacts_notifications_title">Stiki objavljajo</string>
+  <string name="cb_enable_contacts_notifications_summary">Obvesti, ko kdo izmed mojih stikov prenese sliko</string>
+  <string name="cb_enable_notifications_title">Omogoči obvestila</string>
   <string name="pref_notification_intervals_title">Interval sinhronizacije</string>
   <string name="pro_donate">Pro/Doniraj</string>
   <string name="set_preferences">Nastavi nastavitve</string>
