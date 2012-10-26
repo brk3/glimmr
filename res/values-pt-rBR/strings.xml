@@ -35,9 +35,9 @@
   <string name="please_wait">Aguarde …</string>
   <string name="pool">Grupo</string>
   <string name="pref_category_notifications">Notificações</string>
-  <string name="pref_checkbox_enable_contacts">Enviados pelos Contatos</string>
-  <string name="pref_checkbox_enable_contacts_summary">Avise quando meus contatos adicionarem novas fotos</string>
-  <string name="pref_checkbox_enable">Habilitar Notificações</string>
+  <string name="cb_enable_contacts_notifications_title">Enviados pelos Contatos</string>
+  <string name="cb_enable_contacts_notifications_summary">Avise quando meus contatos adicionarem novas fotos</string>
+  <string name="cb_enable_notifications_title">Habilitar Notificações</string>
   <string name="pref_notification_intervals_title">Intervalo das Notificações</string>
   <string name="pro_donate">Pro/Doação</string>
   <string name="set_preferences">Preferências</string>

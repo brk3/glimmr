@@ -34,9 +34,9 @@
   <string name="please_wait">Bitte warten…</string>
   <string name="pool">Pool</string>
   <string name="pref_category_notifications">Benachrichtigungen</string>
-  <string name="pref_checkbox_enable_contacts">Uploads von Kontakten</string>
-  <string name="pref_checkbox_enable_contacts_summary">Benachrichtigen, sobald Kontakte neue Fotos hochladen</string>
-  <string name="pref_checkbox_enable">Benachrichtigungen aktivieren</string>
+  <string name="cb_enable_contacts_notifications_title">Uploads von Kontakten</string>
+  <string name="cb_enable_contacts_notifications_summary">Benachrichtigen, sobald Kontakte neue Fotos hochladen</string>
+  <string name="cb_enable_notifications_title">Benachrichtigungen aktivieren</string>
   <string name="pref_notification_intervals_title">Synchronisationsintervall</string>
   <string name="pro_donate">Pro/Spenden</string>
   <string name="set_preferences">Einstellungen</string>

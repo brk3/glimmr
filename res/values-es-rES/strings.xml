@@ -41,9 +41,9 @@
   <string name="please_wait">Por favor, espere…</string>
   <string name="pool">Grupo</string>
   <string name="pref_category_notifications">Notificaciones</string>
-  <string name="pref_checkbox_enable_contacts">Cargas de contactos</string>
-  <string name="pref_checkbox_enable_contacts_summary">Notificarme cuando los contactos carguen fotos nuevas</string>
-  <string name="pref_checkbox_enable">Habilitar notificaciones</string>
+  <string name="cb_enable_contacts_notifications_title">Cargas de contactos</string>
+  <string name="cb_enable_contacts_notifications_summary">Notificarme cuando los contactos carguen fotos nuevas</string>
+  <string name="cb_enable_notifications_title">Habilitar notificaciones</string>
   <string name="pref_notification_intervals_title">Periodo de sincronización</string>
   <string name="pro_donate">Pro/Donar</string>
   <string name="set_preferences">Configurar preferencias</string>

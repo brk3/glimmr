@@ -34,9 +34,9 @@
   <string name="please_wait">Vent venligst…</string>
   <string name="pool">Gruppe</string>
   <string name="pref_category_notifications">Notifikationer</string>
-  <string name="pref_checkbox_enable_contacts">Uploads fra kontakter</string>
-  <string name="pref_checkbox_enable_contacts_summary">Notificer når kontakter uploader nye billeder</string>
-  <string name="pref_checkbox_enable">Aktiver notifikationer</string>
+  <string name="cb_enable_contacts_notifications_title">Uploads fra kontakter</string>
+  <string name="cb_enable_contacts_notifications_summary">Notificer når kontakter uploader nye billeder</string>
+  <string name="cb_enable_notifications_title">Aktiver notifikationer</string>
   <string name="pref_notification_intervals_title">Synkroniseringsinterval</string>
   <string name="pro_donate">Pro/Donér</string>
   <string name="set_preferences">Sæt præferencer</string>
