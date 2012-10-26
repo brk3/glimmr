@@ -235,17 +235,19 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     class GridAdapter extends ArrayAdapter<Photo> {
+        private boolean mHighQualityThumbnails;
 
         public GridAdapter(PhotoList items) {
             super(mActivity, R.layout.gridview_item, android.R.id.text1,
                     items);
+            mHighQualityThumbnails = mDefaultSharedPrefs.getBoolean(
+                    Constants.KEY_HIGH_QUALITY_THUMBNAILS, false);
         }
 
         @Override
         public View getView(final int position, View convertView,
                 ViewGroup parent) {
             ViewHolder holder;
-
             if (convertView == null) {
                 convertView = mActivity.getLayoutInflater().inflate(
                         R.layout.gridview_item, null);
@@ -268,9 +270,16 @@ public abstract class PhotoGridFragment extends BaseFragment
             final Photo photo = getItem(position);
             AQuery aq = mAq.recycle(convertView);
 
+            /* Fetch the main photo */
+            String thumbnailUrl;
+            if (mHighQualityThumbnails) {
+                thumbnailUrl = photo.getMediumUrl();
+            } else {
+                thumbnailUrl = photo.getLargeSquareUrl();
+            }
+
             /* Don't load image if flinging past it */
-            if (aq.shouldDelay(position, convertView, parent,
-                        photo.getLargeSquareUrl())) {
+            if (aq.shouldDelay(position, convertView, parent, thumbnailUrl)) {
                 Bitmap placeholder = aq.getCachedImage(R.drawable.blank);
                 aq.id(holder.image).image(placeholder);
                 aq.id(holder.imageOverlay).invisible();
@@ -283,8 +292,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
                 mActivity.setFont(holder.ownerText, Constants.FONT_ROBOTOBOLD);
 
-                /* Fetch the main photo */
-                aq.id(holder.image).image(photo.getLargeSquareUrl(),
+                aq.id(holder.image).image(thumbnailUrl,
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);
 

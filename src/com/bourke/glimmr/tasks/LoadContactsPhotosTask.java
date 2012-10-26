@@ -10,16 +10,12 @@ import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
-import java.io.IOException;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 
@@ -54,16 +50,12 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
                  * more... For some reason pagination doesn't seem to be an
                  * option. */
                 int amountToFetch = 50;
-                Set<String> extras = new HashSet<String>();
-                extras.add("owner_name");
-                extras.add("url_q");
-                extras.add("url_l");
-                extras.add("views");
                 boolean justFriends = false;
                 boolean singlePhoto = false;
                 boolean includeSelf = false;
                 return f.getPhotosInterface().getContactsPhotos(amountToFetch,
-                        extras, justFriends, singlePhoto, includeSelf);
+                        Constants.EXTRAS, justFriends, singlePhoto,
+                        includeSelf);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -76,8 +68,7 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
     @Override
     protected void onPostExecute(final PhotoList result) {
         if (result == null) {
-            if (Constants.DEBUG)
-                Log.e(TAG, "Error fetching contacts photos, result is null");
+            Log.e(TAG, "Error fetching contacts photos, result is null");
         }
         mListener.onPhotosReady(result);
         mBaseFragment.showProgressIcon(false);
@@ -85,7 +76,6 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
 
     @Override
     protected void onCancelled(final PhotoList result) {
-        if (Constants.DEBUG)
-            Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

@@ -29,6 +29,7 @@ import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
+import android.preference.PreferenceManager;
 
 /**
  *
@@ -50,8 +51,8 @@ public abstract class BaseFragment extends SherlockFragment {
     protected ActionBar mActionBar;
     protected AQuery mAq;
     protected ViewGroup mLayout;
-
     protected boolean mRefreshing = false;
+    protected SharedPreferences mDefaultSharedPrefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public abstract class BaseFragment extends SherlockFragment {
 
         mActivity = (BaseActivity) getSherlockActivity();
         mActionBar = mActivity.getSupportActionBar();
+        mDefaultSharedPrefs =
+            PreferenceManager.getDefaultSharedPreferences(mActivity);
 
         setRetainInstance(true);
         setHasOptionsMenu(true);
@@ -73,6 +76,8 @@ public abstract class BaseFragment extends SherlockFragment {
         /* Update our reference to the activity as it may have changed */
         mActivity = (BaseActivity) getSherlockActivity();
         mActionBar = mActivity.getSupportActionBar();
+        mDefaultSharedPrefs =
+            PreferenceManager.getDefaultSharedPreferences(mActivity);
 
         startTask();
     }

@@ -2,20 +2,28 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/pref_category_notifications">
+    <!-- General preferences -->
+    <PreferenceCategory android:title="@string/pref_category_general">
+        <CheckBoxPreference
+            android:key="highQualityThumbnails"
+            android:title="@string/cb_high_quality_thumbnails_title"
+            android:summary="@string/cb_high_quality_thumbnails_summary"
+            android:defaultValue="@bool/highQualityThumbnails" />
+    </PreferenceCategory>
 
+    <!-- Notification preferences -->
+    <PreferenceCategory android:title="@string/pref_category_notifications">
         <CheckBoxPreference
             android:key="enableNotifications"
-            android:title="@string/pref_checkbox_enable"
+            android:title="@string/cb_enable_notifications_title"
             android:defaultValue="true" />
 
         <CheckBoxPreference
             android:key="enableContactsNotifications"
-            android:title="@string/pref_checkbox_enable_contacts"
+            android:title="@string/cb_enable_contacts_notifications_title"
             android:dependency="enableNotifications"
             android:defaultValue="true"
-            android:summary="@string/pref_checkbox_enable_contacts_summary" />
+            android:summary="@string/cb_enable_contacts_notifications_summary" />
 
         <ListPreference
             android:key="notificationIntervals"
@@ -24,7 +32,6 @@
             android:title="@string/pref_notification_intervals_title"
             android:entryValues="@array/pref_notification_intervals_values"
             android:defaultValue="60" />
-
     </PreferenceCategory>
 
 </PreferenceScreen>

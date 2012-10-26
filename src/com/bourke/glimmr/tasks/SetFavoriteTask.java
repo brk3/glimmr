@@ -2,6 +2,8 @@ package com.bourke.glimmrpro.tasks;
 
 import android.os.AsyncTask;
 
+import android.util.Log;
+
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
@@ -10,7 +12,6 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
-import android.util.Log;
 
 public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
 

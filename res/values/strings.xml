@@ -41,10 +41,13 @@
     <string name="photos">Photos</string>
     <string name="please_wait">Please wait…</string>
     <string name="pool">Pool</string>
+    <string name="pref_category_general">General</string>
     <string name="pref_category_notifications">Notifications</string>
-    <string name="pref_checkbox_enable_contacts">Contacts Uploads</string>
-    <string name="pref_checkbox_enable_contacts_summary">Notify when contacts upload new photos</string>
-    <string name="pref_checkbox_enable">Enable Notifications</string>
+    <string name="cb_enable_contacts_notifications_title">Contacts Uploads</string>
+    <string name="cb_enable_contacts_notifications_summary">Notify when contacts upload new photos</string>
+    <string name="cb_high_quality_thumbnails_title">High Quality Thumbnails</string>
+    <string name="cb_high_quality_thumbnails_summary">Uses more bandwidth and is slower</string>
+    <string name="cb_enable_notifications_title">Enable Notifications</string>
     <string name="pref_notification_intervals_title">Sync Interval</string>
     <string name="pro_donate">Pro/Donate</string>
     <string name="set_preferences">Set Preferences</string>

@@ -2,4 +2,6 @@
 <resources>
     <bool name="sw600dp">true</bool>
     <bool name="sw600dp_land">false</bool>
+
+    <bool name="highQualityThumbnails">true</bool>
 </resources>

@@ -15,6 +15,9 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 
+import com.androidquery.callback.BitmapAjaxCallback;
+import com.androidquery.util.AQUtility;
+
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.services.AppListener;
@@ -95,6 +98,9 @@ public class PreferencesActivity extends SherlockPreferenceActivity
                 WakefulIntentService.scheduleAlarms(new AppListener(), this,
                         false);
             }
+        } else if (key.equals(Constants.KEY_HIGH_QUALITY_THUMBNAILS)) {
+            BitmapAjaxCallback.clearCache();
+            AQUtility.getCacheDir(this).delete();
         }
     }
 

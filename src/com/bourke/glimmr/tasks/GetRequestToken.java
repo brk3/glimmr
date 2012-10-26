@@ -23,9 +23,6 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
 import java.net.URL;
 
-/**
- *
- */
 public class GetRequestToken extends AsyncTask<Void, Integer, String> {
 
     private static final String TAG = "Glimmr/GetRequestToken";
