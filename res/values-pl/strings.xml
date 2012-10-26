@@ -25,6 +25,7 @@
   <string name="menu_view_comments">Komentarze</string>
   <string name="menu_view_exif">Pokaż dane Exif</string>
   <string name="no_connection">Coś poszło nie tak\nMoże spróbuj odświeżyć?</string>
+  <string name="no_search_results">Nie odnaleziono wyników.</string>
   <string name="no_exif_permission">Właściciel tego obrazu nie udostępnia danych Exif.</string>
   <string name="notification_contacts_content">od Twoich kontaktów.</string>
   <string name="notification_contacts_ticker">Ludzie z Twoich kontaktów udostępnili nowe obrazy.</string>
@@ -41,6 +42,7 @@
   <string name="cb_enable_notifications_title">Włącz powiadomienia</string>
   <string name="pref_notification_intervals_title">Synchronizuj:</string>
   <string name="pro_donate">Pro/Donacja</string>
+  <string name="menu_search">Wyszukiwanie</string>
   <string name="set_preferences">Preferencje</string>
   <string name="sets">Serie</string>
   <string name="set_wallpaper">Ustaw jako tapeta</string>
@@ -51,6 +53,5 @@
   <string name="views">Wyświetleń</string>
   <string name="view_profile">Wyświetl Profil</string>
   <string name="welcome">Witaj</string>
-  <string name="yesterday">Wczoraj</string>
   <string name="you">Ty</string>
 </resources>

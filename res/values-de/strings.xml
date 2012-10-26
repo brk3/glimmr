@@ -24,6 +24,7 @@
   <string name="menu_share">Freigeben</string>
   <string name="menu_view_comments">Kommentare</string>
   <string name="menu_view_exif">Exif-Infos anzeigen</string>
+  <string name="no_search_results">Keine Ergebnisse gefunden.</string>
   <string name="notification_contacts_content">Ihrer Kontakte.</string>
   <string name="notification_contacts_ticker">Deine Flickr Kontakte haben neue Fotos veröffentlicht</string>
   <string name="notification_contacts_title">Neue Fotos</string>
@@ -39,6 +40,7 @@
   <string name="cb_enable_notifications_title">Benachrichtigungen aktivieren</string>
   <string name="pref_notification_intervals_title">Synchronisationsintervall</string>
   <string name="pro_donate">Pro/Spenden</string>
+  <string name="menu_search">Suche</string>
   <string name="set_preferences">Einstellungen</string>
   <string name="sets">Alben</string>
   <string name="shutter">VERSCHLUSS</string>
@@ -47,6 +49,5 @@
   <string name="views">Ansichten</string>
   <string name="view_profile">Profil Anzeigen</string>
   <string name="welcome">Willkommen</string>
-  <string name="yesterday">Gestern</string>
   <string name="you">Sie</string>
 </resources>

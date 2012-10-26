@@ -9,6 +9,7 @@
   <string name="contacts">Kontakter</string>
   <string name="edit_text_hint">Tilføj din kommentar…</string>
   <string name="exif_info">Exif information</string>
+  <string name="explore">Stifinder</string>
   <string name="favorites">Favoritter</string>
   <string name="fifteen_mins">15 minutter</string>
   <string name="four_hours">4 timer</string>
@@ -20,9 +21,11 @@
   <string name="menu_favorite">Marker som favorit</string>
   <string name="menu_preferences">Præferencer</string>
   <string name="menu_refresh">Opdater</string>
+  <string name="menu_share">Dele</string>
   <string name="menu_view_comments">Kommentarer og favoritter</string>
   <string name="menu_view_exif">Se Exit info</string>
   <string name="no_connection">Noget gik galt.\nPrøv at opdatere?</string>
+  <string name="no_search_results">Der blev ikke fundet nogen resultater.</string>
   <string name="no_exif_permission">Ejeren af billedet ønsker ikke at dele EXIT-data.</string>
   <string name="notification_contacts_content">fra dine kontakter</string>
   <string name="notification_contacts_ticker">Dine Flickr-kontakter har postet nye billeder</string>
@@ -39,6 +42,7 @@
   <string name="cb_enable_notifications_title">Aktiver notifikationer</string>
   <string name="pref_notification_intervals_title">Synkroniseringsinterval</string>
   <string name="pro_donate">Pro/Donér</string>
+  <string name="menu_search">Søgning</string>
   <string name="set_preferences">Sæt præferencer</string>
   <string name="sets">Albums</string>
   <string name="set_wallpaper">Sæt wallpaper</string>
@@ -49,6 +53,5 @@
   <string name="views">Gange set</string>
   <string name="view_profile">Vis Profil</string>
   <string name="welcome">Velkommen</string>
-  <string name="yesterday">I går</string>
   <string name="you">Dig</string>
 </resources>
