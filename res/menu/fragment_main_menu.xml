@@ -18,7 +18,7 @@
           android:title="@string/menu_refresh"
           android:icon="@drawable/ic_action_refresh_dark"
           android:orderInCategory="5"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="@string/refreshShowAsAction" />
 
     <item android:id="@+id/menu_preferences"
           android:icon="@android:drawable/ic_menu_preferences"
