@@ -72,6 +72,9 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        if (Constants.DEBUG) {
+            Log.d("(PhotoGridFragment)" + getLogTag(), "onCreateView");
+        }
         mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
                 container, false);
         mAq = new AQuery(mActivity, mLayout);
@@ -82,10 +85,15 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        if (Constants.DEBUG) Log.d(getLogTag(), "onResume");
+        if (Constants.DEBUG) {
+            Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
+        }
         if (mPhotos != null && !mPhotos.isEmpty()) {
-            mAq.id(android.R.id.empty).invisible();
-            mAq.id(R.id.gridview).visible();
+            LinearLayout layoutEmpty = (LinearLayout)
+                mLayout.findViewById(android.R.id.empty);
+            layoutEmpty.setVisibility(View.INVISIBLE);
+            GridView gridView = (GridView) mLayout.findViewById(R.id.gridview);
+            gridView.setVisibility(View.VISIBLE);
         }
     }
 
