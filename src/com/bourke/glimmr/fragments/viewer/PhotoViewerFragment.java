@@ -91,15 +91,15 @@ public final class PhotoViewerFragment extends BaseFragment
             }
         });
 
-        final GestureImageView i =
-            (GestureImageView) mLayout.findViewById(R.id.image);
-        i.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mListener.onZoomed(i.isZoomed());
-                return false;
-            }
-        });
+        //final GestureImageView i =
+            //(GestureImageView) mLayout.findViewById(R.id.image);
+        //i.setOnTouchListener(new View.OnTouchListener() {
+            //@Override
+            //public boolean onTouch(View v, MotionEvent event) {
+                //mListener.onZoomed(i.isZoomed());
+                //return false;
+            //}
+        //});
 
         /* If this fragment is new as part of a set, update it's overlay
          * visibility based on the state of the actionbar */
