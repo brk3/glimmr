@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import android.view.View;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
@@ -98,11 +100,11 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
 
     @Override
     protected void updateBottomOverlay() {
-        mAq.id(R.id.bottomOverlay).visible();
+        mBottomOverlayView.setVisibility(View.VISIBLE);
         String overlayText = String.format("%s %s %s",
                 mPhotoset.getTitle(), getString(R.string.by),
                 mUser.getUsername());
-        mAq.id(R.id.overlayPrimaryText).text(overlayText);
+        mBottomOverlayPrimaryText.setText(overlayText);
         mAq.id(R.id.overlayImage).image(
                 mPhotoset.getPrimaryPhoto().getSmallSquareUrl(),
                 Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
