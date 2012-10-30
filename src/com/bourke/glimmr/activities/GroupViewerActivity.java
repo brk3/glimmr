@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import android.view.View;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
@@ -81,8 +83,8 @@ public class GroupViewerActivity extends BottomOverlayActivity {
 
     @Override
     protected void updateBottomOverlay() {
-        mAq.id(R.id.bottomOverlay).visible();
-        mAq.id(R.id.overlayPrimaryText).text(mGroup.getName());
+        mBottomOverlayView.setVisibility(View.VISIBLE);
+        mBottomOverlayPrimaryText.setText(mGroup.getName());
         mAq.id(R.id.overlayImage).image(
                 mGroup.getBuddyIconUrl(), Constants.USE_MEMORY_CACHE,
                 Constants.USE_FILE_CACHE, 0, 0, null, AQuery.FADE_IN_NETWORK);

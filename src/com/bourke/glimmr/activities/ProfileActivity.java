@@ -10,6 +10,8 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import android.view.View;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.androidquery.AQuery;
@@ -90,11 +92,11 @@ public class ProfileActivity extends BottomOverlayActivity
 
     private void updateUserOverlay(User user) {
         if (Constants.DEBUG) Log.d(getLogTag(), "updateUserOverlay");
-        mAq.id(R.id.bottomOverlay).visible();
+        mBottomOverlayView.setVisibility(View.VISIBLE);
         mAq.id(R.id.overlayImage).image(user.getBuddyIconUrl(),
                 Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
                 null, AQuery.FADE_IN_NETWORK);
-        mAq.id(R.id.overlayPrimaryText).text(user.getUsername());
+        mBottomOverlayPrimaryText.setText(user.getUsername());
     }
 
     @Override

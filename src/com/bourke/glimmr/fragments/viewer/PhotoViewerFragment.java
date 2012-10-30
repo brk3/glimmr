@@ -38,6 +38,8 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import com.polites.android.GestureImageView;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener {
@@ -46,12 +48,14 @@ public final class PhotoViewerFragment extends BaseFragment
 
     private Photo mBasePhoto;
     private Photo mPhotoExtendedInfo;
-    private AQuery mAq;
     private MenuItem mFavoriteButton;
     private LoadPhotoInfoTask mTask;
     private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
     private IPhotoViewerCallbacks mListener;
     private Configuration mConfiguration;
+    private ImageView mImageView;
+    private TextView mTextViewTitle;
+    private TextView mTextViewAuthor;
 
     public static PhotoViewerFragment newInstance(Photo photo,
             IPhotoViewerCallbacks listener) {
@@ -75,9 +79,12 @@ public final class PhotoViewerFragment extends BaseFragment
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
+        mImageView = (ImageView) mLayout.findViewById(R.id.image);
+        mTextViewTitle = (TextView) mLayout.findViewById(R.id.textViewTitle);
+        mTextViewAuthor = (TextView) mLayout.findViewById(R.id.textViewAuthor);
         mAq = new AQuery(mActivity, mLayout);
 
-        mAq.id(R.id.image).clicked(new View.OnClickListener() {
+        mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onVisibilityChanged(!mActionBar.isShowing());
@@ -266,8 +273,8 @@ public final class PhotoViewerFragment extends BaseFragment
                 String authorText = String.format("%s %s",
                         mActivity.getString(R.string.by),
                         mBasePhoto.getOwner().getUsername());
-                    mAq.id(R.id.textViewTitle).text(photoTitle);
-                    mAq.id(R.id.textViewAuthor).text(authorText);
+                mTextViewTitle.setText(photoTitle);
+                mTextViewAuthor.setText(authorText);
             }
         } else {
             Log.e(getLogTag(), "displayImage: mBasePhoto is null");
@@ -280,15 +287,15 @@ public final class PhotoViewerFragment extends BaseFragment
             (android.os.Build.VERSION.SDK_INT >=
              android.os.Build.VERSION_CODES.HONEYCOMB);
         if (on) {
-            mAq.id(R.id.textViewTitle).visible();
-            mAq.id(R.id.textViewAuthor).visible();
+            mTextViewTitle.setVisibility(View.VISIBLE);
+            mTextViewAuthor.setVisibility(View.VISIBLE);
             if (honeycombOrGreater) {
                 mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             }
             mActionBar.show();
         } else {
-            mAq.id(R.id.textViewTitle).invisible();
-            mAq.id(R.id.textViewAuthor).invisible();
+            mTextViewTitle.setVisibility(View.INVISIBLE);
+            mTextViewAuthor.setVisibility(View.INVISIBLE);
             if (honeycombOrGreater) {
                 mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
             }

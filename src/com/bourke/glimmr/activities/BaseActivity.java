@@ -11,11 +11,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.SharedPreferences;
 
+import android.graphics.Typeface;
+
 import android.net.Uri;
 
 import android.os.Bundle;
-
-import android.support.v4.view.ViewPager;
 
 import android.text.SpannableString;
 import android.text.util.Linkify;
@@ -30,8 +30,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import com.androidquery.AQuery;
-import com.androidquery.util.AQUtility;
 import com.androidquery.callback.BitmapAjaxCallback;
+import com.androidquery.util.AQUtility;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
@@ -40,7 +40,6 @@ import com.bourke.glimmr.R;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
-import android.graphics.Typeface;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
 

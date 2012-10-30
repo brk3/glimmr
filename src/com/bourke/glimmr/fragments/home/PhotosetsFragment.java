@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,12 +34,7 @@ import com.googlecode.flickrjandroid.photosets.Photosets;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.widget.LinearLayout;
-import android.graphics.Typeface;
 
-/**
- *
- */
 public class PhotosetsFragment extends BaseFragment
         implements IPhotosetsReadyListener {
 
@@ -44,6 +42,12 @@ public class PhotosetsFragment extends BaseFragment
 
     private LoadPhotosetsTask mTask;
     private List<Photoset> mPhotosets = new ArrayList<Photoset>();
+
+    private View mLayoutNoConnection;
+    private AdapterView mAdapterView;  /* Will either be a GridView or ListView
+                                          depending on screen size */
+    private SetListAdapter mAdapter;
+    private View mViewEmpty;
 
     public static PhotosetsFragment newInstance() {
         PhotosetsFragment newFragment = new PhotosetsFragment();
@@ -75,46 +79,57 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        /* If sw600dp-land, use gridview layout, otherwise use list style
+         * layout */
         if (getResources().getBoolean(R.bool.sw600dp_land)) {
             mLayout = (RelativeLayout) inflater.inflate(
                     R.layout.gridview_fragment, container, false);
+            mAdapterView = (GridView) mLayout.findViewById(R.id.gridview);
         } else {
             mLayout = (RelativeLayout) inflater.inflate(
                     R.layout.listview_fragment, container, false);
+            mAdapterView = (ListView) mLayout.findViewById(R.id.list);
         }
+
+        mLayoutNoConnection =
+            (LinearLayout) mLayout.findViewById(R.id.no_connection_layout);
+        mViewEmpty = (LinearLayout) mLayout.findViewById(android.R.id.empty);
         mAq = new AQuery(mActivity, mLayout);
+
+        initAdapterView();
+
         return mLayout;
     }
 
-    public void itemClicked(AdapterView<?> parent, View view, int position,
-            long id) {
-        PhotosetViewerActivity.startPhotosetViewer(mActivity,
-                mPhotosets.get(position));
+    private void initAdapterView() {
+        mAdapter = new SetListAdapter(mActivity, R.layout.photoset_cover_item,
+                (ArrayList<Photoset>)mPhotosets);
+        mAdapterView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                            int position, long id) {
+                        PhotosetViewerActivity.startPhotosetViewer(mActivity,
+                            mPhotosets.get(position));
+                    }
+                });
+        mAdapterView.setAdapter(mAdapter);
     }
 
     @Override
     public void onPhotosetsReady(Photosets photoSets) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
-
-        int adapterView = R.id.list;
-        if (getResources().getBoolean(R.bool.sw600dp_land)) {
-            adapterView = R.id.gridview;
-        }
-
         if (photoSets == null) {
-            mAq.id(R.id.no_connection_layout).visible();
-            mAq.id(adapterView).gone();
+            mLayoutNoConnection.setVisibility(View.VISIBLE);
+            mAdapterView.setVisibility(View.GONE);
         } else {
-            mAq.id(adapterView).visible();
-            mAq.id(R.id.no_connection_layout).gone();
-            mPhotosets = new ArrayList<Photoset>(photoSets.getPhotosets());
-            SetListAdapter adapter = new SetListAdapter(
-                    mActivity, R.layout.photoset_cover_item,
-                    (ArrayList<Photoset>)mPhotosets);
-            mAq.id(adapterView).adapter(adapter).itemClicked(this,
-                    "itemClicked");
+            mAdapterView.setVisibility(View.VISIBLE);
+            mLayoutNoConnection.setVisibility(View.GONE);
+            mPhotosets.clear();
+            mPhotosets.addAll(photoSets.getPhotosets());
+            mAdapter.notifyDataSetChanged();
         }
-        mAq.id(android.R.id.empty).invisible();
+        mViewEmpty.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -157,25 +172,24 @@ public class PhotosetsFragment extends BaseFragment
                     Constants.FONT_ROBOTOBOLD);
 
             final Photoset photoset = mPhotosets.get(position);
-            AQuery aq = mAq.recycle(convertView);
 
             /* Don't load image if flinging past it */
-            if (aq.shouldDelay(position, convertView, parent,
+            if (mAq.shouldDelay(position, convertView, parent,
                         photoset.getPrimaryPhoto().getMediumUrl())) {
-                Bitmap placeholder = aq.getCachedImage(R.drawable.blank);
-                aq.id(holder.imageItem).image(placeholder);
-                aq.id(holder.imageOverlay).invisible();
+                Bitmap placeholder = mAq.getCachedImage(R.drawable.blank);
+                mAq.id(holder.imageItem).image(placeholder);
+                holder.imageOverlay.setVisibility(View.INVISIBLE);
             } else {
                 /* Fetch the set cover photo */
-                aq.id(holder.imageOverlay).visible();
-                aq.id(holder.imageItem).image(
+                holder.imageOverlay.setVisibility(View.VISIBLE);
+                mAq.id(holder.imageItem).image(
                         photoset.getPrimaryPhoto().getMediumUrl(),
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);
 
-                aq.id(holder.photosetNameText).text(
+                holder.photosetNameText.setText(
                         photoset.getTitle().toUpperCase());
-                aq.id(holder.numImagesInSetText).text(
+                holder.numImagesInSetText.setText(
                         ""+photoset.getPhotoCount());
             }
             return convertView;

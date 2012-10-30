@@ -2,6 +2,12 @@ package com.bourke.glimmr.fragments.search;
 
 import android.os.Bundle;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import android.widget.RelativeLayout;
+
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.R;
@@ -17,6 +23,7 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
 
     private SearchPhotosTask mTask;
     private String mSearchTerm;
+    private View mNoResultsLayout;
 
     public static PhotoSearchGridFragment newInstance(String searchTerm) {
         PhotoSearchGridFragment fragment = new PhotoSearchGridFragment();
@@ -28,6 +35,15 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mShowDetailsOverlay = false;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        mNoResultsLayout =
+            (RelativeLayout) mLayout.findViewById(R.id.no_search_results_layout);
+        return mLayout;
     }
 
     /**
@@ -62,8 +78,8 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
             /* If first page (2 as mPage will have already been incremented),
              * and results are empty, show no search results layout */
             if (mPage == 2) {
-                mAq.id(R.id.no_search_results_layout).visible();
-                mAq.id(R.id.gridview).gone();
+                mNoResultsLayout.setVisibility(View.VISIBLE);
+                mGridView.setVisibility(View.GONE);
             }
         }
     }
