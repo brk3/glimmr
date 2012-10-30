@@ -28,6 +28,7 @@ import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
+import android.widget.ProgressBar;
 
 public final class ExifInfoFragment extends BaseDialogFragment
         implements IExifInfoReadyListener {
@@ -36,6 +37,11 @@ public final class ExifInfoFragment extends BaseDialogFragment
 
     private Photo mPhoto = new Photo();
     private LoadExifInfoTask mTask;
+    private ProgressBar mProgressIndicator;
+    private TextView mTextViewErrorMessage;
+    private TextView mTextViewISOValue;
+    private TextView mTextViewShutterValue;
+    private TextView mTextViewApertureValue;
 
     /* http://www.flickr.com/services/api/flickr.photos.getExif.html */
     private static final String ERR_PERMISSION_DENIED = "2";
@@ -57,8 +63,17 @@ public final class ExifInfoFragment extends BaseDialogFragment
             Bundle savedInstanceState) {
         mLayout = (ScrollView) inflater.inflate(
                 R.layout.exif_info_fragment, container, false);
-        mAq = new AQuery(mActivity, mLayout);
-        mAq.id(R.id.progressIndicator).visible();
+        mTextViewErrorMessage =
+            (TextView) mLayout.findViewById(R.id.textViewErrorMessage);
+        mTextViewISOValue =
+            (TextView) mLayout.findViewById(R.id.textViewISOValue);
+        mTextViewShutterValue =
+            (TextView) mLayout.findViewById(R.id.textViewShutterValue);
+        mTextViewApertureValue =
+            (TextView) mLayout.findViewById(R.id.textViewApertureValue);
+        mProgressIndicator =
+            (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
+        mProgressIndicator.setVisibility(View.VISIBLE);
         return mLayout;
     }
 
@@ -115,7 +130,7 @@ public final class ExifInfoFragment extends BaseDialogFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
-        mAq.id(R.id.progressIndicator).gone();
+        mProgressIndicator.setVisibility(View.GONE);
 
         if (Constants.DEBUG) {
             Log.d(getLogTag(), "onExifInfoReady, exifInfo.size(): "
@@ -124,19 +139,19 @@ public final class ExifInfoFragment extends BaseDialogFragment
 
         /* Something went wrong, show message and return */
         if (exc != null) {
-            mAq.id(R.id.textViewErrorMessage).visible();
+            mTextViewErrorMessage.setVisibility(View.VISIBLE);
             if (exc instanceof FlickrException) {
                 String errCode = ((FlickrException) exc).getErrorCode();
                 if (Constants.DEBUG) Log.d(getLogTag(), "errCode: " + errCode);
                 if (errCode != null && errCode.equals(ERR_PERMISSION_DENIED)) {
-                    mAq.id(R.id.textViewErrorMessage).text(
+                    mTextViewErrorMessage.setText(
                             mActivity.getString(R.string.no_exif_permission));
                 } else {
-                    mAq.id(R.id.textViewErrorMessage).text(
+                    mTextViewErrorMessage.setText(
                             mActivity.getString(R.string.no_connection));
                 }
             } else {
-                mAq.id(R.id.textViewErrorMessage).text(
+                mTextViewErrorMessage.setText(
                         mActivity.getString(R.string.no_connection));
             }
             return;
@@ -145,11 +160,11 @@ public final class ExifInfoFragment extends BaseDialogFragment
         /* Populate table with exif info */
         for (Exif e : exifInfo) {
             if (e.getTag().equals("ISO")) {
-                mAq.id(R.id.textViewISOValue).text(e.getRaw());
+                mTextViewISOValue.setText(e.getRaw());
             } else if (e.getTag().equals("ExposureTime")) {
-                mAq.id(R.id.textViewShutterValue).text(e.getRaw());
+                mTextViewShutterValue.setText(e.getRaw());
             } else if (e.getTag().equals("FNumber")) {
-                mAq.id(R.id.textViewApertureValue).text(e.getRaw());
+                mTextViewApertureValue.setText(e.getRaw());
             } else {
                 /* Convert camel case key to space delimited:
                  * http://stackoverflow.com/a/2560017/663370 */
@@ -165,14 +180,14 @@ public final class ExifInfoFragment extends BaseDialogFragment
         }
         /* If any of the iso/shutter/aperture aren't available, set them to a
          * question mark */
-        if (mAq.id(R.id.textViewISOValue).getText().equals("")) {
-            mAq.id(R.id.textViewISOValue).text("?");
+        if (mTextViewISOValue.getText().equals("")) {
+            mTextViewISOValue.setText("?");
         }
-        if (mAq.id(R.id.textViewShutterValue).getText().equals("")) {
-            mAq.id(R.id.textViewShutterValue).text("?");
+        if (mTextViewShutterValue.getText().equals("")) {
+            mTextViewShutterValue.setText("?");
         }
-        if (mAq.id(R.id.textViewApertureValue).getText().equals("")) {
-            mAq.id(R.id.textViewApertureValue).text("?");
+        if (mTextViewApertureValue.getText().equals("")) {
+            mTextViewApertureValue.setText("?");
         }
     }
 

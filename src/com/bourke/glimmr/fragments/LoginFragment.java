@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import android.graphics.Typeface;
-
 import android.net.Uri;
 
 import android.os.Bundle;
@@ -13,17 +11,17 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidquery.AQuery;
-
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.activities.MainActivity;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
 import com.bourke.glimmr.event.Events.IRequestTokenReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
@@ -33,7 +31,6 @@ import com.bourke.glimmr.tasks.GetRequestToken;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
-import android.view.MotionEvent;
 
 /**
  * Presents a welcome to user and a button to login.
@@ -70,7 +67,6 @@ public final class LoginFragment extends BaseFragment
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.login_fragment, container, false);
-        mAq = new AQuery(mActivity, mLayout);
 
         setupTextViews();
 
@@ -131,7 +127,8 @@ public final class LoginFragment extends BaseFragment
         mActivity.setFont((TextView) mLayout.findViewById(R.id.textNotNow),
                 Constants.FONT_ROBOTOTHIN);
 
-        mAq.id(R.id.btnLogin).clicked(new View.OnClickListener() {
+        Button buttonLogin = (Button) mLayout.findViewById(R.id.btnLogin);
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new GetRequestToken(LoginFragment.this, mActivity).execute();

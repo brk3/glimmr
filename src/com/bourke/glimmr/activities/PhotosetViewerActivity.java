@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.androidquery.AQuery;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -9,10 +8,14 @@ import android.support.v4.view.ViewPager;
 
 import android.util.Log;
 
+import android.view.View;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
-import com.bourke.glimmr.common.Constants;
+import com.androidquery.AQuery;
+
 import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.photoset.PhotosetGridFragment;
 import com.bourke.glimmr.R;
@@ -97,11 +100,11 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
 
     @Override
     protected void updateBottomOverlay() {
-        mAq.id(R.id.bottomOverlay).visible();
+        mBottomOverlayView.setVisibility(View.VISIBLE);
         String overlayText = String.format("%s %s %s",
                 mPhotoset.getTitle(), getString(R.string.by),
                 mUser.getUsername());
-        mAq.id(R.id.overlayPrimaryText).text(overlayText);
+        mBottomOverlayPrimaryText.setText(overlayText);
         mAq.id(R.id.overlayImage).image(
                 mPhotoset.getPrimaryPhoto().getSmallSquareUrl(),
                 Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
