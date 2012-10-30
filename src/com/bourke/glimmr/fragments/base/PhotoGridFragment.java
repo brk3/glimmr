@@ -43,7 +43,6 @@ import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.graphics.Typeface;
 
 /**
  * Base Fragment that contains a GridView of photos.
@@ -56,8 +55,8 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
-    private GridView mGridView;
-    private EndlessGridAdapter mAdapter;
+    protected AdapterView mGridView;
+    protected EndlessGridAdapter mAdapter;
 
     protected PhotoList mPhotos = new PhotoList();
     protected List<Photo> mNewPhotos = new ArrayList<Photo>();
@@ -65,6 +64,9 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected boolean mMorePages = true;
     protected boolean mShowProfileOverlay = false;
     protected boolean mShowDetailsOverlay = true;
+
+    private ViewGroup mNoConnectionLayout;
+    private ViewGroup mEmptyView;
 
     public abstract String getNewestPhotoId();
     public abstract void storeNewestPhotoId(Photo photo);
@@ -78,6 +80,10 @@ public abstract class PhotoGridFragment extends BaseFragment
         mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
                 container, false);
         mAq = new AQuery(mActivity, mLayout);
+        mNoConnectionLayout =
+            (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
+        mEmptyView = (ViewGroup) mLayout.findViewById(android.R.id.empty);
+        mGridView = (AdapterView) mLayout.findViewById(R.id.gridview);
         initGridView();
         return mLayout;
     }
@@ -101,16 +107,16 @@ public abstract class PhotoGridFragment extends BaseFragment
     public void onPhotosReady(PhotoList photos) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosReady");
         if (photos == null) {
-            mAq.id(R.id.no_connection_layout).visible();
-            mAq.id(R.id.gridview).gone();
+            mNoConnectionLayout.setVisibility(View.VISIBLE);
+            mGridView.setVisibility(View.GONE);
         } else {
-            mAq.id(R.id.no_connection_layout).gone();
-            mAq.id(R.id.gridview).visible();
+            mNoConnectionLayout.setVisibility(View.GONE);
+            mGridView.setVisibility(View.VISIBLE);
             checkForNewPhotos(photos);
             mPhotos.addAll(photos);
             mAdapter.onDataReady();
         }
-        mAq.id(android.R.id.empty).invisible();
+        mEmptyView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -155,7 +161,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                 return true;
             }
         });
-        mAq.id(R.id.gridview).invisible();
+        mGridView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -243,19 +249,17 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     class GridAdapter extends ArrayAdapter<Photo> {
-        private boolean mHighQualityThumbnails;
 
         public GridAdapter(PhotoList items) {
             super(mActivity, R.layout.gridview_item, android.R.id.text1,
                     items);
-            mHighQualityThumbnails = mDefaultSharedPrefs.getBoolean(
-                    Constants.KEY_HIGH_QUALITY_THUMBNAILS, false);
         }
 
         @Override
         public View getView(final int position, View convertView,
                 ViewGroup parent) {
             ViewHolder holder;
+
             if (convertView == null) {
                 convertView = mActivity.getLayoutInflater().inflate(
                         R.layout.gridview_item, null);
@@ -276,31 +280,24 @@ public abstract class PhotoGridFragment extends BaseFragment
             }
 
             final Photo photo = getItem(position);
-            AQuery aq = mAq.recycle(convertView);
-
-            /* Fetch the main photo */
-            String thumbnailUrl;
-            if (mHighQualityThumbnails) {
-                thumbnailUrl = photo.getMediumUrl();
-            } else {
-                thumbnailUrl = photo.getLargeSquareUrl();
-            }
 
             /* Don't load image if flinging past it */
-            if (aq.shouldDelay(position, convertView, parent, thumbnailUrl)) {
-                Bitmap placeholder = aq.getCachedImage(R.drawable.blank);
-                aq.id(holder.image).image(placeholder);
-                aq.id(holder.imageOverlay).invisible();
+            if (mAq.shouldDelay(position, convertView, parent,
+                        photo.getLargeSquareUrl())) {
+                Bitmap placeholder = mAq.getCachedImage(R.drawable.blank);
+                mAq.id(holder.image).image(placeholder);
+                holder.imageOverlay.setVisibility(View.INVISIBLE);
             } else {
                 if (mShowDetailsOverlay) {
-                    aq.id(holder.imageOverlay).visible();
+                    holder.imageOverlay.setVisibility(View.VISIBLE);
                 } else {
-                    aq.id(holder.imageOverlay).invisible();
+                    holder.imageOverlay.setVisibility(View.INVISIBLE);
                 }
 
                 mActivity.setFont(holder.ownerText, Constants.FONT_ROBOTOBOLD);
 
-                aq.id(holder.image).image(thumbnailUrl,
+                /* Fetch the main photo */
+                mAq.id(holder.image).image(photo.getLargeSquareUrl(),
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);
 
@@ -308,11 +305,10 @@ public abstract class PhotoGridFragment extends BaseFragment
                 String viewsText = String.format("%s: %s",
                         mActivity.getString(R.string.views),
                         String.valueOf(photo.getViews()));
-                aq.id(holder.viewsText).text(viewsText);
+                holder.viewsText.setText(viewsText);
                 if (photo.getOwner() != null) {
-                    aq.id(holder.ownerText).text(photo.getOwner()
-                            .getUsername());
-                    aq.id(holder.imageOverlay).clicked(
+                    holder.ownerText.setText(photo.getOwner().getUsername());
+                    holder.imageOverlay.setOnClickListener(
                             new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -323,11 +319,11 @@ public abstract class PhotoGridFragment extends BaseFragment
                 }
 
                 /* Show ribbon in corner if photo is new */
-                mAq.id(holder.imageNewRibbon).invisible();
+                holder.imageNewRibbon.setVisibility(View.INVISIBLE);
                 if (mNewPhotos != null) {
                     for (Photo p : mNewPhotos) {
                         if (p.getId().equals(photo.getId())) {
-                            mAq.id(holder.imageNewRibbon).visible();
+                            holder.imageNewRibbon.setVisibility(View.VISIBLE);
                         }
                     }
                 }

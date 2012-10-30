@@ -2,8 +2,6 @@ package com.bourke.glimmrpro.fragments.viewer;
 
 import android.content.Context;
 
-import android.graphics.Typeface;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -16,8 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +63,9 @@ public final class CommentsFragment extends BaseDialogFragment
             new HashMap<String, UserItem>());
     private List<LoadUserTask> mLoadUserTasks = new ArrayList<LoadUserTask>();
     private PrettyTime mPrettyTime;
+    private ImageButton mSubmitButton;
+    private ProgressBar mProgressBar;
+    private ListView mListView;
 
     public static CommentsFragment newInstance(Photo p) {
         CommentsFragment f = new CommentsFragment();
@@ -81,8 +86,20 @@ public final class CommentsFragment extends BaseDialogFragment
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.comments_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
-        mAq.id(R.id.submitButton).clicked(this, "submitButtonClicked");
-        mAq.id(R.id.progressIndicator).visible();
+
+        mSubmitButton = (ImageButton) mLayout.findViewById(R.id.submitButton);
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommentsFragment.this.submitButtonClicked();
+            }
+        });
+
+        mProgressBar =
+            (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        mListView = (ListView) mLayout.findViewById(R.id.list);
 
         /* Set title text to uppercase and roboto font */
         TextView titleText = (TextView) mLayout.findViewById(R.id.titleText);
@@ -122,7 +139,7 @@ public final class CommentsFragment extends BaseDialogFragment
         }
     }
 
-    public void submitButtonClicked(View view) {
+    public void submitButtonClicked() {
         if (mActivity.getUser() == null) {
             Toast.makeText(mActivity, getString(R.string.login_required),
                     Toast.LENGTH_SHORT).show();
@@ -153,11 +170,6 @@ public final class CommentsFragment extends BaseDialogFragment
                 Toast.LENGTH_SHORT).show();
     }
 
-    public void itemClicked(AdapterView<?> parent, View view, int position,
-            long id) {
-        // TODO
-    }
-
     @Override
     public void onUserReady(User user) {
         if (Constants.DEBUG)
@@ -177,7 +189,7 @@ public final class CommentsFragment extends BaseDialogFragment
 
     @Override
     public void onCommentsReady(List<Comment> comments) {
-        mAq.id(R.id.progressIndicator).gone();
+        mProgressBar.setVisibility(View.INVISIBLE);
 
         if (comments == null) {
             Log.e(TAG, "onCommentsReady: comments are null");
@@ -190,31 +202,41 @@ public final class CommentsFragment extends BaseDialogFragment
 
         mAdapter = new ArrayAdapter<Comment>(mActivity,
                 R.layout.comment_list_row, (ArrayList<Comment>) comments) {
-            // TODO: implement ViewHolder pattern
-            // TODO: add aquery delay loading for fling scrolling
             @Override
             public View getView(final int position, View convertView,
                     ViewGroup parent) {
+                ViewHolder holder;
 
                 if (convertView == null) {
                     convertView = mActivity.getLayoutInflater().inflate(
                             R.layout.comment_list_row, null);
+                    holder = new ViewHolder();
+                    holder.textViewUsername = (TextView)
+                        convertView.findViewById(R.id.userName);
+                    holder.textViewCommentDate = (TextView)
+                        convertView.findViewById(R.id.commentDate);
+                    holder.textViewCommentText = (TextView)
+                        convertView.findViewById(R.id.commentText);
+                    holder.imageViewUserIcon = (ImageView)
+                        convertView.findViewById(R.id.userIcon);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (ViewHolder) convertView.getTag();
                 }
 
                 final Comment comment = getItem(position);
-                AQuery aq = mAq.recycle(convertView);
 
-                // TODO: if your username replace with "You"
-                aq.id(R.id.userName).text(comment.getAuthorName());
+                holder.textViewUsername.setText(comment.getAuthorName());
 
                 String pTime = mPrettyTime.format(comment.getDateCreate());
                 /* keep Oliver happy */
                 if (Locale.getDefault().getLanguage().equals("es")) {
                     pTime = capitaliseWord(pTime);
                 }
-                aq.id(R.id.commentDate).text(pTime);
+                holder.textViewCommentDate.setText(pTime);
 
-                aq.id(R.id.commentText).text(Html.fromHtml(comment.getText()));
+                holder.textViewCommentText.setText(
+                    Html.fromHtml(comment.getText()));
 
                 final UserItem author = mUsers.get(comment.getAuthor());
                 if (author == null) {
@@ -225,12 +247,12 @@ public final class CommentsFragment extends BaseDialogFragment
                     mLoadUserTasks.add(loadUserTask);
                 } else {
                     if (!author.isLoading) {
-                        aq.id(R.id.userIcon).image(
+                        mAq.id(holder.imageViewUserIcon).image(
                                 author.user.getBuddyIconUrl(),
                                 Constants.USE_MEMORY_CACHE,
                                 Constants.USE_FILE_CACHE, 0, 0, null,
                                 AQuery.FADE_IN_NETWORK);
-                        aq.id(R.id.userIcon).clicked(
+                        holder.imageViewUserIcon.setOnClickListener(
                                 new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -243,9 +265,7 @@ public final class CommentsFragment extends BaseDialogFragment
                 return convertView;
             }
         };
-
-        mAq.id(R.id.list).adapter(mAdapter).itemClicked(this,
-                "itemClicked");
+        mListView.setAdapter(mAdapter);
     }
 
     private String capitaliseWord(String word) {
@@ -260,6 +280,13 @@ public final class CommentsFragment extends BaseDialogFragment
     @Override
     protected String getLogTag() {
         return TAG;
+    }
+
+    class ViewHolder {
+        TextView textViewUsername;
+        TextView textViewCommentDate;
+        TextView textViewCommentText;
+        ImageView imageViewUserIcon;
     }
 
     class UserItem {
