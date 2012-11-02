@@ -2,10 +2,11 @@ package com.bourke.glimmr.common;
 
 public class Constants {
 
+    /* Important: set to false when doing release builds */
+    public static final boolean DEBUG = true;
+
     /* Global app prefs */
     public static final String PREFS_NAME = "glimmr_prefs";
-
-    public static final boolean DEBUG = true;
 
     /* File and mem cache tuning params */
     public static final boolean USE_FILE_CACHE = true;
@@ -139,6 +140,11 @@ public class Constants {
 
     /* DialogBuilder dialog ids */
     public static final int DIALOG_ABOUT = 0;
+
+    public static final String STATE_MENUDRAWER =
+        "net.simonvt.menudrawer.samples.ContentSample.menuDrawer";
+    public static final String STATE_ACTIVE_POSITION =
+        "net.simonvt.menudrawer.samples.ContentSample.activePosition";
 
     public static final String PRO_MARKET_LINK =
         "market://details?id=com.bourke.glimmrpro";
