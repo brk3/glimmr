@@ -16,7 +16,7 @@
         android:verticalSpacing="1dp"
         android:stretchMode="columnWidth"
         android:visibility="gone"
-        android:listSelector="@drawable/gridview_item_selector"
+        android:listSelector="@drawable/selectable_background_glimmrdark"
         android:drawSelectorOnTop="true"
         android:gravity="center" />
 
