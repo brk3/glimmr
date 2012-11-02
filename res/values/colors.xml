@@ -5,12 +5,11 @@
 
     <!-- 0x7f == 2/255 which is what Google recommends for transparency -->
     <color name="transparent_black">#7f000000</color>
-    <color name="transparent_flickr_pink">#7fff0084</color>
 
     <color name="flickr_pink">#ffff0084</color>
     <color name="flickr_blue">#ff0063dc</color>
 
     <drawable name="ab_bg_black">#aa000000</drawable>
-    <drawable name="flickr_pink">#ffff0084</drawable>
-    <drawable name="flickr_blue">#ff0063dc</drawable>
+    <drawable name="flickr_pink">@color/flickr_pink</drawable>
+    <drawable name="flickr_blue">@color/flickr_blue</drawable>
 </resources>
