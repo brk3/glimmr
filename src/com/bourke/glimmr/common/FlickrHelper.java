@@ -1,5 +1,6 @@
 package com.bourke.glimmrpro.common;
 
+import com.googlecode.flickrjandroid.activity.ActivityInterface;
 import com.googlecode.flickrjandroid.contacts.ContactsInterface;
 import com.googlecode.flickrjandroid.favorites.FavoritesInterface;
 import com.googlecode.flickrjandroid.Flickr;
@@ -116,6 +117,15 @@ public final class FlickrHelper {
         Flickr f = getFlickr();
         if (f != null) {
             return f.getPeopleInterface();
+        } else {
+            return null;
+        }
+    }
+
+    public ActivityInterface getActivityInterface() {
+        Flickr f = getFlickr();
+        if (f != null) {
+            return f.getActivityInterface();
         } else {
             return null;
         }
