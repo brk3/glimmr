@@ -63,7 +63,6 @@ public class AppListener implements WakefulIntentService.AlarmListener {
                 Constants.KEY_INTERVALS_LIST_PREFERENCE, "60");
         try {
             mMinutes = Integer.parseInt(intervalPref);
-            if (Constants.DEBUG) Log.d(TAG, "mMinutes set to " + mMinutes);
         } catch (NumberFormatException e) {
             Log.e(TAG, String.format("scheduleAlarms: can't parse '%s' " +
                 "as intervalPref", intervalPref));

@@ -161,6 +161,9 @@ public class Constants {
     public static final String STATE_ACTIVE_POSITION =
         "net.simonvt.menudrawer.samples.ContentSample.activePosition";
 
+    public static final String ACTIVITY_ITEMLIST_FILE =
+        "activity_items.dat";
+
     public static final String PRO_MARKET_LINK =
         "market://details?id=com.bourke.glimmrpro";
 }

@@ -30,10 +30,16 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
         mBaseFragment = a;
     }
 
+    public LoadContactsPhotosTask(IPhotoListReadyListener listener) {
+        mListener = listener;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
+        if (mBaseFragment != null) {
+            mBaseFragment.showProgressIcon(true);
+        }
     }
 
     @Override
@@ -71,7 +77,9 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
             Log.e(TAG, "Error fetching contacts photos, result is null");
         }
         mListener.onPhotosReady(result);
-        mBaseFragment.showProgressIcon(false);
+        if (mBaseFragment != null) {
+            mBaseFragment.showProgressIcon(false);
+        }
     }
 
     @Override
