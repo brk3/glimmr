@@ -36,11 +36,15 @@ import com.bourke.glimmr.fragments.home.GroupListFragment;
 import com.bourke.glimmr.fragments.home.PhotosetsFragment;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
 import com.bourke.glimmr.R;
+import com.bourke.glimmr.services.ActivityNotificationHandler;
 import com.bourke.glimmr.services.AppListener;
 import com.bourke.glimmr.services.AppService;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
+import com.googlecode.flickrjandroid.activity.Event;
+import com.googlecode.flickrjandroid.activity.Item;
+import com.googlecode.flickrjandroid.activity.ItemList;
 import com.googlecode.flickrjandroid.people.User;
 
 import com.sbstrm.appirater.Appirater;
@@ -49,9 +53,7 @@ import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.simonvt.widget.MenuDrawer;
 import net.simonvt.widget.MenuDrawerManager;
@@ -174,20 +176,38 @@ public class MainActivity extends BaseActivity {
                 RecentPublicPhotosFragment.class));
     }
 
-    private void initMenuDrawer() {
+    public void updateMenuListItems(ItemList flickrActivityItems) {
+        if (Constants.DEBUG) Log.d(TAG, "updateMenuListItems");
+
+        /* Add the standard page related items */
         List<Object> items = new ArrayList<Object>();
         for (PageItem page : mContent) {
-            items.add(new Item(page.mTitle, page.mIconDrawable));
+            items.add(new MenuDrawerItem(page.mTitle, page.mIconDrawable));
         }
-        items.add(new Category(
-                getString(R.string.pref_category_notifications)));
-        //items.add(new Item("Item 3", R.drawable.ic_action_refresh_dark));
 
+        /* Add the activity notification items.
+         * An item can be a photo or photoset.
+         * An event can be a comment, note, or fav on that item */
+        items.add(new MenuDrawerCategory(
+                getString(R.string.pref_category_notifications)));
+        if (flickrActivityItems != null) {
+            for (Item i : flickrActivityItems) {
+                for (Event e : i.getEvents()) {
+                    // TODO: create new row category here
+                    // items.add(new MenuDrawerCategory(e.getValue()));
+                }
+            }
+        }
+        mMenuAdapter.setItems(items);
+        mMenuAdapter.notifyDataSetChanged();
+    }
+
+    private void initMenuDrawer() {
         /* A custom ListView is needed so the drawer can be notified when it's
          * scrolled. This is to update the position
          * of the arrow indicator. */
         mList = new MenuListView(this);
-        mMenuAdapter = new MenuAdapter(items);
+        mMenuAdapter = new MenuAdapter();
         mList.setAdapter(mMenuAdapter);
 
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -228,6 +248,8 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
+        updateMenuListItems(ActivityNotificationHandler.loadItemList(this));
     }
 
     private void initNotificationAlarms() {
@@ -296,20 +318,20 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private static final class Item {
+    private static final class MenuDrawerItem {
         public String mTitle;
         public int mIconRes;
 
-        Item(String title, int iconRes) {
+        MenuDrawerItem(String title, int iconRes) {
             mTitle = title;
             mIconRes = iconRes;
         }
     }
 
-    private static final class Category {
+    private static final class MenuDrawerCategory {
         public String mTitle;
 
-        Category(String title) {
+        MenuDrawerCategory(String title) {
             mTitle = title;
         }
     }
@@ -318,6 +340,14 @@ public class MainActivity extends BaseActivity {
         private List<Object> mItems;
 
         MenuAdapter(List<Object> items) {
+            mItems = items;
+        }
+
+        MenuAdapter() {
+            mItems = new ArrayList<Object>();
+        }
+
+        public void setItems(List<Object> items) {
             mItems = items;
         }
 
@@ -338,7 +368,7 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getItemViewType(int position) {
-            return getItem(position) instanceof Item ? 0 : 1;
+            return getItem(position) instanceof MenuDrawerItem ? 0 : 1;
         }
 
         @Override
@@ -348,7 +378,7 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public boolean isEnabled(int position) {
-            return getItem(position) instanceof Item;
+            return getItem(position) instanceof MenuDrawerItem;
         }
 
         @Override
@@ -361,13 +391,13 @@ public class MainActivity extends BaseActivity {
             View v = convertView;
             Object item = getItem(position);
 
-            if (item instanceof Category) {
+            if (item instanceof MenuDrawerCategory) {
                 if (v == null) {
                     v = getLayoutInflater().inflate(R.layout.menu_row_category,
                             parent, false);
                 }
 
-                ((TextView) v).setText(((Category) item).mTitle);
+                ((TextView) v).setText(((MenuDrawerCategory) item).mTitle);
 
             } else {
                 if (v == null) {
@@ -376,9 +406,9 @@ public class MainActivity extends BaseActivity {
                 }
 
                 TextView tv = (TextView) v;
-                tv.setText(((Item) item).mTitle);
+                tv.setText(((MenuDrawerItem) item).mTitle);
                 tv.setCompoundDrawablesWithIntrinsicBounds(
-                        ((Item) item).mIconRes, 0, 0, 0);
+                        ((MenuDrawerItem) item).mIconRes, 0, 0, 0);
             }
 
             v.setTag(R.id.mdActiveViewPosition, position);
