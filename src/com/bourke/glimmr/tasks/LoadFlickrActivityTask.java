@@ -36,7 +36,7 @@ public class LoadFlickrActivityTask extends AsyncTask<OAuth, Void, ItemList> {
             try {
                 Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                         token.getOauthToken(), token.getOauthTokenSecret());
-                String timeFrame = "5d";
+                String timeFrame = "100d";
                 int page = 1;
                 return f.getActivityInterface().userPhotos(
                         Constants.FETCH_PER_PAGE, page, timeFrame);
