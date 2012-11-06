@@ -1,22 +1,24 @@
 package com.bourke.glimmr.services;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import android.util.Log;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmr.tasks.LoadFlickrActivityTask;
 
+import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.activity.ItemList;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+
+import java.util.Collection;
 
 /**
  * This class refers to Flickr activity such as comments, faves, etc., not
@@ -25,8 +27,7 @@ import java.io.ObjectOutputStream;
 public class ActivityNotificationHandler
         implements GlimmrNotificationHandler, IActivityItemsReadyListener {
 
-    private static final String TAG =
-        "Glimmr/ActivityNotificationHandler";
+    private static final String TAG = "Glimmr/ActivityNotificationHandler";
 
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -57,43 +58,40 @@ public class ActivityNotificationHandler
             Log.e(TAG, "storeItemList: items are null");
             return;
         }
-        try {
-            FileOutputStream fos = mContext.openFileOutput(
-                    Constants.ACTIVITY_ITEMLIST_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(items);
-            oos.close();
-            if (Constants.DEBUG) {
-                Log.d(TAG, String.format("Sucessfully wrote %d items to %s",
-                        items.size(), Constants.ACTIVITY_ITEMLIST_FILE));
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "storeItemList: error storing ItemList");
-            e.printStackTrace();
+
+        GsonHelper gson = new GsonHelper(mContext);
+
+        boolean itemListStoreResult =
+            gson.marshallObject(items, Constants.ACTIVITY_ITEMLIST_FILE);
+        if (!itemListStoreResult) {
+            Log.e(TAG, "Error marshalling itemlist");
+            return;
+        }
+
+        if (Constants.DEBUG) {
+            Log.d(TAG, String.format("Sucessfully wrote %d items to %s",
+                    items.size(), Constants.ACTIVITY_ITEMLIST_FILE));
         }
     }
 
     public static ItemList loadItemList(Context context) {
         ItemList ret = new ItemList();
-        try {
-            FileInputStream fis =
-                context.openFileInput(Constants.ACTIVITY_ITEMLIST_FILE);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            try {
-                ret = (ItemList) ois.readObject();
-            } catch (ClassNotFoundException e) {
-                Log.e(TAG, "Couldn't read ItemList object from " +
-                        Constants.ACTIVITY_ITEMLIST_FILE);
-                e.printStackTrace();
-            }
-            ois.close();
-            if (Constants.DEBUG) {
-                Log.d(TAG, String.format("Sucessfully read %d items from %s",
-                        ret.size(), Constants.ACTIVITY_ITEMLIST_FILE));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        GsonHelper gson = new GsonHelper(context);
+        String json = gson.loadJson(Constants.ACTIVITY_ITEMLIST_FILE);
+        if (json.length() == 0) {
+            Log.e(TAG, String.format("Error reading %s",
+                        Constants.ACTIVITY_ITEMLIST_FILE));
+            return ret;
         }
+        Type collectionType = new TypeToken<Collection<Item>>(){}.getType();
+        ret = new Gson().fromJson(json.toString(), collectionType);
+
+        if (Constants.DEBUG) {
+            Log.d(TAG, String.format("Sucessfully read %d items from %s",
+                    ret.size(), Constants.ACTIVITY_ITEMLIST_FILE));
+        }
+
         return ret;
     }
 }

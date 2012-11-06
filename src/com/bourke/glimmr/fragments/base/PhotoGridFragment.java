@@ -43,7 +43,6 @@ import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.graphics.Typeface;
 
 /**
  * Base Fragment that contains a GridView of photos.
@@ -171,7 +170,7 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.e(getLogTag(), "showGridItemContextMenu: photo is null");
             return;
         }
-        ProfileActivity.startProfileViewer(photo.getOwner(), mActivity);
+        ProfileActivity.startProfileViewer(mActivity, photo.getOwner());
     }
 
     /**
@@ -313,8 +312,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                             new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ProfileActivity.startProfileViewer(
-                                photo.getOwner(), mActivity);
+                            ProfileActivity.startProfileViewer(mActivity,
+                                photo.getOwner());
                         }
                     });
                 }

@@ -1,7 +1,5 @@
 package com.bourke.glimmr.fragments.home;
 
-import android.content.Intent;
-
 import android.os.Bundle;
 
 import android.util.Log;
@@ -12,7 +10,9 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
@@ -28,8 +28,6 @@ import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.GroupList;
 
 import java.util.ArrayList;
-import android.widget.TextView;
-import android.widget.ImageView;
 
 public class GroupListFragment extends BaseFragment
         implements IGroupListReadyListener {
@@ -83,25 +81,6 @@ public class GroupListFragment extends BaseFragment
         startTask();
     }
 
-    private void startGroupViewer(Group group) {
-        if (group == null) {
-            if (Constants.DEBUG)
-                Log.e(getLogTag(),
-                    "Cannot start GroupViewerActivity, group is null");
-            return;
-        }
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "Starting GroupViewerActivity for " +
-                group.getName());
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_GROUPVIEWER_GROUP, group);
-        bundle.putSerializable(Constants.KEY_GROUPVIEWER_USER,
-                mActivity.getUser());
-        Intent groupViewer = new Intent(mActivity, GroupViewerActivity.class);
-        groupViewer.putExtras(bundle);
-        mActivity.startActivity(groupViewer);
-    }
-
     @Override
     public void onGroupListReady(GroupList groups) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onGroupListReady");
@@ -121,7 +100,8 @@ public class GroupListFragment extends BaseFragment
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                         int position, long id) {
-                    startGroupViewer(mGroups.get(position));
+                    GroupViewerActivity.startGroupViewer(mActivity,
+                        mGroups.get(position));
                 }
             });
         }

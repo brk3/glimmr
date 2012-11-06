@@ -17,11 +17,14 @@ import com.androidquery.AQuery;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
+import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.fragments.photoset.PhotosetGridFragment;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
+
+import com.google.gson.Gson;
 
 public class PhotosetViewerActivity extends BottomOverlayActivity {
 
@@ -40,45 +43,61 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
         if (Constants.DEBUG) {
             Log.d(TAG, "Starting SetViewerActivity for "+ photoset.getTitle());
         }
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_PHOTOSET,
-                photoset);
-        bundle.putSerializable(Constants.KEY_PHOTOSETVIEWER_USER,
-                activity.getUser());
+
+        GsonHelper gson = new GsonHelper(activity);
+
+        boolean photosetStoreResult =
+            gson.marshallObject(photoset, Constants.PHOTOSETVIEWER_SET_FILE);
+        if (!photosetStoreResult) {
+            Log.e(TAG, "Error marshalling photoset, cannot start viewer");
+            return;
+        }
+
+        boolean userStoreResult = gson.marshallObject(activity.getUser(),
+                    Constants.PHOTOSETVIEWER_USER_FILE);
+        if (!userStoreResult) {
+            Log.e(TAG, "Error marshalling user, cannot start viewer");
+            return;
+        }
+
         Intent photosetViewer = new Intent(activity, PhotosetViewerActivity
                 .class);
-        photosetViewer.putExtras(bundle);
         activity.startActivity(photosetViewer);
+    }
+
+    @Override
+    protected void handleIntent(Intent intent) {
+        GsonHelper gsonHelper = new GsonHelper(this);
+        Gson gson = new Gson();
+
+        String json = gsonHelper.loadJson(Constants.PHOTOSETVIEWER_SET_FILE);
+        if (json.length() == 0) {
+            Log.e(TAG, String.format("Error reading %s",
+                        Constants.PHOTOSETVIEWER_SET_FILE));
+            return;
+        }
+        mPhotoset = gson.fromJson(json.toString(), Photoset.class);
+
+        json = gsonHelper.loadJson(Constants.PHOTOSETVIEWER_USER_FILE);
+        if (json.length() == 0) {
+            Log.e(TAG, String.format("Error reading %s",
+                        Constants.PHOTOSETVIEWER_USER_FILE));
+            return;
+        }
+        mUser = gson.fromJson(json.toString(), User.class);
+
+        if (Constants.DEBUG) {
+            Log.d(TAG, "Got photoset to view: " +mPhotoset.getTitle());
+        }
+        mPhotoset.setOwner(mUser);
+        initViewPager();
+        updateBottomOverlay();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         CONTENT = new String[] { getString(R.string.photoset) };
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void handleIntent(Intent intent) {
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            mPhotoset = (Photoset) bundle.getSerializable(Constants.
-                    KEY_PHOTOSETVIEWER_PHOTOSET);
-            mUser = (User) bundle.getSerializable(
-                    Constants.KEY_PHOTOSETVIEWER_USER);
-            if (mPhotoset != null && mUser != null) {
-                if (Constants.DEBUG) {
-                    Log.d(TAG, "Got photoset to view: " +mPhotoset.getTitle());
-                }
-                mPhotoset.setOwner(mUser);
-                initViewPager();
-                updateBottomOverlay();
-            } else {
-                Log.e(TAG, "Photoset/User from intent is null");
-            }
-        } else {
-            Log.e(TAG, "Bundle is null, PhotosetViewerActivity requires " +
-                "an intent containing a Photoset and a User");
-        }
     }
 
     @Override
