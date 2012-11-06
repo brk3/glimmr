@@ -148,6 +148,17 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="MenuDrawer.Widget.ActivityItem">
+        <item name="android:background">@drawable/selectable_background_glimmrdark</item>
+        <item name="android:textColor">@android:color/primary_text_dark</item>
+        <item name="android:textSize">14sp</item>
+
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
     <style name="MenuDrawer.Widget.Title">
         <item name="android:background">@drawable/selectable_background_glimmrdark</item>
         <item name="android:textAppearance">?android:attr/textAppearance</item>

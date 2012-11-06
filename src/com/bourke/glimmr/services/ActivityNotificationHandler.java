@@ -11,7 +11,6 @@ import com.bourke.glimmrpro.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmrpro.tasks.LoadFlickrActivityTask;
 
 import com.googlecode.flickrjandroid.activity.Item;
-import com.googlecode.flickrjandroid.activity.ItemList;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
 import com.google.gson.Gson;
@@ -19,7 +18,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This class refers to Flickr activity such as comments, faves, etc., not
@@ -47,14 +48,14 @@ public class ActivityNotificationHandler
     }
 
     @Override
-    public void onItemListReady(ItemList items) {
+    public void onItemListReady(List<Item> items) {
         if (items != null) {
             Log.d(TAG, "onItemListReady: items.size: " + items.size());
             storeItemList(items);
         }
     }
 
-    private void storeItemList(ItemList items) {
+    private void storeItemList(List<Item> items) {
         if (items == null) {
             Log.e(TAG, "storeItemList: items are null");
             return;
@@ -75,8 +76,8 @@ public class ActivityNotificationHandler
         }
     }
 
-    public static ItemList loadItemList(Context context) {
-        ItemList ret = new ItemList();
+    public static List<Item> loadItemList(Context context) {
+        List<Item> ret = new ArrayList<Item>();
 
         GsonHelper gson = new GsonHelper(context);
         String json = gson.loadJson(Constants.ACTIVITY_ITEMLIST_FILE);

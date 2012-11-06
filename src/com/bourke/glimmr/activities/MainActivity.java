@@ -11,6 +11,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import android.text.Html;
+
 import android.util.Log;
 
 import android.view.View;
@@ -44,7 +46,6 @@ import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
-import com.googlecode.flickrjandroid.activity.ItemList;
 import com.googlecode.flickrjandroid.people.User;
 
 import com.sbstrm.appirater.Appirater;
@@ -54,9 +55,12 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import net.simonvt.widget.MenuDrawer;
 import net.simonvt.widget.MenuDrawerManager;
+
+import org.ocpsoft.pretty.time.PrettyTime;
 
 public class MainActivity extends BaseActivity {
 
@@ -176,7 +180,7 @@ public class MainActivity extends BaseActivity {
                 RecentPublicPhotosFragment.class));
     }
 
-    public void updateMenuListItems(ItemList flickrActivityItems) {
+    public void updateMenuListItems(List<Item> flickrActivityItems) {
         if (Constants.DEBUG) Log.d(TAG, "updateMenuListItems");
 
         /* Add the standard page related items */
@@ -184,22 +188,65 @@ public class MainActivity extends BaseActivity {
         for (PageItem page : mContent) {
             items.add(new MenuDrawerItem(page.mTitle, page.mIconDrawable));
         }
+        // TODO: update strings
+        items.add(new MenuDrawerCategory("Activity"));
 
-        /* Add the activity notification items.
-         * An item can be a photo or photoset.
-         * An event can be a comment, note, or fav on that item */
-        items.add(new MenuDrawerCategory(
-                getString(R.string.pref_category_notifications)));
+        /* If we have flickr activity items then build a stream */
         if (flickrActivityItems != null) {
-            for (Item i : flickrActivityItems) {
-                for (Event e : i.getEvents()) {
-                    // TODO: create new row category here
-                    // items.add(new MenuDrawerCategory(e.getValue()));
-                }
-            }
+            items.addAll(buildActivityStream(flickrActivityItems));
         }
+
         mMenuAdapter.setItems(items);
         mMenuAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * An item can be a photo or photoset.
+     * An event can be a comment, note, or fav on that item.
+     */
+    private List<Object> buildActivityStream(List<Item> activityItems) {
+        List<Object> ret = new ArrayList<Object>();
+        if (activityItems == null) {
+            return ret;
+        }
+
+        PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
+        String html = "<small><i>%s</i></small><br>" +
+            "%s <font color=\"#ff0084\"><b>%s</b></font> <i>‘%s’</i>";
+
+        // TODO: update strings
+        for (Item i : activityItems) {
+            if (i.getType().equals("photo")) {
+                StringBuilder itemString = new StringBuilder();
+                int count = 0;
+                for (Event e : i.getEvents()) {
+                    String pTime = prettyTime.format(e.getDateadded());
+                    String author = e.getUsername();
+                    if (mUser != null && mUser.getUsername().equals(author)) {
+                        author = getString(R.string.you);
+                    }
+                    if (e.getType().equals("comment")) {
+                        // TODO: update string
+                        itemString.append(String.format(html, pTime, author,
+                                    "commented on", i.getTitle()));
+                    } else if (e.getType().equals("fave")) {
+                        // TODO: update string
+                        itemString.append(String.format(html, pTime, author,
+                                    "favorited", i.getTitle()));
+                    } else {
+                        Log.e(TAG, "unsupported Event type: " + e.getType());
+                        count++;
+                        continue;
+                    }
+                    if (count < i.getEvents().size()-1) {
+                        itemString.append("<br><br>");
+                    }
+                    count++;
+                }
+                ret.add(new MenuDrawerActivityItem(itemString.toString(), -1));
+            }
+        }
+        return ret;
     }
 
     private void initMenuDrawer() {
@@ -207,6 +254,7 @@ public class MainActivity extends BaseActivity {
          * scrolled. This is to update the position
          * of the arrow indicator. */
         mList = new MenuListView(this);
+        mList.setBackgroundResource(R.drawable.app_background_ics);
         mMenuAdapter = new MenuAdapter();
         mList.setAdapter(mMenuAdapter);
 
@@ -214,10 +262,17 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                mViewPager.setCurrentItem(position);
-                mActivePosition = position;
-                mMenuDrawer.setActiveView(view, position);
-                mMenuDrawer.closeMenu();
+                switch (mMenuAdapter.getItemViewType(position)) {
+                    case MENU_DRAWER_ITEM:
+                        mViewPager.setCurrentItem(position);
+                        mActivePosition = position;
+                        mMenuDrawer.setActiveView(view, position);
+                        mMenuDrawer.closeMenu();
+                        break;
+                    case MENU_DRAWER_ACTIVITY_ITEM:
+                        // TODO
+                        break;
+                }
             }
         });
 
@@ -336,6 +391,20 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private static final class MenuDrawerActivityItem {
+        public String mTitle;
+        public int mIconRes;
+
+        MenuDrawerActivityItem(String title, int iconRes) {
+            mTitle = title;
+            mIconRes = iconRes;
+        }
+    }
+
+    public static final int MENU_DRAWER_ITEM = 0;
+    public static final int MENU_DRAWER_CATEGORY_ITEM = 1;
+    public static final int MENU_DRAWER_ACTIVITY_ITEM = 2;
+
     private class MenuAdapter extends BaseAdapter {
         private List<Object> mItems;
 
@@ -368,17 +437,24 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getItemViewType(int position) {
-            return getItem(position) instanceof MenuDrawerItem ? 0 : 1;
+            Object item = getItem(position);
+            if (item instanceof MenuDrawerActivityItem) {
+                return MENU_DRAWER_ACTIVITY_ITEM;
+
+            } else if (item instanceof MenuDrawerCategory) {
+                return MENU_DRAWER_CATEGORY_ITEM;
+            }
+            return MENU_DRAWER_ITEM;
         }
 
         @Override
         public int getViewTypeCount() {
-            return 2;
+            return 3;
         }
 
         @Override
         public boolean isEnabled(int position) {
-            return getItem(position) instanceof MenuDrawerItem;
+            return !(getItem(position) instanceof MenuDrawerCategory);
         }
 
         @Override
@@ -391,24 +467,34 @@ public class MainActivity extends BaseActivity {
             View v = convertView;
             Object item = getItem(position);
 
-            if (item instanceof MenuDrawerCategory) {
+            if (item instanceof MenuDrawerActivityItem) {
                 if (v == null) {
-                    v = getLayoutInflater().inflate(R.layout.menu_row_category,
-                            parent, false);
+                    v = getLayoutInflater().inflate(
+                            R.layout.menu_row_activity_item, parent, false);
                 }
+                TextView tv = (TextView) v;
+                tv.setText(Html.fromHtml(
+                            ((MenuDrawerActivityItem) item).mTitle));
 
-                ((TextView) v).setText(((MenuDrawerCategory) item).mTitle);
-
-            } else {
+            } else if (item instanceof MenuDrawerItem) {
                 if (v == null) {
-                    v = getLayoutInflater().inflate(R.layout.menu_row_item,
-                            parent, false);
+                    v = getLayoutInflater().inflate(
+                            R.layout.menu_row_item, parent, false);
                 }
-
                 TextView tv = (TextView) v;
                 tv.setText(((MenuDrawerItem) item).mTitle);
                 tv.setCompoundDrawablesWithIntrinsicBounds(
                         ((MenuDrawerItem) item).mIconRes, 0, 0, 0);
+
+            } else if (item instanceof MenuDrawerCategory) {
+                if (v == null) {
+                    v = getLayoutInflater().inflate(
+                            R.layout.menu_row_category, parent, false);
+                }
+                ((TextView) v).setText(((MenuDrawerCategory) item).mTitle);
+
+            } else {
+                Log.e(TAG, "MenuAdapter.getView: Unsupported item type");
             }
 
             v.setTag(R.id.mdActiveViewPosition, position);
