@@ -1,6 +1,6 @@
 package com.bourke.glimmr.event;
 
-import com.googlecode.flickrjandroid.activity.ItemList;
+import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.groups.GroupList;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
@@ -67,6 +67,6 @@ public class Events {
     }
 
     public interface IActivityItemsReadyListener {
-        public void onItemListReady(ItemList items);
+        public void onItemListReady(List<Item> items);
     }
 }
