@@ -170,7 +170,7 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.e(getLogTag(), "showGridItemContextMenu: photo is null");
             return;
         }
-        ProfileActivity.startProfileViewer(photo.getOwner(), mActivity);
+        ProfileActivity.startProfileViewer(mActivity, photo.getOwner());
     }
 
     /**
@@ -312,8 +312,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                             new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ProfileActivity.startProfileViewer(
-                                photo.getOwner(), mActivity);
+                            ProfileActivity.startProfileViewer(mActivity,
+                                photo.getOwner());
                         }
                     });
                 }

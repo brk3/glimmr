@@ -36,23 +36,18 @@ public class Constants {
     public static final int FONT_SHADOWSINTOLIGHT = 0;
     public static final String FONT_PATH_SHADOWSINTOLIGHT =
         "fonts/ShadowsIntoLight.ttf";
-
     public static final int FONT_ROBOTOREGULAR = 1;
     public static final String FONT_PATH_ROBOTOREGULAR =
         "fonts/Roboto-Regular.ttf";
-
     public static final int FONT_ROBOTOTHIN = 2;
     public static final String FONT_PATH_ROBOTOTHIN =
         "fonts/Roboto-Thin.ttf";
-
     public static final int FONT_ROBOTOLIGHT = 3;
     public static final String FONT_PATH_ROBOTOLIGHT =
         "fonts/Roboto-Light.ttf";
-
     public static final int FONT_ROBOTOBOLD = 4;
     public static final String FONT_PATH_ROBOTOBOLD =
         "fonts/Roboto-Bold.ttf";
-
 
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;
@@ -64,37 +59,28 @@ public class Constants {
     public static final String KEY_ACCOUNT_USER_ID = "glimmr_acc_user_id";
 
     /* Photo viewer state */
-    public static final String KEY_PHOTOVIEWER_LIST = "glimmr_photolist";
-    public static final String KEY_PHOTOVIEWER_URL = "glimmr_photoviewer_url";
+    public static final String PHOTOVIEWER_LIST_FILE =
+        "glimmr_photoviewer_photolist.json";
     public static final String KEY_PHOTOVIEWER_START_INDEX =
-        "glimmr_photoviewer_index";
+        "glimmr_photoviewer_start_index";
     public static final String KEY_PHOTOVIEWER_ACTIONBAR_SHOW =
         "glimmr_photoviewer_actionbar_show";
 
     /* Profile viewer state */
-    // TODO: can probably deprecate this serialised USER key for the two below
-    public static final String KEY_PROFILEVIEWER_USER =
-        "glimmr_profileviewer_user";
-    public static final String KEY_PROFILE_USER_NAME =
-        "glimmr_profile_user_name";
-    public static final String KEY_PROFILE_USER_ID = "glimmr_profile_user_id";
+    public static final String PROFILEVIEWER_USER_FILE =
+        "glimmr_profileviewer_user.json";
 
     /* Group viewer state */
-    public static final String KEY_GROUPVIEWER_GROUP =
-        "glimmr_groupviewer_group";
-    public static final String KEY_GROUPVIEWER_USER =
-        "glimmr_groupviewer_user";
+    public static final String GROUPVIEWER_GROUP_FILE =
+        "glimmr_groupviewer_group.json";
+    public static final String GROUPVIEWER_USER_FILE =
+        "glimmr_groupviewer_user.json";
 
     /* Photoset viewer state */
-    public static final String KEY_PHOTOSETVIEWER_PHOTOSET =
-        "glimmr_photosetviewer_photoset";
-    // TODO: can probably deprecate this serialised USER key for the two below
-    public static final String KEY_PHOTOSETVIEWER_USER =
-        "glimmr_photosetviewer_user";
-    public static final String KEY_PHOTOSETVIEWER_USER_NAME =
-        "glimmr_profile_user_name";
-    public static final String KEY_PHOTOSETVIEWER_USER_ID =
-        "glimmr_profile_user_id";
+    public static final String PHOTOSETVIEWER_SET_FILE =
+        "glimmr_photosetviewer_set.json";
+    public static final String PHOTOSETVIEWER_USER_FILE =
+        "glimmr_photosetviewer_user.json";
 
     /* Contacts fragment state */
     public static final String NEWEST_CONTACT_PHOTO_ID =
@@ -162,7 +148,7 @@ public class Constants {
         "net.simonvt.menudrawer.samples.ContentSample.activePosition";
 
     public static final String ACTIVITY_ITEMLIST_FILE =
-        "activity_items.dat";
+        "glimmr_activity_items.json";
 
     public static final String PRO_MARKET_LINK =
         "market://details?id=com.bourke.glimmrpro";
