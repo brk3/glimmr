@@ -16,12 +16,16 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
+import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
+import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.fragments.group.GroupAboutFragment;
 import com.bourke.glimmrpro.fragments.group.GroupPoolGridFragment;
 import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.people.User;
+
+import com.google.gson.Gson;
 
 public class GroupViewerActivity extends BottomOverlayActivity {
 
@@ -39,27 +43,61 @@ public class GroupViewerActivity extends BottomOverlayActivity {
         super.onCreate(savedInstanceState);
     }
 
+    public static void startGroupViewer(BaseActivity activity, Group group) {
+        if (group == null) {
+            Log.e(TAG, "Cannot start GroupViewer, group is null");
+            return;
+        }
+        if (Constants.DEBUG) {
+            Log.d(TAG, "Starting GroupViewerActivity for " + group.getName());
+        }
+
+        GsonHelper gson = new GsonHelper(activity);
+
+        boolean groupStoreResult =
+            gson.marshallObject(group, Constants.GROUPVIEWER_GROUP_FILE);
+        if (!groupStoreResult) {
+            Log.e(TAG, "Error marshalling group, cannot start viewer");
+            return;
+        }
+
+        boolean userStoreResult = gson.marshallObject(activity.getUser(),
+                Constants.GROUPVIEWER_USER_FILE);
+        if (!userStoreResult) {
+            Log.e(TAG, "Error marshalling user, cannot start viewer");
+            return;
+        }
+
+        Intent groupViewer = new Intent(activity, GroupViewerActivity.class);
+        activity.startActivity(groupViewer);
+    }
+
     @Override
     protected void handleIntent(Intent intent) {
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            mGroup = (Group) bundle.getSerializable(Constants.
-                    KEY_GROUPVIEWER_GROUP);
-            mUser = (User) bundle.getSerializable(
-                    Constants.KEY_GROUPVIEWER_USER);
-            if (mGroup != null && mUser != null) {
-                if (Constants.DEBUG) {
-                    Log.d(TAG, "Got group to view: " + mGroup.getName());
-                }
-                initViewPager();
-                updateBottomOverlay();
-            } else {
-                Log.e(TAG, "Group/User from intent is null");
-            }
-        } else {
-            Log.e(TAG, "Bundle is null, GroupViewerActivity requires an " +
-                "intent containing a Group and a User");
+        GsonHelper gsonHelper = new GsonHelper(this);
+        Gson gson = new Gson();
+
+        String json = gsonHelper.loadJson(Constants.GROUPVIEWER_GROUP_FILE);
+        if (json.length() == 0) {
+            Log.e(TAG, String.format("Error reading %s",
+                        Constants.GROUPVIEWER_GROUP_FILE));
+            return;
         }
+        mGroup = gson.fromJson(json.toString(), Group.class);
+
+        json = gsonHelper.loadJson(Constants.GROUPVIEWER_USER_FILE);
+        if (json.length() == 0) {
+            Log.e(TAG, String.format("Error reading %s",
+                        Constants.GROUPVIEWER_USER_FILE));
+            return;
+        }
+        mUser = gson.fromJson(json.toString(), User.class);
+
+        if (Constants.DEBUG) {
+            Log.d(TAG, "Got group to view: " + mGroup.getName());
+        }
+        initViewPager();
+        updateBottomOverlay();
     }
 
     @Override
