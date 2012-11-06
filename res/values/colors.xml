@@ -9,6 +9,9 @@
     <color name="flickr_pink">#ffff0084</color>
     <color name="flickr_blue">#ff0063dc</color>
 
+    <color name="ics_background_start">#ff020202</color>
+    <color name="ics_background_end">#ff272D33</color>
+
     <drawable name="ab_bg_black">#aa000000</drawable>
     <drawable name="flickr_pink">@color/flickr_pink</drawable>
     <drawable name="flickr_blue">@color/flickr_blue</drawable>
