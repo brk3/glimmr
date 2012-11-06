@@ -1,11 +1,7 @@
 package com.bourke.glimmr.activities;
 
-import android.app.Activity;
-
 import android.content.Context;
 import android.content.Intent;
-
-import android.graphics.Typeface;
 
 import android.os.Bundle;
 
@@ -28,6 +24,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.ViewPagerDisable;
 import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import com.bourke.glimmr.fragments.viewer.ExifInfoFragment;
@@ -38,9 +35,15 @@ import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
+import com.google.gson.Gson;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.lang.ref.WeakReference;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -73,13 +76,14 @@ public class PhotoViewerActivity extends BaseActivity
      * Start the PhotoViewerActivity with a list of photos to view and an index
      * to start at in the list.
      */
-    public static void startPhotoViewer(Activity activity, PhotoList photos,
-            int pos) {
+    public static void startPhotoViewer(BaseActivity activity,
+            PhotoList photos, int pos) {
         if (photos == null) {
             Log.e(TAG, "Cannot start PhotoViewer, photos is null");
             return;
         }
-        Bundle bundle = new Bundle();
+        /* Code to paginate large photo lists, currently disabled as gson seems
+         * reasonably efficient.
         if (photos.size() > Constants.FETCH_PER_PAGE) {
             int page = pos / Constants.FETCH_PER_PAGE;
             int pageStart = page * Constants.FETCH_PER_PAGE;
@@ -87,26 +91,62 @@ public class PhotoViewerActivity extends BaseActivity
             if (pageEnd > photos.size()) {
                pageEnd = photos.size();
             }
-            int pagePos = pos % Constants.FETCH_PER_PAGE;
             PhotoList subList = new PhotoList();
             subList.addAll(photos.subList(pageStart, pageEnd));
-            bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, subList);
-            bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pagePos);
-            if (Constants.DEBUG) {
-                Log.d(TAG, String.format("Starting photo viewer with %d ids",
-                            subList.size()));
-            }
-        } else {
-            bundle.putSerializable(Constants.KEY_PHOTOVIEWER_LIST, photos);
-            bundle.putInt(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
-            if (Constants.DEBUG) {
-                Log.d(TAG, String.format("Starting photo viewer with %d ids",
-                            photos.size()));
-            }
+            int pagePos = pos % Constants.FETCH_PER_PAGE;
+        }
+        */
+        GsonHelper gson = new GsonHelper(activity);
+        boolean photolistStoreResult =
+            gson.marshallObject(photos, Constants.PHOTOVIEWER_LIST_FILE);
+        if (!photolistStoreResult) {
+            Log.e(TAG, "Error marshalling photos, cannot start viewer");
+            return;
         }
         Intent photoViewer = new Intent(activity, PhotoViewerActivity.class);
-        photoViewer.putExtras(bundle);
+        photoViewer.putExtra(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
         activity.startActivity(photoViewer);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (intent == null) {
+            Log.e(TAG, "Error: null intent received in handleIntent");
+            return;
+        }
+
+        GsonHelper gson = new GsonHelper(this);
+        String json = gson.loadJson(Constants.PHOTOVIEWER_LIST_FILE);
+        if (json.length() == 0) {
+            Log.e(TAG, String.format("Error reading %s",
+                        Constants.PHOTOVIEWER_LIST_FILE));
+            return;
+        }
+        Type collectionType = new TypeToken<Collection<Photo>>(){}.getType();
+        mPhotos = new Gson().fromJson(json.toString(), collectionType);
+
+        Bundle bundle = intent.getExtras();
+        int startIndex;
+        if (bundle != null) {
+            startIndex = bundle.getInt(Constants.KEY_PHOTOVIEWER_START_INDEX);
+        } else {
+            Log.e(TAG, "handleIntent: bundle is null, cannot get startIndex");
+            startIndex = 0;
+        }
+
+        if (mPhotos != null) {
+            if (Constants.DEBUG) {
+                Log.d(getLogTag(), "Got list of photo urls, size: "
+                    + mPhotos.size());
+            }
+            mAdapter =
+                new PhotoViewerPagerAdapter(getSupportFragmentManager());
+            mPager = (ViewPagerDisable) findViewById(R.id.pager);
+            mPager.setAdapter(mAdapter);
+            mPager.setOnPageChangeListener(mAdapter);
+            mPager.setCurrentItem(startIndex);
+        } else {
+            Log.e(getLogTag(), "Photos from intent are null");
+        }
     }
 
 
@@ -131,32 +171,6 @@ public class PhotoViewerActivity extends BaseActivity
         }
 
         handleIntent(getIntent());
-    }
-
-    /* Ignore the unchecked cast warning-
-     * http://stackoverflow.com/a/262417/663370 */
-    @SuppressWarnings("unchecked")
-    private void handleIntent(Intent intent) {
-        Bundle bundle = intent.getExtras();
-
-        mPhotos = (ArrayList<Photo>) bundle.getSerializable(Constants
-                .KEY_PHOTOVIEWER_LIST);
-        int startIndex = bundle.getInt(Constants.KEY_PHOTOVIEWER_START_INDEX);
-
-        if (mPhotos != null) {
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "Got list of photo urls, size: "
-                    + mPhotos.size());
-            }
-            mAdapter =
-                new PhotoViewerPagerAdapter(getSupportFragmentManager());
-            mPager = (ViewPagerDisable) findViewById(R.id.pager);
-            mPager.setAdapter(mAdapter);
-            mPager.setOnPageChangeListener(mAdapter);
-            mPager.setCurrentItem(startIndex);
-        } else {
-            Log.e(getLogTag(), "Photos from intent are null");
-        }
     }
 
     @Override

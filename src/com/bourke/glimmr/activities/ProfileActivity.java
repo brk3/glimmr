@@ -1,7 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import android.app.Activity;
-
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -18,6 +16,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
+import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
 import com.bourke.glimmr.fragments.home.PhotosetsFragment;
@@ -26,6 +25,8 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadUserTask;
 
 import com.googlecode.flickrjandroid.people.User;
+
+import com.google.gson.Gson;
 
 /**
  * Requires a User object to be passed in via an intent.
@@ -42,19 +43,41 @@ public class ProfileActivity extends BottomOverlayActivity
 
     private LoadUserTask mTask;
 
-    public static void startProfileViewer(User user, Activity activity) {
+    public static void startProfileViewer(BaseActivity activity, User user) {
         if (user == null) {
-            Log.e(TAG, "Cannot start ProfileActivity, user is null");
+            Log.e(TAG, "Cannot start ProfileViewer, user is null");
             return;
         }
         if (Constants.DEBUG) {
             Log.d(TAG, "Starting ProfileActivity for " + user.getUsername());
         }
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_PROFILEVIEWER_USER, user);
+
+        GsonHelper gson = new GsonHelper(activity);
+
+        boolean userStoreResult = gson.marshallObject(user,
+                Constants.PROFILEVIEWER_USER_FILE);
+        if (!userStoreResult) {
+            Log.e(TAG, "Error marshalling user, cannot start viewer");
+            return;
+        }
+
         Intent profileViewer = new Intent(activity, ProfileActivity.class);
-        profileViewer.putExtras(bundle);
         activity.startActivity(profileViewer);
+    }
+
+    @Override
+    protected void handleIntent(Intent intent) {
+        GsonHelper gsonHelper = new GsonHelper(this);
+        Gson gson = new Gson();
+        String json = gsonHelper.loadJson(Constants.PROFILEVIEWER_USER_FILE);
+        if (json.length() == 0) {
+            Log.e(TAG, String.format("Error reading %s",
+                        Constants.PROFILEVIEWER_USER_FILE));
+            return;
+        }
+        mUser = gson.fromJson(json.toString(), User.class);
+        initViewPager();
+        startTask();
     }
 
     @Override
@@ -101,27 +124,6 @@ public class ProfileActivity extends BottomOverlayActivity
 
     @Override
     protected void updateBottomOverlay() {
-    }
-
-    @Override
-    protected void handleIntent(Intent intent) {
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            mUser = (User) bundle.getSerializable(
-                    Constants.KEY_PROFILEVIEWER_USER);
-            if (mUser != null) {
-                if (Constants.DEBUG) {
-                    Log.d(TAG, "Got user to view: " + mUser.getUsername());
-                }
-                initViewPager();
-                startTask();
-            } else {
-                if (Constants.DEBUG) Log.e(TAG, "User from intent is null");
-            }
-        } else {
-            Log.e(TAG, "Bundle is null, ProfileActivity requires an " +
-                "intent containing a User");
-        }
     }
 
     @Override
