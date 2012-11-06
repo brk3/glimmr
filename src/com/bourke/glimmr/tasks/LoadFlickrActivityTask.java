@@ -8,12 +8,15 @@ import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
 
-import com.googlecode.flickrjandroid.activity.ItemList;
+import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
-public class LoadFlickrActivityTask extends AsyncTask<OAuth, Void, ItemList> {
+import java.util.List;
+
+public class LoadFlickrActivityTask
+        extends AsyncTask<OAuth, Void, List<Item>> {
 
     private static final String TAG = "Glimmr/LoadFlickrActivityTask";
 
@@ -29,7 +32,7 @@ public class LoadFlickrActivityTask extends AsyncTask<OAuth, Void, ItemList> {
     }
 
     @Override
-    protected ItemList doInBackground(OAuth... params) {
+    protected List<Item> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
@@ -50,7 +53,7 @@ public class LoadFlickrActivityTask extends AsyncTask<OAuth, Void, ItemList> {
     }
 
     @Override
-    protected void onPostExecute(final ItemList result) {
+    protected void onPostExecute(final List<Item> result) {
         if (result == null) {
             Log.e(TAG, "Error fetching activity items, result is null");
         }
@@ -58,7 +61,7 @@ public class LoadFlickrActivityTask extends AsyncTask<OAuth, Void, ItemList> {
     }
 
     @Override
-    protected void onCancelled(final ItemList result) {
+    protected void onCancelled(final List<Item> result) {
         if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }
