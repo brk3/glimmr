@@ -164,7 +164,7 @@ public final class ExifInfoFragment extends BaseDialogFragment
             } else if ("ExposureTime".equals(e.getTag())) {
                 mTextViewShutterValue.setText(e.getRaw());
             } else if ("FNumber".equals(e.getTag())) {
-                mTextViewApertureValue.setText(e.getRaw());
+                mTextViewApertureValue.setText("ƒ/"+e.getRaw());
             } else {
                 /* Convert camel case key to space delimited:
                  * http://stackoverflow.com/a/2560017/663370 */

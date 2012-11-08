@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="activity">Activity</string>
     <string name="about">About</string>
     <string name="about_text">Thanks for supporting Glimmr!\n\nFollow Me: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nTranslators:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer</string>
     <string name="aperture">APERTURE</string>
     <string name="app_name">Glimmr</string>
     <string name="browse">browse</string>
     <string name="by">by</string>
+    <string name="commented_on">commented on</string>
     <string name="comments">Comments and Favs</string>
     <string name="comment_sent">Comment Sent!</string>
     <string name="contacts">Contacts</string>
     <string name="edit_text_hint">Add your comment…</string>
     <string name="exif_info">Exif Info</string>
     <string name="explore">Explore</string>
+    <string name="favorited">favorited</string>
     <string name="favorites">Favorites</string>
-    <string name="fifteen_mins">15 minutes</string>
     <string name="four_hours">4 hours</string>
     <string name="groups">Groups</string>
     <string name="iso">ISO</string>
@@ -44,6 +46,8 @@
     <string name="pool">Pool</string>
     <string name="pref_category_general">General (Pro only)</string>
     <string name="pref_category_notifications">Notifications</string>
+    <string name="cb_enable_activity_notifications_title">Flickr Activity</string>
+    <string name="cb_enable_activity_notifications_summary">Notify about activity on your photos</string>
     <string name="cb_enable_contacts_notifications_title">Contacts Uploads</string>
     <string name="cb_enable_contacts_notifications_summary">Notify when contacts upload new photos</string>
     <string name="cb_high_quality_thumbnails_title">High Quality Thumbnails</string>

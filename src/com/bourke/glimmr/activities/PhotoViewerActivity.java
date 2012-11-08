@@ -35,7 +35,6 @@ import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import com.google.gson.Gson;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -81,23 +80,9 @@ public class PhotoViewerActivity extends BaseActivity
             Log.e(TAG, "Cannot start PhotoViewer, photos is null");
             return;
         }
-        /* Code to paginate large photo lists, currently disabled as gson seems
-         * reasonably efficient.
-        if (photos.size() > Constants.FETCH_PER_PAGE) {
-            int page = pos / Constants.FETCH_PER_PAGE;
-            int pageStart = page * Constants.FETCH_PER_PAGE;
-            int pageEnd = pageStart + Constants.FETCH_PER_PAGE;
-            if (pageEnd > photos.size()) {
-               pageEnd = photos.size();
-            }
-            PhotoList subList = new PhotoList();
-            subList.addAll(photos.subList(pageStart, pageEnd));
-            int pagePos = pos % Constants.FETCH_PER_PAGE;
-        }
-        */
-        GsonHelper gson = new GsonHelper(activity);
+        GsonHelper gsonHelper = new GsonHelper(activity);
         boolean photolistStoreResult =
-            gson.marshallObject(photos, Constants.PHOTOVIEWER_LIST_FILE);
+            gsonHelper.marshallObject(photos, Constants.PHOTOVIEWER_LIST_FILE);
         if (!photolistStoreResult) {
             Log.e(TAG, "Error marshalling photos, cannot start viewer");
             return;
@@ -113,8 +98,8 @@ public class PhotoViewerActivity extends BaseActivity
             return;
         }
 
-        GsonHelper gson = new GsonHelper(this);
-        String json = gson.loadJson(Constants.PHOTOVIEWER_LIST_FILE);
+        GsonHelper gsonHelper = new GsonHelper(this);
+        String json = gsonHelper.loadJson(Constants.PHOTOVIEWER_LIST_FILE);
         if (json.length() == 0) {
             Log.e(TAG, String.format("Error reading %s",
                         Constants.PHOTOVIEWER_LIST_FILE));
