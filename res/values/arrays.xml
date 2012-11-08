@@ -2,7 +2,6 @@
 
 <resources>
     <string-array name="pref_notification_intervals">
-        <item>@string/fifteen_mins</item>
         <item>@string/thirty_mins</item>
         <item>@string/one_hour</item>
         <item>@string/four_hours</item>
@@ -13,7 +12,6 @@
             name="pref_notification_intervals_values"
             xmlns:tools="http://schemas.android.com/tools"
             tools:ignore="MissingTranslation">
-        <item>15</item>
         <item>30</item>
         <item>60</item>
         <item>240</item>

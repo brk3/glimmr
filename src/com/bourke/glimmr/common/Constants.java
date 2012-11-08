@@ -128,9 +128,17 @@ public class Constants {
     public static final String KEY_HIGH_QUALITY_THUMBNAILS
         = "highQualityThumbnails";
 
+    public static final String KEY_ENABLE_CONTACTS_NOTIFICATIONS
+        = "enableContactsNotifications";
+    public static final String KEY_ENABLE_ACTIVITY_NOTIFICATIONS
+        = "enableActivityNotifications";
+
     /* New contacts photo notifications */
     public static final String NOTIFICATION_NEWEST_CONTACT_PHOTO_ID =
         "glimmr_notification_newest_contact_photo_id";
+
+    public static final String NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID =
+        "glimmr_notification_newest_activity_event_id";
 
     /* ExploreActivity state */
     public static final String LOGIN_LATER_SELECTED =
@@ -138,6 +146,7 @@ public class Constants {
 
     /* Notification ids */
     public static final int NOTIFICATION_NEW_CONTACTS_PHOTOS = 0;
+    public static final int NOTIFICATION_NEW_ACTIVITY = 1;
 
     /* DialogBuilder dialog ids */
     public static final int DIALOG_ABOUT = 0;

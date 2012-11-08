@@ -39,6 +39,8 @@
 
         <!-- Style the TitlePageIndicator -->
         <item name="vpiTitlePageIndicatorStyle">@style/glimmr_TitlePageIndicator</item>
+        <!-- Style the MenuDrawer -->
+        <item name="menuDrawerStyle">@style/MenuDrawerStyle</item>
     </style>
 
     <style name="glimmrdark_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">
@@ -174,12 +176,12 @@
 
     <style name="MenuDrawerStyle" parent="Widget.MenuDrawer">
         <item name="mdArrowDrawable">@drawable/menu_arrow</item>
-        <item name="mdMenuWidth">150dp</item>
+        <item name="mdMenuWidth">300dp</item>
     </style>
 
     <style name="MenuDrawerStyle.Right" parent="Widget.MenuDrawer">
         <item name="mdArrowDrawable">@drawable/menu_arrow_right</item>
-        <item name="mdMenuWidth">150dp</item>
+        <item name="mdMenuWidth">300dp</item>
     </style>
 
 </resources>

@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import android.preference.PreferenceManager;
+
 import android.util.Log;
 
 import com.bourke.glimmrpro.activities.MainActivity;
@@ -24,12 +26,11 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import com.jakewharton.notificationcompat2.NotificationCompat2;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class ContactsPhotosNotificationHandler
-    implements GlimmrNotificationHandler, GlimmrPhotoNotificationHandler,
-               IPhotoListReadyListener {
+    implements GlimmrNotificationHandler<Photo>, IPhotoListReadyListener {
 
     private static final String TAG =
         "Glimmr/ContactsPhotosNotificationHandler";
@@ -51,18 +52,33 @@ public class ContactsPhotosNotificationHandler
     }
 
     @Override
+    public boolean enabledInPreferences() {
+        SharedPreferences defaultSharedPrefs =
+            PreferenceManager.getDefaultSharedPreferences(mContext);
+        return defaultSharedPrefs.getBoolean(
+                Constants.KEY_ENABLE_CONTACTS_NOTIFICATIONS, false);
+    }
+
+    /**
+     * Once photos are ready check for new ones and notify the user.
+     *
+     * There are two conditions that must be satisfied for a notification to be
+     * shown:
+     * 1) The id must be newer than ones previously shown in the main app.
+     * 2) The id must not equal the one previously notified about, to avoid
+     *    duplicate notifications.
+     */
+    @Override
     public void onPhotosReady(List<Photo> photos) {
         if (Constants.DEBUG) Log.d(TAG, "onPhotosReady");
         if (photos != null) {
             List<Photo> newPhotos = checkForNewPhotos(photos);
             if (newPhotos != null && !newPhotos.isEmpty()) {
-                /* Avoid duplicate notifications */
-                String latestIdNotifiedAbout =
-                    getNewestNotificationPhotoId();
+                String latestIdNotifiedAbout = getLatestIdNotifiedAbout();
                 Photo latestPhoto = newPhotos.get(0);
                 if (!latestIdNotifiedAbout.equals(latestPhoto.getId())) {
                     showNewPhotosNotification(newPhotos);
-                    storeNewestNotificationPhotoId(latestPhoto);
+                    storeLatestIdNotifiedAbout(latestPhoto);
                 }
             }
         } else {
@@ -71,7 +87,6 @@ public class ContactsPhotosNotificationHandler
     }
 
     /** Notify that user's contacts have uploaded new photos */
-    @Override
     public void showNewPhotosNotification(List<Photo> newPhotos) {
         final NotificationManager mgr = (NotificationManager)
             mContext.getSystemService(
@@ -83,7 +98,7 @@ public class ContactsPhotosNotificationHandler
         String contentText =
             mContext.getString(R.string.notification_contacts_content);
         Notification newContactsPhotos = getNotification(tickerText, titleText,
-                contentText);
+                contentText, newPhotos.size());
         mgr.notify(Constants.NOTIFICATION_NEW_CONTACTS_PHOTOS,
                 newContactsPhotos);
     }
@@ -102,7 +117,7 @@ public class ContactsPhotosNotificationHandler
         }
 
         List<Photo> newPhotos = new ArrayList<Photo>();
-        String newestId = getNewestViewedPhotoId();
+        String newestId = getLatestViewedId();
         for (int i=0; i < photos.size(); i++) {
             Photo p = photos.get(i);
             if (p.getId().equals(newestId)) {
@@ -119,12 +134,11 @@ public class ContactsPhotosNotificationHandler
     /**
      * Returns the id the of the most recent photo the user has viewed.
      */
-    @Override
-    public String getNewestViewedPhotoId() {
+    private String getLatestViewedId() {
         String newestId =
             mPrefs.getString(Constants.NEWEST_CONTACT_PHOTO_ID, "");
         if (Constants.DEBUG) {
-            Log.d(TAG, "getNewestViewedPhotoId: " + newestId);
+            Log.d(TAG, "getLatestViewedId: " + newestId);
         }
         return newestId;
     }
@@ -134,17 +148,17 @@ public class ContactsPhotosNotificationHandler
      * notified about.
      */
     @Override
-    public String getNewestNotificationPhotoId() {
+    public String getLatestIdNotifiedAbout() {
         String newestId = mPrefs.getString(
                 Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID, "");
         if (Constants.DEBUG) {
-            Log.d(TAG, "getNewestNotificationPhotoId: " + newestId);
+            Log.d(TAG, "getLatestIdNotifiedAbout: " + newestId);
         }
         return newestId;
     }
 
     @Override
-    public void storeNewestNotificationPhotoId(Photo photo) {
+    public void storeLatestIdNotifiedAbout(Photo photo) {
         mPrefsEditor.putString(Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
                 photo.getId());
         mPrefsEditor.commit();
@@ -155,11 +169,12 @@ public class ContactsPhotosNotificationHandler
     }
 
     private Notification getNotification(final String tickerText,
-            final String titleText, final String contentText) {
+            final String titleText, final String contentText, int number) {
         return new NotificationCompat2.Builder(mContext)
-            .setSmallIcon(R.drawable.ic_notification)
+            .setSmallIcon(R.drawable.ic_action_social_group_dark)
             .setAutoCancel(true)
             .setDefaults(Notification.DEFAULT_ALL)
+            .setNumber(number)
             .setTicker(tickerText)
             .setContentTitle(titleText)
             .setContentText(contentText)
