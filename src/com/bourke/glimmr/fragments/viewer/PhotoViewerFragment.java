@@ -10,11 +10,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -35,11 +36,7 @@ import com.bourke.glimmr.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 
-import com.polites.android.GestureImageView;
-
 import java.util.concurrent.atomic.AtomicBoolean;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener {
@@ -240,7 +237,8 @@ public final class PhotoViewerFragment extends BaseFragment
         /* Start a task to fetch more detailed info about the photo if we don't
          * already have it (required for favorite status) */
         if (mPhotoExtendedInfo == null) {
-            mTask = new LoadPhotoInfoTask(this, this, mBasePhoto);
+            mTask = new LoadPhotoInfoTask(this, this, mBasePhoto.getId(),
+                    mBasePhoto.getSecret());
             mTask.execute(mOAuth);
         }
     }

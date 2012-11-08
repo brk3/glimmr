@@ -26,6 +26,13 @@
             android:defaultValue="true"
             android:summary="@string/cb_enable_contacts_notifications_summary" />
 
+        <CheckBoxPreference
+            android:key="enableActivityNotifications"
+            android:title="@string/cb_enable_activity_notifications_title"
+            android:dependency="enableNotifications"
+            android:defaultValue="true"
+            android:summary="@string/cb_enable_activity_notifications_summary" />
+
         <ListPreference
             android:key="notificationIntervals"
             android:entries="@array/pref_notification_intervals"

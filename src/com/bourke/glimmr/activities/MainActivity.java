@@ -31,6 +31,7 @@ import com.androidquery.AQuery;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.MenuListView;
+import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmr.fragments.home.ContactsGridFragment;
 import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
@@ -41,6 +42,7 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.services.ActivityNotificationHandler;
 import com.bourke.glimmr.services.AppListener;
 import com.bourke.glimmr.services.AppService;
+import com.bourke.glimmr.tasks.LoadFlickrActivityTask;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
@@ -61,6 +63,7 @@ import net.simonvt.widget.MenuDrawer;
 import net.simonvt.widget.MenuDrawerManager;
 
 import org.ocpsoft.pretty.time.PrettyTime;
+import java.io.File;
 
 public class MainActivity extends BaseActivity {
 
@@ -71,7 +74,7 @@ public class MainActivity extends BaseActivity {
     private MenuDrawerManager mMenuDrawer;
     private MenuAdapter mMenuAdapter;
     private MenuListView mList;
-    private PagerAdapter mPagerAdapter;
+    private GlimmrPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
     private PageIndicator mIndicator;
     private int mActivePosition = -1;
@@ -135,9 +138,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(Constants.STATE_MENUDRAWER,
-                mMenuDrawer.onSaveDrawerState());
-        outState.putInt(Constants.STATE_ACTIVE_POSITION, mActivePosition);
+        if (mMenuDrawer != null) {
+            outState.putParcelable(Constants.STATE_MENUDRAWER,
+                    mMenuDrawer.onSaveDrawerState());
+            outState.putInt(Constants.STATE_ACTIVE_POSITION, mActivePosition);
+        }
     }
 
     @Override
@@ -188,8 +193,7 @@ public class MainActivity extends BaseActivity {
         for (PageItem page : mContent) {
             items.add(new MenuDrawerItem(page.mTitle, page.mIconDrawable));
         }
-        // TODO: update strings
-        items.add(new MenuDrawerCategory("Activity"));
+        items.add(new MenuDrawerCategory(getString(R.string.activity)));
 
         /* If we have flickr activity items then build a stream */
         if (flickrActivityItems != null) {
@@ -214,7 +218,6 @@ public class MainActivity extends BaseActivity {
         String html = "<small><i>%s</i></small><br>" +
             "%s <font color=\"#ff0084\"><b>%s</b></font> <i>‘%s’</i>";
 
-        // TODO: update strings
         for (Item i : activityItems) {
             if ("photo".equals(i.getType())) {
                 StringBuilder itemString = new StringBuilder();
@@ -226,13 +229,13 @@ public class MainActivity extends BaseActivity {
                         author = getString(R.string.you);
                     }
                     if ("comment".equals(e.getType())) {
-                        // TODO: update string
                         itemString.append(String.format(html, pTime, author,
-                                    "commented on", i.getTitle()));
+                                    getString(R.string.commented_on),
+                                    i.getTitle()));
                     } else if ("fave".equals(e.getType())) {
-                        // TODO: update string
                         itemString.append(String.format(html, pTime, author,
-                                    "favorited", i.getTitle()));
+                                    getString(R.string.favorited),
+                                    i.getTitle()));
                     } else {
                         Log.e(TAG, "unsupported Event type: " + e.getType());
                         count++;
@@ -270,7 +273,7 @@ public class MainActivity extends BaseActivity {
                         mMenuDrawer.closeMenu();
                         break;
                     case MENU_DRAWER_ACTIVITY_ITEM:
-                        // TODO
+                        // TODO: Open viewer for photo the item relates to
                         break;
                 }
             }
@@ -285,15 +288,19 @@ public class MainActivity extends BaseActivity {
         });
 
         mMenuDrawer.setMenuView(mList);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
         mMenuDrawer.getMenuDrawer().setTouchMode(
                 MenuDrawer.TOUCH_MODE_FULLSCREEN);
 
-        mIndicator.setOnPageChangeListener(
+        ViewPager.SimpleOnPageChangeListener pageChangeListener =
                 new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(final int position) {
-                mIndicator.setCurrentItem(position);
+                if (mIndicator != null) {
+                    mIndicator.setCurrentItem(position);
+                } else {
+                    mActionBar.setSelectedNavigationItem(position);
+                }
                 if (position == 0) {
                     mMenuDrawer.getMenuDrawer().setTouchMode(
                         MenuDrawer.TOUCH_MODE_FULLSCREEN);
@@ -302,9 +309,39 @@ public class MainActivity extends BaseActivity {
                         MenuDrawer.TOUCH_MODE_NONE);
                 }
             }
-        });
+        };
 
-        updateMenuListItems(ActivityNotificationHandler.loadItemList(this));
+        if (mIndicator != null) {
+            mIndicator.setOnPageChangeListener(pageChangeListener);
+        } else {
+            mViewPager.setOnPageChangeListener(pageChangeListener);
+        }
+
+        /* If the ACTIVITY_ITEMLIST_FILE exists, add the contents to the menu
+         * drawer area.  Otherwise start a task to fetch one. */
+        File f = getFileStreamPath(Constants.ACTIVITY_ITEMLIST_FILE);
+        if (f.exists()) {
+            updateMenuListItems(
+                    ActivityNotificationHandler.loadItemList(this));
+        } else {
+            new LoadFlickrActivityTask(new IActivityItemsReadyListener() {
+                @Override
+                public void onItemListReady(List<Item> items) {
+                    if (items != null) {
+                        if (Constants.DEBUG) {
+                            Log.d(TAG, "onItemListReady: items.size: " +
+                                items.size());
+                        }
+                        updateMenuListItems(items);
+                        ActivityNotificationHandler.storeItemList(
+                            MainActivity.this, items);
+                    } else {
+                        Log.e(TAG, "onItemListReady: Item list is null");
+                    }
+                }
+            })
+            .execute(mOAuth);
+        }
     }
 
     private void initNotificationAlarms() {
@@ -328,7 +365,7 @@ public class MainActivity extends BaseActivity {
         for (PageItem page : mContent) {
             pageTitles.add(page.mTitle);
         }
-        GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
+        mPagerAdapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager(), mViewPager, mActionBar,
                 pageTitles.toArray(new String[pageTitles.size()])) {
             @Override
@@ -344,18 +381,17 @@ public class MainActivity extends BaseActivity {
                 return null;
             }
         };
-        mViewPager.setAdapter(adapter);
+        mViewPager.setAdapter(mPagerAdapter);
 
         mIndicator = (TitlePageIndicator) findViewById(R.id.indicator);
         if (mIndicator != null) {
             mIndicator.setViewPager(mViewPager);
         } else {
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            mViewPager.setOnPageChangeListener(adapter);
             for (PageItem page : mContent) {
                 ActionBar.Tab newTab =
                     mActionBar.newTab().setText(page.mTitle);
-                newTab.setTabListener(adapter);
+                newTab.setTabListener(mPagerAdapter);
                 mActionBar.addTab(newTab);
             }
         }

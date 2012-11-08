@@ -58,7 +58,9 @@ public class AppService extends WakefulIntentService {
 
         /* Start each handler */
         for (GlimmrNotificationHandler handler : mHandlers) {
-            handler.startTask(oauth);
+            if (handler.enabledInPreferences()) {
+                handler.startTask(oauth);
+            }
         }
     }
 }

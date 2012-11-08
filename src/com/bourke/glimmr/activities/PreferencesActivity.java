@@ -103,9 +103,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity
                 Constants.KEY_INTERVALS_LIST_PREFERENCE, "");
         String summaryString = "";
         /* NOTE: ListPreference doesn't seem to allow integer values */
-        if ("15".equals(listPrefValue)) {
-            summaryString = getString(R.string.fifteen_mins);
-        } else if ("30".equals(listPrefValue)) {
+        if (listPrefValue.equals("30")) {
             summaryString = getString(R.string.thirty_mins);
         } else if ("60".equals(listPrefValue)) {
             summaryString = getString(R.string.one_hour);

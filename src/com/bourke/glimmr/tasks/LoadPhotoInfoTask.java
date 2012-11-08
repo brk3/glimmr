@@ -15,38 +15,52 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.Photo;
 
+import static junit.framework.Assert.*;
 
 public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
 
     private static final String TAG = "Glimmr/LoadPhotoInfoTask";
 
     private IPhotoInfoReadyListener mListener;
-    private Photo mPhoto;
+    private String mId;
+    private String mSecret;
     private BaseFragment mBaseFragment;
 
     public LoadPhotoInfoTask(BaseFragment a, IPhotoInfoReadyListener listener,
-            Photo photo) {
+            String id, String secret) {
         mBaseFragment = a;
         mListener = listener;
-        mPhoto = photo;
+        mId = id;
+        mSecret = secret;
+    }
+
+    public LoadPhotoInfoTask(IPhotoInfoReadyListener listener,
+            String id, String secret) {
+        mListener = listener;
+        mId = id;
+        mSecret = secret;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
+        if (mBaseFragment != null) {
+            mBaseFragment.showProgressIcon(true);
+        }
     }
 
     @Override
     protected Photo doInBackground(OAuth... params) {
+        assertTrue(params.length > 0);
+
         OAuth oauth = params[0];
+
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
             try {
                 Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                         token.getOauthToken(), token.getOauthTokenSecret());
-                return f.getPhotosInterface().getInfo(mPhoto.getId(),
-                        mPhoto.getSecret());
+                return f.getPhotosInterface().getInfo(mId, mSecret);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -54,7 +68,7 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
             if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
             try {
                 return FlickrHelper.getInstance().getPhotosInterface()
-                    .getInfo(mPhoto.getId(), mPhoto.getSecret());
+                    .getInfo(mId, mSecret);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -65,16 +79,16 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
     @Override
     protected void onPostExecute(final Photo result) {
         if (result == null) {
-            if (Constants.DEBUG)
-                Log.e(TAG, "Error fetching photo info, result is null");
+            Log.e(TAG, "Error fetching photo info, result is null");
         }
         mListener.onPhotoInfoReady(result);
-        mBaseFragment.showProgressIcon(false);
+        if (mBaseFragment != null) {
+            mBaseFragment.showProgressIcon(false);
+        }
     }
 
     @Override
     protected void onCancelled(final Photo result) {
-        if (Constants.DEBUG)
-            Log.d(TAG, "onCancelled");
+        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }
