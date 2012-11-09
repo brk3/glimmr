@@ -39,7 +39,6 @@ import com.bourke.glimmr.R;
 import com.commonsware.cwac.endless.EndlessAdapter;
 
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected AdapterView mGridView;
     protected EndlessGridAdapter mAdapter;
 
-    protected PhotoList mPhotos = new PhotoList();
+    protected List<Photo> mPhotos = new ArrayList<Photo>();
     protected List<Photo> mNewPhotos = new ArrayList<Photo>();
     protected int mPage = 1;
     protected boolean mMorePages = true;
@@ -104,7 +103,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     @Override
-    public void onPhotosReady(PhotoList photos) {
+    public void onPhotosReady(List<Photo> photos) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosReady");
         if (photos == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
@@ -178,7 +177,7 @@ public abstract class PhotoGridFragment extends BaseFragment
      * list we just fetched. If so, all photos before that id in the list
      * are said to be new.
      */
-    protected void checkForNewPhotos(PhotoList photos) {
+    protected void checkForNewPhotos(List<Photo> photos) {
         if (photos == null || photos.isEmpty()) {
             if (Constants.DEBUG)
                 Log.d(getLogTag(), "checkForNewPhotos: photos null or empty");
@@ -234,7 +233,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     class EndlessGridAdapter extends EndlessAdapter {
 
-        public EndlessGridAdapter(PhotoList list) {
+        public EndlessGridAdapter(List<Photo> list) {
             super(mActivity, new GridAdapter(list), R.layout.pending);
         }
 
@@ -250,7 +249,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     class GridAdapter extends ArrayAdapter<Photo> {
 
-        public GridAdapter(PhotoList items) {
+        public GridAdapter(List<Photo> items) {
             super(mActivity, R.layout.gridview_item, android.R.id.text1,
                     items);
         }

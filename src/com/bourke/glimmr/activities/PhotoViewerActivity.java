@@ -33,7 +33,6 @@ import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import com.google.gson.Gson;
 import com.google.gson.Gson;
@@ -77,7 +76,7 @@ public class PhotoViewerActivity extends BaseActivity
      * to start at in the list.
      */
     public static void startPhotoViewer(BaseActivity activity,
-            PhotoList photos, int pos) {
+            List<Photo> photos, int pos) {
         if (photos == null) {
             Log.e(TAG, "Cannot start PhotoViewer, photos is null");
             return;

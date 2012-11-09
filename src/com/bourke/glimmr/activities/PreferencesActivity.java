@@ -81,11 +81,11 @@ public class PreferencesActivity extends SherlockPreferenceActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
             String key) {
-        if (key.equals(Constants.KEY_INTERVALS_LIST_PREFERENCE)) {
+        if (Constants.KEY_INTERVALS_LIST_PREFERENCE.equals(key)) {
             updateIntervalSummary();
             WakefulIntentService.scheduleAlarms(new AppListener(), this,
                     false);
-        } else if (key.equals(Constants.KEY_ENABLE_NOTIFICATIONS)) {
+        } else if (Constants.KEY_ENABLE_NOTIFICATIONS.equals(key)) {
             boolean enableNotifications = sharedPreferences.getBoolean(
                     Constants.KEY_ENABLE_NOTIFICATIONS, false);
             if (!enableNotifications) {
@@ -103,15 +103,15 @@ public class PreferencesActivity extends SherlockPreferenceActivity
                 Constants.KEY_INTERVALS_LIST_PREFERENCE, "");
         String summaryString = "";
         /* NOTE: ListPreference doesn't seem to allow integer values */
-        if (listPrefValue.equals("15")) {
+        if ("15".equals(listPrefValue)) {
             summaryString = getString(R.string.fifteen_mins);
-        } else if (listPrefValue.equals("30")) {
+        } else if ("30".equals(listPrefValue)) {
             summaryString = getString(R.string.thirty_mins);
-        } else if (listPrefValue.equals("60")) {
+        } else if ("60".equals(listPrefValue)) {
             summaryString = getString(R.string.one_hour);
-        } else if (listPrefValue.equals("240")) {
+        } else if ("240".equals(listPrefValue)) {
             summaryString = getString(R.string.four_hours);
-        } else if (listPrefValue.equals("1440")) {
+        } else if ("1440".equals(listPrefValue)) {
             summaryString = getString(R.string.once_a_day);
         } else {
             Log.e(TAG, "updateIntervalSummary: unknown value for " +

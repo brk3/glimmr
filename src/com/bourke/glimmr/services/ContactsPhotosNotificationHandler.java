@@ -20,12 +20,12 @@ import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import com.jakewharton.notificationcompat2.NotificationCompat2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 public class ContactsPhotosNotificationHandler
     implements GlimmrNotificationHandler, GlimmrPhotoNotificationHandler,
@@ -51,7 +51,7 @@ public class ContactsPhotosNotificationHandler
     }
 
     @Override
-    public void onPhotosReady(PhotoList photos) {
+    public void onPhotosReady(List<Photo> photos) {
         if (Constants.DEBUG) Log.d(TAG, "onPhotosReady");
         if (photos != null) {
             List<Photo> newPhotos = checkForNewPhotos(photos);
@@ -93,12 +93,12 @@ public class ContactsPhotosNotificationHandler
      * list of photos passed in.  If so, new photos are the sublist from 0
      * to the found id.
      */
-    @Override
-    public List<Photo> checkForNewPhotos(PhotoList photos) {
+    private List<Photo> checkForNewPhotos(List<Photo> photos) {
         if (photos == null || photos.isEmpty()) {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.d(TAG, "checkForNewPhotos: photos null or empty");
-            return null;
+            }
+            return Collections.EMPTY_LIST;
         }
 
         List<Photo> newPhotos = new ArrayList<Photo>();

@@ -25,16 +25,16 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadGroupsTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
-import com.googlecode.flickrjandroid.groups.GroupList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupListFragment extends BaseFragment
         implements IGroupListReadyListener {
 
     private static final String TAG = "Glimmr/GroupListFragment";
 
-    private GroupList mGroups = new GroupList();
+    private List<Group> mGroups = new ArrayList<Group>();
     private LoadGroupsTask mTask;
     private ViewGroup mNoConnectionLayout;
     private AdapterView mListView;
@@ -82,7 +82,7 @@ public class GroupListFragment extends BaseFragment
     }
 
     @Override
-    public void onGroupListReady(GroupList groups) {
+    public void onGroupListReady(List<Group> groups) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onGroupListReady");
 
         if (groups == null) {
@@ -91,7 +91,7 @@ public class GroupListFragment extends BaseFragment
         } else {
             mListView.setVisibility(View.VISIBLE);
             mNoConnectionLayout.setVisibility(View.GONE);
-            mGroups = (GroupList) groups;
+            mGroups = (List<Group>) groups;
             GroupListAdapter adapter = new GroupListAdapter(mActivity,
                     R.layout.group_list_row, (ArrayList<Group>)groups);
             mListView.setAdapter(adapter);

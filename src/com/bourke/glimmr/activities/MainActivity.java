@@ -216,7 +216,7 @@ public class MainActivity extends BaseActivity {
 
         // TODO: update strings
         for (Item i : activityItems) {
-            if (i.getType().equals("photo")) {
+            if ("photo".equals(i.getType())) {
                 StringBuilder itemString = new StringBuilder();
                 int count = 0;
                 for (Event e : i.getEvents()) {
@@ -225,11 +225,11 @@ public class MainActivity extends BaseActivity {
                     if (mUser != null && mUser.getUsername().equals(author)) {
                         author = getString(R.string.you);
                     }
-                    if (e.getType().equals("comment")) {
+                    if ("comment".equals(e.getType())) {
                         // TODO: update string
                         itemString.append(String.format(html, pTime, author,
                                     "commented on", i.getTitle()));
-                    } else if (e.getType().equals("fave")) {
+                    } else if ("fave".equals(e.getType())) {
                         // TODO: update string
                         itemString.append(String.format(html, pTime, author,
                                     "favorited", i.getTitle()));

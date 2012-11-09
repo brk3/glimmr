@@ -1,14 +1,13 @@
 package com.bourke.glimmr.event;
 
 import com.googlecode.flickrjandroid.activity.Item;
-import com.googlecode.flickrjandroid.groups.GroupList;
+import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
 import com.googlecode.flickrjandroid.photosets.Photosets;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class Events {
     }
 
     public interface IContactsPhotosReadyListener {
-        void onContactsPhotosReady(PhotoList contactsAndPhotos);
+        void onContactsPhotosReady(List<Photo> contactsAndPhotos);
     }
 
     public interface IExifInfoReadyListener {
@@ -31,11 +30,11 @@ public class Events {
     }
 
     public interface IGroupListReadyListener {
-        void onGroupListReady(GroupList groups);
+        void onGroupListReady(List<Group> groups);
     }
 
     public interface IPhotoListReadyListener {
-        void onPhotosReady(PhotoList photos);
+        void onPhotosReady(List<Photo> photos);
     }
 
     public interface IPhotosetsReadyListener {

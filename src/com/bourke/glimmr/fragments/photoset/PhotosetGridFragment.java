@@ -15,7 +15,8 @@ import com.bourke.glimmr.tasks.LoadPhotosetTask;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
+
+import java.util.List;
 
 public class PhotosetGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
@@ -71,7 +72,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
     }
 
     @Override
-    public void onPhotosReady(PhotoList photos) {
+    public void onPhotosReady(List<Photo> photos) {
         User owner = mPhotoset.getOwner();
         if (owner != null) {
             for (Photo p : photos) {

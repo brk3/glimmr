@@ -146,7 +146,7 @@ public final class CommentsFragment extends BaseDialogFragment
         }
         TextView editText = (TextView) mLayout.findViewById(R.id.editText);
         String commentText = editText.getText().toString();
-        if (commentText.equals("")) {
+        if ("".equals(commentText)) {
             // TODO: alert user
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Comment text empty, do nothing");
@@ -229,7 +229,7 @@ public final class CommentsFragment extends BaseDialogFragment
 
                 String pTime = mPrettyTime.format(comment.getDateCreate());
                 /* keep Oliver happy */
-                if (Locale.getDefault().getLanguage().equals("es")) {
+                if ("es".equals(Locale.getDefault().getLanguage())) {
                     pTime = capitaliseWord(pTime);
                 }
                 holder.textViewCommentDate.setText(pTime);
