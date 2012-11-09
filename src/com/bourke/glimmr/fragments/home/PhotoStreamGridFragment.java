@@ -13,7 +13,8 @@ import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.tasks.LoadPhotostreamTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
+
+import java.util.List;
 
 public class PhotoStreamGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
@@ -60,7 +61,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
     }
 
     @Override
-    public void onPhotosReady(PhotoList photos) {
+    public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;

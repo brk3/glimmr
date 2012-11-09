@@ -11,9 +11,9 @@ import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.tasks.LoadGroupPoolTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
+
+import java.util.List;
 
 public class GroupPoolGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
@@ -50,7 +50,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment
     }
 
     @Override
-    public void onPhotosReady(PhotoList photos) {
+    public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;
