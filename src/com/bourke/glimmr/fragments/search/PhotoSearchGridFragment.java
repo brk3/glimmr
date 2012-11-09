@@ -14,7 +14,8 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.SearchPhotosTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
+
+import java.util.List;
 
 public class PhotoSearchGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
@@ -41,8 +42,8 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        mNoResultsLayout =
-            (RelativeLayout) mLayout.findViewById(R.id.no_search_results_layout);
+        mNoResultsLayout = (RelativeLayout)
+            mLayout.findViewById(R.id.no_search_results_layout);
         return mLayout;
     }
 
@@ -70,7 +71,7 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
     }
 
     @Override
-    public void onPhotosReady(PhotoList photos) {
+    public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;

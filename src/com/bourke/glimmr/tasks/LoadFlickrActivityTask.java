@@ -14,6 +14,7 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
 import java.util.List;
+import java.util.List;
 
 public class LoadFlickrActivityTask
         extends AsyncTask<OAuth, Void, List<Item>> {

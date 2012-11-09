@@ -13,12 +13,14 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
-import com.googlecode.flickrjandroid.photos.PhotoList;
+import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
+public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/LoadGroupPoolTask";
 
@@ -42,7 +44,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected PhotoList doInBackground(OAuth... params) {
+    protected List<Photo> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
         Set<String> extras = new HashSet<String>();
         extras.add("owner_name");
@@ -75,7 +77,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected void onPostExecute(final PhotoList result) {
+    protected void onPostExecute(final List<Photo> result) {
         if (result == null) {
             Log.e(TAG, "error fetching photolist, result is null");
         }

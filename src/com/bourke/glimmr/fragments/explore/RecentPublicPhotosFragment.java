@@ -2,16 +2,13 @@ package com.bourke.glimmr.fragments.explore;
 
 import android.os.Bundle;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPublicPhotosTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
+
+import java.util.List;
 
 public class RecentPublicPhotosFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
@@ -54,7 +51,7 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment
     }
 
     @Override
-    public void onPhotosReady(PhotoList photos) {
+    public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;
