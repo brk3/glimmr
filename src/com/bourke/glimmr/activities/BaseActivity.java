@@ -194,8 +194,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             user.setId(userId);
             oauth.setUser(user);
         } else {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.w(TAG, "No saved oauth token found");
+            }
             return null;
         }
         return oauth;

@@ -13,6 +13,7 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.ArrayList;
 import java.util.Collection;

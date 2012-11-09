@@ -13,10 +13,14 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photosets.Photoset;
-import com.googlecode.flickrjandroid.photos.PhotoList;
+import com.googlecode.flickrjandroid.photos.Photo;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
+public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/LoadPhotosetTask";
 
@@ -40,7 +44,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected PhotoList doInBackground(OAuth... params) {
+    protected List<Photo> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
@@ -71,17 +75,19 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected void onPostExecute(PhotoList result) {
+    protected void onPostExecute(List<Photo> result) {
         if (result == null) {
-            Log.e(TAG, "Error fetching photolist, result is null");
-            result = new PhotoList();
+            if (Constants.DEBUG) {
+                Log.e(TAG, "Error fetching photolist, result is null");
+            }
+            result = Collections.EMPTY_LIST;
         }
         mListener.onPhotosReady(result);
         mBaseFragment.showProgressIcon(false);
     }
 
     @Override
-    protected void onCancelled(final PhotoList result) {
+    protected void onCancelled(final List<Photo> result) {
         if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

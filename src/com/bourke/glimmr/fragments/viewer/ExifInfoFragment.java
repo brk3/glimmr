@@ -143,7 +143,7 @@ public final class ExifInfoFragment extends BaseDialogFragment
             if (exc instanceof FlickrException) {
                 String errCode = ((FlickrException) exc).getErrorCode();
                 if (Constants.DEBUG) Log.d(getLogTag(), "errCode: " + errCode);
-                if (errCode != null && errCode.equals(ERR_PERMISSION_DENIED)) {
+                if (errCode != null && ERR_PERMISSION_DENIED.equals(errCode)) {
                     mTextViewErrorMessage.setText(
                             mActivity.getString(R.string.no_exif_permission));
                 } else {
@@ -159,11 +159,11 @@ public final class ExifInfoFragment extends BaseDialogFragment
 
         /* Populate table with exif info */
         for (Exif e : exifInfo) {
-            if (e.getTag().equals("ISO")) {
+            if ("ISO".equals(e.getTag())) {
                 mTextViewISOValue.setText(e.getRaw());
-            } else if (e.getTag().equals("ExposureTime")) {
+            } else if ("ExposureTime".equals(e.getTag())) {
                 mTextViewShutterValue.setText(e.getRaw());
-            } else if (e.getTag().equals("FNumber")) {
+            } else if ("FNumber".equals(e.getTag())) {
                 mTextViewApertureValue.setText(e.getRaw());
             } else {
                 /* Convert camel case key to space delimited:
@@ -180,13 +180,13 @@ public final class ExifInfoFragment extends BaseDialogFragment
         }
         /* If any of the iso/shutter/aperture aren't available, set them to a
          * question mark */
-        if (mTextViewISOValue.getText().equals("")) {
+        if ("".equals(mTextViewISOValue.getText())) {
             mTextViewISOValue.setText("?");
         }
-        if (mTextViewShutterValue.getText().equals("")) {
+        if ("".equals(mTextViewShutterValue.getText())) {
             mTextViewShutterValue.setText("?");
         }
-        if (mTextViewApertureValue.getText().equals("")) {
+        if ("".equals(mTextViewApertureValue.getText())) {
             mTextViewApertureValue.setText("?");
         }
     }

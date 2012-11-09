@@ -13,11 +13,15 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-
-public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
+public class LoadContactsPhotosTask
+        extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/LoadContactsPhotosTask";
 
@@ -43,7 +47,7 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected PhotoList doInBackground(OAuth... params) {
+    protected List<Photo> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
@@ -72,7 +76,7 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected void onPostExecute(final PhotoList result) {
+    protected void onPostExecute(final List<Photo> result) {
         if (result == null) {
             Log.e(TAG, "Error fetching contacts photos, result is null");
         }
@@ -83,7 +87,7 @@ public class LoadContactsPhotosTask extends AsyncTask<OAuth, Void, PhotoList> {
     }
 
     @Override
-    protected void onCancelled(final PhotoList result) {
+    protected void onCancelled(final List<Photo> result) {
         if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

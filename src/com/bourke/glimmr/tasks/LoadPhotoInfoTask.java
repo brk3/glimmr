@@ -13,6 +13,7 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
 
