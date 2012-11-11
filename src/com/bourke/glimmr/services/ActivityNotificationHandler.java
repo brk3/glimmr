@@ -170,7 +170,7 @@ public class ActivityNotificationHandler
         new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
             @Override
             public void onPhotoInfoReady(final Photo photo) {
-                /* fetch the photo bitmap to be shown in the notication picture */
+                /* fetch the photo bitmap to be shown in the notication */
                 String url = photo.getMediumUrl();
                 new AQuery(mContext).ajax(url, Bitmap.class,
                         new AjaxCallback<Bitmap>() {
