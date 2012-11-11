@@ -124,6 +124,12 @@ public class Constants {
     public static final String NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID =
         "glimmr_notification_newest_activity_event_id";
 
+    public static final String TIME_ACTIVITY_ITEMS_LAST_UPDATED =
+        "glimmr_time_activity_items_last_updated";
+
+    public static final String TIME_MENUDRAWER_ITEMS_LAST_UPDATED =
+        "glimmr_time_menudrawer_items_last_updated";
+
     /* ExploreActivity state */
     public static final String LOGIN_LATER_SELECTED =
         "glimmr_login_later_selected";

@@ -48,6 +48,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static junit.framework.Assert.*;
+import java.util.Date;
 
 /**
  * This class refers to Flickr activity such as comments, faves, etc., not
@@ -86,7 +87,6 @@ public class ActivityNotificationHandler
             if (Constants.DEBUG) {
                 Log.d(TAG, "onItemListReady: items.size: " + items.size());
             }
-
             checkForNewItemEvents(items);
             storeItemList(mContext, items);
         }
@@ -298,13 +298,20 @@ public class ActivityNotificationHandler
         }
 
         GsonHelper gson = new GsonHelper(context);
-
         boolean itemListStoreResult =
             gson.marshallObject(items, Constants.ACTIVITY_ITEMLIST_FILE);
         if (!itemListStoreResult) {
             Log.e(TAG, "Error marshalling itemlist");
             return;
         }
+
+        /* Store the current time so the menudrawer can check if it's fresh */
+        SharedPreferences prefs = context.getSharedPreferences(
+                Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putLong(Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED,
+                new Date().getTime());
+        prefsEditor.commit();
 
         if (Constants.DEBUG) {
             Log.d(TAG, String.format("Sucessfully wrote %d items to %s",

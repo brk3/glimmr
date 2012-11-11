@@ -71,18 +71,24 @@ public class MainActivity extends BaseActivity {
 
     private List<PageItem> mContent;
 
-    private MenuDrawerManager mMenuDrawer;
+    private MenuDrawerManager mMenuDrawerMgr;
     private MenuAdapter mMenuAdapter;
     private MenuListView mList;
     private GlimmrPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
     private PageIndicator mIndicator;
     private int mActivePosition = -1;
+    private long mActivityListVersion = -1;
+    private SharedPreferences mPrefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
+
+        mPrefs = getSharedPreferences(Constants.PREFS_NAME,
+                Context.MODE_PRIVATE);
+
         if (mOAuth == null) {
             startActivity(new Intent(this, ExploreActivity.class));
         } else {
@@ -92,9 +98,9 @@ public class MainActivity extends BaseActivity {
             }
             mAq = new AQuery(this);
             initPageItems();
-            mMenuDrawer =
+            mMenuDrawerMgr =
                 new MenuDrawerManager(this, MenuDrawer.MENU_DRAG_CONTENT);
-            mMenuDrawer.setContentView(R.layout.main_activity);
+            mMenuDrawerMgr.setContentView(R.layout.main_activity);
             initViewPager();
             initMenuDrawer();
             initNotificationAlarms();
@@ -105,9 +111,9 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
+        mPrefs = getSharedPreferences(Constants.PREFS_NAME,
                 Context.MODE_PRIVATE);
-        mOAuth = loadAccessToken(prefs);
+        mOAuth = loadAccessToken(mPrefs);
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
         }
@@ -117,7 +123,10 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            mMenuDrawer.toggleMenu();
+            if (activityItemsNeedsUpdate()) {
+                updateMenuListItems();
+            }
+            mMenuDrawerMgr.toggleMenu();
             return true;
         }
 
@@ -126,10 +135,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        final int drawerState = mMenuDrawer.getDrawerState();
+        final int drawerState = mMenuDrawerMgr.getDrawerState();
         if (drawerState == MenuDrawer.STATE_OPEN ||
                 drawerState == MenuDrawer.STATE_OPENING) {
-            mMenuDrawer.closeMenu();
+            mMenuDrawerMgr.closeMenu();
             return;
         }
         super.onBackPressed();
@@ -138,18 +147,22 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mMenuDrawer != null) {
+        if (mMenuDrawerMgr != null) {
             outState.putParcelable(Constants.STATE_MENUDRAWER,
-                    mMenuDrawer.onSaveDrawerState());
+                    mMenuDrawerMgr.onSaveDrawerState());
             outState.putInt(Constants.STATE_ACTIVE_POSITION, mActivePosition);
         }
+        outState.putLong(Constants.TIME_MENUDRAWER_ITEMS_LAST_UPDATED,
+                mActivityListVersion);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
-        mMenuDrawer.onRestoreDrawerState(inState
+        mMenuDrawerMgr.onRestoreDrawerState(inState
                 .getParcelable(Constants.STATE_MENUDRAWER));
+        mActivityListVersion = inState.getLong(
+                Constants.TIME_MENUDRAWER_ITEMS_LAST_UPDATED, -1);
     }
 
     @Override
@@ -185,7 +198,7 @@ public class MainActivity extends BaseActivity {
                 RecentPublicPhotosFragment.class));
     }
 
-    public void updateMenuListItems(List<Item> flickrActivityItems) {
+    public void updateMenuListItems() {
         if (Constants.DEBUG) Log.d(TAG, "updateMenuListItems");
 
         /* Add the standard page related items */
@@ -195,13 +208,42 @@ public class MainActivity extends BaseActivity {
         }
         items.add(new MenuDrawerCategory(getString(R.string.activity)));
 
-        /* If we have flickr activity items then build a stream */
-        if (flickrActivityItems != null) {
-            items.addAll(buildActivityStream(flickrActivityItems));
+        /* If the ACTIVITY_ITEMLIST_FILE exists, add the contents to the menu
+         * drawer area.  Otherwise start a task to fetch one. */
+        final List<Item> flickrActivityItems = new ArrayList<Item>();
+        File f = getFileStreamPath(Constants.ACTIVITY_ITEMLIST_FILE);
+        if (f.exists()) {
+            flickrActivityItems.addAll(
+                    ActivityNotificationHandler.loadItemList(this));
+        } else {
+            new LoadFlickrActivityTask(new IActivityItemsReadyListener() {
+                @Override
+                public void onItemListReady(List<Item> items) {
+                    if (items != null) {
+                        flickrActivityItems.addAll(items);
+                        ActivityNotificationHandler.storeItemList(
+                            MainActivity.this, items);
+                    } else {
+                        Log.e(TAG, "onItemListReady: Item list is null");
+                    }
+                }
+            })
+            .execute(mOAuth);
         }
+        items.addAll(buildActivityStream(flickrActivityItems));
+        mActivityListVersion = mPrefs.getLong(
+                Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
 
         mMenuAdapter.setItems(items);
         mMenuAdapter.notifyDataSetChanged();
+    }
+
+    private boolean activityItemsNeedsUpdate() {
+        long lastUpdate = mPrefs.getLong(
+                Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
+        boolean ret = (mActivityListVersion < lastUpdate);
+        if (Constants.DEBUG) Log.d(TAG, "activityItemsNeedsUpdate: " + ret);
+        return ret;
     }
 
     /**
@@ -260,7 +302,6 @@ public class MainActivity extends BaseActivity {
         mList.setBackgroundResource(R.drawable.app_background_ics);
         mMenuAdapter = new MenuAdapter();
         mList.setAdapter(mMenuAdapter);
-
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -269,8 +310,8 @@ public class MainActivity extends BaseActivity {
                     case MENU_DRAWER_ITEM:
                         mViewPager.setCurrentItem(position);
                         mActivePosition = position;
-                        mMenuDrawer.setActiveView(view, position);
-                        mMenuDrawer.closeMenu();
+                        mMenuDrawerMgr.setActiveView(view, position);
+                        mMenuDrawerMgr.closeMenu();
                         break;
                     case MENU_DRAWER_ACTIVITY_ITEM:
                         // TODO: Open viewer for photo the item relates to
@@ -278,19 +319,30 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-
         mList.setOnScrollChangedListener(
                 new MenuListView.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                mMenuDrawer.getMenuDrawer().invalidate();
+                mMenuDrawerMgr.getMenuDrawer().invalidate();
             }
         });
 
-        mMenuDrawer.setMenuView(mList);
+        mMenuDrawerMgr.setMenuView(mList);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mMenuDrawer.getMenuDrawer().setTouchMode(
+        mMenuDrawerMgr.getMenuDrawer().setTouchMode(
                 MenuDrawer.TOUCH_MODE_FULLSCREEN);
+        mMenuDrawerMgr.getMenuDrawer().setOnDrawerStateChangeListener(
+                new MenuDrawer.OnDrawerStateChangeListener() {
+                    @Override
+                    public void onDrawerStateChange(int oldState,
+                        int newState) {
+                        if (newState == MenuDrawer.STATE_OPEN) {
+                            if (activityItemsNeedsUpdate()) {
+                                updateMenuListItems();
+                            }
+                        }
+                    }
+                });
 
         ViewPager.SimpleOnPageChangeListener pageChangeListener =
                 new ViewPager.SimpleOnPageChangeListener() {
@@ -302,46 +354,21 @@ public class MainActivity extends BaseActivity {
                     mActionBar.setSelectedNavigationItem(position);
                 }
                 if (position == 0) {
-                    mMenuDrawer.getMenuDrawer().setTouchMode(
+                    mMenuDrawerMgr.getMenuDrawer().setTouchMode(
                         MenuDrawer.TOUCH_MODE_FULLSCREEN);
                 } else {
-                    mMenuDrawer.getMenuDrawer().setTouchMode(
+                    mMenuDrawerMgr.getMenuDrawer().setTouchMode(
                         MenuDrawer.TOUCH_MODE_NONE);
                 }
             }
         };
-
         if (mIndicator != null) {
             mIndicator.setOnPageChangeListener(pageChangeListener);
         } else {
             mViewPager.setOnPageChangeListener(pageChangeListener);
         }
 
-        /* If the ACTIVITY_ITEMLIST_FILE exists, add the contents to the menu
-         * drawer area.  Otherwise start a task to fetch one. */
-        File f = getFileStreamPath(Constants.ACTIVITY_ITEMLIST_FILE);
-        if (f.exists()) {
-            updateMenuListItems(
-                    ActivityNotificationHandler.loadItemList(this));
-        } else {
-            new LoadFlickrActivityTask(new IActivityItemsReadyListener() {
-                @Override
-                public void onItemListReady(List<Item> items) {
-                    if (items != null) {
-                        if (Constants.DEBUG) {
-                            Log.d(TAG, "onItemListReady: items.size: " +
-                                items.size());
-                        }
-                        updateMenuListItems(items);
-                        ActivityNotificationHandler.storeItemList(
-                            MainActivity.this, items);
-                    } else {
-                        Log.e(TAG, "onItemListReady: Item list is null");
-                    }
-                }
-            })
-            .execute(mOAuth);
-        }
+        updateMenuListItems();
     }
 
     private void initNotificationAlarms() {
@@ -536,7 +563,7 @@ public class MainActivity extends BaseActivity {
             v.setTag(R.id.mdActiveViewPosition, position);
 
             if (position == mActivePosition) {
-                mMenuDrawer.setActiveView(v, position);
+                mMenuDrawerMgr.setActiveView(v, position);
             }
 
             return v;
