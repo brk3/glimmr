@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import android.preference.PreferenceManager;
 
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import android.text.Html;
@@ -20,11 +19,13 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 
 import com.androidquery.AQuery;
 
@@ -32,6 +33,7 @@ import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.common.MenuListView;
 import com.bourke.glimmrpro.event.Events.IActivityItemsReadyListener;
+import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmrpro.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmrpro.fragments.home.ContactsGridFragment;
 import com.bourke.glimmrpro.fragments.home.FavoritesGridFragment;
@@ -43,12 +45,14 @@ import com.bourke.glimmrpro.services.ActivityNotificationHandler;
 import com.bourke.glimmrpro.services.AppListener;
 import com.bourke.glimmrpro.services.AppService;
 import com.bourke.glimmrpro.tasks.LoadFlickrActivityTask;
+import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 import com.sbstrm.appirater.Appirater;
 
@@ -84,11 +88,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-        mPrefs = getSharedPreferences(Constants.PREFS_NAME,
-                Context.MODE_PRIVATE);
+        super.onCreate(savedInstanceState);
 
         if (mOAuth == null) {
             startActivity(new Intent(this, ExploreActivity.class));
@@ -97,6 +99,8 @@ public class MainActivity extends BaseActivity {
                 mActivePosition =
                     savedInstanceState.getInt(Constants.STATE_ACTIVE_POSITION);
             }
+            mPrefs = getSharedPreferences(Constants.PREFS_NAME,
+                    Context.MODE_PRIVATE);
             mAq = new AQuery(this);
             initPageItems();
             mMenuDrawerMgr =
@@ -300,8 +304,11 @@ public class MainActivity extends BaseActivity {
          * scrolled. This is to update the position
          * of the arrow indicator. */
         mList = new MenuListView(this);
-        mList.setBackgroundResource(R.drawable.app_background_ics);
         mMenuAdapter = new MenuAdapter();
+        mList.setDivider(null);
+        mList.setDividerHeight(0);
+        mList.setBackgroundResource(R.drawable.navy_blue_tiled);
+        mList.setSelector(R.drawable.selectable_background_glimmrdark);
         mList.setAdapter(mMenuAdapter);
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -315,7 +322,9 @@ public class MainActivity extends BaseActivity {
                         mMenuDrawerMgr.closeMenu();
                         break;
                     case MENU_DRAWER_ACTIVITY_ITEM:
-                        // TODO: Open viewer for photo the item relates to
+                        /* offset the position by number of content items + 1
+                         * for the category item */
+                        startViewerForActivityItem(position-mContent.size()-1);
                         break;
                 }
             }
@@ -370,6 +379,30 @@ public class MainActivity extends BaseActivity {
         }
 
         updateMenuListItems();
+    }
+
+    private void startViewerForActivityItem(int itemPos) {
+        setProgressBarIndeterminateVisibility(Boolean.TRUE);
+
+        // TODO: only load these once throughout the activity
+        List<Item> items = ActivityNotificationHandler
+            .loadItemList(MainActivity.this);
+        Item item = items.get(itemPos);
+        new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
+            @Override
+            public void onPhotoInfoReady(final Photo photo) {
+                if (photo == null) {
+                    Log.e(TAG, "onPhotoInfoReady: photo is null, " +
+                        "can't start viewer");
+                    return;
+                }
+                List<Photo> photos = new ArrayList<Photo>();
+                photos.add(photo);
+                setProgressBarIndeterminateVisibility(Boolean.FALSE);
+                PhotoViewerActivity.startPhotoViewer(
+                    MainActivity.this, photos, 0);
+            }
+        }, item.getId(), item.getSecret()).execute(mOAuth);
     }
 
     private void initNotificationAlarms() {
@@ -533,10 +566,10 @@ public class MainActivity extends BaseActivity {
 
             if (item instanceof MenuDrawerActivityItem) {
                 if (v == null) {
-                    v = getLayoutInflater().inflate(
+                    v = (LinearLayout) getLayoutInflater().inflate(
                             R.layout.menu_row_activity_item, parent, false);
                 }
-                TextView tv = (TextView) v;
+                TextView tv = (TextView) v.findViewById(R.id.text);
                 tv.setText(Html.fromHtml(
                             ((MenuDrawerActivityItem) item).mTitle));
 
@@ -552,10 +585,11 @@ public class MainActivity extends BaseActivity {
 
             } else if (item instanceof MenuDrawerCategory) {
                 if (v == null) {
-                    v = getLayoutInflater().inflate(
+                    v = (LinearLayout) getLayoutInflater().inflate(
                             R.layout.menu_row_category, parent, false);
                 }
-                ((TextView) v).setText(((MenuDrawerCategory) item).mTitle);
+                ((TextView) v.findViewById(R.id.text)).setText(
+                    ((MenuDrawerCategory) item).mTitle);
 
             } else {
                 Log.e(TAG, "MenuAdapter.getView: Unsupported item type");
