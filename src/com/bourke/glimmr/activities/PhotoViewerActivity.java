@@ -202,7 +202,11 @@ public class PhotoViewerActivity extends BaseActivity
             if (mExifFragmentShowing) {
                 setExifFragmentVisibility(photo, false, animateTransition);
             }
-            setCommentsFragmentVisibility(photo, true, animateTransition);
+            if (mCommentsFragmentShowing) {
+                setCommentsFragmentVisibility(photo, false, animateTransition);
+            } else {
+                setCommentsFragmentVisibility(photo, true, animateTransition);
+            }
         } else {
             CommentsFragment commentsDialogFrag =
                 CommentsFragment.newInstance(photo);
@@ -217,7 +221,11 @@ public class PhotoViewerActivity extends BaseActivity
             if (mCommentsFragmentShowing) {
                 setCommentsFragmentVisibility(photo, false, animateTransition);
             }
-            setExifFragmentVisibility(photo, true, animateTransition);
+            if (mExifFragmentShowing) {
+                setExifFragmentVisibility(photo, false, animateTransition);
+            } else {
+                setExifFragmentVisibility(photo, true, animateTransition);
+            }
         } else {
             ExifInfoFragment exifInfoDialogFrag =
                 ExifInfoFragment.newInstance(photo);
