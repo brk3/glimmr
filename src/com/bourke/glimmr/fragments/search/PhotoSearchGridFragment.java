@@ -1,5 +1,8 @@
 package com.bourke.glimmrpro.fragments.search;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -8,6 +11,7 @@ import android.view.ViewGroup;
 
 import android.widget.RelativeLayout;
 
+import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.R;
@@ -23,12 +27,12 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
     private static final String TAG = "Glimmr/PhotoSearchGridFragment";
 
     private SearchPhotosTask mTask;
-    private String mSearchTerm;
+    private String mSearchQuery = "";
     private View mNoResultsLayout;
 
     public static PhotoSearchGridFragment newInstance(String searchTerm) {
         PhotoSearchGridFragment fragment = new PhotoSearchGridFragment();
-        fragment.mSearchTerm = searchTerm;
+        fragment.mSearchQuery = searchTerm;
         return fragment;
     }
 
@@ -36,6 +40,26 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mShowDetailsOverlay = false;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences prefs = mActivity.getSharedPreferences(
+                Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("mSearchQuery", mSearchQuery);
+        editor.commit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mSearchQuery.equals("")) {
+            SharedPreferences prefs = mActivity.getSharedPreferences(
+                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
+            mSearchQuery = prefs.getString("mSearchQuery", "");
+        }
     }
 
     @Override
@@ -59,14 +83,14 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new SearchPhotosTask(this, this, mSearchTerm, page);
+        mTask = new SearchPhotosTask(this, this, mSearchQuery, page);
         mTask.execute(mOAuth);
     }
 
     @Override
     protected void refresh() {
         super.refresh();
-        mTask = new SearchPhotosTask(this, this, mSearchTerm, mPage);
+        mTask = new SearchPhotosTask(this, this, mSearchQuery, mPage);
         mTask.execute(mOAuth);
     }
 
