@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -290,10 +291,18 @@ public final class PhotoViewerFragment extends BaseFragment
             if (honeycombOrGreater) {
                 mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             }
+            mActivity.getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            mActivity.getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
             mActionBar.show();
         } else {
             mTextViewTitle.setVisibility(View.INVISIBLE);
             mTextViewAuthor.setVisibility(View.INVISIBLE);
+            mActivity.getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            mActivity.getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
             if (honeycombOrGreater) {
                 mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
             }
