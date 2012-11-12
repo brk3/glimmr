@@ -41,13 +41,13 @@ import com.google.gson.reflect.TypeToken;
 import com.jakewharton.notificationcompat2.NotificationCompat2;
 
 import java.lang.reflect.Type;
+import java.lang.System;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static junit.framework.Assert.*;
-import java.util.Date;
 
 /**
  * This class refers to Flickr activity such as comments, faves, etc., not
@@ -309,7 +309,7 @@ public class ActivityNotificationHandler
                 Constants.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putLong(Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED,
-                new Date().getTime());
+                (System.currentTimeMillis() / 1000L));
         prefsEditor.commit();
 
         if (Constants.DEBUG) {
