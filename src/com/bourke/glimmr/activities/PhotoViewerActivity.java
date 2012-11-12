@@ -125,6 +125,7 @@ public class PhotoViewerActivity extends BaseActivity
             }
             mAdapter =
                 new PhotoViewerPagerAdapter(getSupportFragmentManager());
+            mAdapter.onPageSelected(startIndex);
             mPager = (ViewPagerDisable) findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
             mPager.setOnPageChangeListener(mAdapter);
