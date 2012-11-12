@@ -106,6 +106,7 @@ public class MainActivity extends BaseActivity {
             mMenuDrawerMgr =
                 new MenuDrawerManager(this, MenuDrawer.MENU_DRAG_CONTENT);
             mMenuDrawerMgr.setContentView(R.layout.main_activity);
+            setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
             initViewPager();
             initMenuDrawer();
             initNotificationAlarms();
@@ -382,7 +383,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void startViewerForActivityItem(int itemPos) {
-        setProgressBarIndeterminateVisibility(Boolean.TRUE);
+        setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
 
         // TODO: only load these once throughout the activity
         List<Item> items = ActivityNotificationHandler
@@ -398,7 +399,7 @@ public class MainActivity extends BaseActivity {
                 }
                 List<Photo> photos = new ArrayList<Photo>();
                 photos.add(photo);
-                setProgressBarIndeterminateVisibility(Boolean.FALSE);
+                setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
                 PhotoViewerActivity.startPhotoViewer(
                     MainActivity.this, photos, 0);
             }
