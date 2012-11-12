@@ -15,6 +15,7 @@ import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 
 import android.widget.TextView;
 
@@ -171,8 +172,16 @@ public class PhotoViewerActivity extends BaseActivity
                 Constants.KEY_PHOTOVIEWER_ACTIONBAR_SHOW, true);
         if (overlayOn) {
             mActionBar.show();
+            getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
             mActionBar.hide();
+            getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         }
     }
 
