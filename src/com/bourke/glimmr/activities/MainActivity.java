@@ -321,6 +321,7 @@ public class MainActivity extends BaseActivity {
         mMenuAdapter = new MenuAdapter();
         mList.setDivider(null);
         mList.setDividerHeight(0);
+        mList.setCacheColorHint(0);
         mList.setBackgroundResource(R.drawable.navy_blue_tiled);
         mList.setSelector(R.drawable.selectable_background_glimmrdark);
         mList.setAdapter(mMenuAdapter);
