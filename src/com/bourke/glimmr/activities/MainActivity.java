@@ -207,47 +207,60 @@ public class MainActivity extends BaseActivity {
     public void updateMenuListItems() {
         if (Constants.DEBUG) Log.d(TAG, "updateMenuListItems");
 
-        /* Add the standard page related items */
-        List<Object> items = new ArrayList<Object>();
-        for (PageItem page : mContent) {
-            items.add(new MenuDrawerItem(page.mTitle, page.mIconDrawable));
-        }
-        items.add(new MenuDrawerCategory(getString(R.string.activity)));
+        final List<Object> menuItems = new ArrayList<Object>();
 
-        /* If the ACTIVITY_ITEMLIST_FILE exists, add the contents to the menu
+        /* Add the standard page related items */
+        for (PageItem page : mContent) {
+            menuItems.add(new MenuDrawerItem(page.mTitle, page.mIconDrawable));
+        }
+        menuItems.add(new MenuDrawerCategory(getString(R.string.activity)));
+
+        /* If the activity list file exists, add the contents to the menu
          * drawer area.  Otherwise start a task to fetch one. */
-        final List<Item> flickrActivityItems = new ArrayList<Item>();
         File f = getFileStreamPath(Constants.ACTIVITY_ITEMLIST_FILE);
         if (f.exists()) {
-            flickrActivityItems.addAll(
-                    ActivityNotificationHandler.loadItemList(this));
+            /* There is some duplicated code here.  Could move it into another
+             * function but the task is fragmented enough as is */
+            List<Item> items = ActivityNotificationHandler.loadItemList(this);
+            menuItems.addAll(buildActivityStream(items));
+            mActivityListVersion = mPrefs.getLong(
+                    Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
+            mMenuAdapter.setItems(menuItems);
+            mMenuAdapter.notifyDataSetChanged();
         } else {
             new LoadFlickrActivityTask(new IActivityItemsReadyListener() {
                 @Override
                 public void onItemListReady(List<Item> items) {
                     if (items != null) {
-                        flickrActivityItems.addAll(items);
                         ActivityNotificationHandler.storeItemList(
                             MainActivity.this, items);
+                        menuItems.addAll(buildActivityStream(items));
+                        mActivityListVersion = mPrefs.getLong(
+                                Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED,
+                                -1);
                     } else {
                         Log.e(TAG, "onItemListReady: Item list is null");
                     }
+                    mMenuAdapter.setItems(menuItems);
+                    mMenuAdapter.notifyDataSetChanged();
                 }
             })
             .execute(mOAuth);
         }
-        items.addAll(buildActivityStream(flickrActivityItems));
-        mActivityListVersion = mPrefs.getLong(
-                Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
-
-        mMenuAdapter.setItems(items);
-        mMenuAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Determines if the menu drawer's items need to be refreshed from the
+     * cache file.
+     * True if the cache file doesn't exist or a newer cache file exists than
+     * the version we're displaying.
+     */
     private boolean activityItemsNeedsUpdate() {
         long lastUpdate = mPrefs.getLong(
                 Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
-        boolean ret = (mActivityListVersion < lastUpdate);
+        File f = getFileStreamPath(Constants.ACTIVITY_ITEMLIST_FILE);
+        boolean isStale = (mActivityListVersion < lastUpdate);
+        boolean ret = (isStale || !f.exists());
         if (Constants.DEBUG) Log.d(TAG, "activityItemsNeedsUpdate: " + ret);
         return ret;
     }
@@ -395,6 +408,7 @@ public class MainActivity extends BaseActivity {
                 if (photo == null) {
                     Log.e(TAG, "onPhotoInfoReady: photo is null, " +
                         "can't start viewer");
+                    // TODO: alert user
                     return;
                 }
                 List<Photo> photos = new ArrayList<Photo>();
