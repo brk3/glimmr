@@ -282,8 +282,8 @@ public class MainActivity extends BaseActivity {
         for (Item i : activityItems) {
             if ("photo".equals(i.getType())) {
                 StringBuilder itemString = new StringBuilder();
-                int count = 0;
-                for (Event e : i.getEvents()) {
+                for (int j=i.getEvents().size()-1; j>=0; j--) {
+                    Event e = ((List<Event>)i.getEvents()).get(j);
                     String pTime = prettyTime.format(e.getDateadded());
                     String author = e.getUsername();
                     if (mUser != null && mUser.getUsername().equals(author)) {
@@ -299,13 +299,11 @@ public class MainActivity extends BaseActivity {
                                     i.getTitle()));
                     } else {
                         Log.e(TAG, "unsupported Event type: " + e.getType());
-                        count++;
                         continue;
                     }
-                    if (count < i.getEvents().size()-1) {
+                    if (j > 0) {
                         itemString.append("<br><br>");
                     }
-                    count++;
                 }
                 ret.add(new MenuDrawerActivityItem(itemString.toString(), -1));
             }
