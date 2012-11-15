@@ -1,65 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:focusable="true"
-    android:background="@drawable/ab_bg_black"
-    android:padding="20dip"
-    android:focusableInTouchMode="true">
+    android:orientation="vertical">
 
-    <View
-        android:id="@+id/separator"
-        android:background="@android:color/white"
-        android:layout_width = "fill_parent"
-        android:layout_height="2dip"
-        android:layout_below="@+id/titleText" />
-
-    <TextView
-        android:id="@id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_large"
-        android:textColor="@android:color/secondary_text_dark"
-        android:text="@string/menu_view_comments" />
-
-    <ProgressBar
-        android:id="@+id/progressIndicator"
-        android:layout_width="30dip"
-        android:layout_height="30dip"
-        android:layout_marginTop="5dip"
-        android:visibility="gone"
-        android:layout_centerInParent="true" />
-
-    <ListView
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:ignore="PxUsage"
-        android:id="@+id/list"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:divider="@color/flickr_pink"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_above="@+id/editText"
-        android:layout_below="@+id/titleText"
-        android:dividerHeight="1px" />
+        android:layout_weight="1"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:paddingTop="15dip"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:background="@drawable/ab_bg_black"
+        android:focusableInTouchMode="true">
 
-    <EditText
-        android:id="@id/editText"
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_large"
+            android:textColor="@android:color/secondary_text_dark"
+            android:text="@string/menu_view_comments" />
+
+        <View
+            android:id="@+id/separator"
+            android:background="@android:color/white"
+            android:layout_width = "fill_parent"
+            android:layout_height="2dip" />
+
+        <ProgressBar
+            android:id="@+id/progressIndicator"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_marginTop="5dip"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
+
+        <ListView
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:ignore="PxUsage"
+            android:id="@+id/list"
+            android:paddingTop="15dip"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:divider="@color/flickr_pink"
+            android:dividerHeight="1px" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/edit_text_hint"
-        android:maxLength="256"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/submitButton" />
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:paddingBottom="15dip"
+        android:layout_weight="0"
+        android:background="@drawable/ab_bg_black"
+        android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_social_send_now_dark" />
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:hint="@string/edit_text_hint"
+            android:maxLength="256" />
 
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:src="@drawable/ic_social_send_now_dark" />
+    </LinearLayout>
+
+</LinearLayout>
