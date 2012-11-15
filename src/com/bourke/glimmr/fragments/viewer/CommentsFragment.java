@@ -19,7 +19,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +47,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.ocpsoft.pretty.time.PrettyTime;
+import android.widget.LinearLayout;
 
 public final class CommentsFragment extends BaseDialogFragment
         implements ICommentsReadyListener, ICommentAddedListener,
@@ -82,7 +82,7 @@ public final class CommentsFragment extends BaseDialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(
+        mLayout = (LinearLayout) inflater.inflate(
                 R.layout.comments_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
 
@@ -190,7 +190,7 @@ public final class CommentsFragment extends BaseDialogFragment
 
     @Override
     public void onCommentsReady(List<Comment> comments) {
-        mProgressBar.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.GONE);
 
         if (comments == null) {
             Log.e(TAG, "onCommentsReady: comments are null");
