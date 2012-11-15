@@ -19,6 +19,8 @@ public class Constants {
     public static final String KEY_USER_NAME = "glimmr_user_name";
     public static final String KEY_USER_ID = "glimmr_user_id";
 
+    public static final String KEY_IS_FIRST_RUN = "glimmr_is_first_run";
+
     /* Fonts */
     public static final int FONT_SHADOWSINTOLIGHT = 0;
     public static final String FONT_PATH_SHADOWSINTOLIGHT =
