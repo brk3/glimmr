@@ -162,8 +162,11 @@ public final class CommentsFragment extends BaseDialogFragment
         editText.setText("");
         InputMethodManager inputManager = (InputMethodManager)
             mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(mActivity.getCurrentFocus()
-                .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        View focusedView = mActivity.getCurrentFocus();
+        if (focusedView != null) {
+            inputManager.hideSoftInputFromWindow(focusedView.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
         Toast.makeText(mActivity, mActivity.getString(R.string.comment_sent),
                 Toast.LENGTH_SHORT).show();
     }
