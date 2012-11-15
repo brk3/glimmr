@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import android.preference.PreferenceManager;
 
@@ -61,6 +62,8 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import java.io.File;
 
+import java.lang.Runnable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -79,6 +82,8 @@ public class MainActivity extends BaseActivity {
     private MenuDrawerManager mMenuDrawerMgr;
     private MenuAdapter mMenuAdapter;
     private MenuListView mList;
+    private Runnable mToggleUpRunnable;
+    private boolean mDisplayHomeAsUp = true;
     private GlimmrPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
     private PageIndicator mIndicator;
@@ -350,6 +355,23 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        /* If first run, make the "up" button blink until clicked */
+        final Handler handler = new Handler();
+        final boolean isFirstRun = mPrefs.getBoolean(
+                Constants.KEY_IS_FIRST_RUN, true);
+        if (isFirstRun) {
+            if (Constants.DEBUG) Log.d(TAG, "First run");
+            mToggleUpRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    mDisplayHomeAsUp = !mDisplayHomeAsUp;
+                    mActionBar.setDisplayHomeAsUpEnabled(mDisplayHomeAsUp);
+                    handler.postDelayed(mToggleUpRunnable, 500);
+                }
+            };
+            handler.postDelayed(mToggleUpRunnable, 500);
+        }
+
         mMenuDrawerMgr.setMenuView(mList);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mMenuDrawerMgr.getMenuDrawer().setTouchMode(
@@ -358,8 +380,19 @@ public class MainActivity extends BaseActivity {
                 new MenuDrawer.OnDrawerStateChangeListener() {
                     @Override
                     public void onDrawerStateChange(int oldState,
-                        int newState) {
+                            int newState) {
                         if (newState == MenuDrawer.STATE_OPEN) {
+                            handler.removeCallbacks(mToggleUpRunnable);
+                            if (isFirstRun) {
+                                SharedPreferences.Editor editor =
+                                    mPrefs.edit();
+                                editor.putBoolean(Constants.KEY_IS_FIRST_RUN,
+                                    false);
+                                editor.commit();
+                            }
+                            if (!mDisplayHomeAsUp) {
+                                mActionBar.setDisplayHomeAsUpEnabled(true);
+                            }
                             if (activityItemsNeedsUpdate()) {
                                 updateMenuListItems();
                             }
