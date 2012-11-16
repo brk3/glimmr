@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -23,11 +22,8 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
 
     private IPhotosetsReadyListener mListener;
     private User mUser;
-    private BaseFragment mBaseFragment;
 
-    public LoadPhotosetsTask(BaseFragment a, IPhotosetsReadyListener listener,
-            User user) {
-        mBaseFragment = a;
+    public LoadPhotosetsTask(IPhotosetsReadyListener listener, User user) {
         mListener = listener;
         mUser = user;
     }
@@ -35,7 +31,6 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -74,6 +69,5 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
                 Log.e(TAG, "Error fetching photosets, result is null");
         }
         mListener.onPhotosetsReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 }

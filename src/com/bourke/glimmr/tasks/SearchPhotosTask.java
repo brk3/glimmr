@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -28,13 +27,11 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private IPhotoListReadyListener mListener;
     private Photoset mPhotoset;
-    private BaseFragment mBaseFragment;
     private int mPage;
     private String mSearchTerm;
 
-    public SearchPhotosTask(BaseFragment a, IPhotoListReadyListener listener,
+    public SearchPhotosTask(IPhotoListReadyListener listener,
             String searchTerm, int page) {
-        mBaseFragment = a;
         mListener = listener;
         mPage = page;
         mSearchTerm = searchTerm;
@@ -43,7 +40,6 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -91,7 +87,6 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
             result = Collections.EMPTY_LIST;
         }
         mListener.onPhotosReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

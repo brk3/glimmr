@@ -71,7 +71,8 @@ public class GroupListFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        mTask = new LoadGroupsTask(this, this);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadGroupsTask(this);
         mTask.execute(mOAuth);
     }
 
@@ -85,6 +86,7 @@ public class GroupListFragment extends BaseFragment
     public void onGroupListReady(List<Group> groups) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onGroupListReady");
 
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (groups == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
             mListView.setVisibility(View.GONE);

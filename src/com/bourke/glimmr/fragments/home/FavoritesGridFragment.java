@@ -36,7 +36,7 @@ public class FavoritesGridFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadFavoritesTask(this, this, mActivity.getUser(), page);
+        mTask = new LoadFavoritesTask(this, mActivity.getUser(), page);
         mTask.execute(mOAuth);
     }
 

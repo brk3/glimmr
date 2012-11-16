@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import android.preference.PreferenceManager;
 
@@ -60,6 +61,8 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import java.io.File;
 
+import java.lang.Runnable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -68,9 +71,6 @@ import net.simonvt.widget.MenuDrawer;
 import net.simonvt.widget.MenuDrawerManager;
 
 import org.ocpsoft.pretty.time.PrettyTime;
-import com.actionbarsherlock.view.Window;
-import java.lang.Runnable;
-import android.os.Handler;
 
 public class MainActivity extends BaseActivity {
 
@@ -92,8 +92,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
         super.onCreate(savedInstanceState);
 
         if (mOAuth == null) {
@@ -110,7 +108,6 @@ public class MainActivity extends BaseActivity {
             mMenuDrawerMgr =
                 new MenuDrawerManager(this, MenuDrawer.MENU_DRAG_CONTENT);
             mMenuDrawerMgr.setContentView(R.layout.main_activity);
-            setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
             initViewPager();
             initMenuDrawer();
             initNotificationAlarms();

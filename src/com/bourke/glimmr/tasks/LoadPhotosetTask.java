@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -26,12 +25,10 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private IPhotoListReadyListener mListener;
     private Photoset mPhotoset;
-    private BaseFragment mBaseFragment;
     private int mPage;
 
-    public LoadPhotosetTask(BaseFragment a, IPhotoListReadyListener listener,
+    public LoadPhotosetTask(IPhotoListReadyListener listener,
             Photoset photoset, int page) {
-        mBaseFragment = a;
         mListener = listener;
         mPhotoset = photoset;
         mPage = page;
@@ -40,7 +37,6 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -88,7 +84,6 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
             result = Collections.EMPTY_LIST;
         }
         mListener.onPhotosReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

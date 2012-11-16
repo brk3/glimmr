@@ -48,14 +48,16 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadPhotostreamTask(this, this, mActivity.getUser(), page);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadPhotostreamTask(this, mActivity.getUser(), page);
         mTask.execute(mOAuth);
     }
 
     @Override
     protected void refresh() {
         super.refresh();
-        mTask = new LoadPhotostreamTask(this, this, mActivity.getUser(),
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadPhotostreamTask(this, mActivity.getUser(),
                 mPage);
         mTask.execute(mOAuth);
     }
@@ -63,6 +65,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
     @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;
         }

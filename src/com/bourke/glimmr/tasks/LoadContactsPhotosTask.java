@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -25,13 +24,6 @@ public class LoadContactsPhotosTask
     private static final String TAG = "Glimmr/LoadContactsPhotosTask";
 
     private IPhotoListReadyListener mListener;
-    private BaseFragment mBaseFragment;
-
-    public LoadContactsPhotosTask(BaseFragment a,
-            IPhotoListReadyListener listener) {
-        mListener = listener;
-        mBaseFragment = a;
-    }
 
     public LoadContactsPhotosTask(IPhotoListReadyListener listener) {
         mListener = listener;
@@ -40,9 +32,6 @@ public class LoadContactsPhotosTask
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if (mBaseFragment != null) {
-            mBaseFragment.showProgressIcon(true);
-        }
     }
 
     @Override
@@ -85,9 +74,6 @@ public class LoadContactsPhotosTask
                 Log.e(TAG, "Error fetching contacts photos, result is null");
         }
         mListener.onPhotosReady(result);
-        if (mBaseFragment != null) {
-            mBaseFragment.showProgressIcon(false);
-        }
     }
 
     @Override
