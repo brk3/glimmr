@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.actionbarsherlock.view.Window;
 import android.app.AlertDialog;
 import android.app.Dialog;
 
@@ -74,8 +75,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
         super.onCreate(savedInstanceState);
 
+        /* Load the users oauth token */
         SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
                 Context.MODE_PRIVATE);
         mOAuth = loadAccessToken(prefs);
@@ -95,7 +99,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             mActionbarTitle = new GlimmrAbCustomTitle(this);
             mActionbarTitle.init(mActionBar);
         }
+        setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
+        /* Tune the aquery cache */
         if (isTaskRoot()) {
             BitmapAjaxCallback.setCacheLimit(Constants.IMAGE_CACHE_LIMIT);
             BitmapAjaxCallback.setMaxPixelLimit(Constants.MEM_CACHE_PX_SIZE);

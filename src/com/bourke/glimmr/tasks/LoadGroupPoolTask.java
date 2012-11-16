@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.groups.Group;
@@ -26,12 +25,10 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private IPhotoListReadyListener mListener;
     private Group mGroup;
-    private BaseFragment mBaseFragment;
     private int mPage;
 
-    public LoadGroupPoolTask(BaseFragment a, IPhotoListReadyListener listener,
-            Group group, int page) {
-        mBaseFragment = a;
+    public LoadGroupPoolTask(IPhotoListReadyListener listener, Group group,
+            int page) {
         mListener = listener;
         mGroup = group;
         mPage = page;
@@ -40,7 +37,6 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -82,6 +78,5 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
             Log.e(TAG, "error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 }

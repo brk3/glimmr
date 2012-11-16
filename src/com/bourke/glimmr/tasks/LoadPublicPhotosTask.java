@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 
@@ -21,20 +20,16 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
     private static final String TAG = "Glimmr/LoadPublicPhotosTask";
 
     private IPhotoListReadyListener mListener;
-    private BaseFragment mBaseFragment;
     private int mPage;
 
-    public LoadPublicPhotosTask(BaseFragment a,
-            IPhotoListReadyListener listener, int page) {
+    public LoadPublicPhotosTask(IPhotoListReadyListener listener, int page) {
         mListener = listener;
-        mBaseFragment = a;
         mPage = page;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -67,7 +62,6 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
             }
         }
         mListener.onPhotosReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -25,12 +24,10 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private IPhotoListReadyListener mListener;
     private User mUser;
-    private BaseFragment mBaseFragment;
     private int mPage;
 
-    public LoadFavoritesTask(BaseFragment a, IPhotoListReadyListener listener,
-            User user, int page) {
-        mBaseFragment = a;
+    public LoadFavoritesTask(IPhotoListReadyListener listener, User user,
+            int page) {
         mListener = listener;
         mUser = user;
         mPage = page;
@@ -39,7 +36,6 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -78,7 +74,6 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
                 Log.e(TAG, "Error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

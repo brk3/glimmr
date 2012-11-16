@@ -49,8 +49,6 @@ public abstract class BaseFragment extends SherlockFragment {
     protected AQuery mAq;
     protected ViewGroup mLayout;
 
-    protected boolean mRefreshing = false;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,10 +77,6 @@ public abstract class BaseFragment extends SherlockFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.fragment_main_menu, menu);
-		if (mRefreshing) {
-			menu.findItem(R.id.menu_refresh).setActionView(
-					R.layout.action_bar_indeterminate_progress);
-		}
         if (mActivity.getUser() == null) {
             menu.findItem(R.id.menu_login).setVisible(true);
         } else {
@@ -98,16 +92,6 @@ public abstract class BaseFragment extends SherlockFragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void showProgressIcon(boolean show) {
-        mRefreshing = show;
-        /* <ICS seems to crash on this call, seems benign */
-        try {
-            mActivity.invalidateOptionsMenu();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     protected void startTask() {

@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IGroupListReadyListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.FlickrException;
@@ -27,17 +26,14 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
     private static final String TAG = "Glimmr/LoadGroupsTask";
 
     private IGroupListReadyListener mListener;
-    private BaseFragment mBaseFragment;
 
-    public LoadGroupsTask(BaseFragment a, IGroupListReadyListener listener) {
-        mBaseFragment = a;
+    public LoadGroupsTask(IGroupListReadyListener listener) {
         mListener = listener;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -72,7 +68,6 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
             ret.addAll(result);
         }
         mListener.onGroupListReady(ret);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

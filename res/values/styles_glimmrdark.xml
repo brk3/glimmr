@@ -53,6 +53,9 @@
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_glimmrdark</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_glimmrdark</item>
         <item name="android:progressBarStyle">@style/glimmrdark_ProgressBar</item>
+
+        <item name="android:indeterminateProgressStyle">@style/glimmr_IndeterminateProgress</item>
+        <item name="indeterminateProgressStyle">@style/glimmr_IndeterminateProgress</item>
     </style>
 
     <style name="glimmrdark_transparent_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
@@ -61,6 +64,9 @@
 
         <item name="android:background">@drawable/ab_transparent_glimmrdark</item>
         <item name="android:progressBarStyle">@style/glimmrdark_ProgressBar</item>
+
+        <item name="android:indeterminateProgressStyle">@style/glimmr_IndeterminateProgress</item>
+        <item name="indeterminateProgressStyle">@style/glimmr_IndeterminateProgress</item>
     </style>
 
     <style name="glimmrdark_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">
@@ -179,6 +185,14 @@
     <style name="MenuDrawerStyle.Right" parent="Widget.MenuDrawer">
         <item name="mdArrowDrawable">@drawable/menu_arrow_right</item>
         <item name="mdMenuWidth">300dp</item>
+    </style>
+
+    <style name="glimmr_IndeterminateProgress" parent="@android:style/Widget.ProgressBar">
+        <item name="android:indeterminateDrawable">@drawable/progress_medium_holo</item>
+        <item name="android:minWidth">32dip</item>
+        <item name="android:maxWidth">32dip</item>
+        <item name="android:minHeight">32dip</item>
+        <item name="android:maxHeight">32dip</item>
     </style>
 
 </resources>
