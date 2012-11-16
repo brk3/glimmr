@@ -99,6 +99,7 @@ public class ProfileActivity extends BottomOverlayActivity
             }
             return;
         }
+        setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         mTask = new LoadUserTask(this, this, mUser.getId());
         mTask.execute(mOAuth);
     }
@@ -106,6 +107,7 @@ public class ProfileActivity extends BottomOverlayActivity
     @Override
     public void onUserReady(User user) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onUserReady");
+        setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (user == null) {
             Log.e(getLogTag(), "onUserReady: user is null");
             return;

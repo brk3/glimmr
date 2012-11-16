@@ -7,18 +7,14 @@ import android.util.Log;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmrpro.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.PhotoList;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class LoadContactsPhotosTask
         extends AsyncTask<OAuth, Void, List<Photo>> {
@@ -26,13 +22,6 @@ public class LoadContactsPhotosTask
     private static final String TAG = "Glimmr/LoadContactsPhotosTask";
 
     private IPhotoListReadyListener mListener;
-    private BaseFragment mBaseFragment;
-
-    public LoadContactsPhotosTask(BaseFragment a,
-            IPhotoListReadyListener listener) {
-        mListener = listener;
-        mBaseFragment = a;
-    }
 
     public LoadContactsPhotosTask(IPhotoListReadyListener listener) {
         mListener = listener;
@@ -41,9 +30,6 @@ public class LoadContactsPhotosTask
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if (mBaseFragment != null) {
-            mBaseFragment.showProgressIcon(true);
-        }
     }
 
     @Override
@@ -81,9 +67,6 @@ public class LoadContactsPhotosTask
             Log.e(TAG, "Error fetching contacts photos, result is null");
         }
         mListener.onPhotosReady(result);
-        if (mBaseFragment != null) {
-            mBaseFragment.showProgressIcon(false);
-        }
     }
 
     @Override

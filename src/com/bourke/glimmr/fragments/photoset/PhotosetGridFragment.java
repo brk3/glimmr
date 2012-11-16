@@ -51,7 +51,8 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadPhotosetTask(this, this, mPhotoset, page);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadPhotosetTask(this, mPhotoset, page);
         mTask.execute(mOAuth);
     }
 
@@ -73,6 +74,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     @Override
     public void onPhotosReady(List<Photo> photos) {
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (mPhotoset != null) {
             User owner = mPhotoset.getOwner();
             if (owner != null) {
@@ -93,7 +95,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
     @Override
     protected void refresh() {
         super.refresh();
-        mTask = new LoadPhotosetTask(this, this, mPhotoset, mPage);
+        mTask = new LoadPhotosetTask(this, mPhotoset, mPage);
         mTask.execute(mOAuth);
     }
 

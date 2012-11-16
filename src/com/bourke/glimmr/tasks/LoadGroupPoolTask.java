@@ -7,18 +7,14 @@ import android.util.Log;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmrpro.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.Photo;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
@@ -26,12 +22,10 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private IPhotoListReadyListener mListener;
     private Group mGroup;
-    private BaseFragment mBaseFragment;
     private int mPage;
 
-    public LoadGroupPoolTask(BaseFragment a, IPhotoListReadyListener listener,
-            Group group, int page) {
-        mBaseFragment = a;
+    public LoadGroupPoolTask(IPhotoListReadyListener listener, Group group,
+            int page) {
         mListener = listener;
         mGroup = group;
         mPage = page;
@@ -40,7 +34,6 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -77,7 +70,6 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
             Log.e(TAG, "error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

@@ -83,20 +83,22 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new SearchPhotosTask(this, this, mSearchQuery, page);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new SearchPhotosTask(this, mSearchQuery, page);
         mTask.execute(mOAuth);
     }
 
     @Override
     protected void refresh() {
         super.refresh();
-        mTask = new SearchPhotosTask(this, this, mSearchQuery, mPage);
+        mTask = new SearchPhotosTask(this, mSearchQuery, mPage);
         mTask.execute(mOAuth);
     }
 
     @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;
 

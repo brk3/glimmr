@@ -45,13 +45,15 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         if (mGroup == null) {
             loadGroup();
         }
-        mTask = new LoadGroupPoolTask(this, this, mGroup, page);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadGroupPoolTask(this, mGroup, page);
         mTask.execute(mOAuth);
     }
 
     @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;
         }

@@ -191,9 +191,8 @@ public final class PhotoViewerFragment extends BaseFragment
                 Log.d(getLogTag(), "Starting SetFavoriteTask for photo: "
                         + mPhotoExtendedInfo.getId());
             }
-            new SetFavoriteTask(this, this, mPhotoExtendedInfo)
-                .execute(mOAuth);
-            updateFavoriteButtonIcon(mPhotoExtendedInfo.isFavorite());
+            new SetFavoriteTask(this, mPhotoExtendedInfo).execute(mOAuth);
+            updateFavoriteButtonIcon(!mPhotoExtendedInfo.isFavorite());
             mIsFavoriting.set(true);
         } else {
             Log.e(TAG, "onFavoriteButtonClick: mPhotoExtendedInfo is null");
@@ -251,7 +250,7 @@ public final class PhotoViewerFragment extends BaseFragment
         /* Start a task to fetch more detailed info about the photo if we don't
          * already have it (required for favorite status) */
         if (mPhotoExtendedInfo == null) {
-            mTask = new LoadPhotoInfoTask(this, this, mBasePhoto.getId(),
+            mTask = new LoadPhotoInfoTask(this, mBasePhoto.getId(),
                     mBasePhoto.getSecret());
             mTask.execute(mOAuth);
         }

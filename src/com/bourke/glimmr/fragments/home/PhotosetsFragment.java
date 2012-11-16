@@ -57,7 +57,8 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        mTask = new LoadPhotosetsTask(this, this, mActivity.getUser());
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadPhotosetsTask(this, mActivity.getUser());
         mTask.execute(mOAuth);
     }
 
@@ -119,6 +120,7 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     public void onPhotosetsReady(Photosets photoSets) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (photoSets == null) {
             mLayoutNoConnection.setVisibility(View.VISIBLE);
             mAdapterView.setVisibility(View.GONE);
