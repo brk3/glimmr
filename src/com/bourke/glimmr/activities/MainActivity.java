@@ -93,8 +93,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
         super.onCreate(savedInstanceState);
 
         if (mOAuth == null) {
@@ -111,7 +109,6 @@ public class MainActivity extends BaseActivity {
             mMenuDrawerMgr =
                 new MenuDrawerManager(this, MenuDrawer.MENU_DRAG_CONTENT);
             mMenuDrawerMgr.setContentView(R.layout.main_activity);
-            setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
             initViewPager();
             initMenuDrawer();
             initNotificationAlarms();

@@ -31,9 +31,12 @@ public class ContactsGridFragment extends PhotoGridFragment {
                 Log.d(getLogTag(), "mPhotos occupied, not starting task");
             }
         } else {
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.d(getLogTag(), "mPhotos null or empty, starting task");
-            mTask = new LoadContactsPhotosTask(this, this);
+            }
+            mActivity
+                .setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+            mTask = new LoadContactsPhotosTask(this);
             mTask.execute(mOAuth);
         }
     }
@@ -41,7 +44,8 @@ public class ContactsGridFragment extends PhotoGridFragment {
     @Override
     protected void refresh() {
         super.refresh();
-        mTask = new LoadContactsPhotosTask(this, this);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadContactsPhotosTask(this);
         mTask.execute(mOAuth);
     }
 

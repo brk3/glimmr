@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
-import com.bourke.glimmrpro.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.FlickrException;
@@ -18,26 +17,23 @@ import com.googlecode.flickrjandroid.people.User;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
 
 public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
 
     private static final String TAG = "Glimmr/LoadGroupsTask";
 
     private IGroupListReadyListener mListener;
-    private BaseFragment mBaseFragment;
 
-    public LoadGroupsTask(BaseFragment a, IGroupListReadyListener listener) {
-        mBaseFragment = a;
+    public LoadGroupsTask(IGroupListReadyListener listener) {
         mListener = listener;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -72,7 +68,6 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
             ret.addAll(result);
         }
         mListener.onGroupListReady(ret);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

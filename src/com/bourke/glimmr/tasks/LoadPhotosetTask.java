@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmrpro.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -16,9 +15,7 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
@@ -26,12 +23,10 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private IPhotoListReadyListener mListener;
     private Photoset mPhotoset;
-    private BaseFragment mBaseFragment;
     private int mPage;
 
-    public LoadPhotosetTask(BaseFragment a, IPhotoListReadyListener listener,
+    public LoadPhotosetTask(IPhotoListReadyListener listener,
             Photoset photoset, int page) {
-        mBaseFragment = a;
         mListener = listener;
         mPhotoset = photoset;
         mPage = page;
@@ -40,7 +35,6 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -83,7 +77,6 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
             result = Collections.EMPTY_LIST;
         }
         mListener.onPhotosReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.util.Log;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
-import com.bourke.glimmrpro.fragments.base.BaseFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -16,9 +15,7 @@ import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
@@ -26,12 +23,10 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private IPhotoListReadyListener mListener;
     private User mUser;
-    private BaseFragment mBaseFragment;
     private int mPage;
 
-    public LoadFavoritesTask(BaseFragment a, IPhotoListReadyListener listener,
-            User user, int page) {
-        mBaseFragment = a;
+    public LoadFavoritesTask(IPhotoListReadyListener listener, User user,
+            int page) {
         mListener = listener;
         mUser = user;
         mPage = page;
@@ -40,7 +35,6 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mBaseFragment.showProgressIcon(true);
     }
 
     @Override
@@ -72,7 +66,6 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
             Log.e(TAG, "Error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result);
-        mBaseFragment.showProgressIcon(false);
     }
 
     @Override

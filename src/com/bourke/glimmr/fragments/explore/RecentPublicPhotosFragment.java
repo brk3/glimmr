@@ -43,20 +43,23 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadPublicPhotosTask(this, this, page);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadPublicPhotosTask(this, page);
         mTask.execute();
     }
 
     @Override
     protected void refresh() {
         super.refresh();
-        mTask = new LoadPublicPhotosTask(this, this, mPage);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadPublicPhotosTask(this, mPage);
         mTask.execute();
     }
 
     @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (photos != null && photos.isEmpty()) {
             mMorePages = false;
         }
