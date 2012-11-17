@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="@dimen/appWidgetWidth"
+    android:minHeight="@dimen/appWidgetHeight"
+    android:updatePeriodMillis="3600000"
+    android:initialLayout="@layout/stackview_widget_layout"
+    android:autoAdvanceViewId="@id/stack_view"
+    android:configure="com.bourke.glimmr.appwidget.StackViewWidgetConfigure"
+    android:previewImage="@drawable/stackwidget_preview"
+    android:resizeMode="horizontal|vertical" />

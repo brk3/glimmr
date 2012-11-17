@@ -16,6 +16,8 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.OAuthUtils;
+import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.services.AppListener;
 import com.bourke.glimmr.services.AppService;
@@ -60,10 +62,7 @@ public class PreferencesActivity extends SherlockPreferenceActivity
         mSharedPrefs.registerOnSharedPreferenceChangeListener(this);
 
         /* Disable notification options if not logged in */
-        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
-                Context.MODE_PRIVATE);
-        OAuth oauth = BaseActivity.loadAccessToken(prefs);
-        if (oauth == null || oauth.getUser() == null) {
+        if (!OAuthUtils.isLoggedIn(this)) {
             CheckBoxPreference enableNotificationsItem =
                 (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(Constants.KEY_ENABLE_NOTIFICATIONS);

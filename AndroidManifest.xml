@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <meta-data android:name="android.app.default_searchable"
-                       android:value=".activities.SearchActivity" />
+                android:value=".activities.SearchActivity" />
         </activity>
 
         <activity android:name=".activities.ExploreActivity"
@@ -42,7 +42,7 @@
                 <data android:scheme="@string/callback_scheme" />
             </intent-filter>
             <meta-data android:name="android.app.default_searchable"
-                       android:value=".activities.SearchActivity" />
+                android:value=".activities.SearchActivity" />
         </activity>
 
         <activity android:name=".activities.ProfileActivity"
@@ -79,20 +79,42 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
             <meta-data android:name="android.app.searchable"
-                       android:resource="@xml/searchable"/>
+                android:resource="@xml/searchable"/>
         </activity>
 
-		<receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
-			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED"/>
-			</intent-filter>
+        <activity android:name=".appwidget.StackViewWidgetConfigure">
+            <intent-filter>
+                <action
+                    android:name="android.appwidget.action.APPWIDGET_CONFIGURE"
+                    />
+            </intent-filter>
+        </activity>
 
-			<meta-data
-				android:name="com.commonsware.cwac.wakeful"
-				android:resource="@xml/wakeful"/>
-		</receiver>
+        <receiver android:name=".appwidget.StackWidgetProvider"
+            android:enabled="@bool/hasHoneycomb">
+            <intent-filter>
+                <action
+                    android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_info" />
+        </receiver>
+             
+        <service android:name=".appwidget.StackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+
+        <receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+
+            <meta-data android:name="com.commonsware.cwac.wakeful"
+                android:resource="@xml/wakeful"/>
+        </receiver>
 
         <service android:name=".services.AppService" />
-
     </application>
+
 </manifest>

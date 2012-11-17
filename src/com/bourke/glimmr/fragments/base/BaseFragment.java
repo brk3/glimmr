@@ -23,6 +23,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.R;
@@ -101,9 +102,7 @@ public abstract class BaseFragment extends SherlockFragment {
         if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         if (mOAuth == null || mOAuth.getUser() == null) {
-            SharedPreferences prefs = mActivity.getSharedPreferences(Constants
-                    .PREFS_NAME, Context.MODE_PRIVATE);
-            mOAuth = BaseActivity.loadAccessToken(prefs);
+            mOAuth = OAuthUtils.loadAccessToken(mActivity);
         }
     }
 
