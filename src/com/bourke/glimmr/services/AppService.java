@@ -6,11 +6,8 @@ import android.content.SharedPreferences;
 
 import android.util.Log;
 
-import com.bourke.glimmrpro.activities.BaseActivity;
-import com.bourke.glimmrpro.activities.MainActivity;
 import com.bourke.glimmrpro.common.Constants;
-import com.bourke.glimmrpro.common.FlickrHelper;
-import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.common.OAuthUtils;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
@@ -45,7 +42,7 @@ public class AppService extends WakefulIntentService {
                 Constants.PREFS_NAME, Context.MODE_PRIVATE);
 
         /* Fetch the oauth token from storage */
-        OAuth oauth = BaseActivity.loadAccessToken(mPrefs);
+        OAuth oauth = OAuthUtils.loadAccessToken(this);
         if (oauth == null) {
             if (Constants.DEBUG) {
                 Log.d(TAG, "doWakefulWork: no stored oauth token found, " +

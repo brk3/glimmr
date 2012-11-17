@@ -20,19 +20,20 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 
 import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.common.MenuListView;
+import com.bourke.glimmrpro.common.OAuthUtils;
 import com.bourke.glimmrpro.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmrpro.fragments.explore.RecentPublicPhotosFragment;
@@ -71,7 +72,6 @@ import java.util.Locale;
 import net.simonvt.menudrawer.MenuDrawer;
 
 import org.ocpsoft.pretty.time.PrettyTime;
-import android.widget.ImageButton;
 
 public class MainActivity extends BaseActivity {
 
@@ -128,7 +128,7 @@ public class MainActivity extends BaseActivity {
             mPrefs = getSharedPreferences(Constants.PREFS_NAME,
                     Context.MODE_PRIVATE);
         }
-        mOAuth = loadAccessToken(mPrefs);
+        mOAuth = OAuthUtils.loadAccessToken(this);
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
         }
