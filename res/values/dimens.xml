@@ -16,5 +16,15 @@
     <dimen name="secondaryTextSize">22sp</dimen>
 
     <dimen name="menudrawerWidth">220dp</dimen>
+
+    <!-- (number of cells * 74) - 2
+        2x2 = 146x146
+        3x2 = 220x146
+        3x3 = 220x220
+        4x3 = 294x220
+        4x4 = 294x294
+     -->
+    <dimen name="appWidgetWidth">220dip</dimen>
+    <dimen name="appWidgetHeight">146dip</dimen>
 </resources>
 

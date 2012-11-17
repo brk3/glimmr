@@ -14,6 +14,7 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TextUtils;
 
@@ -69,9 +70,7 @@ public abstract class BaseDialogFragment extends SherlockDialogFragment {
     protected void startTask() {
         if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
         if (mOAuth == null || mOAuth.getUser() == null) {
-            SharedPreferences prefs = mActivity.getSharedPreferences(Constants
-                    .PREFS_NAME, Context.MODE_PRIVATE);
-            mOAuth = BaseActivity.loadAccessToken(prefs);
+            mOAuth = OAuthUtils.loadAccessToken(mActivity);
         }
     }
 

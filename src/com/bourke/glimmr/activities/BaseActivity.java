@@ -37,11 +37,11 @@ import com.androidquery.util.AQUtility;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
+import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
-import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
@@ -64,7 +64,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private GlimmrAbCustomTitle mActionbarTitle;
 
-    protected boolean mActivityRequiresLogin = true;
     protected TextUtils mTextUtils;
 
     public abstract User getUser();
@@ -76,16 +75,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         super.onCreate(savedInstanceState);
 
         /* Load the users oauth token */
-        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
-                Context.MODE_PRIVATE);
-        mOAuth = loadAccessToken(prefs);
+        mOAuth = OAuthUtils.loadAccessToken(this);
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
-        }
-        if (Constants.DEBUG) {
-            if (mUser == null || mOAuth == null) {
-                Log.d(getLogTag(), "Proceeding unauthenticated");
-            }
         }
 
         mTextUtils = new TextUtils(getAssets());
@@ -126,39 +118,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             AQUtility.cleanCacheAsync(this, Constants.CACHE_TRIM_TRIGGER_SIZE,
                    Constants.CACHE_TRIM_TARGET_SIZE);
         }
-    }
-
-    /**
-     * Have to pass prefs as they can't be loaded from a static context
-     */
-    public static OAuth loadAccessToken(SharedPreferences prefs) {
-        String oauthTokenString = prefs.getString(Constants.KEY_OAUTH_TOKEN,
-                null);
-        String tokenSecret = prefs.getString(Constants.KEY_TOKEN_SECRET, null);
-        String userName = prefs.getString(Constants.KEY_ACCOUNT_USER_NAME,
-                null);
-        String userId = prefs.getString(Constants.KEY_ACCOUNT_USER_ID, null);
-
-        OAuth oauth = null;
-        if (oauthTokenString != null && tokenSecret != null && userName != null
-                && userId != null) {
-            oauth = new OAuth();
-            OAuthToken oauthToken = new OAuthToken();
-            oauth.setToken(oauthToken);
-            oauthToken.setOauthToken(oauthTokenString);
-            oauthToken.setOauthTokenSecret(tokenSecret);
-
-            User user = new User();
-            user.setUsername(userName);
-            user.setId(userId);
-            oauth.setUser(user);
-        } else {
-            if (Constants.DEBUG) {
-                Log.w(TAG, "No saved oauth token found");
-            }
-            return null;
-        }
-        return oauth;
     }
 
     @Override

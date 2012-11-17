@@ -31,6 +31,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.MenuListView;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
@@ -127,7 +128,7 @@ public class MainActivity extends BaseActivity {
             mPrefs = getSharedPreferences(Constants.PREFS_NAME,
                     Context.MODE_PRIVATE);
         }
-        mOAuth = loadAccessToken(mPrefs);
+        mOAuth = OAuthUtils.loadAccessToken(this);
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
         }
