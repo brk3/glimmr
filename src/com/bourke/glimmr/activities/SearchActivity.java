@@ -31,7 +31,6 @@ public class SearchActivity extends BottomOverlayActivity {
     public void onCreate(Bundle savedInstanceState) {
         CONTENT = new String[] { getString(R.string.photos) };
             //getString(R.string.people) };
-        mActivityRequiresLogin = false;
         super.onCreate(savedInstanceState);
     }
 

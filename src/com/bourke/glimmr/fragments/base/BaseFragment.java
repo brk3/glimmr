@@ -1,20 +1,10 @@
 package com.bourke.glimmrpro.fragments.base;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
-import android.preference.PreferenceManager;
-
-import android.text.Spannable;
-import android.text.style.ForegroundColorSpan;
 
 import android.util.Log;
 
 import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -26,6 +16,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.OAuthUtils;
 import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.R;
 
@@ -103,9 +94,7 @@ public abstract class BaseFragment extends SherlockFragment {
         if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         if (mOAuth == null || mOAuth.getUser() == null) {
-            SharedPreferences prefs = mActivity.getSharedPreferences(Constants
-                    .PREFS_NAME, Context.MODE_PRIVATE);
-            mOAuth = BaseActivity.loadAccessToken(prefs);
+            mOAuth = OAuthUtils.loadAccessToken(mActivity);
         }
     }
 

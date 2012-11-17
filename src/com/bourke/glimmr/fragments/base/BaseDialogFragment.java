@@ -1,8 +1,5 @@
 package com.bourke.glimmrpro.fragments.base;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import android.os.Bundle;
 
 import android.util.Log;
@@ -15,6 +12,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.OAuthUtils;
 import com.bourke.glimmrpro.common.TextUtils;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -69,9 +67,7 @@ public abstract class BaseDialogFragment extends SherlockDialogFragment {
     protected void startTask() {
         if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
         if (mOAuth == null || mOAuth.getUser() == null) {
-            SharedPreferences prefs = mActivity.getSharedPreferences(Constants
-                    .PREFS_NAME, Context.MODE_PRIVATE);
-            mOAuth = BaseActivity.loadAccessToken(prefs);
+            mOAuth = OAuthUtils.loadAccessToken(mActivity);
         }
     }
 
