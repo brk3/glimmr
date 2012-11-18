@@ -13,6 +13,8 @@ import android.graphics.BitmapFactory;
 
 import android.preference.PreferenceManager;
 
+import android.support.v4.app.NotificationCompat;
+
 import android.util.Log;
 
 import com.androidquery.AQuery;
@@ -37,8 +39,6 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import com.jakewharton.notificationcompat2.NotificationCompat2;
 
 import java.lang.reflect.Type;
 import java.lang.System;
@@ -236,8 +236,8 @@ public class ActivityNotificationHandler
     private Notification getNotification(final String tickerText,
             final String titleText, final String contentText,
             int number, int smallIcon, Bitmap image, Photo photo) {
-        return new NotificationCompat2.BigPictureStyle(
-                new NotificationCompat2.Builder(mContext)
+        return new NotificationCompat.BigPictureStyle(
+                new NotificationCompat.Builder(mContext)
                 .setContentTitle(titleText)
                 .setContentText(contentText)
                 .setNumber(number)
@@ -255,7 +255,7 @@ public class ActivityNotificationHandler
     }
 
     /**
-     * Passed to NotificationCompat2.Builder.setContentIntent to start
+     * Passed to NotificationCompat.Builder.setContentIntent to start
      * MainActivity when the notification is pressed.
      */
     private PendingIntent getPendingIntent(Photo photo) {
