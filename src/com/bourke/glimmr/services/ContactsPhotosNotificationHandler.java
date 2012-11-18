@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 
 import android.preference.PreferenceManager;
 
+import android.support.v4.app.NotificationCompat;
+
 import android.util.Log;
 
 import com.bourke.glimmr.activities.MainActivity;
@@ -22,8 +24,6 @@ import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.photos.Photo;
-
-import com.jakewharton.notificationcompat2.NotificationCompat2;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,7 +170,7 @@ public class ContactsPhotosNotificationHandler
 
     private Notification getNotification(final String tickerText,
             final String titleText, final String contentText, int number) {
-        return new NotificationCompat2.Builder(mContext)
+        return new NotificationCompat.Builder(mContext)
             .setSmallIcon(R.drawable.ic_action_social_group_dark)
             .setAutoCancel(true)
             .setDefaults(Notification.DEFAULT_ALL)
@@ -183,7 +183,7 @@ public class ContactsPhotosNotificationHandler
     }
 
     /**
-     * Passed to NotificationCompat2.Builder.setContentIntent to start
+     * Passed to NotificationCompat.Builder.setContentIntent to start
      * MainActivity when the notification is pressed.
      */
     private PendingIntent getPendingIntent() {
