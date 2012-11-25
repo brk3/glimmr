@@ -145,11 +145,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        final int drawerState = mMenuDrawerMgr.getDrawerState();
-        if (drawerState == MenuDrawer.STATE_OPEN ||
-                drawerState == MenuDrawer.STATE_OPENING) {
-            mMenuDrawerMgr.closeMenu();
-            return;
+        if (mMenuDrawerMgr != null) {
+            final int drawerState = mMenuDrawerMgr.getDrawerState();
+            if (drawerState == MenuDrawer.STATE_OPEN ||
+                    drawerState == MenuDrawer.STATE_OPENING) {
+                mMenuDrawerMgr.closeMenu();
+                return;
+            }
         }
         super.onBackPressed();
     }
