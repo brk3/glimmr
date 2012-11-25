@@ -44,7 +44,7 @@ public abstract class BottomOverlayActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (mOAuth == null) {
+        if (mOAuth == null && mActivityRequiresLogin) {
             startActivity(new Intent(this, ExploreActivity.class));
         } else {
             setContentView(R.layout.main_activity);
