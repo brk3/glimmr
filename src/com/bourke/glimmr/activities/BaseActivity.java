@@ -68,6 +68,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private Typeface mFontRobotoLight;
     private Typeface mFontRobotoBold;
 
+    protected boolean mActivityRequiresLogin = true;
+
     public abstract User getUser();
 
     @Override

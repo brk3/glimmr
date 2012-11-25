@@ -143,6 +143,9 @@ public abstract class PhotoGridFragment extends BaseFragment
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View v,
                     int position, long id) {
+                if (mOAuth == null) {
+                    return false;
+                }
                 if (position < mPhotos.size()) {
                     SherlockDialogFragment d =
                         PhotoItemLongClickDialog.newInstance(mActivity,
