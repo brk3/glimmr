@@ -82,7 +82,7 @@ public class ActivityNotificationHandler
 
     @Override
     public void onItemListReady(List<Item> items) {
-        if (items != null) {
+        if (items != null && !items.isEmpty()) {
             if (Constants.DEBUG) {
                 Log.d(TAG, "onItemListReady: items.size: " + items.size());
             }
