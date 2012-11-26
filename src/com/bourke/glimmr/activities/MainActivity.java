@@ -172,10 +172,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
-        mMenuDrawerMgr.onRestoreDrawerState(inState
-                .getParcelable(Constants.STATE_MENUDRAWER));
         mActivityListVersion = inState.getLong(
                 Constants.TIME_MENUDRAWER_ITEMS_LAST_UPDATED, -1);
+        if (mMenuDrawerMgr != null ) {
+            mMenuDrawerMgr.onRestoreDrawerState(inState
+                    .getParcelable(Constants.STATE_MENUDRAWER));
+        }
     }
 
     @Override
