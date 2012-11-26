@@ -73,16 +73,19 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     @Override
     public void onPhotosReady(List<Photo> photos) {
-        User owner = mPhotoset.getOwner();
-        if (owner != null) {
-            for (Photo p : photos) {
-                p.setOwner(owner);
-                p.setUrl(String.format("%s%s%s%s", "http://flickr.com/photos/",
-                            owner.getId(), "/", p.getId()));
+        if (mPhotoset != null) {
+            User owner = mPhotoset.getOwner();
+            if (owner != null) {
+                for (Photo p : photos) {
+                    p.setOwner(owner);
+                    p.setUrl(String.format("%s%s%s%s",
+                                "http://flickr.com/photos/",
+                                owner.getId(), "/", p.getId()));
+                }
             }
-        }
-        if (photos != null && photos.isEmpty()) {
-            mMorePages = false;
+            if (photos != null && photos.isEmpty()) {
+                mMorePages = false;
+            }
         }
         super.onPhotosReady(photos);
     }
