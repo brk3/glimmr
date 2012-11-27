@@ -14,5 +14,7 @@
     <dimen name="loginButtonPadding">16sp</dimen>
     <dimen name="secondaryTextTopMargin">60sp</dimen>
     <dimen name="secondaryTextSize">22sp</dimen>
+
+    <dimen name="menudrawerWidth">220dp</dimen>
 </resources>
 

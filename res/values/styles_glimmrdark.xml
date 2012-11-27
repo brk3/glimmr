@@ -179,7 +179,7 @@
 
     <style name="MenuDrawerStyle" parent="Widget.MenuDrawer">
         <item name="mdArrowDrawable">@drawable/menu_arrow</item>
-        <item name="mdMenuWidth">300dp</item>
+        <item name="mdMenuWidth">@dimen/menudrawerWidth</item>
     </style>
 
     <style name="MenuDrawerStyle.Right" parent="Widget.MenuDrawer">
