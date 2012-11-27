@@ -26,7 +26,7 @@ import com.actionbarsherlock.view.Window;
 
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GsonHelper;
-import com.bourke.glimmrpro.common.ViewPagerDisable;
+import com.bourke.glimmrpro.common.HackyViewPager;
 import com.bourke.glimmrpro.fragments.viewer.CommentsFragment;
 import com.bourke.glimmrpro.fragments.viewer.ExifInfoFragment;
 import com.bourke.glimmrpro.fragments.viewer.PhotoViewerFragment;
@@ -59,7 +59,7 @@ public class PhotoViewerActivity extends BaseActivity
     private List<Photo> mPhotos = new ArrayList<Photo>();
 
     private PhotoViewerPagerAdapter mAdapter;
-    private ViewPagerDisable mPager;
+    private HackyViewPager mPager;
     private List<WeakReference<Fragment>> mFragList =
         new ArrayList<WeakReference<Fragment>>();
     private int mCurrentAdapterIndex = 0;
@@ -126,7 +126,7 @@ public class PhotoViewerActivity extends BaseActivity
             mAdapter =
                 new PhotoViewerPagerAdapter(getSupportFragmentManager());
             mAdapter.onPageSelected(startIndex);
-            mPager = (ViewPagerDisable) findViewById(R.id.pager);
+            mPager = (HackyViewPager) findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
             mPager.setOnPageChangeListener(mAdapter);
             mPager.setCurrentItem(startIndex);
@@ -350,11 +350,6 @@ public class PhotoViewerActivity extends BaseActivity
                 f.setOverlayVisibility(on);
             }
         }
-    }
-
-    @Override
-    public void onZoomed(final boolean isZoomed) {
-        mPager.setPagingEnabled(!isZoomed);
     }
 
     class PhotoViewerPagerAdapter extends FragmentStatePagerAdapter
