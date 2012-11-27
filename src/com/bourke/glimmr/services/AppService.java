@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class AppService extends WakefulIntentService {
 
-    private static final String TAG = "Glimmr/AppService";
+    public static final String TAG = "Glimmr/AppService";
 
     private SharedPreferences mPrefs;
     private List<GlimmrNotificationHandler> mHandlers;

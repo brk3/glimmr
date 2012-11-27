@@ -33,7 +33,7 @@ import android.widget.ProgressBar;
 public final class ExifInfoFragment extends BaseDialogFragment
         implements IExifInfoReadyListener {
 
-    protected String TAG = "Glimmr/ExifInfoFragment";
+    public static final String TAG = "Glimmr/ExifInfoFragment";
 
     private Photo mPhoto = new Photo();
     private LoadExifInfoTask mTask;

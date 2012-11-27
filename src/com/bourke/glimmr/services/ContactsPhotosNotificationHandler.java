@@ -17,6 +17,7 @@ import android.util.Log;
 import com.bourke.glimmrpro.activities.MainActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmrpro.fragments.home.ContactsGridFragment;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.LoadContactsPhotosTask;
 
@@ -32,8 +33,11 @@ import java.util.List;
 public class ContactsPhotosNotificationHandler
     implements GlimmrNotificationHandler<Photo>, IPhotoListReadyListener {
 
-    private static final String TAG =
+    public static final String TAG =
         "Glimmr/ContactsPhotosNotificationHandler";
+
+    public static final String KEY_NOTIFICATION_NEWEST_CONTACT_PHOTO_ID =
+        "glimmr_notification_newest_contact_photo_id";
 
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -135,8 +139,8 @@ public class ContactsPhotosNotificationHandler
      * Returns the id the of the most recent photo the user has viewed.
      */
     private String getLatestViewedId() {
-        String newestId =
-            mPrefs.getString(Constants.NEWEST_CONTACT_PHOTO_ID, "");
+        String newestId = mPrefs.getString(
+                ContactsGridFragment.KEY_NEWEST_CONTACT_PHOTO_ID, "");
         if (Constants.DEBUG) {
             Log.d(TAG, "getLatestViewedId: " + newestId);
         }
@@ -150,7 +154,7 @@ public class ContactsPhotosNotificationHandler
     @Override
     public String getLatestIdNotifiedAbout() {
         String newestId = mPrefs.getString(
-                Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID, "");
+                KEY_NOTIFICATION_NEWEST_CONTACT_PHOTO_ID, "");
         if (Constants.DEBUG) {
             Log.d(TAG, "getLatestIdNotifiedAbout: " + newestId);
         }
@@ -159,7 +163,7 @@ public class ContactsPhotosNotificationHandler
 
     @Override
     public void storeLatestIdNotifiedAbout(Photo photo) {
-        mPrefsEditor.putString(Constants.NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
+        mPrefsEditor.putString(KEY_NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
                 photo.getId());
         mPrefsEditor.commit();
         if (Constants.DEBUG) {

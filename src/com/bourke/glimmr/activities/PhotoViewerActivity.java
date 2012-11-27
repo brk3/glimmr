@@ -1,6 +1,7 @@
 package com.bourke.glimmrpro.activities;
 
 import android.content.Context;
+
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -56,41 +57,48 @@ public class PhotoViewerActivity extends BaseActivity
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
 
-    private List<Photo> mPhotos = new ArrayList<Photo>();
+    public static final String KEY_PHOTOVIEWER_START_INDEX =
+        "glimmr_photovieweractivity_start_index";
+    public static final String KEY_PHOTOVIEWER_ACTIONBAR_SHOW =
+        "glimmr_photovieweractivity_actionbar_show";
+    public static final String KEY_PHOTO_LIST_FILE =
+        "com.bourke.glimmr.PHOTO_LIST_FILE";
+    public static final String PHOTO_LIST_FILE =
+        "glimmr_photovieweractivity_photolist.json";
 
+    private List<Photo> mPhotos = new ArrayList<Photo>();
     private PhotoViewerPagerAdapter mAdapter;
     private HackyViewPager mPager;
     private List<WeakReference<Fragment>> mFragList =
         new ArrayList<WeakReference<Fragment>>();
     private int mCurrentAdapterIndex = 0;
-
     private CommentsFragment mCommentsFragment;
     private ExifInfoFragment mExifFragment;
     private boolean mCommentsFragmentShowing = false;
     private boolean mExifFragmentShowing = false;
-
     private ActionBarTitle mActionbarTitle;
 
     /**
      * Start the PhotoViewerActivity with a list of photos to view and an index
      * to start at in the list.
      */
-    public static void startPhotoViewer(BaseActivity activity,
-            List<Photo> photos, int pos) {
+    public static void startPhotoViewer(Context context, List<Photo> photos,
+            int pos) {
         if (photos == null) {
             Log.e(TAG, "Cannot start PhotoViewer, photos is null");
             return;
         }
-        GsonHelper gsonHelper = new GsonHelper(activity);
+        GsonHelper gsonHelper = new GsonHelper(context);
         boolean photolistStoreResult =
-            gsonHelper.marshallObject(photos, Constants.PHOTOVIEWER_LIST_FILE);
+            gsonHelper.marshallObject(photos, PHOTO_LIST_FILE);
         if (!photolistStoreResult) {
             Log.e(TAG, "Error marshalling photos, cannot start viewer");
             return;
         }
-        Intent photoViewer = new Intent(activity, PhotoViewerActivity.class);
-        photoViewer.putExtra(Constants.KEY_PHOTOVIEWER_START_INDEX, pos);
-        activity.startActivity(photoViewer);
+        Intent photoViewer = new Intent(context, PhotoViewerActivity.class);
+        photoViewer.putExtra(KEY_PHOTOVIEWER_START_INDEX, pos);
+        photoViewer.putExtra(KEY_PHOTO_LIST_FILE, PHOTO_LIST_FILE);
+        context.startActivity(photoViewer);
     }
 
     private void handleIntent(Intent intent) {
@@ -99,24 +107,18 @@ public class PhotoViewerActivity extends BaseActivity
             return;
         }
 
+        int startIndex = intent.getIntExtra(KEY_PHOTOVIEWER_START_INDEX, 0);
+        String photoListFile = intent.getStringExtra(KEY_PHOTO_LIST_FILE);
+
         GsonHelper gsonHelper = new GsonHelper(this);
-        String json = gsonHelper.loadJson(Constants.PHOTOVIEWER_LIST_FILE);
+        String json = gsonHelper.loadJson(photoListFile);
         if (json.length() == 0) {
-            Log.e(TAG, String.format("Error reading %s",
-                        Constants.PHOTOVIEWER_LIST_FILE));
+            Log.e(TAG, String.format("Error reading '%s'", photoListFile));
             return;
         }
         Type collectionType = new TypeToken<Collection<Photo>>(){}.getType();
         mPhotos = new Gson().fromJson(json.toString(), collectionType);
 
-        Bundle bundle = intent.getExtras();
-        int startIndex;
-        if (bundle != null) {
-            startIndex = bundle.getInt(Constants.KEY_PHOTOVIEWER_START_INDEX);
-        } else {
-            Log.e(TAG, "handleIntent: bundle is null, cannot get startIndex");
-            startIndex = 0;
-        }
 
         if (mPhotos != null) {
             if (Constants.DEBUG) {
@@ -162,7 +164,7 @@ public class PhotoViewerActivity extends BaseActivity
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putBoolean(Constants.KEY_PHOTOVIEWER_ACTIONBAR_SHOW,
+        savedInstanceState.putBoolean(KEY_PHOTOVIEWER_ACTIONBAR_SHOW,
                 mActionBar.isShowing());
     }
 
@@ -170,7 +172,7 @@ public class PhotoViewerActivity extends BaseActivity
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         boolean overlayOn = savedInstanceState.getBoolean(
-                Constants.KEY_PHOTOVIEWER_ACTIONBAR_SHOW, true);
+                KEY_PHOTOVIEWER_ACTIONBAR_SHOW, true);
         if (overlayOn) {
             mActionBar.show();
             getWindow().addFlags(

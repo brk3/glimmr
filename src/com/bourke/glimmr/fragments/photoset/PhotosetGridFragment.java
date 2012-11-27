@@ -23,6 +23,11 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     private static final String TAG = "Glimmr/PhotosetGridFragment";
 
+    public static final String KEY_NEWEST_PHOTOSET_PHOTO_ID =
+        "glimmr_newest_photoset_photo_id";
+    public static final String KEY_PHOTOSET_FRAGMENT_SET_ID =
+        "glimmr_photoset_fragment_set_id";
+
     private Photoset mPhotoset;
     private LoadPhotosetTask mTask;
 
@@ -63,7 +68,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
             SharedPreferences sp = mActivity.getSharedPreferences(
                     Constants.PREFS_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString(Constants.PHOTOSET_FRAGMENT_SET_ID,
+            editor.putString(KEY_PHOTOSET_FRAGMENT_SET_ID,
                     mPhotoset.getId());
             editor.commit();
         }
@@ -103,8 +108,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        String newestId = prefs.getString(
-                Constants.NEWEST_PHOTOSET_PHOTO_ID, null);
+        String newestId = prefs.getString(KEY_NEWEST_PHOTOSET_PHOTO_ID, null);
         return newestId;
     }
 
@@ -113,7 +117,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.NEWEST_PHOTOSET_PHOTO_ID, photo.getId());
+        editor.putString(KEY_NEWEST_PHOTOSET_PHOTO_ID, photo.getId());
         editor.commit();
         if (Constants.DEBUG)
             Log.d(getLogTag(), "Updated most recent photoset photo id to " +

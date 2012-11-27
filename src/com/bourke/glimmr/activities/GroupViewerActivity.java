@@ -31,6 +31,11 @@ public class GroupViewerActivity extends BottomOverlayActivity {
 
     private static final String TAG = "Glimmr/GroupViewerActivity";
 
+    public static final String GROUPVIEWER_GROUP_FILE =
+        "glimmr_groupvieweractivity_group.json";
+    public static final String GROUPVIEWER_USER_FILE =
+        "glimmr_groupvieweractivity_user.json";
+
     public static final int GROUP_POOL_PAGE = 0;
     public static final int GROUP_ABOUT_PAGE = 1;
 
@@ -55,14 +60,14 @@ public class GroupViewerActivity extends BottomOverlayActivity {
         GsonHelper gson = new GsonHelper(activity);
 
         boolean groupStoreResult =
-            gson.marshallObject(group, Constants.GROUPVIEWER_GROUP_FILE);
+            gson.marshallObject(group, GROUPVIEWER_GROUP_FILE);
         if (!groupStoreResult) {
             Log.e(TAG, "Error marshalling group, cannot start viewer");
             return;
         }
 
         boolean userStoreResult = gson.marshallObject(activity.getUser(),
-                Constants.GROUPVIEWER_USER_FILE);
+                GROUPVIEWER_USER_FILE);
         if (!userStoreResult) {
             Log.e(TAG, "Error marshalling user, cannot start viewer");
             return;
@@ -77,18 +82,18 @@ public class GroupViewerActivity extends BottomOverlayActivity {
         GsonHelper gsonHelper = new GsonHelper(this);
         Gson gson = new Gson();
 
-        String json = gsonHelper.loadJson(Constants.GROUPVIEWER_GROUP_FILE);
+        String json = gsonHelper.loadJson(GROUPVIEWER_GROUP_FILE);
         if (json.length() == 0) {
             Log.e(TAG, String.format("Error reading %s",
-                        Constants.GROUPVIEWER_GROUP_FILE));
+                        GROUPVIEWER_GROUP_FILE));
             return;
         }
         mGroup = gson.fromJson(json.toString(), Group.class);
 
-        json = gsonHelper.loadJson(Constants.GROUPVIEWER_USER_FILE);
+        json = gsonHelper.loadJson(GROUPVIEWER_USER_FILE);
         if (json.length() == 0) {
             Log.e(TAG, String.format("Error reading %s",
-                        Constants.GROUPVIEWER_USER_FILE));
+                        GROUPVIEWER_USER_FILE));
             return;
         }
         mUser = gson.fromJson(json.toString(), User.class);

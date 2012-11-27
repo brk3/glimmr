@@ -30,6 +30,11 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
 
     public static final String TAG = "Glimmr/PhotosetViewerActivity";
 
+    public static final String PHOTOSETVIEWER_SET_FILE =
+        "glimmr_photosetvieweractivity_set.json";
+    public static final String PHOTOSETVIEWER_USER_FILE =
+        "glimmr_photosetvieweractivity_user.json";
+
     public static final int PHOTOSET_PAGE = 0;
 
     private Photoset mPhotoset = new Photoset();
@@ -47,14 +52,14 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
         GsonHelper gson = new GsonHelper(activity);
 
         boolean photosetStoreResult =
-            gson.marshallObject(photoset, Constants.PHOTOSETVIEWER_SET_FILE);
+            gson.marshallObject(photoset, PHOTOSETVIEWER_SET_FILE);
         if (!photosetStoreResult) {
             Log.e(TAG, "Error marshalling photoset, cannot start viewer");
             return;
         }
 
         boolean userStoreResult = gson.marshallObject(activity.getUser(),
-                    Constants.PHOTOSETVIEWER_USER_FILE);
+                    PHOTOSETVIEWER_USER_FILE);
         if (!userStoreResult) {
             Log.e(TAG, "Error marshalling user, cannot start viewer");
             return;
@@ -70,18 +75,18 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
         GsonHelper gsonHelper = new GsonHelper(this);
         Gson gson = new Gson();
 
-        String json = gsonHelper.loadJson(Constants.PHOTOSETVIEWER_SET_FILE);
+        String json = gsonHelper.loadJson(PHOTOSETVIEWER_SET_FILE);
         if (json.length() == 0) {
             Log.e(TAG, String.format("Error reading %s",
-                        Constants.PHOTOSETVIEWER_SET_FILE));
+                        PHOTOSETVIEWER_SET_FILE));
             return;
         }
         mPhotoset = gson.fromJson(json.toString(), Photoset.class);
 
-        json = gsonHelper.loadJson(Constants.PHOTOSETVIEWER_USER_FILE);
+        json = gsonHelper.loadJson(PHOTOSETVIEWER_USER_FILE);
         if (json.length() == 0) {
             Log.e(TAG, String.format("Error reading %s",
-                        Constants.PHOTOSETVIEWER_USER_FILE));
+                        PHOTOSETVIEWER_USER_FILE));
             return;
         }
         mUser = gson.fromJson(json.toString(), User.class);

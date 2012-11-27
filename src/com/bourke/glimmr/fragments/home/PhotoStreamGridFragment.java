@@ -21,6 +21,9 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
 
     private static final String TAG = "Glimmr/PhotoStreamGridFragment";
 
+    public static final String KEY_NEWEST_PHOTOSTREAM_PHOTO_ID =
+        "glimmr_newest_photostream_photo_id";
+
     private LoadPhotostreamTask mTask;
 
     public static PhotoStreamGridFragment newInstance() {
@@ -75,8 +78,8 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        String newestId = prefs.getString(
-                Constants.NEWEST_PHOTOSTREAM_PHOTO_ID, null);
+        String newestId = prefs.getString(KEY_NEWEST_PHOTOSTREAM_PHOTO_ID,
+                null);
         return newestId;
     }
 
@@ -85,7 +88,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.NEWEST_PHOTOSTREAM_PHOTO_ID, photo.getId());
+        editor.putString(KEY_NEWEST_PHOTOSTREAM_PHOTO_ID, photo.getId());
         editor.commit();
         if (Constants.DEBUG)
             Log.d(getLogTag(), "Updated most recent photostream photo id to " +
