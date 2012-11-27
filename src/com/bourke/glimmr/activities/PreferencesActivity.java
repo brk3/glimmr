@@ -27,7 +27,7 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 public class PreferencesActivity extends SherlockPreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener{
 
-    private static final String TAG = "Glimmr/PreferenceManager";
+    public static final String TAG = "Glimmr/PreferenceManager";
 
     private SharedPreferences mSharedPrefs;
     private ListPreference mIntervalsListPreference;

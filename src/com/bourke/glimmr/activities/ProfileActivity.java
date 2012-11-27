@@ -36,6 +36,9 @@ public class ProfileActivity extends BottomOverlayActivity
 
     private static final String TAG = "Glimmr/ProfileActivity";
 
+    public static final String PROFILEVIEWER_USER_FILE =
+        "glimmr_profilevieweractivity_user.json";
+
     public static final int PHOTO_STREAM_PAGE = 0;
     public static final int FAVORITES_STREAM_PAGE = 1;
     public static final int SETS_PAGE = 2;
@@ -55,7 +58,7 @@ public class ProfileActivity extends BottomOverlayActivity
         GsonHelper gson = new GsonHelper(activity);
 
         boolean userStoreResult = gson.marshallObject(user,
-                Constants.PROFILEVIEWER_USER_FILE);
+                PROFILEVIEWER_USER_FILE);
         if (!userStoreResult) {
             Log.e(TAG, "Error marshalling user, cannot start viewer");
             return;
@@ -69,10 +72,10 @@ public class ProfileActivity extends BottomOverlayActivity
     protected void handleIntent(Intent intent) {
         GsonHelper gsonHelper = new GsonHelper(this);
         Gson gson = new Gson();
-        String json = gsonHelper.loadJson(Constants.PROFILEVIEWER_USER_FILE);
+        String json = gsonHelper.loadJson(PROFILEVIEWER_USER_FILE);
         if (json.length() == 0) {
             Log.e(TAG, String.format("Error reading %s",
-                        Constants.PROFILEVIEWER_USER_FILE));
+                        PROFILEVIEWER_USER_FILE));
             return;
         }
         mUser = gson.fromJson(json.toString(), User.class);
