@@ -53,7 +53,7 @@ public final class CommentsFragment extends BaseDialogFragment
         implements ICommentsReadyListener, ICommentAddedListener,
                    IUserReadyListener {
 
-    protected String TAG = "Glimmr/CommentsFragment";
+    public static final String TAG = "Glimmr/CommentsFragment";
 
     private LoadCommentsTask mTask;
     private Photo mPhoto;

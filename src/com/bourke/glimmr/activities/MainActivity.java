@@ -77,8 +77,14 @@ public class MainActivity extends BaseActivity {
 
     private static final String TAG = "Glimmr/MainActivity";
 
-    private List<PageItem> mContent;
+    public static final String KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED =
+        "glimmr_time_menudrawer_items_last_updated";
+    public static final String KEY_STATE_MENUDRAWER =
+        "glimmr_menudrawer_state";
+    public static final String KEY_STATE_ACTIVE_POSITION =
+        "glimmr_menudrawer_active_position";
 
+    private List<PageItem> mContent;
     private MenuDrawerManager mMenuDrawerMgr;
     private MenuAdapter mMenuAdapter;
     private MenuListView mList;
@@ -100,7 +106,7 @@ public class MainActivity extends BaseActivity {
         } else {
             if (savedInstanceState != null) {
                 mActivePosition =
-                    savedInstanceState.getInt(Constants.STATE_ACTIVE_POSITION);
+                    savedInstanceState.getInt(KEY_STATE_ACTIVE_POSITION);
             }
             mPrefs = getSharedPreferences(Constants.PREFS_NAME,
                     Context.MODE_PRIVATE);
@@ -158,11 +164,11 @@ public class MainActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mMenuDrawerMgr != null) {
-            outState.putParcelable(Constants.STATE_MENUDRAWER,
+            outState.putParcelable(KEY_STATE_MENUDRAWER,
                     mMenuDrawerMgr.onSaveDrawerState());
-            outState.putInt(Constants.STATE_ACTIVE_POSITION, mActivePosition);
+            outState.putInt(KEY_STATE_ACTIVE_POSITION, mActivePosition);
         }
-        outState.putLong(Constants.TIME_MENUDRAWER_ITEMS_LAST_UPDATED,
+        outState.putLong(KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED,
                 mActivityListVersion);
     }
 
@@ -170,10 +176,10 @@ public class MainActivity extends BaseActivity {
     protected void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
         mActivityListVersion = inState.getLong(
-                Constants.TIME_MENUDRAWER_ITEMS_LAST_UPDATED, -1);
+                KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED, -1);
         if (mMenuDrawerMgr != null ) {
-            mMenuDrawerMgr.onRestoreDrawerState(inState
-                    .getParcelable(Constants.STATE_MENUDRAWER));
+        mMenuDrawerMgr.onRestoreDrawerState(inState
+                .getParcelable(KEY_STATE_MENUDRAWER));
         }
     }
 
@@ -223,14 +229,15 @@ public class MainActivity extends BaseActivity {
 
         /* If the activity list file exists, add the contents to the menu
          * drawer area.  Otherwise start a task to fetch one. */
-        File f = getFileStreamPath(Constants.ACTIVITY_ITEMLIST_FILE);
+        File f = getFileStreamPath(ActivityNotificationHandler
+                .ACTIVITY_ITEMLIST_FILE);
         if (f.exists()) {
             /* There is some duplicated code here.  Could move it into another
              * function but the task is fragmented enough as is */
             List<Item> items = ActivityNotificationHandler.loadItemList(this);
             menuItems.addAll(buildActivityStream(items));
-            mActivityListVersion = mPrefs.getLong(
-                    Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
+            mActivityListVersion = mPrefs.getLong(ActivityNotificationHandler
+                    .KEY_TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
             mMenuAdapter.setItems(menuItems);
             mMenuAdapter.notifyDataSetChanged();
         } else {
@@ -242,8 +249,8 @@ public class MainActivity extends BaseActivity {
                             MainActivity.this, items);
                         menuItems.addAll(buildActivityStream(items));
                         mActivityListVersion = mPrefs.getLong(
-                                Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED,
-                                -1);
+                                ActivityNotificationHandler
+                                .KEY_TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
                     } else {
                         Log.e(TAG, "onItemListReady: Item list is null");
                     }
@@ -262,9 +269,10 @@ public class MainActivity extends BaseActivity {
      * the version we're displaying.
      */
     private boolean activityItemsNeedsUpdate() {
-        long lastUpdate = mPrefs.getLong(
-                Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
-        File f = getFileStreamPath(Constants.ACTIVITY_ITEMLIST_FILE);
+        long lastUpdate = mPrefs.getLong(ActivityNotificationHandler
+                .KEY_TIME_ACTIVITY_ITEMS_LAST_UPDATED, -1);
+        File f = getFileStreamPath(ActivityNotificationHandler
+                .ACTIVITY_ITEMLIST_FILE);
         boolean isStale = (mActivityListVersion < lastUpdate);
         boolean ret = (isStale || !f.exists());
         if (Constants.DEBUG) Log.d(TAG, "activityItemsNeedsUpdate: " + ret);

@@ -60,7 +60,14 @@ public class ActivityNotificationHandler
         implements GlimmrNotificationHandler<String>,
                    IActivityItemsReadyListener {
 
-    private static final String TAG = "Glimmr/ActivityNotificationHandler";
+    public static final String TAG = "Glimmr/ActivityNotificationHandler";
+
+    public static final String KEY_NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID =
+        "glimmr_notification_newest_activity_event_id";
+    public static final String KEY_TIME_ACTIVITY_ITEMS_LAST_UPDATED =
+        "glimmr_time_activity_items_last_updated";
+    public static final String ACTIVITY_ITEMLIST_FILE =
+        "glimmr_activity_items.json";
 
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -262,10 +269,11 @@ public class ActivityNotificationHandler
         List<Photo> photos = new ArrayList<Photo>();
         photos.add(photo);
         GsonHelper gsonHelper = new GsonHelper(mContext);
-        gsonHelper.marshallObject(photos, Constants.PHOTOVIEWER_LIST_FILE);
+        gsonHelper.marshallObject(photos, PhotoViewerActivity.PHOTO_LIST_FILE);
 
         Intent photoViewer = new Intent(mContext, PhotoViewerActivity.class);
-        photoViewer.putExtra(Constants.KEY_PHOTOVIEWER_START_INDEX, 0);
+        photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTOVIEWER_START_INDEX,
+                0);
         photoViewer.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(mContext, 0, photoViewer, 0);
     }
@@ -273,7 +281,7 @@ public class ActivityNotificationHandler
     @Override
     public String getLatestIdNotifiedAbout() {
         String newestId = mPrefs.getString(
-                Constants.NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID, "");
+                KEY_NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID, "");
         if (Constants.DEBUG) {
             Log.d(TAG, "getLatestIdNotifiedAbout: " + newestId);
         }
@@ -282,7 +290,7 @@ public class ActivityNotificationHandler
 
     @Override
     public void storeLatestIdNotifiedAbout(String eventId) {
-        mPrefsEditor.putString(Constants.NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID,
+        mPrefsEditor.putString(KEY_NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID,
                 eventId);
         mPrefsEditor.commit();
         if (Constants.DEBUG) {
@@ -298,7 +306,7 @@ public class ActivityNotificationHandler
 
         GsonHelper gson = new GsonHelper(context);
         boolean itemListStoreResult =
-            gson.marshallObject(items, Constants.ACTIVITY_ITEMLIST_FILE);
+            gson.marshallObject(items, ACTIVITY_ITEMLIST_FILE);
         if (!itemListStoreResult) {
             Log.e(TAG, "Error marshalling itemlist");
             return;
@@ -308,13 +316,13 @@ public class ActivityNotificationHandler
         SharedPreferences prefs = context.getSharedPreferences(
                 Constants.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = prefs.edit();
-        prefsEditor.putLong(Constants.TIME_ACTIVITY_ITEMS_LAST_UPDATED,
+        prefsEditor.putLong(KEY_TIME_ACTIVITY_ITEMS_LAST_UPDATED,
                 (System.currentTimeMillis() / 1000L));
         prefsEditor.commit();
 
         if (Constants.DEBUG) {
             Log.d(TAG, String.format("Sucessfully wrote %d items to %s",
-                    items.size(), Constants.ACTIVITY_ITEMLIST_FILE));
+                    items.size(), ACTIVITY_ITEMLIST_FILE));
         }
     }
 
@@ -322,10 +330,10 @@ public class ActivityNotificationHandler
         List<Item> ret = new ArrayList<Item>();
 
         GsonHelper gson = new GsonHelper(context);
-        String json = gson.loadJson(Constants.ACTIVITY_ITEMLIST_FILE);
+        String json = gson.loadJson(ACTIVITY_ITEMLIST_FILE);
         if (json.length() == 0) {
             Log.e(TAG, String.format("Error reading %s",
-                        Constants.ACTIVITY_ITEMLIST_FILE));
+                        ACTIVITY_ITEMLIST_FILE));
             return ret;
         }
         Type collectionType = new TypeToken<Collection<Item>>(){}.getType();
@@ -333,7 +341,7 @@ public class ActivityNotificationHandler
 
         if (Constants.DEBUG) {
             Log.d(TAG, String.format("Sucessfully read %d items from %s",
-                    ret.size(), Constants.ACTIVITY_ITEMLIST_FILE));
+                    ret.size(), ACTIVITY_ITEMLIST_FILE));
         }
 
         return ret;

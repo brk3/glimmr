@@ -41,7 +41,10 @@ import com.googlecode.flickrjandroid.people.User;
 public class ExploreActivity extends BaseActivity
         implements LoginFragment.IOnNotNowClicked {
 
-    private static final String TAG = "Glimmr/ExploreActivity";
+    public static final String TAG = "Glimmr/ExploreActivity";
+
+    public static final String KEY_LOGIN_LATER_SELECTED =
+        "glimmr_login_later_selected";
 
     public static final int INTERESTING_PAGE = 0;
     //public static final int TAGS_PAGE = 1;
@@ -82,7 +85,7 @@ public class ExploreActivity extends BaseActivity
                 SharedPreferences sp = getSharedPreferences(
                         Constants.PREFS_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putBoolean(Constants.LOGIN_LATER_SELECTED, false);
+                editor.putBoolean(KEY_LOGIN_LATER_SELECTED, false);
                 editor.commit();
                 return true;
             default:
@@ -163,7 +166,7 @@ public class ExploreActivity extends BaseActivity
         SharedPreferences sp =
             getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(Constants.LOGIN_LATER_SELECTED, true);
+        editor.putBoolean(KEY_LOGIN_LATER_SELECTED, true);
         editor.commit();
         Toast.makeText(this, getString(R.string.login_later),
                 Toast.LENGTH_LONG).show();
@@ -186,7 +189,7 @@ public class ExploreActivity extends BaseActivity
         SharedPreferences sp =
             getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
         boolean loginLater =
-            sp.getBoolean(Constants.LOGIN_LATER_SELECTED, false);
+            sp.getBoolean(KEY_LOGIN_LATER_SELECTED, false);
         if (loginLater) {
             setLoginFragmentVisibility(false);
         } else {
