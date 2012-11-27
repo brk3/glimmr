@@ -20,6 +20,11 @@ public class GroupPoolGridFragment extends PhotoGridFragment
 
     private static final String TAG = "Glimmr/GroupPoolGridFragment";
 
+    public static final String KEY_NEWEST_GROUPPOOL_PHOTO_ID =
+        "glimmr_newest_grouppool_photo_id";
+    public static final String KEY_GROUP_FRAGMENT_GROUP_ID =
+        "glimmr_grouppool_group_id";
+
     private Group mGroup;
     private LoadGroupPoolTask mTask;
 
@@ -67,7 +72,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         SharedPreferences sp = mActivity.getSharedPreferences(
                 Constants.PREFS_NAME, Context.MODE_PRIVATE);
         String groupId = sp.getString(
-                Constants.GROUP_FRAGMENT_GROUP_ID, null);
+                KEY_GROUP_FRAGMENT_GROUP_ID, null);
         if (groupId != null) {
             mGroup = new Group();
             mGroup.setId(groupId);
@@ -84,7 +89,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment
             SharedPreferences sp = mActivity.getSharedPreferences(
                     Constants.PREFS_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString(Constants.GROUP_FRAGMENT_GROUP_ID,
+            editor.putString(KEY_GROUP_FRAGMENT_GROUP_ID,
                     mGroup.getId());
             editor.commit();
         }
@@ -94,8 +99,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        String newestId = prefs.getString(
-                Constants.NEWEST_GROUPPOOL_PHOTO_ID, null);
+        String newestId = prefs.getString(KEY_NEWEST_GROUPPOOL_PHOTO_ID, null);
         return newestId;
     }
 
@@ -104,7 +108,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.NEWEST_GROUPPOOL_PHOTO_ID, photo.getId());
+        editor.putString(KEY_NEWEST_GROUPPOOL_PHOTO_ID, photo.getId());
         editor.commit();
         if (Constants.DEBUG)
             Log.d(getLogTag(), "Updated most recent grouppool photo id to " +
