@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 
+import android.graphics.Bitmap;
+
 import android.os.Bundle;
 
 import android.util.Log;
@@ -25,6 +27,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 
 import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.androidquery.callback.BitmapAjaxCallback;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
@@ -39,6 +43,8 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener {
 
@@ -52,6 +58,7 @@ public final class PhotoViewerFragment extends BaseFragment
     private IPhotoViewerCallbacks mListener;
     private Configuration mConfiguration;
     private ImageView mImageView;
+    private PhotoViewAttacher mAttacher;
     private TextView mTextViewTitle;
     private TextView mTextViewAuthor;
 
@@ -78,6 +85,7 @@ public final class PhotoViewerFragment extends BaseFragment
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
         mImageView = (ImageView) mLayout.findViewById(R.id.image);
+        mAttacher = new PhotoViewAttacher(mImageView);
         mTextViewTitle = (TextView) mLayout.findViewById(R.id.textViewTitle);
         mTextViewAuthor = (TextView) mLayout.findViewById(R.id.textViewAuthor);
         mAq = new AQuery(mActivity, mLayout);
@@ -88,16 +96,6 @@ public final class PhotoViewerFragment extends BaseFragment
                 mListener.onVisibilityChanged(!mActionBar.isShowing());
             }
         });
-
-        //final GestureImageView i =
-            //(GestureImageView) mLayout.findViewById(R.id.image);
-        //i.setOnTouchListener(new View.OnTouchListener() {
-            //@Override
-            //public boolean onTouch(View v, MotionEvent event) {
-                //mListener.onZoomed(i.isZoomed());
-                //return false;
-            //}
-        //});
 
         /* If this fragment is new as part of a set, update it's overlay
          * visibility based on the state of the actionbar */
@@ -259,8 +257,14 @@ public final class PhotoViewerFragment extends BaseFragment
             /* Fetch the main image */
             mAq.id(R.id.image).progress(R.id.progress).image(
                     mBasePhoto.getLargeUrl(), Constants.USE_MEMORY_CACHE,
-                    Constants.USE_FILE_CACHE, 0, 0, null,
-                    AQuery.FADE_IN_NETWORK);
+                    Constants.USE_FILE_CACHE, 0, 0, new BitmapAjaxCallback(){
+                        @Override
+                        public void callback(String url, ImageView iv,
+                                Bitmap bm, AjaxStatus status) {
+                            iv.setImageBitmap(bm);
+                            mAttacher.update();
+                        }
+                    });
 
             /* Set the photo title and author text.  If sw600dp then the parent
              * activity will handle adding them to the actionbar instead */
@@ -317,6 +321,5 @@ public final class PhotoViewerFragment extends BaseFragment
 
     public interface IPhotoViewerCallbacks {
         void onVisibilityChanged(final boolean on);
-        void onZoomed(final boolean isZoomed);
     }
 }
