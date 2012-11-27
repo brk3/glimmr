@@ -44,6 +44,7 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
+import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener {
@@ -90,9 +91,9 @@ public final class PhotoViewerFragment extends BaseFragment
         mTextViewAuthor = (TextView) mLayout.findViewById(R.id.textViewAuthor);
         mAq = new AQuery(mActivity, mLayout);
 
-        mImageView.setOnClickListener(new View.OnClickListener() {
+        mAttacher.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
-            public void onClick(View v) {
+            public void onPhotoTap(View view, float x, float y) {
                 mListener.onVisibilityChanged(!mActionBar.isShowing());
             }
         });
