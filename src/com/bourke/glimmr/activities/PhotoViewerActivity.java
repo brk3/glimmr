@@ -3,6 +3,8 @@ package com.bourke.glimmrpro.activities;
 import android.content.Context;
 import android.content.Intent;
 
+import android.net.Uri;
+
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -28,10 +30,12 @@ import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.common.HackyViewPager;
 import com.bourke.glimmrpro.common.TextUtils;
+import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmrpro.fragments.viewer.CommentsFragment;
 import com.bourke.glimmrpro.fragments.viewer.PhotoInfoFragment;
 import com.bourke.glimmrpro.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
 
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -113,34 +117,51 @@ public class PhotoViewerActivity extends BaseActivity
             return;
         }
 
-        int startIndex = intent.getIntExtra(KEY_PHOTOVIEWER_START_INDEX, 0);
-        String photoListFile = intent.getStringExtra(KEY_PHOTO_LIST_FILE);
+        final int startIndex =
+            intent.getIntExtra(KEY_PHOTOVIEWER_START_INDEX, 0);
 
-        GsonHelper gsonHelper = new GsonHelper(this);
-        String json = gsonHelper.loadJson(photoListFile);
-        if (json.length() == 0) {
-            Log.e(TAG, String.format("Error reading '%s'", photoListFile));
-            return;
-        }
-        Type collectionType = new TypeToken<Collection<Photo>>(){}.getType();
-        mPhotos = new Gson().fromJson(json.toString(), collectionType);
-
-        if (mPhotos != null) {
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "Got list of photo urls, size: "
-                    + mPhotos.size());
+        /* If we receive a link e.g.
+         * http://www.flickr.com/photos/brk3/8441328569 */
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri uri = intent.getData();
+            List<String> params = uri.getPathSegments();
+            if (params.size() < 3) {
+                Log.e(TAG, "Got uri '%s' but can't parse, params < 2");
+                return;
             }
-            mAdapter =
-                new PhotoViewerPagerAdapter(getSupportFragmentManager());
-            mAdapter.onPageSelected(startIndex);
-            mPager = (HackyViewPager) findViewById(R.id.pager);
-            mPager.setAdapter(mAdapter);
-            mPager.setOnPageChangeListener(mAdapter);
-            mPager.setCurrentItem(startIndex);
-            mPager.setOffscreenPageLimit(2);
+            String photoId = params.get(2);
+            new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
+                @Override
+                public void onPhotoInfoReady(Photo photo) {
+                    mPhotos.add(photo);
+                    initViewPager(startIndex, false);
+                }
+            }, photoId, null).execute(mOAuth);
+        /* If we receive a gson file containing a list of photos */
         } else {
-            Log.e(getLogTag(), "Photos from intent are null");
+            String photoListFile = intent.getStringExtra(KEY_PHOTO_LIST_FILE);
+            GsonHelper gsonHelper = new GsonHelper(this);
+            String json = gsonHelper.loadJson(photoListFile);
+            if (json.length() == 0) {
+                Log.e(TAG, String.format("Error reading '%s'", photoListFile));
+                return;
+            }
+            Type collectionType =
+                new TypeToken<Collection<Photo>>(){}.getType();
+            mPhotos = new Gson().fromJson(json.toString(), collectionType);
+            initViewPager(startIndex, true);
         }
+    }
+
+    private void initViewPager(int startIndex, boolean fetchExtraInfo) {
+        mAdapter = new PhotoViewerPagerAdapter(getSupportFragmentManager(),
+                fetchExtraInfo);
+        mAdapter.onPageSelected(startIndex);
+        mPager = (HackyViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+        mPager.setOnPageChangeListener(mAdapter);
+        mPager.setCurrentItem(startIndex);
+        mPager.setOffscreenPageLimit(2);
     }
 
     @Override
@@ -386,14 +407,18 @@ public class PhotoViewerActivity extends BaseActivity
 
     class PhotoViewerPagerAdapter extends FragmentStatePagerAdapter
             implements ViewPager.OnPageChangeListener {
-        public PhotoViewerPagerAdapter(FragmentManager fm) {
+        private boolean mFetchExtraInfo;
+
+        public PhotoViewerPagerAdapter(FragmentManager fm,
+                boolean fetchExtraInfo) {
             super(fm);
+            mFetchExtraInfo = fetchExtraInfo;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return PhotoViewerFragment.newInstance(
-                    mPhotos.get(position), PhotoViewerActivity.this);
+            return PhotoViewerFragment.newInstance(mPhotos.get(position),
+                    PhotoViewerActivity.this, mFetchExtraInfo);
         }
 
         @Override
@@ -413,7 +438,8 @@ public class PhotoViewerActivity extends BaseActivity
                 setCommentsFragmentVisibility(mPhotos.get(position), show,
                         animateTransition);
             /* Likewise for info */
-            } else if (mPhotoInfoFragment != null && mPhotoInfoFragmentShowing) {
+            } else if (mPhotoInfoFragment != null &&
+                    mPhotoInfoFragmentShowing) {
                 getSupportFragmentManager().popBackStack();
                 boolean animateTransition = false;
                 boolean show = true;
