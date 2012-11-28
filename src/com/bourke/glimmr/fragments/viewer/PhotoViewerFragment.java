@@ -66,12 +66,28 @@ public final class PhotoViewerFragment extends BaseFragment
     private TextView mTextViewTitle;
     private TextView mTextViewAuthor;
 
+    /**
+     * Returns a new instance of PhotoViewerFragment.
+     *
+     * @param photo             Basic Photo object as returned by say
+     *                          flickr.people.getPhotos
+     * @param listener          Object to be notified of callbacks.
+     * @param fetchExtraInfo    Set to false to disable a call to
+     *                          flickr.photos.getInfo if photo already has this
+     *                          info.
+     */
     public static PhotoViewerFragment newInstance(Photo photo,
-            IPhotoViewerCallbacks listener) {
+            IPhotoViewerCallbacks listener, boolean fetchExtraInfo) {
         if (Constants.DEBUG) Log.d(TAG, "newInstance");
+
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
         photoFragment.mBasePhoto = photo;
         photoFragment.mListener = listener;
+
+        if (!fetchExtraInfo) {
+            photoFragment.mPhotoExtendedInfo = photo;
+        }
+
         return photoFragment;
     }
 
@@ -243,6 +259,8 @@ public final class PhotoViewerFragment extends BaseFragment
             mTask = new LoadPhotoInfoTask(this, mBasePhoto.getId(),
                     mBasePhoto.getSecret());
             mTask.execute(mOAuth);
+        } else {
+            onPhotoInfoReady(mPhotoExtendedInfo);
         }
     }
 

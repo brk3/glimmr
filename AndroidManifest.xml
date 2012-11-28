@@ -55,8 +55,25 @@
         <activity android:name=".activities.PhotoViewerActivity"
             android:uiOptions="splitActionBarWhenNarrow"
             android:label="@string/app_name">
+
             <meta-data android:name="android.app.default_searchable"
                 android:value=".activities.SearchActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" android:host="flickr.com"
+                    android:pathPattern="/photos/.*/.*" />
+                <data android:scheme="https" android:host="flickr.com"
+                    android:pathPattern="/photos/.*/.*" />
+
+                <data android:scheme="http" android:host="www.flickr.com"
+                    android:pathPattern="/photos/.*/.*" />
+                <data android:scheme="https" android:host="www.flickr.com"
+                    android:pathPattern="/photos/.*/.*" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".activities.GroupViewerActivity"
