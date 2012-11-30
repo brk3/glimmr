@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
@@ -170,8 +171,8 @@ public class PhotosetsFragment extends BaseFragment
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            mActivity.setFont(holder.photosetNameText,
-                    Constants.FONT_ROBOTOBOLD);
+            mTextUtils.setFont(holder.photosetNameText,
+                    TextUtils.FONT_ROBOTOBOLD);
 
             final Photoset photoset = mPhotosets.get(position);
 

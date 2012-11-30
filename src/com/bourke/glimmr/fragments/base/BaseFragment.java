@@ -24,6 +24,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -48,6 +49,7 @@ public abstract class BaseFragment extends SherlockFragment {
     protected ActionBar mActionBar;
     protected AQuery mAq;
     protected ViewGroup mLayout;
+    protected TextUtils mTextUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +58,9 @@ public abstract class BaseFragment extends SherlockFragment {
 
         mActivity = (BaseActivity) getSherlockActivity();
         mActionBar = mActivity.getSupportActionBar();
+        mTextUtils = new TextUtils(mActivity.getAssets());
 
-        setRetainInstance(true);
+        setRetainInstance(shouldRetainInstance());
         setHasOptionsMenu(true);
     }
 
@@ -108,21 +111,8 @@ public abstract class BaseFragment extends SherlockFragment {
         Log.e(getLogTag(), "refresh");
     }
 
-    protected void colorTextViewSpan(TextView view, String fulltext,
-            String subtext, int color) {
-        view.setText(fulltext, TextView.BufferType.SPANNABLE);
-        Spannable str = (Spannable) view.getText();
-        int i = fulltext.indexOf(subtext);
-        try {
-            str.setSpan(new ForegroundColorSpan(color), i, i+subtext.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "fulltext: " + fulltext);
-                Log.d(getLogTag(), "subtext: " + subtext);
-            }
-        }
+    protected boolean shouldRetainInstance() {
+        return true;
     }
 
     protected String getLogTag() {

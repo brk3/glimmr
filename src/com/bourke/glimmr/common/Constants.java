@@ -1,5 +1,8 @@
 package com.bourke.glimmr.common;
 
+import java.util.Set;
+import java.util.HashSet;
+
 public class Constants {
 
     /* Important: set to false when doing release builds */
@@ -25,22 +28,17 @@ public class Constants {
     public static final String KEY_ACCOUNT_USER_NAME = "glimmr_acc_user_name";
     public static final String KEY_ACCOUNT_USER_ID = "glimmr_acc_user_id";
 
-    /* Fonts */
-    public static final int FONT_SHADOWSINTOLIGHT = 0;
-    public static final String FONT_PATH_SHADOWSINTOLIGHT =
-        "fonts/ShadowsIntoLight.ttf";
-    public static final int FONT_ROBOTOREGULAR = 1;
-    public static final String FONT_PATH_ROBOTOREGULAR =
-        "fonts/Roboto-Regular.ttf";
-    public static final int FONT_ROBOTOTHIN = 2;
-    public static final String FONT_PATH_ROBOTOTHIN =
-        "fonts/Roboto-Thin.ttf";
-    public static final int FONT_ROBOTOLIGHT = 3;
-    public static final String FONT_PATH_ROBOTOLIGHT =
-        "fonts/Roboto-Light.ttf";
-    public static final int FONT_ROBOTOBOLD = 4;
-    public static final String FONT_PATH_ROBOTOBOLD =
-        "fonts/Roboto-Bold.ttf";
+    /* Attributes to fetch for a photo */
+    public static final Set<String> EXTRAS = new HashSet<String>();
+    static {
+        EXTRAS.add("owner_name");
+        EXTRAS.add("url_q");  /* large square 150x150 */
+        EXTRAS.add("url_m");  /* small, 240 on longest side */
+        EXTRAS.add("url_l");
+        EXTRAS.add("views");
+        EXTRAS.add("description");
+        EXTRAS.add("tags");
+    }
 
     /* Global preferences keys */
     public static final String KEY_INTERVALS_LIST_PREFERENCE

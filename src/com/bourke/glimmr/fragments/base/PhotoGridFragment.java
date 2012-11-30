@@ -30,6 +30,7 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.PhotoViewerActivity;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
@@ -143,6 +144,7 @@ public abstract class PhotoGridFragment extends BaseFragment
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View v,
                     int position, long id) {
+                /* Only available if logged in */
                 if (mOAuth == null) {
                     return false;
                 }
@@ -296,7 +298,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                     holder.imageOverlay.setVisibility(View.INVISIBLE);
                 }
 
-                mActivity.setFont(holder.ownerText, Constants.FONT_ROBOTOBOLD);
+                mTextUtils.setFont(holder.ownerText,
+                        TextUtils.FONT_ROBOTOBOLD);
 
                 /* Fetch the main photo */
                 mAq.id(holder.image).image(photo.getLargeSquareUrl(),
@@ -361,7 +364,9 @@ public abstract class PhotoGridFragment extends BaseFragment
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setItems(R.array.photo_item_long_click_dialog_items,
+            // TODO: add to strings
+            builder.setTitle("View a tag")
+                .setItems(R.array.photo_item_long_click_dialog_items,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mListener.onLongClickDialogSelection(mPhoto, which);
@@ -370,5 +375,4 @@ public abstract class PhotoGridFragment extends BaseFragment
             return builder.create();
         }
     }
-
 }

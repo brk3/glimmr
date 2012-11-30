@@ -42,11 +42,6 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected List<Photo> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        Set<String> extras = new HashSet<String>();
-        extras.add("owner_name");
-        extras.add("url_q");
-        extras.add("url_l");
-        extras.add("views");
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
@@ -54,7 +49,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return f.getPhotosetsInterface().getPhotos(
-                        ""+mPhotoset.getId(), extras,
+                        ""+mPhotoset.getId(), Constants.EXTRAS,
                         Flickr.PRIVACY_LEVEL_NO_FILTER,
                         Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
@@ -65,7 +60,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return FlickrHelper.getInstance().getPhotosetsInterface()
-                    .getPhotos(""+mPhotoset.getId(), extras,
+                    .getPhotos(""+mPhotoset.getId(), Constants.EXTRAS,
                             Flickr.PRIVACY_LEVEL_NO_FILTER,
                             Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {

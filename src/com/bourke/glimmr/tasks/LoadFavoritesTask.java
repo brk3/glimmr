@@ -47,17 +47,12 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
                     token.getOauthToken(), token.getOauthTokenSecret());
             Date minFavDate = null;
             Date maxFavDate = null;
-            Set<String> extras = new HashSet<String>();
-            extras.add("owner_name");
-            extras.add("url_q");
-            extras.add("url_l");
-            extras.add("views");
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
 
             try {
                 return f.getFavoritesInterface().getList(
                     mUser.getId(), minFavDate, maxFavDate,
-                    Constants.FETCH_PER_PAGE, mPage, extras);
+                    Constants.FETCH_PER_PAGE, mPage, Constants.EXTRAS);
             } catch (Exception e) {
                 e.printStackTrace();
             }

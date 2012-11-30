@@ -27,9 +27,10 @@ import com.actionbarsherlock.view.Window;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.common.HackyViewPager;
 import com.bourke.glimmr.fragments.viewer.CommentsFragment;
-import com.bourke.glimmr.fragments.viewer.ExifInfoFragment;
+import com.bourke.glimmr.fragments.viewer.PhotoInfoFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
 
@@ -73,9 +74,9 @@ public class PhotoViewerActivity extends BaseActivity
         new ArrayList<WeakReference<Fragment>>();
     private int mCurrentAdapterIndex = 0;
     private CommentsFragment mCommentsFragment;
-    private ExifInfoFragment mExifFragment;
+    private PhotoInfoFragment mPhotoInfoFragment;
     private boolean mCommentsFragmentShowing = false;
-    private boolean mExifFragmentShowing = false;
+    private boolean mPhotoInfoFragmentShowing = false;
     private ActionBarTitle mActionbarTitle;
 
     /**
@@ -137,7 +138,6 @@ public class PhotoViewerActivity extends BaseActivity
             Log.e(getLogTag(), "Photos from intent are null");
         }
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -203,8 +203,8 @@ public class PhotoViewerActivity extends BaseActivity
     public void onCommentsButtonClick(Photo photo) {
         if (getResources().getBoolean(R.bool.sw600dp)) {
             boolean animateTransition = true;
-            if (mExifFragmentShowing) {
-                setExifFragmentVisibility(photo, false, animateTransition);
+            if (mPhotoInfoFragmentShowing) {
+                setPhotoInfoFragmentVisibility(photo, false, animateTransition);
             }
             if (mCommentsFragmentShowing) {
                 setCommentsFragmentVisibility(photo, false, animateTransition);
@@ -219,22 +219,22 @@ public class PhotoViewerActivity extends BaseActivity
         }
     }
 
-    public void onExifButtonClick(Photo photo) {
+    public void onPhotoInfoButtonClick(Photo photo) {
         if (getResources().getBoolean(R.bool.sw600dp)) {
             boolean animateTransition = true;
             if (mCommentsFragmentShowing) {
                 setCommentsFragmentVisibility(photo, false, animateTransition);
             }
-            if (mExifFragmentShowing) {
-                setExifFragmentVisibility(photo, false, animateTransition);
+            if (mPhotoInfoFragmentShowing) {
+                setPhotoInfoFragmentVisibility(photo, false, animateTransition);
             } else {
-                setExifFragmentVisibility(photo, true, animateTransition);
+                setPhotoInfoFragmentVisibility(photo, true, animateTransition);
             }
         } else {
-            ExifInfoFragment exifInfoDialogFrag =
-                ExifInfoFragment.newInstance(photo);
-            exifInfoDialogFrag.show(getSupportFragmentManager(),
-                    "ExifInfoDialogFragment");
+            PhotoInfoFragment photoInfoDialogFrag =
+                PhotoInfoFragment.newInstance(photo);
+            photoInfoDialogFrag.show(getSupportFragmentManager(),
+                    "PhotoInfoFragment");
         }
     }
 
@@ -246,7 +246,7 @@ public class PhotoViewerActivity extends BaseActivity
     public void onBackPressed() {
         super.onBackPressed();
         mCommentsFragmentShowing = false;
-        mExifFragmentShowing = false;
+        mPhotoInfoFragmentShowing = false;
     }
 
     private void setCommentsFragmentVisibility(Photo photo, boolean show,
@@ -273,7 +273,7 @@ public class PhotoViewerActivity extends BaseActivity
         ft.commit();
     }
 
-    private void setExifFragmentVisibility(Photo photo, boolean show,
+    private void setPhotoInfoFragmentVisibility(Photo photo, boolean show,
             boolean animate) {
         FragmentTransaction ft =
             getSupportFragmentManager().beginTransaction();
@@ -283,17 +283,17 @@ public class PhotoViewerActivity extends BaseActivity
         }
         if (show) {
             if (photo != null) {
-                mExifFragment = ExifInfoFragment.newInstance(photo);
-                ft.replace(R.id.exifFragment, mExifFragment);
+                mPhotoInfoFragment = PhotoInfoFragment.newInstance(photo);
+                ft.replace(R.id.photoInfoFragment, mPhotoInfoFragment);
                 ft.addToBackStack(null);
             } else {
-                Log.e(TAG, "setExifFragmentVisibility: photo is null");
+                Log.e(TAG, "setPhotoInfoFragmentVisibility: photo is null");
             }
         } else {
-            ft.hide(mExifFragment);
+            ft.hide(mPhotoInfoFragment);
             getSupportFragmentManager().popBackStack();
         }
-        mExifFragmentShowing = show;
+        mPhotoInfoFragmentShowing = show;
         ft.commit();
     }
 
@@ -311,8 +311,8 @@ public class PhotoViewerActivity extends BaseActivity
             case R.id.menu_view_comments:
                 onCommentsButtonClick(currentlyShowing);
                 return true;
-            case R.id.menu_view_exif:
-                onExifButtonClick(currentlyShowing);
+            case R.id.menu_view_info:
+                onPhotoInfoButtonClick(currentlyShowing);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -333,12 +333,12 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onVisibilityChanged(final boolean on) {
-        /* If overlay is being switched off and exif/comments fragments are
+        /* If overlay is being switched off and info/comments fragments are
          * showing, dismiss(hide) these and return */
         if (!on) {
             boolean animateTransition = true;
-            if (mExifFragmentShowing) {
-                setExifFragmentVisibility(null, false, true);
+            if (mPhotoInfoFragmentShowing) {
+                setPhotoInfoFragmentVisibility(null, false, true);
                 return;
             }
             if (mCommentsFragmentShowing) {
@@ -383,12 +383,12 @@ public class PhotoViewerActivity extends BaseActivity
                 boolean show = true;
                 setCommentsFragmentVisibility(mPhotos.get(position), show,
                         animateTransition);
-            /* Likewise for exif */
-            } else if (mExifFragment != null && mExifFragmentShowing) {
+            /* Likewise for info */
+            } else if (mPhotoInfoFragment != null && mPhotoInfoFragmentShowing) {
                 getSupportFragmentManager().popBackStack();
                 boolean animateTransition = false;
                 boolean show = true;
-                setExifFragmentVisibility(mPhotos.get(position), show,
+                setPhotoInfoFragmentVisibility(mPhotos.get(position), show,
                         animateTransition);
             }
             mCurrentAdapterIndex = position;
@@ -434,8 +434,8 @@ public class PhotoViewerActivity extends BaseActivity
             View v = inflator.inflate(R.layout.photoviewer_action_bar, null);
             mPhotoTitle = (TextView) v.findViewById(R.id.photoTitle);
             mPhotoAuthor = (TextView) v.findViewById(R.id.photoAuthor);
-            setFont(mPhotoTitle, Constants.FONT_ROBOTOLIGHT);
-            setFont(mPhotoAuthor, Constants.FONT_ROBOTOTHIN);
+            mTextUtils.setFont(mPhotoTitle, TextUtils.FONT_ROBOTOLIGHT);
+            mTextUtils.setFont(mPhotoAuthor, TextUtils.FONT_ROBOTOTHIN);
             actionbar.setDisplayShowCustomEnabled(true);
             actionbar.setDisplayShowTitleEnabled(false);
             actionbar.setCustomView(v);

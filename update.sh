@@ -9,6 +9,6 @@ android update lib-project -p \
 android update lib-project -p \
     libs/appirater-android/ -t android-3
 
-android update project -p . -t android-16
+android update project -p . -t android-17
 
 android update test-project -p test -m ..

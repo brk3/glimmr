@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 
 import com.bourke.glimmr.activities.BaseActivity;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.R;
 import android.app.Activity;
@@ -22,8 +23,11 @@ public class GlimmrAbCustomTitle {
     protected TextView mAbTitle;
     protected BaseActivity mActivity;
 
+    private TextUtils mTextUtils;
+
     public GlimmrAbCustomTitle(BaseActivity a) {
         mActivity = a;
+        mTextUtils = new TextUtils(a.getAssets());
     }
 
     public void init(ActionBar actionbar) {
@@ -35,7 +39,7 @@ public class GlimmrAbCustomTitle {
         /* NOTE: Large screens don't use a custom title in landscape as there's
          * a problem/bug where it sits to the right of the tabs */
         if (mAbTitle != null) {
-            mActivity.setFont(mAbTitle, Constants.FONT_SHADOWSINTOLIGHT);
+            mTextUtils.setFont(mAbTitle, TextUtils.FONT_SHADOWSINTOLIGHT);
             mAbTitle.setText(mActivity.getString(R.string.app_name));
             actionbar.setDisplayShowCustomEnabled(true);
             actionbar.setDisplayShowTitleEnabled(false);

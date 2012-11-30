@@ -42,11 +42,6 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected List<Photo> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        Set<String> extras = new HashSet<String>();
-        extras.add("owner_name");
-        extras.add("url_q");
-        extras.add("url_l");
-        extras.add("views");
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
@@ -54,7 +49,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return f.getPoolsInterface().getPhotos(mGroup.getId(), null,
-                        extras, Constants.FETCH_PER_PAGE, mPage);
+                        Constants.EXTRAS, Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -63,7 +58,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return FlickrHelper.getInstance().getPoolsInterface()
-                    .getPhotos(mGroup.getId(), null, extras,
+                    .getPhotos(mGroup.getId(), null, Constants.EXTRAS,
                             Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
                 e.printStackTrace();

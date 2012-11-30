@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.ProfileActivity;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.ICommentAddedListener;
 import com.bourke.glimmr.event.Events.ICommentsReadyListener;
@@ -102,7 +103,7 @@ public final class CommentsFragment extends BaseDialogFragment
 
         /* Set title text to uppercase and roboto font */
         TextView titleText = (TextView) mLayout.findViewById(R.id.titleText);
-        mActivity.setFont(titleText, Constants.FONT_ROBOTOREGULAR);
+        mTextUtils.setFont(titleText, TextUtils.FONT_ROBOTOREGULAR);
         String title = mActivity.getString(R.string.menu_view_comments);
         titleText.setText(title.toUpperCase());
 
@@ -173,8 +174,9 @@ public final class CommentsFragment extends BaseDialogFragment
 
     @Override
     public void onUserReady(User user) {
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(getLogTag(), "onUserReady: " + user.getId());
+        }
         mUsers.put(user.getId(), new UserItem(user, false));
         mAdapter.notifyDataSetChanged();
     }
