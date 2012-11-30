@@ -38,15 +38,10 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
 
         /* A specific date to return interesting photos for. */
         Date day = null;
-        Set<String> extras = new HashSet<String>();
-        extras.add("owner_name");
-        extras.add("url_q");
-        extras.add("url_l");
-        extras.add("views");
-
         try {
             return FlickrHelper.getInstance().getInterestingInterface()
-                .getList(day, extras, Constants.FETCH_PER_PAGE, mPage);
+                .getList(day, Constants.EXTRAS, Constants.FETCH_PER_PAGE,
+                        mPage);
         } catch (Exception e) {
             e.printStackTrace();
         }

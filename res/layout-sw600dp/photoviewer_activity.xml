@@ -21,7 +21,7 @@
         android:layout_marginRight="15dip" />
 
     <FrameLayout
-        android:id="@+id/exifFragment"
+        android:id="@+id/photoInfoFragment"
         android:layout_width="400dip"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"

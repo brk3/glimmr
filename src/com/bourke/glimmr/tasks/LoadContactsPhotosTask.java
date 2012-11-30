@@ -48,16 +48,12 @@ public class LoadContactsPhotosTask
                  * more... For some reason pagination doesn't seem to be an
                  * option. */
                 int amountToFetch = 50;
-                Set<String> extras = new HashSet<String>();
-                extras.add("owner_name");
-                extras.add("url_q");
-                extras.add("url_l");
-                extras.add("views");
                 boolean justFriends = false;
                 boolean singlePhoto = false;
                 boolean includeSelf = false;
                 return f.getPhotosInterface().getContactsPhotos(amountToFetch,
-                        extras, justFriends, singlePhoto, includeSelf);
+                        Constants.EXTRAS, justFriends, singlePhoto,
+                        includeSelf);
             } catch (Exception e) {
                 e.printStackTrace();
             }

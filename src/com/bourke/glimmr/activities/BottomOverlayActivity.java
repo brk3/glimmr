@@ -18,6 +18,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.R;
 
@@ -62,7 +63,7 @@ public abstract class BottomOverlayActivity extends BaseActivity {
     private void initBottomOverlayFont() {
         TextView overlayPrimaryText =
             (TextView) findViewById(R.id.overlayPrimaryText);
-        setFont(overlayPrimaryText, Constants.FONT_ROBOTOLIGHT);
+        mTextUtils.setFont(overlayPrimaryText, TextUtils.FONT_ROBOTOLIGHT);
     }
 
     protected void initViewPager() {

@@ -15,6 +15,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.TextUtils;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
@@ -31,6 +32,7 @@ public abstract class BaseDialogFragment extends SherlockDialogFragment {
 
     protected AQuery mAq;
     protected ViewGroup mLayout;
+    protected TextUtils mTextUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public abstract class BaseDialogFragment extends SherlockDialogFragment {
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
 
         mActivity = (BaseActivity) getSherlockActivity();
+        mTextUtils = new TextUtils(mActivity.getAssets());
         setRetainInstance(true);
     }
 
