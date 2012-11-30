@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragment;
-import android.util.Log;
 
 /**
  * Generic FragmentPagerAdapter to be used with Glimmr activities.

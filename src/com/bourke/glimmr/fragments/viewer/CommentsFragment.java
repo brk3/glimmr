@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.activities.ProfileActivity;
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.ICommentAddedListener;
 import com.bourke.glimmrpro.event.Events.ICommentsReadyListener;
 import com.bourke.glimmrpro.event.Events.IUserReadyListener;
@@ -47,7 +49,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.ocpsoft.pretty.time.PrettyTime;
-import android.widget.LinearLayout;
 
 public final class CommentsFragment extends BaseDialogFragment
         implements ICommentsReadyListener, ICommentAddedListener,
@@ -102,7 +103,7 @@ public final class CommentsFragment extends BaseDialogFragment
 
         /* Set title text to uppercase and roboto font */
         TextView titleText = (TextView) mLayout.findViewById(R.id.titleText);
-        mActivity.setFont(titleText, Constants.FONT_ROBOTOREGULAR);
+        mTextUtils.setFont(titleText, TextUtils.FONT_ROBOTOREGULAR);
         String title = mActivity.getString(R.string.menu_view_comments);
         titleText.setText(title.toUpperCase());
 
@@ -173,8 +174,9 @@ public final class CommentsFragment extends BaseDialogFragment
 
     @Override
     public void onUserReady(User user) {
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(getLogTag(), "onUserReady: " + user.getId());
+        }
         mUsers.put(user.getId(), new UserItem(user, false));
         mAdapter.notifyDataSetChanged();
     }

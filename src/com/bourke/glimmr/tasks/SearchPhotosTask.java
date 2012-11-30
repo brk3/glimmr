@@ -44,14 +44,9 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected List<Photo> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
-        Set<String> extras = new HashSet<String>();
-        extras.add("owner_name");
-        extras.add("url_q");
-        extras.add("url_l");
-        extras.add("views");
 
         SearchParameters sp = new SearchParameters();
-        sp.setExtras(extras);
+        sp.setExtras(Constants.EXTRAS);
         sp.setText(mSearchTerm);
         sp.setSort(SearchParameters.RELEVANCE);
 

@@ -1,5 +1,6 @@
 package com.bourke.glimmrpro.event;
 
+import com.googlecode.flickrjandroid.tags.Tag;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -67,5 +68,9 @@ public class Events {
 
     public interface IActivityItemsReadyListener {
         public void onItemListReady(List<Item> items);
+    }
+
+    public interface TagClickDialogListener {
+        public void onTagClick(Tag tag);
     }
 }

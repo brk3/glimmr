@@ -1,5 +1,6 @@
 package com.bourke.glimmrpro.fragments.viewer;
 
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import android.os.Bundle;
 
 import android.text.TextUtils;
@@ -30,7 +31,7 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import java.util.List;
 import android.widget.ProgressBar;
 
-public final class ExifInfoFragment extends BaseDialogFragment
+public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {
 
     public static final String TAG = "Glimmr/ExifInfoFragment";
@@ -39,9 +40,6 @@ public final class ExifInfoFragment extends BaseDialogFragment
     private LoadExifInfoTask mTask;
     private ProgressBar mProgressIndicator;
     private TextView mTextViewErrorMessage;
-    private TextView mTextViewISOValue;
-    private TextView mTextViewShutterValue;
-    private TextView mTextViewApertureValue;
 
     /* http://www.flickr.com/services/api/flickr.photos.getExif.html */
     private static final String ERR_PERMISSION_DENIED = "2";
@@ -52,10 +50,10 @@ public final class ExifInfoFragment extends BaseDialogFragment
         return photoFragment;
     }
 
+    /** Can't retain fragements that are nested in other fragments */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NO_TITLE, 0);
+    protected boolean shouldRetainInstance() {
+        return false;
     }
 
     @Override
@@ -65,12 +63,6 @@ public final class ExifInfoFragment extends BaseDialogFragment
                 R.layout.exif_info_fragment, container, false);
         mTextViewErrorMessage =
             (TextView) mLayout.findViewById(R.id.textViewErrorMessage);
-        mTextViewISOValue =
-            (TextView) mLayout.findViewById(R.id.textViewISOValue);
-        mTextViewShutterValue =
-            (TextView) mLayout.findViewById(R.id.textViewShutterValue);
-        mTextViewApertureValue =
-            (TextView) mLayout.findViewById(R.id.textViewApertureValue);
         mProgressIndicator =
             (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
         mProgressIndicator.setVisibility(View.VISIBLE);
@@ -161,35 +153,16 @@ public final class ExifInfoFragment extends BaseDialogFragment
 
         /* Populate table with exif info */
         for (Exif e : exifInfo) {
-            if ("ISO".equals(e.getTag())) {
-                mTextViewISOValue.setText(e.getRaw());
-            } else if ("ExposureTime".equals(e.getTag())) {
-                mTextViewShutterValue.setText(e.getRaw());
-            } else if ("FNumber".equals(e.getTag())) {
-                mTextViewApertureValue.setText("ƒ/"+e.getRaw());
-            } else {
-                /* Convert camel case key to space delimited:
-                 * http://stackoverflow.com/a/2560017/663370 */
-                String rawTag = e.getTag();
-                String tagConverted = rawTag.replaceAll(
-                        String.format("%s|%s|%s",
-                            "(?<=[A-Z])(?=[A-Z][a-z])",
-                            "(?<=[^A-Z])(?=[A-Z])",
-                            "(?<=[A-Za-z])(?=[^A-Za-z])"), " "
-                        );
-                addKeyValueRow(tagConverted, e.getRaw());
-            }
-        }
-        /* If any of the iso/shutter/aperture aren't available, set them to a
-         * question mark */
-        if ("".equals(mTextViewISOValue.getText())) {
-            mTextViewISOValue.setText("?");
-        }
-        if ("".equals(mTextViewShutterValue.getText())) {
-            mTextViewShutterValue.setText("?");
-        }
-        if ("".equals(mTextViewApertureValue.getText())) {
-            mTextViewApertureValue.setText("?");
+            /* Convert camel case key to space delimited:
+             * http://stackoverflow.com/a/2560017/663370 */
+            String rawTag = e.getTag();
+            String tagConverted = rawTag.replaceAll(
+                    String.format("%s|%s|%s",
+                        "(?<=[A-Z])(?=[A-Z][a-z])",
+                        "(?<=[^A-Z])(?=[A-Z])",
+                        "(?<=[A-Za-z])(?=[^A-Za-z])"), " "
+                    );
+            addKeyValueRow(tagConverted, e.getRaw());
         }
     }
 
