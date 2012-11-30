@@ -24,6 +24,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.activities.MainActivity;
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.IAccessTokenReadyListener;
 import com.bourke.glimmrpro.event.Events.IRequestTokenReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
@@ -120,14 +121,14 @@ public final class LoginFragment extends BaseFragment
 
     private void setupTextViews() {
         /* Set fonts */
-        mActivity.setFont((TextView) mLayout.findViewById(R.id.textWelcome),
-                Constants.FONT_ROBOTOTHIN);
-        mActivity.setFont((TextView) mLayout.findViewById(R.id.textTo),
-                Constants.FONT_ROBOTOTHIN);
-        mActivity.setFont((TextView) mLayout.findViewById(R.id.textGlimmr),
-                Constants.FONT_ROBOTOREGULAR);
-        mActivity.setFont((TextView) mLayout.findViewById(R.id.textNotNow),
-                Constants.FONT_ROBOTOTHIN);
+        mTextUtils.setFont((TextView) mLayout.findViewById(R.id.textWelcome),
+                TextUtils.FONT_ROBOTOTHIN);
+        mTextUtils.setFont((TextView) mLayout.findViewById(R.id.textTo),
+                TextUtils.FONT_ROBOTOTHIN);
+        mTextUtils.setFont((TextView) mLayout.findViewById(R.id.textGlimmr),
+                TextUtils.FONT_ROBOTOREGULAR);
+        mTextUtils.setFont((TextView) mLayout.findViewById(R.id.textNotNow),
+                TextUtils.FONT_ROBOTOTHIN);
 
         Button buttonLogin = (Button) mLayout.findViewById(R.id.btnLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +140,7 @@ public final class LoginFragment extends BaseFragment
 
         final TextView tvNotNow = (TextView) mLayout.findViewById(
                 R.id.textNotNow);
-        colorTextViewSpan(tvNotNow, tvNotNow.getText().toString(),
+        mTextUtils.colorTextViewSpan(tvNotNow, tvNotNow.getText().toString(),
                 mActivity.getString(R.string.browse),
                 mActivity.getResources().getColor(
                     R.color.abs__holo_blue_light));
@@ -155,12 +156,14 @@ public final class LoginFragment extends BaseFragment
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    colorTextViewSpan(tvNotNow, tvNotNow.getText().toString(),
+                    mTextUtils.colorTextViewSpan(tvNotNow,
+                        tvNotNow.getText().toString(),
                         mActivity.getString(R.string.browse),
                         mActivity.getResources().getColor(
                             R.color.flickr_pink));
                 } else {
-                    colorTextViewSpan(tvNotNow, tvNotNow.getText().toString(),
+                    mTextUtils.colorTextViewSpan(tvNotNow,
+                        tvNotNow.getText().toString(),
                         mActivity.getString(R.string.browse),
                         mActivity.getResources().getColor(
                             R.color.abs__holo_blue_light));

@@ -1,69 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:fillViewport="true"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+        android:fillViewport="true"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
     <LinearLayout
         android:orientation="vertical"
-        android:background="@drawable/ab_bg_black"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-
-        <TableLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/headerExifInfo"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_light_grey_stripe"
-            android:shrinkColumns="*"
-            android:stretchColumns="*">
-
-            <TableRow>
-                <TextView
-                    android:id="@+id/textViewISOKey"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textColor="@color/flickr_pink"
-                    android:gravity="center"
-                    android:text="@string/iso" />
-                <TextView
-                    android:id="@+id/textViewShutterKey"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textColor="@color/flickr_pink"
-                    android:gravity="center"
-                    android:text="@string/shutter" />
-                <TextView
-                    android:id="@+id/textViewApertureKey"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textColor="@color/flickr_pink"
-                    android:gravity="center"
-                    android:text="@string/aperture" />
-            </TableRow>
-
-            <TableRow>
-                <TextView
-                    android:id="@+id/textViewISOValue"
-                    android:textSize="@dimen/text_size_medium"
-                    android:layout_gravity="center_horizontal" />
-                <TextView
-                    android:id="@+id/textViewShutterValue"
-                    android:textSize="@dimen/text_size_medium"
-                    android:layout_gravity="center_horizontal" />
-                <TextView
-                    android:id="@+id/textViewApertureValue"
-                    android:textSize="@dimen/text_size_medium"
-                    android:layout_gravity="center_horizontal" />
-            </TableRow>
-
-            <TableRow>
-                <View
-                    android:id="@+id/seperator"
-                    android:layout_height="1dip"
-                    android:layout_span="3"
-                    android:background="@color/flickr_blue" />
-            </TableRow>
-        </TableLayout>
 
         <ProgressBar
             android:id="@+id/progressIndicator"

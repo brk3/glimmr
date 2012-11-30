@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
+
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 
@@ -23,13 +25,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.androidquery.AQuery;
 
 import com.bourke.glimmrpro.activities.BaseActivity;
-import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.common.Constants;
-import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
-import android.preference.PreferenceManager;
 
 /**
  *
@@ -51,6 +51,7 @@ public abstract class BaseFragment extends SherlockFragment {
     protected ActionBar mActionBar;
     protected AQuery mAq;
     protected ViewGroup mLayout;
+    protected TextUtils mTextUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,10 +60,9 @@ public abstract class BaseFragment extends SherlockFragment {
 
         mActivity = (BaseActivity) getSherlockActivity();
         mActionBar = mActivity.getSupportActionBar();
-        mDefaultSharedPrefs =
-            PreferenceManager.getDefaultSharedPreferences(mActivity);
+        mTextUtils = new TextUtils(mActivity.getAssets());
 
-        setRetainInstance(true);
+        setRetainInstance(shouldRetainInstance());
         setHasOptionsMenu(true);
     }
 
@@ -115,21 +115,8 @@ public abstract class BaseFragment extends SherlockFragment {
         Log.e(getLogTag(), "refresh");
     }
 
-    protected void colorTextViewSpan(TextView view, String fulltext,
-            String subtext, int color) {
-        view.setText(fulltext, TextView.BufferType.SPANNABLE);
-        Spannable str = (Spannable) view.getText();
-        int i = fulltext.indexOf(subtext);
-        try {
-            str.setSpan(new ForegroundColorSpan(color), i, i+subtext.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "fulltext: " + fulltext);
-                Log.d(getLogTag(), "subtext: " + subtext);
-            }
-        }
+    protected boolean shouldRetainInstance() {
+        return true;
     }
 
     protected String getLogTag() {
