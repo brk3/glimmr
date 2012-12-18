@@ -132,6 +132,7 @@ public class PhotoViewerActivity extends BaseActivity
             mPager.setAdapter(mAdapter);
             mPager.setOnPageChangeListener(mAdapter);
             mPager.setCurrentItem(startIndex);
+            mPager.setOffscreenPageLimit(2);
         } else {
             Log.e(getLogTag(), "Photos from intent are null");
         }
