@@ -51,6 +51,8 @@ public final class PhotoViewerFragment extends BaseFragment
 
     private final static String TAG = "Glimmr/PhotoViewerFragment";
 
+    private static final String KEY_BASEPHOTO = "glimmr_photoviewer_basephoto";
+
     private Photo mBasePhoto;
     private Photo mPhotoExtendedInfo;
     private MenuItem mFavoriteButton;
