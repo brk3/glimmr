@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.tasks.LoadPhotosetTask;
@@ -15,6 +16,8 @@ import com.bourke.glimmrpro.tasks.LoadPhotosetTask;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Photo;
+
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -25,8 +28,8 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     public static final String KEY_NEWEST_PHOTOSET_PHOTO_ID =
         "glimmr_newest_photoset_photo_id";
-    public static final String KEY_PHOTOSET_FRAGMENT_SET_ID =
-        "glimmr_photoset_fragment_set_id";
+    public static final String PHOTOSET_FILE =
+        "glimmr_photosetfragment_photoset.json";
 
     private Photoset mPhotoset;
     private LoadPhotosetTask mTask;
@@ -56,6 +59,9 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
+        if (mPhotoset == null) {
+            loadPhotoset();
+        }
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         mTask = new LoadPhotosetTask(this, mPhotoset, page);
         mTask.execute(mOAuth);
@@ -64,13 +70,10 @@ public class PhotosetGridFragment extends PhotoGridFragment
     @Override
     public void onPause() {
         super.onPause();
-        if (mPhotoset != null) {
-            SharedPreferences sp = mActivity.getSharedPreferences(
-                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString(KEY_PHOTOSET_FRAGMENT_SET_ID,
-                    mPhotoset.getId());
-            editor.commit();
+        boolean photosetStoreResult =
+            new GsonHelper(mActivity).marshallObject(mPhotoset, PHOTOSET_FILE);
+        if (!photosetStoreResult) {
+            Log.e(TAG, "onPause: Error marshalling photoset");
         }
         if (mTask != null) {
             mTask.cancel(true);
@@ -79,6 +82,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     @Override
     public void onPhotosReady(List<Photo> photos) {
+        super.onPhotosReady(photos);
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (mPhotoset != null) {
             User owner = mPhotoset.getOwner();
@@ -94,7 +98,20 @@ public class PhotosetGridFragment extends PhotoGridFragment
                 mMorePages = false;
             }
         }
-        super.onPhotosReady(photos);
+    }
+
+    /**
+     * Load the last viewed set from storage for when the fragment gets
+     * destroyed.
+     */
+    public void loadPhotoset() {
+        GsonHelper gsonHelper = new GsonHelper(mActivity);
+        String json = gsonHelper.loadJson(PHOTOSET_FILE);
+        if (json.length() == 0) {
+            Log.e(TAG, String.format("Error reading %s", PHOTOSET_FILE));
+            return;
+        }
+        mPhotoset = new Gson().fromJson(json.toString(), Photoset.class);
     }
 
     @Override
