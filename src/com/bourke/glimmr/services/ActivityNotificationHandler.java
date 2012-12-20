@@ -196,8 +196,8 @@ public class ActivityNotificationHandler
             int eventOffset) {
         if (Constants.DEBUG) Log.d(TAG, "onItemPhotoReady");
 
-        // TODO: add to strings
-        String tickerText = "New activity on your photo " + item.getTitle();
+        String tickerText = String.format("%s %s",
+                mContext.getString(R.string.new_activity), item.getTitle());
         String titleText = item.getTitle();
 
         /* build the notification content text from the item events */
@@ -208,14 +208,14 @@ public class ActivityNotificationHandler
         for (int i=0; i<newEvents.size(); i++) {
             Event e = newEvents.get(i);
             if ("comment".equals(e.getType())) {
-                // TODO: add to strings
-                contentText.append(e.getUsername() + " added a comment");
+                contentText.append(String.format("%s %s", e.getUsername(),
+                           mContext.getString(R.string.added_a_comment)));
                 if (i < newEvents.size()-1 && newEvents.size() > 1) {
                     contentText.append(", ");
                 }
             } else if ("fave".equals(e.getType())) {
-                // TODO: add to strings
-                contentText.append(e.getUsername() + " favorited");
+                contentText.append(String.format("%s %s", e.getUsername(),
+                            mContext.getString(R.string.favorited)));
                 if (i < newEvents.size()-1 && newEvents.size() > 1) {
                     contentText.append(", ");
                 }
