@@ -45,14 +45,6 @@ public class ContactsGridFragment extends PhotoGridFragment {
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadContactsPhotosTask(this);
-        mTask.execute(mOAuth);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         if (mTask != null) {

@@ -57,15 +57,6 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadPhotostreamTask(this, mActivity.getUser(),
-                mPage);
-        mTask.execute(mOAuth);
-    }
-
-    @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);

@@ -64,12 +64,6 @@ public class PhotosetsFragment extends BaseFragment
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
-        startTask();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         if (mTask != null) {

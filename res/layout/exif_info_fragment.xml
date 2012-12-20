@@ -10,14 +10,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <ProgressBar
-            android:id="@+id/progressIndicator"
-            android:layout_width="30dip"
-            android:layout_height="30dip"
-            android:layout_marginTop="5dip"
-            android:visibility="gone"
-            android:layout_gravity="center_horizontal" />
-
         <TextView
             android:id="@+id/textViewErrorMessage"
             android:layout_width="fill_parent"
