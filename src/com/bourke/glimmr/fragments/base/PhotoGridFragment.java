@@ -106,6 +106,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onPhotosReady(List<Photo> photos) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosReady");
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (photos == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
             mGridView.setVisibility(View.GONE);
@@ -122,8 +123,17 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     protected void refresh() {
         Log.d(getLogTag(), "refresh");
-        mPhotos.clear();
         mPage = 1;
+        mMorePages = true;
+        /* If the adapter is non-empty, clearing it and calling
+         * notifyDataSetChanged will trigger cacheInBackground.  Otherwise we
+         * need to manually call startTask() */
+        if (mPhotos.size() > 0) {
+            mPhotos.clear();
+            mAdapter.notifyDataSetChanged();
+        } else {
+            startTask();
+        }
     }
 
     private void initGridView() {
@@ -239,7 +249,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     class EndlessGridAdapter extends EndlessAdapter {
 
         public EndlessGridAdapter(List<Photo> list) {
-            super(mActivity, new GridAdapter(list), R.layout.pending);
+            super(new GridAdapter(list));
         }
 
         @Override
@@ -249,6 +259,11 @@ public abstract class PhotoGridFragment extends BaseFragment
 
         @Override
         protected void appendCachedData() {
+        }
+
+        @Override
+        protected View getPendingView(ViewGroup parent) {
+            return new View(mActivity);
         }
     }
 

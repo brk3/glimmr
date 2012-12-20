@@ -49,14 +49,6 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadPublicPhotosTask(this, mPage);
-        mTask.execute();
-    }
-
-    @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);

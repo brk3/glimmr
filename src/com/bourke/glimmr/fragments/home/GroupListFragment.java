@@ -77,12 +77,6 @@ public class GroupListFragment extends BaseFragment
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
-        startTask();
-    }
-
-    @Override
     public void onGroupListReady(List<Group> groups) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onGroupListReady");
 
