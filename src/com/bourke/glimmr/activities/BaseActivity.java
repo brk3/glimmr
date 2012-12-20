@@ -15,6 +15,9 @@ import android.net.Uri;
 
 import android.os.Bundle;
 
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+
 import android.text.SpannableString;
 import android.text.util.Linkify;
 
@@ -168,14 +171,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                 /* This is called when the Home (Up) button is pressed
-                  * in the Action Bar. */
-                Intent parentActivityIntent = new Intent(this,
-                        MainActivity.class);
-                parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(parentActivityIntent);
-                finish();
+                /* This is called when the Home (Up) button is pressed
+                 * in the Action Bar. http://goo.gl/lJxjA */
+                Intent upIntent = new Intent(this, MainActivity.class);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    TaskStackBuilder.from(this)
+                        .addNextIntent(upIntent)
+                        .startActivities();
+                    finish();
+                } else {
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
                 return true;
 
             case R.id.menu_search:

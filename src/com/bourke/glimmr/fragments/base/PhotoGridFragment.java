@@ -379,9 +379,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            // TODO: add to strings
-            builder.setTitle("View a tag")
-                .setItems(R.array.photo_item_long_click_dialog_items,
+            builder.setItems(R.array.photo_item_long_click_dialog_items,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mListener.onLongClickDialogSelection(mPhoto, which);
