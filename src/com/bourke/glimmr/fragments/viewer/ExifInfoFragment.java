@@ -108,6 +108,9 @@ public final class ExifInfoFragment extends BaseDialogFragment
         /* Create the left column for the key */
         TextView textViewKey =  new TextView(mActivity);
         textViewKey.setText(key);
+        TableRow.LayoutParams leftColParams = new TableRow.LayoutParams(
+                0, TableLayout.LayoutParams.WRAP_CONTENT, 1f);
+        textViewKey.setLayoutParams(leftColParams);
         tr.addView(textViewKey);
 
         /* Create the right column for the value */
@@ -118,8 +121,7 @@ public final class ExifInfoFragment extends BaseDialogFragment
         textViewValue.setMaxLines(1);
         textViewValue.setEllipsize(TextUtils.TruncateAt.END);
         TableRow.LayoutParams lp = new TableRow.LayoutParams(
-                TableLayout.LayoutParams.FILL_PARENT,
-                TableLayout.LayoutParams.WRAP_CONTENT);
+                0, TableLayout.LayoutParams.WRAP_CONTENT, 1f);
         /* left, top, right, bottom */
         lp.setMargins(8, 0, 0, 0);
         textViewValue.setLayoutParams(lp);
