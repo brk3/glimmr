@@ -153,6 +153,8 @@ public final class PhotoOverviewFragment extends BaseFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+
         if (exc != null && exc instanceof FlickrException) {
             String errCode = ((FlickrException) exc).getErrorCode();
             Log.e(getLogTag(), "errCode: " + errCode);
