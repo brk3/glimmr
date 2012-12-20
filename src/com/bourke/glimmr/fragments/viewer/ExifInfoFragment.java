@@ -119,10 +119,7 @@ public final class ExifInfoFragment extends BaseFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
-        if (Constants.DEBUG) {
-            Log.d(getLogTag(), "onExifInfoReady, exifInfo.size(): "
-                + exifInfo.size());
-        }
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         /* Something went wrong, show message and return */
         if (exc != null) {
