@@ -89,13 +89,6 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
-        mTask = new SearchPhotosTask(this, mSearchQuery, mPage);
-        mTask.execute(mOAuth);
-    }
-
-    @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);

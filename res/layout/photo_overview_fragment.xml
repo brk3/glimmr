@@ -87,14 +87,6 @@
             android:clickable="true"
             android:textColor="@drawable/textview_selector"
             android:gravity="left" />
-
-        <ProgressBar
-            android:id="@+id/progressIndicator"
-            android:layout_width="30dip"
-            android:layout_height="30dip"
-            android:layout_marginTop="5dip"
-            android:visibility="gone"
-            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
 </ScrollView>

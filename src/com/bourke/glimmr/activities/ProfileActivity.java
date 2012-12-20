@@ -80,7 +80,7 @@ public class ProfileActivity extends BottomOverlayActivity
         }
         mUser = gson.fromJson(json.toString(), User.class);
         initViewPager();
-        startTask();
+        fetchUser();
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ProfileActivity extends BottomOverlayActivity
      * Default user info doesn't include the buddy icon url, so we need to
      * fetch extra info about the user
      */
-    protected void startTask() {
+    private void fetchUser() {
         if (mUser == null) {
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Cannot start LoadUserTask, mUser is null");
