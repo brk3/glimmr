@@ -5,11 +5,31 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/text"
-        style="@style/MenuDrawer.Widget.Category" />
+        android:orientation="horizontal">
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="4dip"
+            style="@style/MenuDrawer.Widget.Category" />
+
+        <ImageButton
+            android:id="@+id/refreshActivityStreamButton"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="16dip"
+            android:layout_marginBottom="4dip"
+            android:background="@drawable/selectable_background_glimmrdark"
+            android:src="@drawable/ic_action_refresh_dark" />
+    </LinearLayout>
 
     <View
         android:id="@+id/separator"

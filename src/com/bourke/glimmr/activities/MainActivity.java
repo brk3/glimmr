@@ -72,6 +72,7 @@ import net.simonvt.widget.MenuDrawer;
 import net.simonvt.widget.MenuDrawerManager;
 
 import org.ocpsoft.pretty.time.PrettyTime;
+import android.widget.ImageButton;
 
 public class MainActivity extends BaseActivity {
 
@@ -138,7 +139,7 @@ public class MainActivity extends BaseActivity {
         switch (item.getItemId()) {
         case android.R.id.home:
             if (activityItemsNeedsUpdate()) {
-                updateMenuListItems();
+                updateMenuListItems(false);
             }
             mMenuDrawerMgr.toggleMenu();
             return true;
@@ -216,7 +217,7 @@ public class MainActivity extends BaseActivity {
                 RecentPublicPhotosFragment.class));
     }
 
-    public void updateMenuListItems() {
+    public void updateMenuListItems(boolean forceRefresh) {
         if (Constants.DEBUG) Log.d(TAG, "updateMenuListItems");
 
         final List<Object> menuItems = new ArrayList<Object>();
@@ -231,7 +232,7 @@ public class MainActivity extends BaseActivity {
          * drawer area.  Otherwise start a task to fetch one. */
         File f = getFileStreamPath(ActivityNotificationHandler
                 .ACTIVITY_ITEMLIST_FILE);
-        if (f.exists()) {
+        if (f.exists() && !forceRefresh) {
             /* There is some duplicated code here.  Could move it into another
              * function but the task is fragmented enough as is */
             List<Item> items = ActivityNotificationHandler.loadItemList(this);
@@ -241,9 +242,12 @@ public class MainActivity extends BaseActivity {
             mMenuAdapter.setItems(menuItems);
             mMenuAdapter.notifyDataSetChanged();
         } else {
+            setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
             new LoadFlickrActivityTask(new IActivityItemsReadyListener() {
                 @Override
                 public void onItemListReady(List<Item> items) {
+                    setSupportProgressBarIndeterminateVisibility(
+                        Boolean.FALSE);
                     if (items != null) {
                         ActivityNotificationHandler.storeItemList(
                             MainActivity.this, items);
@@ -403,7 +407,7 @@ public class MainActivity extends BaseActivity {
                                 mActionBar.setDisplayHomeAsUpEnabled(true);
                             }
                             if (activityItemsNeedsUpdate()) {
-                                updateMenuListItems();
+                                updateMenuListItems(false);
                             }
                         }
                     }
@@ -433,7 +437,7 @@ public class MainActivity extends BaseActivity {
             mViewPager.setOnPageChangeListener(pageChangeListener);
         }
 
-        updateMenuListItems();
+        updateMenuListItems(false);
     }
 
     private void startViewerForActivityItem(int itemPos) {
@@ -647,6 +651,14 @@ public class MainActivity extends BaseActivity {
                 ((TextView) v.findViewById(R.id.text)).setText(
                     ((MenuDrawerCategory) item).mTitle);
 
+                ImageButton refreshActivityButton = (ImageButton)
+                    v.findViewById(R.id.refreshActivityStreamButton);
+                refreshActivityButton.setOnClickListener(
+                        new View.OnClickListener() {
+                            public void onClick(View v) {
+                                updateMenuListItems(true);
+                            }
+                        });
             } else {
                 Log.e(TAG, "MenuAdapter.getView: Unsupported item type");
             }
