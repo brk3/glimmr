@@ -115,13 +115,6 @@ public class PhotosetGridFragment extends PhotoGridFragment
     }
 
     @Override
-    protected void refresh() {
-        super.refresh();
-        mTask = new LoadPhotosetTask(this, mPhotoset, mPage);
-        mTask.execute(mOAuth);
-    }
-
-    @Override
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);

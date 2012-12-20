@@ -98,8 +98,8 @@ public abstract class BaseFragment extends SherlockFragment {
     }
 
     protected void startTask() {
-        if (Constants.DEBUG)
-            Log.d(getLogTag(), "startTask()");
+        if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         if (mOAuth == null || mOAuth.getUser() == null) {
             SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                     .PREFS_NAME, Context.MODE_PRIVATE);
@@ -108,7 +108,7 @@ public abstract class BaseFragment extends SherlockFragment {
     }
 
     protected void refresh() {
-        Log.e(getLogTag(), "refresh");
+        Log.d(getLogTag(), "refresh");
     }
 
     protected boolean shouldRetainInstance() {
