@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -47,7 +46,6 @@ public final class PhotoOverviewFragment extends BaseFragment
 
     private Photo mPhoto = new Photo();
     private LoadExifInfoTask mTask;
-    private ProgressBar mProgressIndicator;
 
     private TextView mTextViewISO;
     private TextView mTextViewShutter;
@@ -76,10 +74,6 @@ public final class PhotoOverviewFragment extends BaseFragment
             Bundle savedInstanceState) {
         mLayout = (ScrollView) inflater.inflate(
                 R.layout.photo_overview_fragment, container, false);
-
-        mProgressIndicator = (ProgressBar)
-            mLayout.findViewById(R.id.progressIndicator);
-        mProgressIndicator.setVisibility(View.VISIBLE);
 
         mTextViewISO = (TextView)
             mLayout.findViewById(R.id.textViewISO);
@@ -113,7 +107,7 @@ public final class PhotoOverviewFragment extends BaseFragment
             mTextTags.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TagClickDialog d = TagClickDialog.newInstance(mActivity,
+                    TagClickDialog d = new TagClickDialog(mActivity,
                         PhotoOverviewFragment.this,
                         allTags.toArray(new Tag[allTags.size()]));
                     d.show(mActivity.getSupportFragmentManager(),
@@ -159,8 +153,6 @@ public final class PhotoOverviewFragment extends BaseFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
-        mProgressIndicator.setVisibility(View.GONE);
-
         if (exc != null && exc instanceof FlickrException) {
             String errCode = ((FlickrException) exc).getErrorCode();
             Log.e(getLogTag(), "errCode: " + errCode);
@@ -218,18 +210,16 @@ public final class PhotoOverviewFragment extends BaseFragment
         return TAG;
     }
 
-    static class TagClickDialog extends SherlockDialogFragment {
+    class TagClickDialog extends SherlockDialogFragment {
         private TagClickDialogListener mListener;
         private Context mContext;
         private Tag[] mTags;
 
-        public static TagClickDialog newInstance(Context context,
+        public TagClickDialog(Context context,
                 TagClickDialogListener listener, Tag[] tags) {
-            TagClickDialog newDialog = new TagClickDialog();
-            newDialog.mListener = listener;
-            newDialog.mContext = context;
-            newDialog.mTags = tags;
-            return newDialog;
+            mListener = listener;
+            mContext = context;
+            mTags = tags;
         }
 
         @Override
@@ -239,8 +229,7 @@ public final class PhotoOverviewFragment extends BaseFragment
                 dialogItems[i] = mTags[i].getValue();
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            // TODO: update strings
-            builder.setTitle("Tags")
+            builder.setTitle(mActivity.getString(R.string.tags))
                 .setItems(dialogItems, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,
                             int which) {
