@@ -3,6 +3,7 @@
     <string name="activity">Activity</string>
     <string name="about">About</string>
     <string name="about_text">Thanks for supporting Glimmr!\n\nFollow Me: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nTranslators:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer</string>
+    <string name="added_a_comment">added a comment</string>
     <string name="aperture">APERTURE</string>
     <string name="app_name">Glimmr</string>
     <string name="browse">browse</string>
@@ -32,6 +33,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_view_comments">Comments</string>
     <string name="menu_view_exif">View Exif Info</string>
+    <string name="new_activity">New activity on your photo</string>
     <string name="no_connection">Something went wrong.\nTry refreshing?</string>
     <string name="no_search_results">No results found.</string>
     <string name="no_exif_permission">The owner of the photo does not want to share EXIF data.</string>
@@ -64,6 +66,7 @@
     <string name="set_wallpaper">Set Wallpaper</string>
     <string name="setting_wallpaper">Setting Wallpaper…</string>
     <string name="shutter">SHUTTER</string>
+    <string name="tags">Tags</string>
     <string name="thirty_mins">30 minutes</string>
     <string name="to">to</string>
     <string name="untitled">Untitled</string>

@@ -29,7 +29,6 @@ import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
-import android.widget.ProgressBar;
 
 public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {
@@ -38,7 +37,6 @@ public final class ExifInfoFragment extends BaseFragment
 
     private Photo mPhoto = new Photo();
     private LoadExifInfoTask mTask;
-    private ProgressBar mProgressIndicator;
     private TextView mTextViewErrorMessage;
 
     /* http://www.flickr.com/services/api/flickr.photos.getExif.html */
@@ -63,9 +61,6 @@ public final class ExifInfoFragment extends BaseFragment
                 R.layout.exif_info_fragment, container, false);
         mTextViewErrorMessage =
             (TextView) mLayout.findViewById(R.id.textViewErrorMessage);
-        mProgressIndicator =
-            (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
-        mProgressIndicator.setVisibility(View.VISIBLE);
         return mLayout;
     }
 
@@ -124,8 +119,6 @@ public final class ExifInfoFragment extends BaseFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
-        mProgressIndicator.setVisibility(View.GONE);
-
         if (Constants.DEBUG) {
             Log.d(getLogTag(), "onExifInfoReady, exifInfo.size(): "
                 + exifInfo.size());
