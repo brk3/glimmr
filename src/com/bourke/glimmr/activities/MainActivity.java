@@ -440,7 +440,6 @@ public class MainActivity extends BaseActivity {
     private void startViewerForActivityItem(int itemPos) {
         setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
 
-        // TODO: only load these once throughout the activity
         List<Item> items = ActivityNotificationHandler
             .loadItemList(MainActivity.this);
         Item item = items.get(itemPos);
@@ -450,7 +449,6 @@ public class MainActivity extends BaseActivity {
                 if (photo == null) {
                     Log.e(TAG, "onPhotoInfoReady: photo is null, " +
                         "can't start viewer");
-                    // TODO: alert user
                     return;
                 }
                 List<Photo> photos = new ArrayList<Photo>();
