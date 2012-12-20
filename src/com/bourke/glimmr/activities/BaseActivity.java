@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.actionbarsherlock.view.Window;
 import android.app.AlertDialog;
 import android.app.Dialog;
 
@@ -12,11 +11,12 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.SharedPreferences;
 
-import android.graphics.Typeface;
-
 import android.net.Uri;
 
 import android.os.Bundle;
+
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 
 import android.text.SpannableString;
 import android.text.util.Linkify;
@@ -29,14 +29,15 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
 
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -170,14 +171,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                 /* This is called when the Home (Up) button is pressed
-                  * in the Action Bar. */
-                Intent parentActivityIntent = new Intent(this,
-                        MainActivity.class);
-                parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(parentActivityIntent);
-                finish();
+                /* This is called when the Home (Up) button is pressed
+                 * in the Action Bar. http://goo.gl/lJxjA */
+                Intent upIntent = new Intent(this, MainActivity.class);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    TaskStackBuilder.from(this)
+                        .addNextIntent(upIntent)
+                        .startActivities();
+                    finish();
+                } else {
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
                 return true;
 
             case R.id.menu_search:

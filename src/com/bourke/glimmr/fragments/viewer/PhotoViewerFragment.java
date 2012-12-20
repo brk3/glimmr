@@ -235,6 +235,7 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         /* Start a task to fetch more detailed info about the photo if we don't
          * already have it (required for favorite status) */
         if (mPhotoExtendedInfo == null) {
