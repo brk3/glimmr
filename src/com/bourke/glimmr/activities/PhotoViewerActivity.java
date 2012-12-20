@@ -60,6 +60,12 @@ public class PhotoViewerActivity extends BaseActivity
 
     public static final String KEY_PHOTOVIEWER_START_INDEX =
         "glimmr_photovieweractivity_start_index";
+    public static final String KEY_PHOTOVIEWER_CURRENT_INDEX =
+        "glimmr_photovieweractivity_current_index";
+    public static final String KEY_PHOTOVIEWER_COMMENTS_SHOWING =
+        "glimmr_photovieweractivity_comments_showing";
+    public static final String KEY_PHOTOVIEWER_INFO_SHOWING =
+        "glimmr_photovieweractivity_info_showing";
     public static final String KEY_PHOTOVIEWER_ACTIONBAR_SHOW =
         "glimmr_photovieweractivity_actionbar_show";
     public static final String KEY_PHOTO_LIST_FILE =
@@ -164,9 +170,19 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
+        // FIXME: unbelievably annoying bug that causes FragmentTransactions to
+        // throw an IllegalStateException after rotate.
+        // commitAllowingStateLoss doesn't help... Hence have to store pieces
+        // of state manually that would otherwise be handled automatically.
+        //super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putBoolean(KEY_PHOTOVIEWER_ACTIONBAR_SHOW,
                 mActionBar.isShowing());
+        savedInstanceState.putInt(KEY_PHOTOVIEWER_CURRENT_INDEX,
+                mPager.getCurrentItem());
+        savedInstanceState.putBoolean(KEY_PHOTOVIEWER_COMMENTS_SHOWING,
+                mCommentsFragmentShowing);
+        savedInstanceState.putBoolean(KEY_PHOTOVIEWER_INFO_SHOWING,
+                mPhotoInfoFragmentShowing);
     }
 
     @Override
@@ -187,6 +203,20 @@ public class PhotoViewerActivity extends BaseActivity
             getWindow().clearFlags(
                     WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         }
+        int pagerIndex = savedInstanceState.getInt(
+                KEY_PHOTOVIEWER_CURRENT_INDEX, 0);
+        mPager.setCurrentItem(pagerIndex);
+        mCommentsFragmentShowing = savedInstanceState.getBoolean(
+                KEY_PHOTOVIEWER_COMMENTS_SHOWING, false);
+        mPhotoInfoFragmentShowing = savedInstanceState.getBoolean(
+                KEY_PHOTOVIEWER_INFO_SHOWING, false);
+        boolean animateTransition = true;
+        Photo photo = mPhotos.get(pagerIndex);
+        if (mCommentsFragmentShowing) {
+            setCommentsFragmentVisibility(photo, true, animateTransition);
+        } else if (mPhotoInfoFragmentShowing) {
+            setPhotoInfoFragmentVisibility(photo, true, animateTransition);
+        }
     }
 
     @Override
@@ -204,7 +234,8 @@ public class PhotoViewerActivity extends BaseActivity
         if (getResources().getBoolean(R.bool.sw600dp)) {
             boolean animateTransition = true;
             if (mPhotoInfoFragmentShowing) {
-                setPhotoInfoFragmentVisibility(photo, false, animateTransition);
+                setPhotoInfoFragmentVisibility(
+                        photo, false, animateTransition);
             }
             if (mCommentsFragmentShowing) {
                 setCommentsFragmentVisibility(photo, false, animateTransition);
