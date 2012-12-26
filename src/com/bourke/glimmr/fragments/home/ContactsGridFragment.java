@@ -29,19 +29,9 @@ public class ContactsGridFragment extends PhotoGridFragment {
     @Override
     protected void startTask() {
         super.startTask();
-        if (mPhotos != null && !mPhotos.isEmpty()) {
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "mPhotos occupied, not starting task");
-            }
-        } else {
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "mPhotos null or empty, starting task");
-            }
-            mActivity
-                .setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-            mTask = new LoadContactsPhotosTask(this);
-            mTask.execute(mOAuth);
-        }
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mTask = new LoadContactsPhotosTask(this);
+        mTask.execute(mOAuth);
     }
 
     @Override
@@ -71,6 +61,16 @@ public class ContactsGridFragment extends PhotoGridFragment {
         if (Constants.DEBUG)
             Log.d(getLogTag(), "Updated most recent contact photo id to " +
                 photo.getId());
+    }
+
+    /**
+     * Override as no pagination
+     */
+    @Override
+    protected void refresh() {
+        mPhotos.clear();
+        getAdapter().notifyDataSetChanged();
+        startTask();
     }
 
     @Override

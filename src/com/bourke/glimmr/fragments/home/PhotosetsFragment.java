@@ -129,6 +129,16 @@ public class PhotosetsFragment extends BaseFragment
         mViewEmpty.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Override as no pagination
+     */
+    @Override
+    protected void refresh() {
+        mPhotosets.clear();
+        mAdapter.notifyDataSetChanged();
+        startTask();
+    }
+
     @Override
     protected String getLogTag() {
         return TAG;
