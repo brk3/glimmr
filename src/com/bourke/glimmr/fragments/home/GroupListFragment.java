@@ -39,6 +39,7 @@ public class GroupListFragment extends BaseFragment
     private ViewGroup mNoConnectionLayout;
     private AdapterView mListView;
     private ViewGroup mEmptyView;
+    private GroupListAdapter mAdapter;
 
     public static GroupListFragment newInstance() {
         GroupListFragment newFragment = new GroupListFragment();
@@ -88,9 +89,9 @@ public class GroupListFragment extends BaseFragment
             mListView.setVisibility(View.VISIBLE);
             mNoConnectionLayout.setVisibility(View.GONE);
             mGroups = (List<Group>) groups;
-            GroupListAdapter adapter = new GroupListAdapter(mActivity,
-                    R.layout.group_list_row, (ArrayList<Group>)groups);
-            mListView.setAdapter(adapter);
+            mAdapter = new GroupListAdapter(mActivity, R.layout.group_list_row,
+                    (ArrayList<Group>) groups);
+            mListView.setAdapter(mAdapter);
             mListView.setOnItemClickListener(
                     new AdapterView.OnItemClickListener() {
                 @Override
@@ -102,6 +103,16 @@ public class GroupListFragment extends BaseFragment
             });
         }
         mEmptyView.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * Override as no pagination
+     */
+    @Override
+    protected void refresh() {
+        mGroups.clear();
+        mAdapter.notifyDataSetChanged();
+        startTask();
     }
 
     @Override
