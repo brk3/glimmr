@@ -66,7 +66,6 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected boolean mShowDetailsOverlay = true;
 
     private ViewGroup mNoConnectionLayout;
-    private ViewGroup mEmptyView;
 
     public abstract String getNewestPhotoId();
     public abstract void storeNewestPhotoId(Photo photo);
@@ -82,7 +81,6 @@ public abstract class PhotoGridFragment extends BaseFragment
         mAq = new AQuery(mActivity, mLayout);
         mNoConnectionLayout =
             (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
-        mEmptyView = (ViewGroup) mLayout.findViewById(android.R.id.empty);
         mGridView = (AdapterView) mLayout.findViewById(R.id.gridview);
         initGridView();
         return mLayout;
@@ -95,9 +93,6 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
         }
         if (mPhotos != null && !mPhotos.isEmpty()) {
-            LinearLayout layoutEmpty = (LinearLayout)
-                mLayout.findViewById(android.R.id.empty);
-            layoutEmpty.setVisibility(View.INVISIBLE);
             GridView gridView = (GridView) mLayout.findViewById(R.id.gridview);
             gridView.setVisibility(View.VISIBLE);
         }
@@ -117,7 +112,6 @@ public abstract class PhotoGridFragment extends BaseFragment
             mPhotos.addAll(photos);
             mAdapter.onDataReady();
         }
-        mEmptyView.setVisibility(View.INVISIBLE);
     }
 
     @Override
