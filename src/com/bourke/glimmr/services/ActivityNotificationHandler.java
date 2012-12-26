@@ -127,9 +127,10 @@ public class ActivityNotificationHandler
             return;
         }
 
-        /* (NOTE: we could look the fetchedItems here to check for other new or
-         * updated ones.  But would need to be careful that wouldn't spam a lot
-         * of noticiations so will just check the latest for now.) */
+        /* (NOTE: we could look at all the fetchedItems here to check for other
+         * new or updated ones.  But would need to be careful that wouldn't
+         * spam a lot of notifications so will just check the latest for now.)
+         * */
         Item fetchedItem = fetchedItems.get(0);
         List<Event> newEvents = (List<Event>)fetchedItem.getEvents();
         Event latestEvent = newEvents.get(newEvents.size()-1);
