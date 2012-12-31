@@ -6,13 +6,16 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadContactsPhotosTask;
 
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
-public class ContactsGridFragment extends PhotoGridFragment {
+import java.util.List;
+
+public class ContactsGridFragment extends PhotoGridFragment
+        implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/ContactsGridFragment";
 
@@ -26,12 +29,31 @@ public class ContactsGridFragment extends PhotoGridFragment {
         return newFragment;
     }
 
+    /**
+     * Once the parent binds the adapter it will trigger cacheInBackground
+     * for us as it will be empty when first bound.  So we don't need to
+     * override startTask().
+     */
     @Override
-    protected void startTask() {
+    protected boolean cacheInBackground() {
+        startTask(mPage++);
+        return mMorePages;
+    }
+
+    private void startTask(int page) {
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadContactsPhotosTask(this);
+        mTask = new LoadContactsPhotosTask(this, page);
         mTask.execute(mOAuth);
+    }
+
+    @Override
+    public void onPhotosReady(List<Photo> photos) {
+        super.onPhotosReady(photos);
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        if (photos != null && photos.isEmpty()) {
+            mMorePages = false;
+        }
     }
 
     @Override
@@ -61,16 +83,6 @@ public class ContactsGridFragment extends PhotoGridFragment {
         if (Constants.DEBUG)
             Log.d(getLogTag(), "Updated most recent contact photo id to " +
                 photo.getId());
-    }
-
-    /**
-     * Override as no pagination
-     */
-    @Override
-    protected void refresh() {
-        mPhotos.clear();
-        getAdapter().notifyDataSetChanged();
-        startTask();
     }
 
     @Override

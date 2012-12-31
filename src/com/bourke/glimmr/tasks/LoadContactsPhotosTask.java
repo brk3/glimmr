@@ -24,9 +24,11 @@ public class LoadContactsPhotosTask
     private static final String TAG = "Glimmr/LoadContactsPhotosTask";
 
     private IPhotoListReadyListener mListener;
+    private int mPage;
 
-    public LoadContactsPhotosTask(IPhotoListReadyListener listener) {
+    public LoadContactsPhotosTask(IPhotoListReadyListener listener, int page) {
         mListener = listener;
+        mPage = page;
     }
 
     @Override
@@ -44,16 +46,13 @@ public class LoadContactsPhotosTask
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
             try {
-                /* Flickr api doc says max allowed is 50, but seems to allow
-                 * more... For some reason pagination doesn't seem to be an
-                 * option. */
-                int amountToFetch = 50;
                 boolean justFriends = false;
                 boolean singlePhoto = false;
                 boolean includeSelf = false;
-                return f.getPhotosInterface().getContactsPhotos(amountToFetch,
-                        Constants.EXTRAS, justFriends, singlePhoto,
-                        includeSelf);
+                return f.getPhotosInterface().getContactsPhotos(
+                        Constants.FETCH_PER_PAGE, Constants.EXTRAS,
+                        justFriends, singlePhoto, includeSelf, mPage,
+                        Constants.FETCH_PER_PAGE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
