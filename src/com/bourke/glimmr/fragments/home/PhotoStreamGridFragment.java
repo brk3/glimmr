@@ -66,6 +66,15 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
+        }
+    }
+
+    @Override
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
