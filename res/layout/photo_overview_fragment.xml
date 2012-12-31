@@ -47,6 +47,26 @@
             android:text="@string/focal_length" />
 
         <TextView
+            android:id="@+id/textViewTitleTitle"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="16dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_medium"
+            android:text="Title:"
+            android:gravity="left" />
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="2dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:gravity="left" />
+
+        <TextView
             android:id="@+id/textViewDescriptionTitle"
             android:paddingLeft="6dip"
             android:paddingRight="6dip"

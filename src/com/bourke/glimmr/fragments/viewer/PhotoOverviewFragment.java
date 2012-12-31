@@ -51,8 +51,9 @@ public final class PhotoOverviewFragment extends BaseFragment
     private TextView mTextViewShutter;
     private TextView mTextViewAperture;
     private TextView mTextViewFocalLength;
-    private TextView mTextTags;
+    private TextView mTextViewTitle;
     private TextView mTextViewDescription;
+    private TextView mTextTags;
 
     /* http://www.flickr.com/services/api/flickr.photos.getExif.html */
     private static final String ERR_PERMISSION_DENIED = "2";
@@ -63,7 +64,7 @@ public final class PhotoOverviewFragment extends BaseFragment
         return photoFragment;
     }
 
-    /** Can't retain fragements that are nested in other fragments */
+    /** Can't retain fragments that are nested in other fragments */
     @Override
     protected boolean shouldRetainInstance() {
         return false;
@@ -87,8 +88,19 @@ public final class PhotoOverviewFragment extends BaseFragment
         mTextViewFocalLength = (TextView)
             mLayout.findViewById(R.id.textViewFocalLength);
 
-        mTextTags = (TextView)
-            mLayout.findViewById(R.id.textViewTags);
+        /* build the title textview */
+        mTextViewTitle = (TextView)
+            mLayout.findViewById(R.id.textViewTitle);
+        String title = mPhoto.getTitle();
+        if ("".equals(title)) {
+            // TODO: update string
+            mTextViewTitle.setText("None");
+        } else {
+            mTextViewTitle.setText("‘"+title+"’");
+        }
+
+        /* build the tags textview */
+        mTextTags = (TextView) mLayout.findViewById(R.id.textViewTags);
         StringBuilder tags = new StringBuilder();
         final Collection<Tag> allTags = mPhoto.getTags();
         int count = 0;
@@ -116,6 +128,7 @@ public final class PhotoOverviewFragment extends BaseFragment
             });
         }
 
+        /* build the description textview */
         mTextViewDescription = (TextView)
             mLayout.findViewById(R.id.textViewDescription);
         String description = mPhoto.getDescription();
