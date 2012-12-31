@@ -49,7 +49,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
                 return f.getPhotosetsInterface().getPhotos(
                         ""+mPhotoset.getId(), Constants.EXTRAS,
                         Flickr.PRIVACY_LEVEL_NO_FILTER,
-                        Constants.FETCH_PER_PAGE, mPage);
+                        Constants.FETCH_PER_PAGE, mPage).getPhotoList();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -60,7 +60,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
                 return FlickrHelper.getInstance().getPhotosetsInterface()
                     .getPhotos(""+mPhotoset.getId(), Constants.EXTRAS,
                             Flickr.PRIVACY_LEVEL_NO_FILTER,
-                            Constants.FETCH_PER_PAGE, mPage);
+                            Constants.FETCH_PER_PAGE, mPage).getPhotoList();
             } catch (Exception e) {
                 e.printStackTrace();
             }

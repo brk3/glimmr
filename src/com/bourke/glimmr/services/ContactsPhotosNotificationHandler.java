@@ -43,6 +43,8 @@ public class ContactsPhotosNotificationHandler
     private SharedPreferences mPrefs;
     private SharedPreferences.Editor mPrefsEditor;
 
+    private final int PAGE_TO_FETCH = 1;
+
     public ContactsPhotosNotificationHandler(Context context) {
         mContext = context;
         mPrefs = mContext.getSharedPreferences(
@@ -52,7 +54,7 @@ public class ContactsPhotosNotificationHandler
 
     @Override
     public void startTask(OAuth oauth) {
-        new LoadContactsPhotosTask(this).execute(oauth);
+        new LoadContactsPhotosTask(this, PAGE_TO_FETCH).execute(oauth);
     }
 
     @Override
