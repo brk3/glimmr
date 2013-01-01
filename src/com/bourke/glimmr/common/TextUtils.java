@@ -1,4 +1,4 @@
-package com.bourke.glimmr.common;
+package com.bourke.glimmrpro.common;
 
 import android.content.res.AssetManager;
 
