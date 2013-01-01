@@ -8,23 +8,19 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPhotostreamTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 
-import java.util.List;
-
-public class PhotoStreamGridFragment extends PhotoGridFragment
-        implements IPhotoListReadyListener {
+public class PhotoStreamGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/PhotoStreamGridFragment";
 
     public static final String KEY_NEWEST_PHOTOSTREAM_PHOTO_ID =
         "glimmr_newest_photostream_photo_id";
 
-    private LoadPhotostreamTask mTask;
+    protected LoadPhotostreamTask mTask;
 
     public static PhotoStreamGridFragment newInstance() {
         PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
@@ -54,24 +50,6 @@ public class PhotoStreamGridFragment extends PhotoGridFragment
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         mTask = new LoadPhotostreamTask(this, mActivity.getUser(), page);
         mTask.execute(mOAuth);
-    }
-
-    @Override
-    public void onPhotosReady(List<Photo> photos) {
-        super.onPhotosReady(photos);
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
-        if (photos != null && photos.isEmpty()) {
-            mMorePages = false;
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mTask != null) {
-            mTask.cancel(true);
-            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
-        }
     }
 
     @Override

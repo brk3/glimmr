@@ -9,7 +9,6 @@ import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadFavoritesTask;
 
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 public class FavoritesGridFragment extends PhotoGridFragment {
@@ -19,7 +18,7 @@ public class FavoritesGridFragment extends PhotoGridFragment {
     public static final String KEY_NEWEST_FAVORITES_PHOTO_ID =
         "glimmr_newest_favorites_photo_id";
 
-    private LoadFavoritesTask mTask;
+    protected LoadFavoritesTask mTask;
 
     public static FavoritesGridFragment newInstance() {
         FavoritesGridFragment newFragment = new FavoritesGridFragment();
