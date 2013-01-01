@@ -38,7 +38,6 @@ public class GroupListFragment extends BaseFragment
     private LoadGroupsTask mTask;
     private ViewGroup mNoConnectionLayout;
     private AdapterView mListView;
-    private ViewGroup mEmptyView;
     private GroupListAdapter mAdapter;
 
     public static GroupListFragment newInstance() {
@@ -55,13 +54,13 @@ public class GroupListFragment extends BaseFragment
         mNoConnectionLayout =
             (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
         mListView = (AdapterView) mLayout.findViewById(R.id.list);
-        mEmptyView = (ViewGroup) mLayout.findViewById(android.R.id.empty);
         return mLayout;
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (mTask != null) {
             mTask.cancel(true);
             if (Constants.DEBUG)
@@ -102,7 +101,6 @@ public class GroupListFragment extends BaseFragment
                 }
             });
         }
-        mEmptyView.setVisibility(View.INVISIBLE);
     }
 
     /**

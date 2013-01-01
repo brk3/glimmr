@@ -22,8 +22,4 @@
         android:id="@+id/no_connection_layout"
         android:visibility="gone" />
 
-    <include
-        layout="@layout/pending"
-        android:id="@android:id/empty" />
-
 </RelativeLayout>
