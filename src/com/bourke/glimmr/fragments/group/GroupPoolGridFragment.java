@@ -6,17 +6,13 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.bourke.glimmrpro.common.Constants;
-import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.tasks.LoadGroupPoolTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.photos.Photo;
 
-import java.util.List;
-
-public class GroupPoolGridFragment extends PhotoGridFragment
-        implements IPhotoListReadyListener {
+public class GroupPoolGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/GroupPoolGridFragment";
 
@@ -26,7 +22,8 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         "glimmr_grouppool_group_id";
 
     private Group mGroup;
-    private LoadGroupPoolTask mTask;
+
+    protected LoadGroupPoolTask mTask;
 
     public static GroupPoolGridFragment newInstance(Group group) {
         GroupPoolGridFragment newFragment = new GroupPoolGridFragment();
@@ -53,15 +50,6 @@ public class GroupPoolGridFragment extends PhotoGridFragment
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         mTask = new LoadGroupPoolTask(this, mGroup, page);
         mTask.execute(mOAuth);
-    }
-
-    @Override
-    public void onPhotosReady(List<Photo> photos) {
-        super.onPhotosReady(photos);
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
-        if (photos != null && photos.isEmpty()) {
-            mMorePages = false;
-        }
     }
 
     /**

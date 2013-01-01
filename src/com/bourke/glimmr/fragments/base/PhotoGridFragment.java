@@ -43,6 +43,7 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.os.AsyncTask;
 
 /**
  * Base Fragment that contains a GridView of photos.
@@ -64,6 +65,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected boolean mMorePages = true;
     protected boolean mShowProfileOverlay = false;
     protected boolean mShowDetailsOverlay = true;
+    protected AsyncTask mTask;
 
     private ViewGroup mNoConnectionLayout;
 
@@ -87,6 +89,16 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        if (mTask != null) {
+            mTask.cancel(true);
+            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (Constants.DEBUG) {
@@ -105,13 +117,16 @@ public abstract class PhotoGridFragment extends BaseFragment
         if (photos == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
             mGridView.setVisibility(View.GONE);
-        } else {
-            mNoConnectionLayout.setVisibility(View.GONE);
-            mGridView.setVisibility(View.VISIBLE);
-            checkForNewPhotos(photos);
-            mPhotos.addAll(photos);
-            mAdapter.onDataReady();
+            return;
         }
+        if (photos.isEmpty()) {
+            mMorePages = false;
+        }
+        mNoConnectionLayout.setVisibility(View.GONE);
+        mGridView.setVisibility(View.VISIBLE);
+        checkForNewPhotos(photos);
+        mPhotos.addAll(photos);
+        mAdapter.onDataReady();
     }
 
     @Override
