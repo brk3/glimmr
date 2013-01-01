@@ -32,7 +32,8 @@ public class PhotosetGridFragment extends PhotoGridFragment
         "glimmr_photosetfragment_photoset.json";
 
     private Photoset mPhotoset;
-    private LoadPhotosetTask mTask;
+
+    protected LoadPhotosetTask mTask;
 
     public static PhotosetGridFragment newInstance(Photoset photoset) {
         PhotosetGridFragment newFragment = new PhotosetGridFragment();
@@ -70,14 +71,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
     @Override
     public void onPause() {
         super.onPause();
-        boolean photosetStoreResult =
-            new GsonHelper(mActivity).marshallObject(mPhotoset, PHOTOSET_FILE);
-        if (!photosetStoreResult) {
-            Log.e(TAG, "onPause: Error marshalling photoset");
-        }
-        if (mTask != null) {
-            mTask.cancel(true);
-        }
+        new GsonHelper(mActivity).marshallObject(mPhotoset, PHOTOSET_FILE);
     }
 
     @Override

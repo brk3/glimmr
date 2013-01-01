@@ -26,9 +26,10 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
 
     private static final String TAG = "Glimmr/PhotoSearchGridFragment";
 
-    private SearchPhotosTask mTask;
     private String mSearchQuery = "";
     private View mNoResultsLayout;
+
+    protected SearchPhotosTask mTask;
 
     public static PhotoSearchGridFragment newInstance(String searchTerm) {
         PhotoSearchGridFragment fragment = new PhotoSearchGridFragment();
@@ -91,10 +92,7 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
     @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (photos != null && photos.isEmpty()) {
-            mMorePages = false;
-
             /* If first page (2 as mPage will have already been incremented),
              * and results are empty, show no search results layout */
             if (mPage == 2) {

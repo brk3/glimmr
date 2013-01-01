@@ -48,7 +48,6 @@ public class PhotosetsFragment extends BaseFragment
     private AdapterView mAdapterView;  /* Will either be a GridView or ListView
                                           depending on screen size */
     private SetListAdapter mAdapter;
-    private View mViewEmpty;
 
     public static PhotosetsFragment newInstance() {
         PhotosetsFragment newFragment = new PhotosetsFragment();
@@ -66,6 +65,7 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     public void onPause() {
         super.onPause();
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (mTask != null) {
             mTask.cancel(true);
             if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
@@ -89,7 +89,6 @@ public class PhotosetsFragment extends BaseFragment
 
         mLayoutNoConnection =
             (LinearLayout) mLayout.findViewById(R.id.no_connection_layout);
-        mViewEmpty = (LinearLayout) mLayout.findViewById(android.R.id.empty);
         mAq = new AQuery(mActivity, mLayout);
 
         initAdapterView();
@@ -126,7 +125,6 @@ public class PhotosetsFragment extends BaseFragment
             mPhotosets.addAll(photoSets.getPhotosets());
             mAdapter.notifyDataSetChanged();
         }
-        mViewEmpty.setVisibility(View.INVISIBLE);
     }
 
     /**
