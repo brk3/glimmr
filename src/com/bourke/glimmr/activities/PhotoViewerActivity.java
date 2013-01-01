@@ -126,7 +126,6 @@ public class PhotoViewerActivity extends BaseActivity
         Type collectionType = new TypeToken<Collection<Photo>>(){}.getType();
         mPhotos = new Gson().fromJson(json.toString(), collectionType);
 
-
         if (mPhotos != null) {
             if (Constants.DEBUG) {
                 Log.d(getLogTag(), "Got list of photo urls, size: "

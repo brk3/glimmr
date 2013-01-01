@@ -275,6 +275,8 @@ public class ActivityNotificationHandler
         Intent photoViewer = new Intent(mContext, PhotoViewerActivity.class);
         photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTOVIEWER_START_INDEX,
                 0);
+        photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,
+                PhotoViewerActivity.PHOTO_LIST_FILE);
         photoViewer.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(mContext, 0, photoViewer, 0);
     }
