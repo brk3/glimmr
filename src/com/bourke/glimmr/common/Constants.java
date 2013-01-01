@@ -26,16 +26,6 @@ public class Constants {
     public static final String KEY_USER_NAME = "glimmr_user_name";
     public static final String KEY_USER_ID = "glimmr_user_id";
 
-    /* Attributes to fetch for a photo */
-    public static final Set<String> EXTRAS = new HashSet<String>();
-    static {
-        EXTRAS.add("owner_name");
-        EXTRAS.add("url_q");
-        EXTRAS.add("url_m");
-        EXTRAS.add("url_l");
-        EXTRAS.add("views");
-    }
-
     public static final String KEY_IS_FIRST_RUN = "glimmr_is_first_run";
     public static final String KEY_OAUTH_TOKEN = "glimmr_oauthtoken";
     public static final String KEY_TOKEN_SECRET = "glimmr_tokensecret";

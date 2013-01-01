@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.viewer;
+package com.bourke.glimmrpro.fragments.viewer;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import android.widget.LinearLayout;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import com.bourke.glimmr.common.GlimmrPagerAdapter;
-import com.bourke.glimmr.fragments.base.BaseDialogFragment;
-import com.bourke.glimmr.fragments.viewer.ExifInfoFragment;
-import com.bourke.glimmr.R;
+import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
+import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
+import com.bourke.glimmrpro.fragments.viewer.ExifInfoFragment;
+import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 

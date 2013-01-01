@@ -74,8 +74,6 @@ public abstract class BaseFragment extends SherlockFragment {
         /* Update our reference to the activity as it may have changed */
         mActivity = (BaseActivity) getSherlockActivity();
         mActionBar = mActivity.getSupportActionBar();
-        mDefaultSharedPrefs =
-            PreferenceManager.getDefaultSharedPreferences(mActivity);
 
         startTask();
     }

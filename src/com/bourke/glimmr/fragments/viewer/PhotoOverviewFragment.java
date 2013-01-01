@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.viewer;
+package com.bourke.glimmrpro.fragments.viewer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,13 +23,13 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
-import com.bourke.glimmr.common.TextUtils;
-import com.bourke.glimmr.activities.SearchActivity;
-import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
-import com.bourke.glimmr.event.Events.TagClickDialogListener;
-import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.R;
-import com.bourke.glimmr.tasks.LoadExifInfoTask;
+import com.bourke.glimmrpro.common.TextUtils;
+import com.bourke.glimmrpro.activities.SearchActivity;
+import com.bourke.glimmrpro.event.Events.IExifInfoReadyListener;
+import com.bourke.glimmrpro.event.Events.TagClickDialogListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.tasks.LoadExifInfoTask;
 
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.photos.Exif;

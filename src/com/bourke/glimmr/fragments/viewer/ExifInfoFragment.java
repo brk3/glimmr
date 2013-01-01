@@ -1,6 +1,6 @@
 package com.bourke.glimmrpro.fragments.viewer;
 
-import com.bourke.glimmr.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import android.os.Bundle;
 
 import android.text.TextUtils;
