@@ -126,6 +126,10 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+        if (mPrefs == null) {
+            mPrefs = getSharedPreferences(Constants.PREFS_NAME,
+                    Context.MODE_PRIVATE);
+        }
         mOAuth = loadAccessToken(mPrefs);
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
