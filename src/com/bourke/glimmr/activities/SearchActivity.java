@@ -25,8 +25,6 @@ public class SearchActivity extends BottomOverlayActivity {
     public static final int RESULT_PHOTO_PAGE = 0;
     public static final int RESULT_PEOPLE_PAGE = 1;
 
-    private String mSearchQuery;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         CONTENT = new String[] { getString(R.string.photos) };
@@ -37,17 +35,16 @@ public class SearchActivity extends BottomOverlayActivity {
     @Override
     protected void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            mSearchQuery = intent.getStringExtra(SearchManager.QUERY);
+            String searchQuery = intent.getStringExtra(SearchManager.QUERY);
             if (Constants.DEBUG) {
                 Log.d(TAG, String.format("Got search query: '%s'",
-                            mSearchQuery));
+                            searchQuery));
             }
-            initViewPager();
+            initViewPager(searchQuery);
         }
     }
 
-    @Override
-    protected void initViewPager() {
+    protected void initViewPager(final String searchQuery) {
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mAdapter = new GlimmrPagerAdapter(getSupportFragmentManager(),
                 mViewPager, mActionBar, CONTENT) {
@@ -55,8 +52,8 @@ public class SearchActivity extends BottomOverlayActivity {
             public SherlockFragment getItemImpl(int position) {
                 switch (position) {
                     case RESULT_PHOTO_PAGE:
-                        return PhotoSearchGridFragment
-                            .newInstance(mSearchQuery);
+                        return PhotoSearchGridFragment.newInstance(searchQuery,
+                                PhotoSearchGridFragment.SORT_TYPE_RELAVANCE);
                     case RESULT_PEOPLE_PAGE:
                         // TODO
                         //return PeopleSearchFragment.

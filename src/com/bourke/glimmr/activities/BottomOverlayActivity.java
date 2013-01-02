@@ -44,19 +44,15 @@ public abstract class BottomOverlayActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (mOAuth == null) {
-            startActivity(new Intent(this, ExploreActivity.class));
-        } else {
-            setContentView(R.layout.main_activity);
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-            mAq = new AQuery(this);
-            mBottomOverlayView =
-                (RelativeLayout) findViewById(R.id.bottomOverlay);
-            mBottomOverlayPrimaryText =
-                (TextView) findViewById(R.id.overlayPrimaryText);
-            initBottomOverlayFont();
-            handleIntent(getIntent());
-        }
+        setContentView(R.layout.main_activity);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mAq = new AQuery(this);
+        mBottomOverlayView =
+            (RelativeLayout) findViewById(R.id.bottomOverlay);
+        mBottomOverlayPrimaryText =
+            (TextView) findViewById(R.id.overlayPrimaryText);
+        initBottomOverlayFont();
+        handleIntent(getIntent());
     }
 
     private void initBottomOverlayFont() {
