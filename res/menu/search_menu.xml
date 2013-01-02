@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_sort_by"
+        android:icon="@drawable/collections_sort_by_size_dark"
+        android:title="@string/sort_by"
+        android:showAsAction="ifRoom|withText">
+        <menu>
+            <item android:id="@+id/relevance"
+                android:title="@string/relevance" />
+            <item android:id="@+id/most_recent"
+                android:title="@string/most_recent" />
+            <item android:id="@+id/interestingness"
+                android:title="@string/interestingness" />
+        </menu>
+    </item>
+</menu>
+

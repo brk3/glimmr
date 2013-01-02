@@ -11,9 +11,15 @@ import android.view.ViewGroup;
 
 import android.widget.RelativeLayout;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
+import com.bourke.glimmr.fragments.search.PhotoSearchGridFragment;
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.SearchPhotosTask;
 
@@ -26,14 +32,20 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
 
     private static final String TAG = "Glimmr/PhotoSearchGridFragment";
 
+    public static final int SORT_TYPE_RELAVANCE = 0;
+    public static final int SORT_TYPE_RECENT = 1;
+    public static final int SORT_TYPE_INTERESTING = 2;
+
     private String mSearchQuery = "";
     private View mNoResultsLayout;
-
+    private int mSortType;
     protected SearchPhotosTask mTask;
 
-    public static PhotoSearchGridFragment newInstance(String searchTerm) {
+    public static PhotoSearchGridFragment newInstance(String searchTerm,
+            int sortType) {
         PhotoSearchGridFragment fragment = new PhotoSearchGridFragment();
         fragment.mSearchQuery = searchTerm;
+        fragment.mSortType = sortType;
         return fragment;
     }
 
@@ -56,7 +68,7 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
     @Override
     public void onResume() {
         super.onResume();
-        if (mSearchQuery.equals("")) {
+        if ("".equals(mSearchQuery)) {
             SharedPreferences prefs = mActivity.getSharedPreferences(
                     Constants.PREFS_NAME, Context.MODE_PRIVATE);
             mSearchQuery = prefs.getString("mSearchQuery", "");
@@ -72,6 +84,32 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
         return mLayout;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.relevance:
+                mSortType = SORT_TYPE_RELAVANCE;
+                break;
+
+            case R.id.most_recent:
+                mSortType = SORT_TYPE_RECENT;
+                break;
+
+            case R.id.interestingness:
+                mSortType = SORT_TYPE_INTERESTING;
+                break;
+
+            default:
+                return false;
+        }
+        refresh();
+        return true;
+    }
+
     /**
      * Once the parent binds the adapter it will trigger cacheInBackground
      * for us as it will be empty when first bound.
@@ -85,7 +123,7 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
     private void startTask(int page) {
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new SearchPhotosTask(this, mSearchQuery, page);
+        mTask = new SearchPhotosTask(this, mSearchQuery, mSortType, page);
         mTask.execute(mOAuth);
     }
 

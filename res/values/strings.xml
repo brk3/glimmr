@@ -20,6 +20,7 @@
     <string name="focal_length">Focal Length</string>
     <string name="four_hours">4 hours</string>
     <string name="groups">Groups</string>
+    <string name="interestingness">Interestingness</string>
     <string name="iso">ISO</string>
     <string name="just_a_moment">Just a moment…</string>
     <string name="logged_in">Logged In!</string>
@@ -34,6 +35,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_view_comments">Comments</string>
     <string name="menu_view_exif">View Exif Info</string>
+    <string name="most_recent">Most Recent</string>
     <string name="new_activity">New activity on your photo</string>
     <string name="no_connection">Something went wrong.\nTry refreshing?</string>
     <string name="no_photos">No photos available.\nClick to retry.</string>
@@ -62,12 +64,14 @@
     <string name="pref_notification_intervals_title">Sync Interval</string>
     <string name="pro_donate">Pro/Donate</string>
     <string name="menu_search">Search</string>
+    <string name="relevance">Relevance</string>
     <string name="search_hint">Search images and people</string>
     <string name="set_preferences">Set Preferences</string>
     <string name="sets">Sets</string>
     <string name="set_wallpaper">Set Wallpaper</string>
     <string name="setting_wallpaper">Setting Wallpaper…</string>
     <string name="shutter">SHUTTER</string>
+    <string name="sort_by">Sort by</string>
     <string name="tags">Tags</string>
     <string name="thirty_mins">30 minutes</string>
     <string name="timezone_message">Are your clock and timezone are set correctly?</string>

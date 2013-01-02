@@ -86,8 +86,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
          * activities */
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
-            mActionbarTitle = new GlimmrAbCustomTitle(this);
-            mActionbarTitle.init(mActionBar);
+            if (!getResources().getBoolean(R.bool.sw600dp)) {
+                mActionbarTitle = new GlimmrAbCustomTitle(this);
+                mActionbarTitle.init(mActionBar);
+            } else {
+                mActionBar.setTitle("");
+            }
         }
         setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
