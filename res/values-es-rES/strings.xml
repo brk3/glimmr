@@ -1,7 +1,7 @@
 <resources>
   <string name="activity">Actividad</string>
   <string name="about">Acerca de Glimmr</string>
-  <string name="about_text">Gracias por vuestro apoyo a Glimmr!\n\nSígueme en Twitter: http://twitter.com/brk3\nContacto: pauldbourke@gmail.com\n\nTraductoress:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer</string>
+  <string name="about_text">Gracias por vuestro apoyo a Glimmr!\n\nSígueme en Twitter: http://twitter.com/brk3\nContacto: pauldbourke@gmail.com\n\nTraductoress:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira</string>
   <string name="aperture">APERTURA</string>
   <string name="app_name">Glimmr</string>
   <string name="browse">examinar</string>
