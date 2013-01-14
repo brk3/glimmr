@@ -45,6 +45,7 @@ import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
 import com.bourke.glimmrpro.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photos.Size;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -272,8 +273,16 @@ public final class PhotoViewerFragment extends BaseFragment
         if (Constants.DEBUG) Log.d(TAG, "displayImage()");
         if (mBasePhoto != null) {
             /* Fetch the main image */
+            String urlToFetch = "";
+            Size size = mBasePhoto.getLargeSize();
+            if (size != null) {
+                urlToFetch = mBasePhoto.getLargeUrl();
+            } else {
+                /* No large size available, fall back to medium */
+                urlToFetch = mBasePhoto.getMediumUrl();
+            }
             mAq.id(R.id.image).progress(R.id.progress).image(
-                    mBasePhoto.getLargeUrl(), Constants.USE_MEMORY_CACHE,
+                    urlToFetch, Constants.USE_MEMORY_CACHE,
                     Constants.USE_FILE_CACHE, 0, 0, new BitmapAjaxCallback(){
                         @Override
                         public void callback(String url, ImageView iv,
