@@ -196,13 +196,13 @@
     </style>
 
     <style name="MenuDrawerStyle" parent="Widget.MenuDrawer">
-        <item name="mdArrowDrawable">@drawable/menu_arrow</item>
-        <item name="mdMenuWidth">@dimen/menudrawerWidth</item>
+        <item name="mdActiveIndicator">@drawable/menu_arrow</item>
+        <item name="mdMenuSize">@dimen/menudrawerWidth</item>
     </style>
 
     <style name="MenuDrawerStyle.Right" parent="Widget.MenuDrawer">
-        <item name="mdArrowDrawable">@drawable/menu_arrow_right</item>
-        <item name="mdMenuWidth">300dp</item>
+        <item name="mdActiveIndicator">@drawable/menu_arrow_right</item>
+        <item name="mdMenuSize">300dp</item>
     </style>
 
     <style name="glimmr_IndeterminateProgress" parent="@android:style/Widget.ProgressBar">
