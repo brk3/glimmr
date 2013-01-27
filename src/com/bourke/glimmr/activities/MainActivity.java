@@ -68,8 +68,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import net.simonvt.widget.MenuDrawer;
-import net.simonvt.widget.MenuDrawerManager;
+import net.simonvt.menudrawer.MenuDrawer;
 
 import org.ocpsoft.pretty.time.PrettyTime;
 import android.widget.ImageButton;
@@ -86,10 +85,9 @@ public class MainActivity extends BaseActivity {
         "glimmr_menudrawer_active_position";
 
     private List<PageItem> mContent;
-    private MenuDrawerManager mMenuDrawerMgr;
+    private MenuDrawer mMenuDrawer;
     private MenuAdapter mMenuAdapter;
     private MenuListView mList;
-    private Runnable mToggleUpRunnable;
     private boolean mDisplayHomeAsUp = true;
     private GlimmrPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
@@ -113,9 +111,9 @@ public class MainActivity extends BaseActivity {
                     Context.MODE_PRIVATE);
             mAq = new AQuery(this);
             initPageItems();
-            mMenuDrawerMgr =
-                new MenuDrawerManager(this, MenuDrawer.MENU_DRAG_CONTENT);
-            mMenuDrawerMgr.setContentView(R.layout.main_activity);
+            mMenuDrawer = MenuDrawer.attach(this,
+                    MenuDrawer.MENU_DRAG_CONTENT);
+            mMenuDrawer.setContentView(R.layout.main_activity);
             initViewPager();
             initMenuDrawer();
             initNotificationAlarms();
@@ -143,7 +141,7 @@ public class MainActivity extends BaseActivity {
             if (activityItemsNeedsUpdate()) {
                 updateMenuListItems(false);
             }
-            mMenuDrawerMgr.toggleMenu();
+            mMenuDrawer.toggleMenu();
             return true;
         }
 
@@ -152,11 +150,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (mMenuDrawerMgr != null) {
-            final int drawerState = mMenuDrawerMgr.getDrawerState();
+        if (mMenuDrawer != null) {
+            final int drawerState = mMenuDrawer.getDrawerState();
             if (drawerState == MenuDrawer.STATE_OPEN ||
                     drawerState == MenuDrawer.STATE_OPENING) {
-                mMenuDrawerMgr.closeMenu();
+                mMenuDrawer.closeMenu();
                 return;
             }
         }
@@ -166,9 +164,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mMenuDrawerMgr != null) {
+        if (mMenuDrawer != null) {
             outState.putParcelable(KEY_STATE_MENUDRAWER,
-                    mMenuDrawerMgr.onSaveDrawerState());
+                    mMenuDrawer.saveState());
             outState.putInt(KEY_STATE_ACTIVE_POSITION, mActivePosition);
         }
         outState.putLong(KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED,
@@ -180,9 +178,9 @@ public class MainActivity extends BaseActivity {
         super.onRestoreInstanceState(inState);
         mActivityListVersion = inState.getLong(
                 KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED, -1);
-        if (mMenuDrawerMgr != null ) {
-        mMenuDrawerMgr.onRestoreDrawerState(inState
-                .getParcelable(KEY_STATE_MENUDRAWER));
+        if (mMenuDrawer != null ) {
+            mMenuDrawer.restoreState(inState.getParcelable(
+                        KEY_STATE_MENUDRAWER));
         }
     }
 
@@ -351,8 +349,8 @@ public class MainActivity extends BaseActivity {
                     case MENU_DRAWER_ITEM:
                         mViewPager.setCurrentItem(position);
                         mActivePosition = position;
-                        mMenuDrawerMgr.setActiveView(view, position);
-                        mMenuDrawerMgr.closeMenu();
+                        mMenuDrawer.setActiveView(view, position);
+                        mMenuDrawer.closeMenu();
                         break;
                     case MENU_DRAWER_ACTIVITY_ITEM:
                         /* offset the position by number of content items + 1
@@ -366,38 +364,27 @@ public class MainActivity extends BaseActivity {
                 new MenuListView.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                mMenuDrawerMgr.getMenuDrawer().invalidate();
+                mMenuDrawer.invalidate();
             }
         });
 
         /* If first run, make the "up" button blink until clicked */
-        final Handler handler = new Handler();
         final boolean isFirstRun = mPrefs.getBoolean(
                 Constants.KEY_IS_FIRST_RUN, true);
         if (isFirstRun) {
             if (Constants.DEBUG) Log.d(TAG, "First run");
-            mToggleUpRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    mDisplayHomeAsUp = !mDisplayHomeAsUp;
-                    mActionBar.setDisplayHomeAsUpEnabled(mDisplayHomeAsUp);
-                    handler.postDelayed(mToggleUpRunnable, 500);
-                }
-            };
-            handler.postDelayed(mToggleUpRunnable, 500);
+            mMenuDrawer.peekDrawer();
         }
 
-        mMenuDrawerMgr.setMenuView(mList);
+        mMenuDrawer.setMenuView(mList);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mMenuDrawerMgr.getMenuDrawer().setTouchMode(
-                MenuDrawer.TOUCH_MODE_FULLSCREEN);
-        mMenuDrawerMgr.getMenuDrawer().setOnDrawerStateChangeListener(
+        mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
+        mMenuDrawer.setOnDrawerStateChangeListener(
                 new MenuDrawer.OnDrawerStateChangeListener() {
                     @Override
                     public void onDrawerStateChange(int oldState,
                             int newState) {
                         if (newState == MenuDrawer.STATE_OPEN) {
-                            handler.removeCallbacks(mToggleUpRunnable);
                             if (isFirstRun) {
                                 SharedPreferences.Editor editor =
                                     mPrefs.edit();
@@ -425,11 +412,9 @@ public class MainActivity extends BaseActivity {
                     mActionBar.setSelectedNavigationItem(position);
                 }
                 if (position == 0) {
-                    mMenuDrawerMgr.getMenuDrawer().setTouchMode(
-                        MenuDrawer.TOUCH_MODE_FULLSCREEN);
+                    mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
                 } else {
-                    mMenuDrawerMgr.getMenuDrawer().setTouchMode(
-                        MenuDrawer.TOUCH_MODE_NONE);
+                    mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
                 }
             }
         };
@@ -666,7 +651,7 @@ public class MainActivity extends BaseActivity {
             v.setTag(R.id.mdActiveViewPosition, position);
 
             if (position == mActivePosition) {
-                mMenuDrawerMgr.setActiveView(v, position);
+                mMenuDrawer.setActiveView(v, position);
             }
 
             return v;
