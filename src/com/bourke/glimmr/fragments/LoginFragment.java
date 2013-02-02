@@ -1,12 +1,18 @@
 package com.bourke.glimmrpro.fragments;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.net.Uri;
 
 import android.os.Bundle;
+
+import android.support.v4.app.FragmentManager;
 
 import android.util.Log;
 
@@ -20,7 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidquery.AQuery;
+import com.actionbarsherlock.app.SherlockDialogFragment;
 
 import com.bourke.glimmrpro.activities.MainActivity;
 import com.bourke.glimmrpro.common.Constants;
@@ -77,15 +83,16 @@ public final class LoginFragment extends BaseFragment
     }
 
     @Override
-    public void onRequestTokenReady(String authUri) {
-        if (authUri != null && !authUri.startsWith("error")) {
+    public void onRequestTokenReady(String authUri, Exception e) {
+        if (e != null && e.getMessage()
+                .equals("No authentication challenges found")) {
+            FragmentManager fm = mActivity.getSupportFragmentManager();
+            LoginErrorTipDialog d = new LoginErrorTipDialog();
+            d.show(fm, "LoginErrorTipDialog");
+            return;
+        } else if (authUri != null && !authUri.startsWith("error")) {
             mActivity.startActivity(new Intent(
                         Intent.ACTION_VIEW, Uri.parse(authUri)));
-        } else {
-            if (Constants.DEBUG) {
-                Log.e(TAG, "Error getting request token in " +
-                        "onRequestTokenReady");
-            }
         }
     }
 
@@ -184,5 +191,25 @@ public final class LoginFragment extends BaseFragment
 
     public interface IOnNotNowClicked {
         public void onNotNowClicked();
+    }
+
+    class LoginErrorTipDialog extends SherlockDialogFragment {
+        public LoginErrorTipDialog() {
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+            builder.setTitle(R.string.login_problem)
+                .setMessage(R.string.timezone_message)
+                .setIcon(R.drawable.alerts_and_states_error_dark)
+                .setPositiveButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dismiss();
+                    }
+                });
+            return builder.create();
+        }
     }
 }

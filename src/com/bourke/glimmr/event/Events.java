@@ -43,7 +43,7 @@ public class Events {
     }
 
     public interface IRequestTokenReadyListener {
-        void onRequestTokenReady(String authUri);
+        void onRequestTokenReady(String authUri, Exception e);
     }
 
     public interface IUserReadyListener {

@@ -31,6 +31,7 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
     private Activity mActivity;
     private IRequestTokenReadyListener mListener;
     private Uri mOAuthCallbackUri;
+    private Exception mException = null;
 
     public GetRequestToken(IRequestTokenReadyListener listener, Activity a) {
         super();
@@ -71,6 +72,7 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
             return oauthUrl.toString();
         } catch (Exception e) {
             e.printStackTrace();
+            mException = e;
         }
         return null;
     }
@@ -92,6 +94,6 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
-        mListener.onRequestTokenReady(result);
+        mListener.onRequestTokenReady(result, mException);
     }
 }

@@ -24,6 +24,7 @@
     <string name="just_a_moment">Just a moment…</string>
     <string name="logged_in">Logged In!</string>
     <string name="login_later">You can login anytime from the menu!</string>
+    <string name="login_problem">Could not log in</string>
     <string name="login">Login</string>
     <string name="login_required">You need to be logged in to do that!</string>
     <string name="login_to_flickr">LOGIN TO FLICKR</string>
@@ -69,6 +70,7 @@
     <string name="shutter">SHUTTER</string>
     <string name="tags">Tags</string>
     <string name="thirty_mins">30 minutes</string>
+    <string name="timezone_message">Are your clock and timezone are set correctly?</string>
     <string name="to">to</string>
     <string name="untitled">Untitled</string>
     <string name="views">Views</string>
