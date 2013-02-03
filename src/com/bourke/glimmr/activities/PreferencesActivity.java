@@ -41,8 +41,6 @@ public class PreferencesActivity extends SherlockPreferenceActivity
 
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         addPreferencesFromResource(R.xml.preferences);
-        PreferenceManager.setDefaultValues(PreferencesActivity.this,
-                R.xml.preferences, false);
         mIntervalsListPreference = (ListPreference) getPreferenceScreen()
             .findPreference(Constants.KEY_INTERVALS_LIST_PREFERENCE);
     }

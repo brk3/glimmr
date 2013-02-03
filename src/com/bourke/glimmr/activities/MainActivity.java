@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
-import android.os.Handler;
 
+import android.preference.PreferenceManager;
 import android.preference.PreferenceManager;
 
 import android.support.v4.view.ViewPager;
@@ -63,8 +63,6 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import java.io.File;
 
-import java.lang.Runnable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -99,6 +97,8 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         if (mOAuth == null) {
             startActivity(new Intent(this, ExploreActivity.class));
