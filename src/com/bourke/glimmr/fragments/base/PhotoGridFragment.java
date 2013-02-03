@@ -9,7 +9,10 @@ import android.content.SharedPreferences;
 
 import android.graphics.Bitmap;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+
+import android.preference.PreferenceManager;
 
 import android.util.Log;
 
@@ -43,7 +46,6 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.os.AsyncTask;
 
 /**
  * Base Fragment that contains a GridView of photos.
@@ -277,10 +279,16 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     class GridAdapter extends ArrayAdapter<Photo> {
+        private boolean mHighQualityThumbnails;
 
         public GridAdapter(List<Photo> items) {
             super(mActivity, R.layout.gridview_item, android.R.id.text1,
                     items);
+            SharedPreferences defaultPrefs =
+                PreferenceManager.getDefaultSharedPreferences(mActivity);
+            mHighQualityThumbnails = defaultPrefs.getBoolean(
+                    Constants.KEY_HIGH_QUALITY_THUMBNAILS, false);
+            Log.d(TAG, "mHighQualityThumbnails="+mHighQualityThumbnails);
         }
 
         @Override
@@ -308,10 +316,15 @@ public abstract class PhotoGridFragment extends BaseFragment
             }
 
             final Photo photo = getItem(position);
+            String thumbnailUrl;
+            if (mHighQualityThumbnails) {
+                thumbnailUrl = photo.getMediumUrl();
+            } else {
+                thumbnailUrl = photo.getLargeSquareUrl();
+            }
 
             /* Don't load image if flinging past it */
-            if (mAq.shouldDelay(position, convertView, parent,
-                        photo.getLargeSquareUrl())) {
+            if (mAq.shouldDelay(position, convertView, parent, thumbnailUrl)) {
                 Bitmap placeholder = mAq.getCachedImage(R.drawable.blank);
                 mAq.id(holder.image).image(placeholder);
                 holder.imageOverlay.setVisibility(View.INVISIBLE);
@@ -326,7 +339,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                         TextUtils.FONT_ROBOTOBOLD);
 
                 /* Fetch the main photo */
-                mAq.id(holder.image).image(photo.getLargeSquareUrl(),
+                mAq.id(holder.image).image(thumbnailUrl,
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);
 
