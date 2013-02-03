@@ -174,11 +174,10 @@ public final class CommentsFragment extends BaseDialogFragment
 
     @Override
     public void onUserReady(User user) {
-        if (Constants.DEBUG) {
-            Log.d(getLogTag(), "onUserReady: " + user.getId());
+        if (user != null) {
+            mUsers.put(user.getId(), new UserItem(user, false));
+            mAdapter.notifyDataSetChanged();
         }
-        mUsers.put(user.getId(), new UserItem(user, false));
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
