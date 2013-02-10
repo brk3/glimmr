@@ -1,5 +1,11 @@
 package com.bourke.glimmr.fragments.home;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+
+import android.content.Context;
+import android.content.DialogInterface;
+
 import android.os.Bundle;
 
 import android.util.Log;
@@ -14,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
@@ -21,6 +29,7 @@ import com.bourke.glimmr.activities.GroupViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.IGroupListReadyListener;
+import com.bourke.glimmr.event.Events.GroupItemLongClickDialogListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadGroupsTask;
@@ -29,9 +38,10 @@ import com.googlecode.flickrjandroid.groups.Group;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.widget.ListView;
 
 public class GroupListFragment extends BaseFragment
-        implements IGroupListReadyListener {
+        implements IGroupListReadyListener, GroupItemLongClickDialogListener {
 
     private static final String TAG = "Glimmr/GroupListFragment";
 
@@ -101,7 +111,34 @@ public class GroupListFragment extends BaseFragment
                         mGroups.get(position));
                 }
             });
+            mListView.setOnItemLongClickListener(
+                    new ListView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View v,
+                        int position, long id) {
+                    if (position < mGroups.size()) {
+                        SherlockDialogFragment d =
+                            GroupItemLongClickDialog.newInstance(mActivity,
+                                GroupListFragment.this, mGroups.get(position));
+                        d.show(mActivity.getSupportFragmentManager(),
+                            "group_item_long_click");
+                    } else {
+                        Log.e(getLogTag(), String.format(
+                                "Cannot call showGridItemContextMenu, " +
+                                "mGroups.size(%d) != position:(%d)",
+                                mGroups.size(), position));
+                    }
+                    /* True indicates we're finished with event and triggers
+                     * haptic feedback */
+                    return true;
+                }
+            });
         }
+    }
+
+    @Override
+    public void onLongClickDialogSelection(Group group, int which) {
+        Log.d(TAG, "onLongClickDialogSelection()");
     }
 
     /**
@@ -162,6 +199,33 @@ public class GroupListFragment extends BaseFragment
             TextView textViewGroupName;
             TextView textViewNumImages;
             ImageView imageViewGroupIcon;
+        }
+    }
+
+    static class GroupItemLongClickDialog extends SherlockDialogFragment {
+        private GroupItemLongClickDialogListener mListener;
+        private Context mContext;
+        private Group mGroup;
+
+        public static GroupItemLongClickDialog newInstance(Context context,
+                GroupItemLongClickDialogListener listener, Group group) {
+            GroupItemLongClickDialog d = new GroupItemLongClickDialog();
+            d.mListener = listener;
+            d.mContext = context;
+            d.mGroup = group;
+            return d;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setItems(R.array.group_list_item_long_click_dialog_items,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.onLongClickDialogSelection(mGroup, which);
+                    }
+                });
+            return builder.create();
         }
     }
 }

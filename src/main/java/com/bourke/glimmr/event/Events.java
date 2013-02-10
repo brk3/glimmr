@@ -73,4 +73,8 @@ public class Events {
     public interface TagClickDialogListener {
         public void onTagClick(Tag tag);
     }
+
+    public interface GroupItemLongClickDialogListener {
+        public void onLongClickDialogSelection(Group group, int which);
+    }
 }

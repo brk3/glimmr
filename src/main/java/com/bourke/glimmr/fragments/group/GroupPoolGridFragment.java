@@ -5,8 +5,13 @@ import android.content.SharedPreferences;
 
 import android.util.Log;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadGroupPoolTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
@@ -29,6 +34,12 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
         GroupPoolGridFragment newFragment = new GroupPoolGridFragment();
         newFragment.mGroup = group;
         return newFragment;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (Constants.DEBUG) Log.d(getLogTag(), "onCreateOptionsMenu");
+        inflater.inflate(R.menu.groupviewer_fragment_menu, menu);
     }
 
     /**
