@@ -22,4 +22,8 @@
         <item>@string/view_profile</item>
     </string-array>
 
+    <string-array name="group_list_item_long_click_dialog_items">
+        <item>@string/add_photos</item>
+    </string-array>
+
 </resources>
