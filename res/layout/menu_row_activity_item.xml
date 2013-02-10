@@ -14,8 +14,8 @@
     <View
         android:id="@+id/separator"
         android:background="@color/flickr_pink"
-        android:layout_marginLeft="16dip"
-        android:layout_marginRight="16dip"
+        android:layout_marginLeft="4dip"
+        android:layout_marginRight="4dip"
         android:layout_width = "fill_parent"
         android:layout_height="1px" />
 
