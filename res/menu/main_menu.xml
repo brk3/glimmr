@@ -5,19 +5,21 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_search"
-          android:title="@string/menu_search"
-          android:icon="@drawable/ic_action_search_dark"
-          android:orderInCategory="4"
-          android:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_search"
+        android:actionViewClass="com.actionbarsherlock.widget.SearchView"
+        android:icon="@drawable/ic_action_search_dark"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:orderInCategory="4"
+        android:title="@string/menu_search"/>
 
     <item android:id="@+id/menu_preferences"
-          android:icon="@android:drawable/ic_menu_preferences"
-          android:orderInCategory="9"
-          android:title="@string/menu_preferences" />
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:orderInCategory="9"
+        android:title="@string/menu_preferences" />
 
     <item android:id="@+id/menu_about"
-          android:icon="@drawable/ic_action_about_dark"
-          android:orderInCategory="10"
-          android:title="@string/about" />
+        android:icon="@drawable/ic_action_about_dark"
+        android:orderInCategory="10"
+        android:title="@string/about" />
 </menu>

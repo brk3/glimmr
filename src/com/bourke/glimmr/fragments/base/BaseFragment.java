@@ -1,5 +1,9 @@
 package com.bourke.glimmrpro.fragments.base;
 
+import android.app.SearchManager;
+
+import android.content.Context;
+
 import android.os.Bundle;
 
 import android.util.Log;
@@ -11,6 +15,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 
 import com.androidquery.AQuery;
 
@@ -22,9 +27,6 @@ import com.bourke.glimmrpro.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
-/**
- *
- */
 public abstract class BaseFragment extends SherlockFragment {
 
     private static final String TAG = "Glimmr/BaseFragment";
@@ -73,6 +75,12 @@ public abstract class BaseFragment extends SherlockFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.fragment_main_menu, menu);
+        SearchManager searchManager =
+            (SearchManager) mActivity.getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+            (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(mActivity.getComponentName()));
         if (mActivity.getUser() == null) {
             menu.findItem(R.id.menu_login).setVisible(true);
         } else {

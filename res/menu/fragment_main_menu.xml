@@ -8,11 +8,13 @@
           android:visible="false"
           android:title="@string/login" />
 
-    <item android:id="@+id/menu_search"
-          android:title="@string/menu_search"
-          android:icon="@drawable/ic_action_search_dark"
-          android:orderInCategory="4"
-          android:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_search"
+        android:actionViewClass="com.actionbarsherlock.widget.SearchView"
+        android:icon="@drawable/ic_action_search_dark"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:orderInCategory="4"
+        android:title="@string/menu_search"/>
 
     <item android:id="@+id/menu_refresh"
           android:title="@string/menu_refresh"
