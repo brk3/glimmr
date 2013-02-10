@@ -2,6 +2,7 @@ package com.bourke.glimmrpro.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.actionbarsherlock.widget.SearchView;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
@@ -125,6 +127,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        SearchManager searchManager =
+            (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+            (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -143,10 +151,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 } else {
                     NavUtils.navigateUpTo(this, upIntent);
                 }
-                return true;
-
-            case R.id.menu_search:
-                onSearchRequested();
                 return true;
 
             case R.id.menu_preferences:
