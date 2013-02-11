@@ -8,6 +8,9 @@ import android.content.DialogInterface;
 
 import android.os.Bundle;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+
 import android.util.Log;
 
 import android.view.LayoutInflater;
@@ -17,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,9 +32,10 @@ import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.GroupViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TextUtils;
-import com.bourke.glimmr.event.Events.IGroupListReadyListener;
 import com.bourke.glimmr.event.Events.GroupItemLongClickDialogListener;
+import com.bourke.glimmr.event.Events.IGroupListReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
+import com.bourke.glimmr.fragments.viewer.AddToGroupDialogFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadGroupsTask;
 
@@ -38,7 +43,6 @@ import com.googlecode.flickrjandroid.groups.Group;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.widget.ListView;
 
 public class GroupListFragment extends BaseFragment
         implements IGroupListReadyListener, GroupItemLongClickDialogListener {
@@ -139,6 +143,24 @@ public class GroupListFragment extends BaseFragment
     @Override
     public void onLongClickDialogSelection(Group group, int which) {
         Log.d(TAG, "onLongClickDialogSelection()");
+        FragmentTransaction ft =
+            mActivity.getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        if (group != null) {
+            Fragment prev = mActivity.getSupportFragmentManager()
+                .findFragmentByTag(AddToGroupDialogFragment.TAG);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+
+            SherlockDialogFragment newFragment =
+                AddToGroupDialogFragment.newInstance();
+            newFragment.show(ft, AddToGroupDialogFragment.TAG);
+        } else {
+            Log.e(TAG, "onLongClickDialogSelection: group is null");
+        }
     }
 
     /**

@@ -27,6 +27,19 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
         return newFragment;
     }
 
+    public static PhotoStreamGridFragment newInstance(boolean retainInstance,
+            int choiceMode) {
+        PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
+        newFragment.mRetainInstance = retainInstance;
+        newFragment.mChoiceMode = choiceMode;
+        return newFragment;
+    }
+
+    @Override
+    protected boolean shouldRetainInstance() {
+        return mRetainInstance;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
