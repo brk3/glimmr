@@ -8,6 +8,9 @@ import android.content.DialogInterface;
 
 import android.os.Bundle;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+
 import android.util.Log;
 
 import android.view.LayoutInflater;
@@ -32,6 +35,7 @@ import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.GroupItemLongClickDialogListener;
 import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.viewer.AddToGroupDialogFragment;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.LoadGroupsTask;
 
@@ -139,6 +143,24 @@ public class GroupListFragment extends BaseFragment
     @Override
     public void onLongClickDialogSelection(Group group, int which) {
         Log.d(TAG, "onLongClickDialogSelection()");
+        FragmentTransaction ft =
+            mActivity.getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        if (group != null) {
+            Fragment prev = mActivity.getSupportFragmentManager()
+                .findFragmentByTag(AddToGroupDialogFragment.TAG);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+
+            SherlockDialogFragment newFragment =
+                AddToGroupDialogFragment.newInstance();
+            newFragment.show(ft, AddToGroupDialogFragment.TAG);
+        } else {
+            Log.e(TAG, "onLongClickDialogSelection: group is null");
+        }
     }
 
     /**

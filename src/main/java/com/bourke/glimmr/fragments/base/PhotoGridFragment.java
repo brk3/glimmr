@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 import android.os.AsyncTask;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.preference.PreferenceManager;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -58,7 +60,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
-    protected AdapterView mGridView;
+    protected GridView mGridView;
     protected EndlessGridAdapter mAdapter;
 
     protected List<Photo> mPhotos = new ArrayList<Photo>();
@@ -68,6 +70,8 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected boolean mShowProfileOverlay = false;
     protected boolean mShowDetailsOverlay = true;
     protected AsyncTask mTask;
+    protected boolean mRetainInstance = true;
+    protected int mChoiceMode = AbsListView.CHOICE_MODE_NONE;
 
     private ViewGroup mNoConnectionLayout;
 
@@ -85,7 +89,6 @@ public abstract class PhotoGridFragment extends BaseFragment
         mAq = new AQuery(mActivity, mLayout);
         mNoConnectionLayout =
             (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
-        mGridView = (AdapterView) mLayout.findViewById(R.id.gridview);
         initGridView();
         return mLayout;
     }
@@ -151,6 +154,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
         mGridView = (GridView) mLayout.findViewById(R.id.gridview);
+        mGridView.setChoiceMode(mChoiceMode);
         mGridView.setAdapter(mAdapter);
         mGridView.setOnItemClickListener(new GridView.OnItemClickListener() {
             @Override

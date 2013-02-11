@@ -48,7 +48,7 @@ public final class ExifInfoFragment extends BaseFragment
         return photoFragment;
     }
 
-    /** Can't retain fragements that are nested in other fragments */
+    /** Can't retain fragments that are nested in other fragments */
     @Override
     protected boolean shouldRetainInstance() {
         return false;
