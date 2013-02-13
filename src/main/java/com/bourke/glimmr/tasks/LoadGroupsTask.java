@@ -43,7 +43,6 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            User user = oauth.getUser();
             try {
                 return f.getPoolsInterface().getGroups();
             } catch (IOException e) {

@@ -58,6 +58,10 @@ public class Events {
         void onPhotoInfoReady(Photo photo);
     }
 
+    public interface IGroupInfoReadyListener {
+        public void onGroupInfoReady(Group group);
+    }
+
     public interface ICommentAddedListener {
         void onCommentAdded(String commentId);
     }

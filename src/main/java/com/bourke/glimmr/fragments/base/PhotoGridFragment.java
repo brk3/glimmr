@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 
 import android.os.AsyncTask;
 import android.os.AsyncTask;
@@ -16,6 +18,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import android.util.Log;
+import android.util.SparseBooleanArray;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +27,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,6 +49,8 @@ import com.commonsware.cwac.endless.EndlessAdapter;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 
+import com.rokoder.android.lib.support.v4.widget.GridViewCompat;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +65,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
-    protected GridView mGridView;
+    protected GridViewCompat mGridView;
     protected EndlessGridAdapter mAdapter;
 
     protected List<Photo> mPhotos = new ArrayList<Photo>();
@@ -70,8 +75,9 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected boolean mShowProfileOverlay = false;
     protected boolean mShowDetailsOverlay = true;
     protected AsyncTask mTask;
+
     protected boolean mRetainInstance = true;
-    protected int mChoiceMode = AbsListView.CHOICE_MODE_NONE;
+    protected int mGridChoiceMode = ListView.CHOICE_MODE_SINGLE;
 
     private ViewGroup mNoConnectionLayout;
 
@@ -110,7 +116,8 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
         }
         if (mPhotos != null && !mPhotos.isEmpty()) {
-            GridView gridView = (GridView) mLayout.findViewById(R.id.gridview);
+            GridViewCompat gridView = (GridViewCompat)
+                mLayout.findViewById(R.id.gridview);
             gridView.setVisibility(View.VISIBLE);
         }
     }
@@ -150,27 +157,43 @@ public abstract class PhotoGridFragment extends BaseFragment
         }
     }
 
+    protected int getGridChoiceMode() {
+        return mGridChoiceMode;
+    }
+
     private void initGridView() {
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
-        mGridView = (GridView) mLayout.findViewById(R.id.gridview);
-        mGridView.setChoiceMode(mChoiceMode);
+        mGridView = (GridViewCompat) mLayout.findViewById(R.id.gridview);
         mGridView.setAdapter(mAdapter);
-        mGridView.setOnItemClickListener(new GridView.OnItemClickListener() {
+        mGridView.setChoiceModeC(getGridChoiceMode());
+
+        mGridView.setOnItemClickListener(
+                new GridViewCompat.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
-                PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
-                    position);
+                if (mGridView.getChoiceModeC() !=
+                        ListView.CHOICE_MODE_MULTIPLE) {
+                    PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
+                        position);
+                }
+                /* We need to invalidate all views on 4.x (GridViewCompat) */
+                mGridView.invalidateViews();
             }
         });
+
         mGridView.setOnItemLongClickListener(
-                new GridView.OnItemLongClickListener() {
+                new GridViewCompat.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View v,
                     int position, long id) {
                 /* Only available if logged in */
                 if (mOAuth == null) {
+                    return false;
+                }
+                if (mGridView.getChoiceModeC() ==
+                        ListView.CHOICE_MODE_MULTIPLE) {
                     return false;
                 }
                 if (position < mPhotos.size()) {
@@ -179,15 +202,11 @@ public abstract class PhotoGridFragment extends BaseFragment
                             PhotoGridFragment.this, mPhotos.get(position));
                     d.show(mActivity.getSupportFragmentManager(),
                         "photo_item_long_click");
-                } else {
-                    Log.e(getLogTag(), String.format(
-                            "Cannot call showGridItemContextMenu, " +
-                            "mPhotos.size(%d) != position:(%d)",
-                            mPhotos.size(), position));
+                    /* True indicates we're finished with event and triggers
+                     * haptic feedback  */
+                    return true;
                 }
-                /* True indicates we're finished with event and triggers haptic
-                 * feedback */
-                return true;
+                return false;
             }
         });
         mGridView.setVisibility(View.INVISIBLE);
@@ -373,18 +392,35 @@ public abstract class PhotoGridFragment extends BaseFragment
                         }
                     }
                 }
+
+                /* If in multiple choice mode, set tint on selected items */
+                if (mGridView.getChoiceModeC() ==
+                        ListView.CHOICE_MODE_MULTIPLE) {
+                    SparseBooleanArray checkArray =
+                        mGridView.getCheckedItemPositionsC();
+
+                    if (checkArray != null) {
+                        if (checkArray.get(position)) {
+                            int highlightColor = mActivity.getResources()
+                                .getColor(R.color.transparent_flickr_pink);
+                            holder.image.setColorFilter(highlightColor);
+                        } else {
+                            holder.image.setColorFilter(null);
+                        }
+                    }
+                }
             }
 
             return convertView;
         }
+    }
 
-        class ViewHolder {
-            LinearLayout imageOverlay;
-            ImageView image;
-            ImageView imageNewRibbon;
-            TextView ownerText;
-            TextView viewsText;
-        }
+    static class ViewHolder {
+        LinearLayout imageOverlay;
+        ImageView image;
+        ImageView imageNewRibbon;
+        TextView ownerText;
+        TextView viewsText;
     }
 
     static class PhotoItemLongClickDialog extends SherlockDialogFragment {
