@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
     <FrameLayout
         android:id="@+id/photoStreamFragment"
+        android:layout_weight="1"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerInParent="true" />
+        android:layout_height="wrap_content" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/buttonAddToGroup"
+        android:layout_weight="0"
+        android:text="Add"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
