@@ -12,6 +12,10 @@ import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPhotostreamTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
+import android.widget.GridView;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.view.View;
 
 public class PhotoStreamGridFragment extends PhotoGridFragment {
 
@@ -27,17 +31,29 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
         return newFragment;
     }
 
-    public static PhotoStreamGridFragment newInstance(boolean retainInstance,
-            int choiceMode) {
+    public static PhotoStreamGridFragment newInstance(
+            boolean retainInstance, int gridChoiceMode) {
         PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
         newFragment.mRetainInstance = retainInstance;
-        newFragment.mChoiceMode = choiceMode;
+        newFragment.mGridChoiceMode = gridChoiceMode;
         return newFragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        return mLayout;
     }
 
     @Override
     protected boolean shouldRetainInstance() {
         return mRetainInstance;
+    }
+
+    @Override
+    protected int getGridChoiceMode() {
+        return mGridChoiceMode;
     }
 
     @Override

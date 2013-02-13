@@ -5,6 +5,7 @@
 
     <!-- 0x7f == 2/255 which is what Google recommends for transparency -->
     <color name="transparent_black">#7f000000</color>
+    <color name="transparent_flickr_pink">#7fff0084</color>
 
     <color name="flickr_pink">#ffff0084</color>
     <color name="flickr_blue">#ff0063dc</color>

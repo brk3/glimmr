@@ -156,7 +156,7 @@ public class GroupListFragment extends BaseFragment
             ft.addToBackStack(null);
 
             SherlockDialogFragment newFragment =
-                AddToGroupDialogFragment.newInstance();
+                AddToGroupDialogFragment.newInstance(group);
             newFragment.show(ft, AddToGroupDialogFragment.TAG);
         } else {
             Log.e(TAG, "onLongClickDialogSelection: group is null");
@@ -216,12 +216,12 @@ public class GroupListFragment extends BaseFragment
 
             return convertView;
         }
+    }
 
-        class ViewHolder {
-            TextView textViewGroupName;
-            TextView textViewNumImages;
-            ImageView imageViewGroupIcon;
-        }
+    static class ViewHolder {
+        TextView textViewGroupName;
+        TextView textViewNumImages;
+        ImageView imageViewGroupIcon;
     }
 
     static class GroupItemLongClickDialog extends SherlockDialogFragment {

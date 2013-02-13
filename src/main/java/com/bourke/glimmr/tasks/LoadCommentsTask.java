@@ -39,6 +39,7 @@ public class LoadCommentsTask
     protected List<Comment> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
         if (oauth != null) {
+            if (Constants.DEBUG) Log.d(TAG, "Authenticated call");
             OAuthToken token = oauth.getToken();
             try {
                 Flickr f = FlickrHelper.getInstance().getFlickrAuthed(

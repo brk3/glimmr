@@ -4,6 +4,7 @@ import com.googlecode.flickrjandroid.activity.ActivityInterface;
 import com.googlecode.flickrjandroid.contacts.ContactsInterface;
 import com.googlecode.flickrjandroid.favorites.FavoritesInterface;
 import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.groups.GroupsInterface;
 import com.googlecode.flickrjandroid.groups.pools.PoolsInterface;
 import com.googlecode.flickrjandroid.interestingness.InterestingnessInterface;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -126,6 +127,15 @@ public final class FlickrHelper {
         Flickr f = getFlickr();
         if (f != null) {
             return f.getActivityInterface();
+        } else {
+            return null;
+        }
+    }
+
+    public GroupsInterface getGroupsInterface() {
+        Flickr f = getFlickr();
+        if (f != null) {
+            return f.getGroupsInterface();
         } else {
             return null;
         }
