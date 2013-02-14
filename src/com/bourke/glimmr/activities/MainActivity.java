@@ -32,6 +32,7 @@ import com.androidquery.AQuery;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.MenuListView;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
@@ -624,17 +625,19 @@ public class MainActivity extends BaseActivity {
                             R.layout.menu_row_item, parent, false);
                 }
                 TextView tv = (TextView) v;
-                tv.setText(((MenuDrawerItem) item).mTitle);
+                tv.setText(((MenuDrawerItem) item).mTitle.toUpperCase());
                 tv.setCompoundDrawablesWithIntrinsicBounds(
                         ((MenuDrawerItem) item).mIconRes, 0, 0, 0);
+                mTextUtils.setFont(tv, TextUtils.FONT_ROBOTOTHIN);
 
             } else if (item instanceof MenuDrawerCategory) {
                 if (v == null) {
                     v = (LinearLayout) getLayoutInflater().inflate(
                             R.layout.menu_row_category, parent, false);
                 }
-                ((TextView) v.findViewById(R.id.text)).setText(
-                    ((MenuDrawerCategory) item).mTitle);
+                TextView tv = (TextView) v.findViewById(R.id.text);
+                tv.setText(((MenuDrawerCategory) item).mTitle);
+                mTextUtils.setFont(tv, TextUtils.FONT_ROBOTOBOLD);
 
                 ImageButton refreshActivityButton = (ImageButton)
                     v.findViewById(R.id.refreshActivityStreamButton);
