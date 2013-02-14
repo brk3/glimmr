@@ -19,6 +19,7 @@ import com.androidquery.AQuery;
 import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.activities.GroupViewerActivity;
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import com.bourke.glimmrpro.R;
@@ -147,6 +148,9 @@ public class GroupListFragment extends BaseFragment
             final Group group = getItem(position);
 
             holder.textViewGroupName.setText(group.getName());
+            mTextUtils.setFont(holder.textViewGroupName,
+                    TextUtils.FONT_ROBOTOBOLD);
+
             holder.textViewNumImages.setText(""+group.getPhotoCount());
             mAq.id(holder.imageViewGroupIcon).image(group.getBuddyIconUrl(),
                     true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
