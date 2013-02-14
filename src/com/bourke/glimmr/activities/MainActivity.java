@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.preference.PreferenceManager;
-import android.preference.PreferenceManager;
 
 import android.support.v4.view.ViewPager;
 
@@ -34,6 +33,7 @@ import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.common.MenuListView;
 import com.bourke.glimmrpro.common.OAuthUtils;
+import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmrpro.fragments.explore.RecentPublicPhotosFragment;
@@ -624,17 +624,19 @@ public class MainActivity extends BaseActivity {
                             R.layout.menu_row_item, parent, false);
                 }
                 TextView tv = (TextView) v;
-                tv.setText(((MenuDrawerItem) item).mTitle);
+                tv.setText(((MenuDrawerItem) item).mTitle.toUpperCase());
                 tv.setCompoundDrawablesWithIntrinsicBounds(
                         ((MenuDrawerItem) item).mIconRes, 0, 0, 0);
+                mTextUtils.setFont(tv, TextUtils.FONT_ROBOTOTHIN);
 
             } else if (item instanceof MenuDrawerCategory) {
                 if (v == null) {
                     v = (LinearLayout) getLayoutInflater().inflate(
                             R.layout.menu_row_category, parent, false);
                 }
-                ((TextView) v.findViewById(R.id.text)).setText(
-                    ((MenuDrawerCategory) item).mTitle);
+                TextView tv = (TextView) v.findViewById(R.id.text);
+                tv.setText(((MenuDrawerCategory) item).mTitle);
+                mTextUtils.setFont(tv, TextUtils.FONT_ROBOTOBOLD);
 
                 ImageButton refreshActivityButton = (ImageButton)
                     v.findViewById(R.id.refreshActivityStreamButton);
