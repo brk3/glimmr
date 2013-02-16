@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import com.bourke.glimmr.common.Constants;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentTransaction;
@@ -14,18 +13,22 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IGroupInfoReadyListener;
-import com.bourke.glimmr.tasks.LoadGroupInfoTask;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
+import com.bourke.glimmr.fragments.base.PhotoGridFragment.
+           PhotoGridItemClickedEvent;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
 import com.bourke.glimmr.R;
+import com.bourke.glimmr.tasks.LoadGroupInfoTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.Throttle;
 
+import com.squareup.otto.Subscribe;
+
 // TODO
-// * Group info task for title
-// * Replace add text on button with icon
 // * Persist selections on rotate
 // * Start this dialog on + button from GroupViewerFragment
 // * Some sort Service to handle the actual group additions
@@ -49,6 +52,9 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
     private static final int ADD_AT_A_TIME = 6;
 
     private Group mGroup;
+    private Throttle mThrottle;
+    private int mCount = 0;
+    private int mRemaining = 0;
 
     public static AddToGroupDialogFragment newInstance(Group group) {
         AddToGroupDialogFragment newFragment = new AddToGroupDialogFragment();
@@ -59,6 +65,34 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+        new LoadGroupInfoTask(mGroup.getId(), this).execute(mOAuth);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void onItemClicked(PhotoGridItemClickedEvent event) {
+        if (event.isChecked()) {
+            if (mRemaining > 0) {
+                mRemaining--;
+            }
+        } else {
+            if (mRemaining < mCount) {
+                mRemaining++;
+            }
+        }
+        String title = String.format("%s/%s remaining", mRemaining, mCount);
+        getDialog().setTitle(title);
     }
 
     @Override
@@ -79,38 +113,29 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
         return mLayout;
     }
 
-    public void onResume() {
-        super.onResume();
-        new LoadGroupInfoTask(mGroup.getId(), this).execute(mOAuth);
-    }
-
     @Override
     public void onGroupInfoReady(Group group) {
         if (Constants.DEBUG) Log.d(TAG, "onGroupInfoReady");
-        if (group != null) {
-            setTitle(group);
-        } else {
-            getDialog().setTitle(
-                    mActivity.getString(R.string.choose_some_photos));
+        if (group == null) {
+            // TODO: handle retry or error case here
+            return;
         }
-    }
+        mThrottle = group.getThrottle();
+        if (mThrottle == null) {
+            // TODO: handle retry or error case here
+            Log.e(TAG, "No group throttle found");
+            return;
+        }
+        if (Constants.DEBUG) {
+            Log.d(TAG, "Group throttle found");
+            Log.d(TAG, String.format("Remaining: %d, Mode: %s, Count: %d",
+                        mThrottle.getRemaining(), mThrottle.getMode(),
+                        mThrottle.getCount()));
+        }
 
-    private void setTitle(Group group) {
-        int remaining = ADD_AT_A_TIME;
-        Throttle t = group.getThrottle();
-        if (t != null) {
-            remaining = t.getRemaining();
-            if (Constants.DEBUG) {
-                Log.d(TAG, "Group throttle found, remaining: " + remaining);
-                Log.d(TAG, "Mode:" + t.getMode());
-                Log.d(TAG, "Count:" + t.getCount());
-            }
-        } else {
-            if (Constants.DEBUG) Log.d(TAG, "No group throttle found");
-        }
-        String title = String.format("%s (%d remaining)",
-                mActivity.getString(R.string.choose_some_photos),
-                remaining);
+        mRemaining = mThrottle.getRemaining();
+        mCount = mThrottle.getCount();
+        String title = String.format("%s/%s remaining", mRemaining, mCount);
         getDialog().setTitle(title);
     }
 }

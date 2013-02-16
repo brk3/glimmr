@@ -41,6 +41,7 @@ import com.bourke.glimmrpro.activities.PhotoViewerActivity;
 import com.bourke.glimmrpro.activities.ProfileActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.TextUtils;
+import com.bourke.glimmrpro.event.BusProvider;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.event.Events.PhotoItemLongClickDialogListener;
 import com.bourke.glimmrpro.R;
@@ -173,8 +174,15 @@ public abstract class PhotoGridFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
-                if (mGridView.getChoiceModeC() !=
+                if (mGridView.getChoiceModeC() ==
                         ListView.CHOICE_MODE_MULTIPLE) {
+                    SparseBooleanArray checkArray =
+                        mGridView.getCheckedItemPositionsC();
+                    if (checkArray != null) {
+                        BusProvider.getInstance().post(
+                            new PhotoGridItemClickedEvent(checkArray.get(position)));
+                    }
+                } else {
                     PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
                         position);
                 }
@@ -448,6 +456,21 @@ public abstract class PhotoGridFragment extends BaseFragment
                     }
                 });
             return builder.create();
+        }
+    }
+
+    /**
+     * Event published when an item in the grid is clicked.
+     */
+    public static class PhotoGridItemClickedEvent {
+        public boolean mIsChecked;
+
+        public PhotoGridItemClickedEvent(boolean isChecked) {
+            mIsChecked = isChecked;
+        }
+
+        public boolean isChecked() {
+            return mIsChecked;
         }
     }
 }

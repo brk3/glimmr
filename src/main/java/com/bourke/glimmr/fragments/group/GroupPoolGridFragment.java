@@ -1,5 +1,7 @@
 package com.bourke.glimmrpro.fragments.group;
 
+import com.bourke.glimmr.fragments.viewer.AddToGroupDialogFragment;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -15,6 +17,10 @@ import com.bourke.glimmrpro.tasks.LoadGroupPoolTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.photos.Photo;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.actionbarsherlock.view.MenuItem;
 
 public class GroupPoolGridFragment extends PhotoGridFragment {
 
@@ -39,6 +45,30 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreateOptionsMenu");
         inflater.inflate(R.menu.groupviewer_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add_photos:
+                FragmentTransaction ft =
+                    mActivity.getSupportFragmentManager().beginTransaction();
+                ft.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+                Fragment prev = mActivity.getSupportFragmentManager()
+                    .findFragmentByTag(AddToGroupDialogFragment.TAG);
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+                SherlockDialogFragment newFragment =
+                    AddToGroupDialogFragment.newInstance(mGroup);
+                newFragment.show(ft, AddToGroupDialogFragment.TAG);
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
