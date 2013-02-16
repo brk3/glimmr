@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.util.SparseBooleanArray;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,6 +35,7 @@ import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.PhotoItemLongClickDialogListener;
 import com.bourke.glimmr.R;
@@ -45,10 +48,6 @@ import com.rokoder.android.lib.support.v4.widget.GridViewCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.util.SparseBooleanArray;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.PorterDuff;
-import android.widget.ListView;
 
 /**
  * Base Fragment that contains a GridView of photos.
@@ -169,8 +168,15 @@ public abstract class PhotoGridFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
-                if (mGridView.getChoiceModeC() !=
+                if (mGridView.getChoiceModeC() ==
                         ListView.CHOICE_MODE_MULTIPLE) {
+                    SparseBooleanArray checkArray =
+                        mGridView.getCheckedItemPositionsC();
+                    if (checkArray != null) {
+                        BusProvider.getInstance().post(
+                            new PhotoGridItemClickedEvent(checkArray.get(position)));
+                    }
+                } else {
                     PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
                         position);
                 }
@@ -433,6 +439,21 @@ public abstract class PhotoGridFragment extends BaseFragment
                     }
                 });
             return builder.create();
+        }
+    }
+
+    /**
+     * Event published when an item in the grid is clicked.
+     */
+    public static class PhotoGridItemClickedEvent {
+        public boolean mIsChecked;
+
+        public PhotoGridItemClickedEvent(boolean isChecked) {
+            mIsChecked = isChecked;
+        }
+
+        public boolean isChecked() {
+            return mIsChecked;
         }
     }
 }
