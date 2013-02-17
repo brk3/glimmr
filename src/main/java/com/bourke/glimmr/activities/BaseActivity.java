@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
@@ -44,6 +45,8 @@ import com.bourke.glimmr.R;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
 
@@ -96,8 +99,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
-        /* Tune the aquery cache */
         if (isTaskRoot()) {
+            /* Tune the aquery cache */
             BitmapAjaxCallback.setCacheLimit(Constants.IMAGE_CACHE_LIMIT);
             BitmapAjaxCallback.setMaxPixelLimit(Constants.MEM_CACHE_PX_SIZE);
             if (Constants.DEBUG) {
@@ -105,6 +108,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                         Constants.IMAGE_CACHE_LIMIT);
                 Log.d(getLogTag(), "MEM_CACHE_PX_SIZE: " +
                         Constants.MEM_CACHE_PX_SIZE);
+            }
+
+            /* Start the Group service for any pending tasks */
+            if ( ! AddToGroupTaskQueueService.IS_RUNNING &&
+                    OAuthUtils.isLoggedIn(this)) {
+                if (Constants.DEBUG) {
+                    Log.d(TAG, "Starting AddToGroupTaskQueueService");
+                }
+                startService(new Intent(this,
+                            AddToGroupTaskQueueService.class));
             }
         }
     }
@@ -115,14 +128,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (Constants.DEBUG)
+        if (Constants.DEBUG) {
             Log.d(getLogTag(), "onDestroy");
+        }
         if (isTaskRoot()) {
             if (Constants.DEBUG)
                 Log.d(getLogTag(), "Trimming file cache");
             AQUtility.cleanCacheAsync(this, Constants.CACHE_TRIM_TRIGGER_SIZE,
                    Constants.CACHE_TRIM_TARGET_SIZE);
         }
+        Crouton.cancelAllCroutons();
     }
 
     @Override

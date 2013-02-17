@@ -179,7 +179,7 @@ public class MainActivity extends BaseActivity {
         super.onRestoreInstanceState(inState);
         mActivityListVersion = inState.getLong(
                 KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED, -1);
-        if (mMenuDrawer != null ) {
+        if (mMenuDrawer != null) {
             mMenuDrawer.restoreState(inState.getParcelable(
                         KEY_STATE_MENUDRAWER));
         }

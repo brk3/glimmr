@@ -81,4 +81,16 @@ public class Events {
     public interface GroupItemLongClickDialogListener {
         public void onLongClickDialogSelection(Group group, int which);
     }
+
+    /**
+     * Called from the task in the event of a failure
+     *
+     * @param itemId        Id of the item associated with the failed task
+     * @param retry         If False, task is considered bad and should not be
+     *                      queued for retry.
+     */
+    public interface IAddItemToGroupListener {
+        public void onSuccess(final String itemId);
+        public void onFailure(final String itemId, final boolean retry);
+    }
 }
