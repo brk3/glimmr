@@ -1,5 +1,7 @@
 package com.bourke.glimmr.fragments.base;
 
+import android.annotation.SuppressLint;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 
@@ -156,25 +158,44 @@ public abstract class PhotoGridFragment extends BaseFragment
         return mGridChoiceMode;
     }
 
+    @SuppressLint("NewApi")
+    public List<Photo> getSelectedPhotos() {
+        List<Photo> ret = new ArrayList<Photo>();
+        if (mGridView.getChoiceMode() != ListView.CHOICE_MODE_MULTIPLE) {
+            Log.e(TAG, "PhotoGridFragment not in CHOICE_MODE_MULTIPLE");
+            return ret;
+        }
+        SparseBooleanArray checkArray = mGridView.getCheckedItemPositions();
+        for (int i=0; i < checkArray.size(); i++) {
+            if (checkArray.valueAt(i)) {
+                ret.add(mPhotos.get(i));
+            }
+        }
+        if (Constants.DEBUG) Log.d(TAG, "getSelectedPhotos: " + ret.size());
+        return ret;
+    }
+
+    @SuppressLint("NewApi")
     private void initGridView() {
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
         mGridView = (GridViewCompat) mLayout.findViewById(R.id.gridview);
         mGridView.setAdapter(mAdapter);
-        mGridView.setChoiceModeC(getGridChoiceMode());
+        mGridView.setChoiceMode(getGridChoiceMode());
 
         mGridView.setOnItemClickListener(
                 new GridViewCompat.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
-                if (mGridView.getChoiceModeC() ==
+                if (mGridView.getChoiceMode() ==
                         ListView.CHOICE_MODE_MULTIPLE) {
                     SparseBooleanArray checkArray =
-                        mGridView.getCheckedItemPositionsC();
+                        mGridView.getCheckedItemPositions();
                     if (checkArray != null) {
                         BusProvider.getInstance().post(
-                            new PhotoGridItemClickedEvent(checkArray.get(position)));
+                            new PhotoGridItemClickedEvent(
+                                checkArray.get(position)));
                     }
                 } else {
                     PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
@@ -194,7 +215,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                 if (mOAuth == null) {
                     return false;
                 }
-                if (mGridView.getChoiceModeC() ==
+                if (mGridView.getChoiceMode() ==
                         ListView.CHOICE_MODE_MULTIPLE) {
                     return false;
                 }
@@ -310,6 +331,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                     items);
         }
 
+        @SuppressLint("NewApi")
         @Override
         public View getView(final int position, View convertView,
                 ViewGroup parent) {
@@ -385,10 +407,10 @@ public abstract class PhotoGridFragment extends BaseFragment
                 }
 
                 /* If in multiple choice mode, set tint on selected items */
-                if (mGridView.getChoiceModeC() ==
+                if (mGridView.getChoiceMode() ==
                         ListView.CHOICE_MODE_MULTIPLE) {
                     SparseBooleanArray checkArray =
-                        mGridView.getCheckedItemPositionsC();
+                        mGridView.getCheckedItemPositions();
 
                     if (checkArray != null) {
                         if (checkArray.get(position)) {

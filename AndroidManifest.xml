@@ -134,6 +134,8 @@
         </receiver>
 
         <service android:name=".services.AppService" />
+
+        <service android:name=".tape.AddToGroupTaskQueueService" />
     </application>
 
 </manifest>
