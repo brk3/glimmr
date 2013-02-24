@@ -111,7 +111,8 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
                 mRemaining++;
             }
         }
-        String title = String.format("%s/%s remaining", mRemaining, mCount);
+        String title = String.format("%s/%s %s", mRemaining, mCount,
+                getString(R.string.remaining));
         mTitleView.setText(title);
     }
 
