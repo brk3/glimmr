@@ -9,9 +9,9 @@
     <string name="browse">browse</string>
     <string name="by">by</string>
     <string name="commented_on">commented on</string>
-    <string name="comments">Comments and Favs</string>
     <string name="comment_sent">Comment Sent!</string>
     <string name="contacts">Contacts</string>
+    <string name="description">Description:</string>
     <string name="edit_text_hint">Add your comment…</string>
     <string name="exif_info">Exif Info</string>
     <string name="explore">Explore</string>
@@ -72,9 +72,10 @@
     <string name="setting_wallpaper">Setting Wallpaper…</string>
     <string name="shutter">SHUTTER</string>
     <string name="sort_by">Sort by</string>
-    <string name="tags">Tags</string>
+    <string name="tags">Tags:</string>
     <string name="thirty_mins">30 minutes</string>
     <string name="timezone_message">Are your clock and timezone are set correctly?</string>
+    <string name="title">Title:</string>
     <string name="to">to</string>
     <string name="untitled">Untitled</string>
     <string name="views">Views</string>

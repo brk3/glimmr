@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/photosetNameText"
             android:layout_weight="1"
-            android:layout_width="fill_parent"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="4dp"

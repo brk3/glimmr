@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragment;
+import java.util.Locale;
 
 /**
  * Generic FragmentPagerAdapter to be used with Glimmr activities.
@@ -44,7 +45,8 @@ public abstract class GlimmrPagerAdapter extends FragmentPagerAdapter
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mContent[position % mContent.length].toUpperCase();
+        return mContent[position % mContent.length].toUpperCase(
+                Locale.getDefault());
     }
 
     @Override

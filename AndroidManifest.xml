@@ -21,7 +21,8 @@
         android:label="@string/app_name"
         android:icon="@drawable/ic_launcher"
         android:theme="@style/Theme.glimmrdark"
-        android:hardwareAccelerated="true">
+        android:hardwareAccelerated="true"
+        android:allowBackup="true">
 
         <activity android:name=".activities.MainActivity"
             android:label="@string/app_name">

@@ -35,6 +35,7 @@ import com.googlecode.flickrjandroid.photosets.Photosets;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class PhotosetsFragment extends BaseFragment
         implements IPhotosetsReadyListener {
@@ -193,7 +194,7 @@ public class PhotosetsFragment extends BaseFragment
                         0, 0, null, AQuery.FADE_IN_NETWORK);
 
                 holder.photosetNameText.setText(
-                        photoset.getTitle().toUpperCase());
+                        photoset.getTitle().toUpperCase(Locale.getDefault()));
                 holder.numImagesInSetText.setText(
                         ""+photoset.getPhotoCount());
             }
