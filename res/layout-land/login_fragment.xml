@@ -46,7 +46,7 @@
 
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/loginButtonTopMargin"
             android:layout_marginLeft="16dip"

@@ -137,7 +137,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="glimmr_TitlePageIndicator" parent="Widget">
+    <style name="glimmr_TitlePageIndicator" parent="Widget"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:ignore="DuplicateDefinition">
         <item name="android:background">@drawable/bg_tint</item>
         <item name="android:textColor">@color/flickr_pink</item>
         <item name="android:textSize">@dimen/text_size_small</item>
@@ -149,7 +151,9 @@
         <item name="topPadding">3dp</item>
     </style>
 
-    <style name="glimmr_ShadowedText">
+    <style name="glimmr_ShadowedText"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:ignore="DuplicateDefinition">
         <item name="android:shadowColor">#FF000000</item>
         <item name="android:shadowDx">2</item>
         <item name="android:shadowDy">2</item>
