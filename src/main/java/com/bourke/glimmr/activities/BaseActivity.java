@@ -47,6 +47,7 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import android.content.SharedPreferences;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
 
@@ -119,6 +120,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 startService(new Intent(this,
                             AddToGroupTaskQueueService.class));
             }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        final SharedPreferences prefs = getSharedPreferences(
+                Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        final boolean isFirstRun = prefs.getBoolean(
+                Constants.KEY_IS_FIRST_RUN, true);
+        if (isFirstRun) {
+            if (Constants.DEBUG) Log.d(TAG, "onPause: set isFirstRun=false");
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(Constants.KEY_IS_FIRST_RUN, false);
+            editor.commit();
         }
     }
 
