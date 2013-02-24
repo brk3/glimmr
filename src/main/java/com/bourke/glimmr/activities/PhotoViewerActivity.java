@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.squareup.otto.Subscribe;
 import android.content.Context;
 import android.content.Intent;
 
@@ -34,6 +35,7 @@ import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoInfoFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
+import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment.PhotoViewerVisibilityChangeEvent;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
 
@@ -44,7 +46,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.lang.ref.WeakReference;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,8 +57,7 @@ import java.util.List;
  * Receives a list of photos via an intent and shows the first one specified by
  * a startIndex in a zoomable ImageView.
  */
-public class PhotoViewerActivity extends BaseActivity
-        implements PhotoViewerFragment.IPhotoViewerCallbacks {
+public class PhotoViewerActivity extends BaseActivity {
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
 
@@ -79,8 +79,6 @@ public class PhotoViewerActivity extends BaseActivity
     private List<Photo> mPhotos = new ArrayList<Photo>();
     private PhotoViewerPagerAdapter mAdapter;
     private HackyViewPager mPager;
-    private List<WeakReference<Fragment>> mFragList =
-        new ArrayList<WeakReference<Fragment>>();
     private int mCurrentAdapterIndex = 0;
     private CommentsFragment mCommentsFragment;
     private PhotoInfoFragment mPhotoInfoFragment;
@@ -374,18 +372,13 @@ public class PhotoViewerActivity extends BaseActivity
         return TAG;
     }
 
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        if (fragment instanceof PhotoViewerFragment) {
-            mFragList.add(new WeakReference(fragment));
-        }
-    }
-
-    @Override
-    public void onVisibilityChanged(final boolean on) {
+    @Subscribe
+    public void onVisibilityChanged(
+            final PhotoViewerVisibilityChangeEvent event) {
+        if (Constants.DEBUG) Log.d(TAG, "onVisibilityChanged");
         /* If overlay is being switched off and info/comments fragments are
          * showing, dismiss(hide) these and return */
-        if (!on) {
+        if (!event.visible) {
             boolean animateTransition = true;
             if (mPhotoInfoFragmentShowing) {
                 setPhotoInfoFragmentVisibility(null, false, true);
@@ -394,13 +387,6 @@ public class PhotoViewerActivity extends BaseActivity
             if (mCommentsFragmentShowing) {
                 setCommentsFragmentVisibility(null, false, true);
                 return;
-            }
-        }
-
-        for (WeakReference<Fragment> ref : mFragList) {
-            PhotoViewerFragment f = (PhotoViewerFragment) ref.get();
-            if (f != null) {
-                f.setOverlayVisibility(on);
             }
         }
     }
@@ -418,7 +404,7 @@ public class PhotoViewerActivity extends BaseActivity
         @Override
         public Fragment getItem(int position) {
             return PhotoViewerFragment.newInstance(mPhotos.get(position),
-                    PhotoViewerActivity.this, mFetchExtraInfo);
+                    mFetchExtraInfo);
         }
 
         @Override

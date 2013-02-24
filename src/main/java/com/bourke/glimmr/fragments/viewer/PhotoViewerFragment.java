@@ -31,6 +31,7 @@ import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
@@ -41,6 +42,8 @@ import com.bourke.glimmr.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.Size;
+
+import com.squareup.otto.Subscribe;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -59,7 +62,6 @@ public final class PhotoViewerFragment extends BaseFragment
     private MenuItem mFavoriteButton;
     private LoadPhotoInfoTask mTask;
     private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
-    private IPhotoViewerCallbacks mListener;
     private Configuration mConfiguration;
     private ImageView mImageView;
     private PhotoViewAttacher mAttacher;
@@ -71,24 +73,38 @@ public final class PhotoViewerFragment extends BaseFragment
      *
      * @param photo             Basic Photo object as returned by say
      *                          flickr.people.getPhotos
-     * @param listener          Object to be notified of callbacks.
      * @param fetchExtraInfo    Set to false to disable a call to
      *                          flickr.photos.getInfo if photo already has this
      *                          info.
      */
     public static PhotoViewerFragment newInstance(Photo photo,
-            IPhotoViewerCallbacks listener, boolean fetchExtraInfo) {
+            boolean fetchExtraInfo) {
         if (Constants.DEBUG) Log.d(TAG, "newInstance");
 
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
         photoFragment.mBasePhoto = photo;
-        photoFragment.mListener = listener;
 
         if (!fetchExtraInfo) {
             photoFragment.mPhotoExtendedInfo = photo;
         }
 
         return photoFragment;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Constants.DEBUG) Log.d(TAG, "onPause");
+        BusProvider.getInstance().unregister(this);
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -113,7 +129,9 @@ public final class PhotoViewerFragment extends BaseFragment
         mAttacher.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                mListener.onVisibilityChanged(!mActionBar.isShowing());
+                BusProvider.getInstance().post(
+                    new PhotoViewerVisibilityChangeEvent(
+                        !mActionBar.isShowing()));
             }
         });
 
@@ -241,15 +259,6 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (Constants.DEBUG) Log.d(TAG, "onPause");
-        if (mTask != null) {
-            mTask.cancel(true);
-        }
-    }
-
-    @Override
     protected void startTask() {
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
@@ -314,6 +323,13 @@ public final class PhotoViewerFragment extends BaseFragment
         }
     }
 
+    @Subscribe
+    public void onVisibilityChanged(
+            final PhotoViewerVisibilityChangeEvent event) {
+        if (Constants.DEBUG) Log.d(TAG, "onVisibilityChanged");
+        setOverlayVisibility(event.visible);
+    }
+
     @SuppressLint("NewApi")
     public void setOverlayVisibility(final boolean on) {
         boolean honeycombOrGreater =
@@ -349,7 +365,14 @@ public final class PhotoViewerFragment extends BaseFragment
         return TAG;
     }
 
-    public interface IPhotoViewerCallbacks {
-        void onVisibilityChanged(final boolean on);
+    /**
+     * Event published when the main photo is clicked.
+     */
+    public static class PhotoViewerVisibilityChangeEvent {
+        public boolean visible;
+
+        public PhotoViewerVisibilityChangeEvent(final boolean visible) {
+            this.visible = visible;
+        }
     }
 }
