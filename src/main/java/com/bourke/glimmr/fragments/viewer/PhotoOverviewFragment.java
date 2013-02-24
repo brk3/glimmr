@@ -93,10 +93,9 @@ public final class PhotoOverviewFragment extends BaseFragment
             mLayout.findViewById(R.id.textViewTitle);
         String title = mPhoto.getTitle();
         if ("".equals(title)) {
-            // TODO: update string
-            mTextViewTitle.setText("None");
+            mTextViewTitle.setText("‘" + getString(R.string.none) + "’");
         } else {
-            mTextViewTitle.setText("‘"+title+"’");
+            mTextViewTitle.setText("‘" + title + "’");
         }
 
         /* build the tags textview */
@@ -112,8 +111,7 @@ public final class PhotoOverviewFragment extends BaseFragment
             count++;
         }
         if ("".equals(tags.toString())) {
-            // TODO: update string
-            mTextTags.setText("None");
+            mTextTags.setText("‘" + getString(R.string.none) + "’");
         } else {
             mTextTags.setText(tags.toString());
             mTextTags.setOnClickListener(new View.OnClickListener() {
@@ -133,8 +131,7 @@ public final class PhotoOverviewFragment extends BaseFragment
             mLayout.findViewById(R.id.textViewDescription);
         String description = mPhoto.getDescription();
         if ("".equals(description)) {
-            // TODO: update string
-            mTextViewDescription.setText("None");
+            mTextViewDescription.setText("‘" + getString(R.string.none) + "’");
         } else {
             mTextViewDescription.setText(Html.fromHtml(description));
         }

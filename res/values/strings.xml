@@ -41,6 +41,7 @@
     <string name="most_recent">Most Recent</string>
     <string name="new_activity">New activity on your photo</string>
     <string name="no_connection">Something went wrong.\nTry refreshing?</string>
+    <string name="none">None</string>
     <string name="no_photos">No photos available.\nClick to retry.</string>
     <string name="no_search_results">No results found.</string>
     <string name="no_exif_permission">The owner of the photo does not want to share EXIF data.</string>
@@ -69,6 +70,7 @@
     <string name="pro_donate">Pro/Donate</string>
     <string name="menu_search">Search</string>
     <string name="relevance">Relevance</string>
+    <string name="remaining">remaining</string>
     <string name="search_hint">Search images and people</string>
     <string name="set_preferences">Set Preferences</string>
     <string name="sets">Sets</string>
