@@ -5,6 +5,7 @@ import android.app.Dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
@@ -40,6 +41,9 @@ import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.LoadGroupsTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,6 +141,16 @@ public class GroupListFragment extends BaseFragment
                     return true;
                 }
             });
+
+            /* Show a tip on first run */
+            final SharedPreferences prefs = mActivity.getSharedPreferences(
+                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
+            final boolean isFirstRun = prefs.getBoolean(
+                    Constants.KEY_IS_FIRST_RUN, true);
+            if (isFirstRun) {
+                Crouton.makeText(mActivity, R.string.tip_add_to_group,
+                        Style.INFO).show();
+            }
         }
     }
 

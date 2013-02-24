@@ -385,13 +385,6 @@ public class MainActivity extends BaseActivity {
                     public void onDrawerStateChange(int oldState,
                             int newState) {
                         if (newState == MenuDrawer.STATE_OPEN) {
-                            if (isFirstRun) {
-                                SharedPreferences.Editor editor =
-                                    mPrefs.edit();
-                                editor.putBoolean(Constants.KEY_IS_FIRST_RUN,
-                                    false);
-                                editor.commit();
-                            }
                             if (!mDisplayHomeAsUp) {
                                 mActionBar.setDisplayHomeAsUpEnabled(true);
                             }
