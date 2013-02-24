@@ -24,7 +24,6 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TextUtils;
-import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IGroupInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment.PhotoGridItemClickedEvent;
@@ -92,14 +91,7 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
     @Override
     public void onResume() {
         super.onResume();
-        BusProvider.getInstance().register(this);
         new LoadGroupInfoTask(mGroup.getId(), this).execute(mOAuth);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
     }
 
     @Subscribe
