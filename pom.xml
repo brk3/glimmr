@@ -145,7 +145,7 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.5.1</version>
                 <configuration>
                     <androidManifestFile>
                         ${project.basedir}/AndroidManifest.xml
@@ -161,6 +161,12 @@
                         <platform>17</platform>
                     </sdk>
                     <!--<undeployBeforeDeploy>true</undeployBeforeDeploy>-->
+
+                    <lint>
+                        <skip>false</skip>
+                        <enableHtml>true</enableHtml>
+                        <enableLibraries>false</enableLibraries>
+                    </lint>
                 </configuration>
                 <extensions>true</extensions>
             </plugin>

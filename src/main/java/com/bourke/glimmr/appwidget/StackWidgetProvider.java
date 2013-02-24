@@ -1,5 +1,7 @@
 package com.bourke.glimmrpro.appwidget;
 
+import android.annotation.TargetApi;
+
 import android.app.PendingIntent;
 
 import android.appwidget.AppWidgetManager;
@@ -18,6 +20,7 @@ import com.bourke.glimmrpro.activities.PhotoViewerActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.R;
 
+@TargetApi(11)
 public class StackWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "Glimmr/StackWidgetProvider";

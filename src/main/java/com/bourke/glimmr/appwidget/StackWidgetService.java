@@ -1,5 +1,7 @@
 package com.bourke.glimmrpro.appwidget;
 
+import android.annotation.TargetApi;
+
 import android.appwidget.AppWidgetManager;
 
 import android.content.Context;
@@ -43,6 +45,7 @@ public class StackWidgetService extends RemoteViewsService {
     }
 }
 
+@TargetApi(11)
 class StackRemoteViewsFactory
         implements RemoteViewsService.RemoteViewsFactory {
 

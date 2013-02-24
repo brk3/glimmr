@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -54,7 +54,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_medium"
-            android:text="Title:"
+            android:text="@string/title"
             android:gravity="left" />
         <TextView
             android:id="@+id/textViewTitle"
@@ -74,7 +74,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_medium"
-            android:text="Description:"
+            android:text="@string/description"
             android:gravity="left" />
         <TextView
             android:id="@+id/textViewDescription"
@@ -94,7 +94,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_medium"
-            android:text="Tags:"
+            android:text="@string/tags"
             android:gravity="left" />
         <TextView
             android:id="@+id/textViewTags"

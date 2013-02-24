@@ -624,7 +624,8 @@ public class MainActivity extends BaseActivity {
                             R.layout.menu_row_item, parent, false);
                 }
                 TextView tv = (TextView) v;
-                tv.setText(((MenuDrawerItem) item).mTitle.toUpperCase());
+                tv.setText(((MenuDrawerItem) item).mTitle.toUpperCase(
+                            Locale.getDefault()));
                 tv.setCompoundDrawablesWithIntrinsicBounds(
                         ((MenuDrawerItem) item).mIconRes, 0, 0, 0);
                 mTextUtils.setFont(tv, TextUtils.FONT_ROBOTOTHIN);

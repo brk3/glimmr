@@ -106,7 +106,7 @@ public final class CommentsFragment extends BaseDialogFragment
         TextView titleText = (TextView) mLayout.findViewById(R.id.titleText);
         mTextUtils.setFont(titleText, TextUtils.FONT_ROBOTOREGULAR);
         String title = mActivity.getString(R.string.menu_view_comments);
-        titleText.setText(title.toUpperCase());
+        titleText.setText(title.toUpperCase(Locale.getDefault()));
 
         return mLayout;
     }
