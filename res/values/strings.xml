@@ -63,7 +63,7 @@
     <string name="cb_enable_contacts_notifications_title">Contacts Uploads</string>
     <string name="cb_enable_contacts_notifications_summary">Notify when contacts upload new photos</string>
     <string name="cb_high_quality_thumbnails_title">High Quality Thumbnails</string>
-    <string name="cb_high_quality_thumbnails_summary">Looks better but may be slower</string>
+    <string name="cb_high_quality_thumbnails_summary">Looks better, but may be slower</string>
     <string name="cb_enable_notifications_title">Enable Notifications</string>
     <string name="people">People</string>
     <string name="pref_notification_intervals_title">Sync Interval</string>
@@ -82,7 +82,7 @@
     <string name="tip_view_profile">Tip: Tap and hold an image to view author\'s profile</string>
     <string name="tip_add_to_group">Tip: Tap and hold a group to add photos</string>
     <string name="thirty_mins">30 minutes</string>
-    <string name="timezone_message">Are your clock and timezone are set correctly?</string>
+    <string name="timezone_message">Are your clock and timezone set correctly?</string>
     <string name="title">Title:</string>
     <string name="to">to</string>
     <string name="untitled">Untitled</string>
