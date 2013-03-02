@@ -26,4 +26,8 @@
         <item>@string/add_photos</item>
     </string-array>
 
+    <string-array name="photoset_item_long_click_dialog_items">
+        <item>@string/add_photos</item>
+    </string-array>
+
 </resources>

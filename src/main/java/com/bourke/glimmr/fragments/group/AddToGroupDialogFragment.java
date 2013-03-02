@@ -1,9 +1,6 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-
-import android.content.DialogInterface;
+import android.content.Intent;
 
 import android.os.Bundle;
 
@@ -20,16 +17,16 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.TaskQueueDelegateFactory;
 import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IGroupInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment.PhotoGridItemClickedEvent;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.tape.AddToGroupTaskQueue;
+import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
 import com.bourke.glimmr.tasks.AddItemToGroupTask;
 import com.bourke.glimmr.tasks.LoadGroupInfoTask;
 
@@ -37,9 +34,8 @@ import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.Throttle;
 import com.googlecode.flickrjandroid.photos.Photo;
 
-import com.google.gson.GsonBuilder;
-
 import com.squareup.otto.Subscribe;
+import com.squareup.tape.TaskQueue;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -47,6 +43,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.List;
 
 // TODO
+// * Handle failing to create TaskQueue
 // * Persist selections on rotate
 
 /**
@@ -65,9 +62,11 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
      * popular 'Black & White' group states 6, so go with that for now */
     private static final int ADD_AT_A_TIME = 6;
 
+    public static final String QUEUE_FILE = "group_task_queue.json";
+
     private Group mGroup;
     private Throttle mThrottle;
-    private AddToGroupTaskQueue mQueue;
+    private TaskQueue mQueue;
     private ProgressBar mProgressBar;
     private TextView mTitleView;
 
@@ -83,9 +82,19 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mQueue = AddToGroupTaskQueue.newInstance(mActivity,
-                AddToGroupTaskQueue.QUEUE_FILE, new GsonBuilder().create());
+        TaskQueueDelegateFactory<AddItemToGroupTask> factory =
+            new TaskQueueDelegateFactory<AddItemToGroupTask>(mActivity);
+        mQueue = new TaskQueue(factory.get(QUEUE_FILE,
+                    AddItemToGroupTask.class));
+        BusProvider.getInstance().register(this);
         setStyle(STYLE_NO_TITLE, 0);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Constants.DEBUG) Log.d(TAG, "onPause");
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -142,6 +151,8 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
                             mQueue.add(new AddItemToGroupTask(mGroup.getId(),
                                     photo.getId(), mOAuth));
                         }
+                        mActivity.startService(new Intent(mActivity,
+                                    AddToGroupTaskQueueService.class));
                         dismiss();
                         Crouton.makeText(mActivity,
                             R.string.photos_will_be_added,
