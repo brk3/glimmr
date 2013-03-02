@@ -10,39 +10,37 @@ import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.ITaskQueueServiceListener;
 
 import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
 import com.squareup.tape.Task;
-import com.googlecode.flickrjandroid.FlickrException;
-import org.json.JSONException;
+
 import java.io.IOException;
 
-public class AddItemToGroupTask
+import org.json.JSONException;
+
+public class AddItemToPhotosetTask
         implements Task<ITaskQueueServiceListener> {
 
-    private static final String TAG = "Glimmr/AddItemToGroupTask";
+    private static final String TAG = "Glimmr/AddItemToPhotosetTask";
 
     private static final Handler MAIN_THREAD = new Handler(
             Looper.getMainLooper());
 
-    /* Error codes from
-     * http://www.flickr.com/services/api/flickr.groups.pools.add.html */
-    private static final String FLICKR_PHOTO_NOT_FOUND = "1";
-    private static final String FLICKR_GROUP_NOT_FOUND = "2";
-    private static final String FLICKR_ALREADY_IN_POOL = "3";
-    private static final String FLICKR_PHOTO_IN_MAX_POOLS = "4";
-    private static final String FLICKR_PHOTO_LIMIT_REACHED = "5";
-    private static final String FLICKR_PHOTO_PENDING_MOD = "6";
-    private static final String FLICKR_PHOTO_PENDING = "7";
-    private static final String FLICKR_POOL_FULL = "10";
+    /* http://www.flickr.com/services/api/flickr.photosets.addPhoto.html */
+    private static final String FLICKR_PHOTOSET_NOT_FOUND = "1";
+    private static final String FLICKR_PHOTO_NOT_FOUND = "2";
+    private static final String FLICKR_PHOTO_ALREADY_IN_SET = "3";
+    private static final String FLICKR_PHOTOSET_FULL = "10";
 
-    private final String mGroupId;
+    private final String mPhotosetId;
     private final String mItemId;
     private final OAuth mOAuth;
 
-    public AddItemToGroupTask(String groupId, String itemId, OAuth oauth) {
-        mGroupId = groupId;
+    public AddItemToPhotosetTask(String photosetId, String itemId,
+            OAuth oauth) {
+        mPhotosetId = photosetId;
         mItemId = itemId;
         mOAuth = oauth;
     }
@@ -51,11 +49,11 @@ public class AddItemToGroupTask
     public void execute(final ITaskQueueServiceListener listener) {
         if (Constants.DEBUG) {
             Log.d(TAG, String.format(
-                    "Processing photo id %s for group %s", mItemId,
-                    mGroupId));
+                    "Processing photo id %s for photoset %s", mItemId,
+                    mPhotosetId));
         }
         if (mOAuth == null) {
-            Log.e(TAG, "AddItemToGroupTask requires authentication");
+            Log.e(TAG, "AddItemToPhotosetTask requires authentication");
             MAIN_THREAD.post(new Runnable() {
                 @Override
                 public void run() {
@@ -73,21 +71,18 @@ public class AddItemToGroupTask
                         token.getOauthToken(),
                         token.getOauthTokenSecret());
                     try {
-                        f.getPoolsInterface().add(mItemId, mGroupId);
+                        f.getPhotosetsInterface().addPhoto(
+                            mPhotosetId, mItemId);
                         /* success */
                         postToMainThread(listener, true, false);
                     } catch (FlickrException e) {
                         e.printStackTrace();
                         final String errCode = e.getErrorCode();
                         /* any of the following warrants no retry */
-                        if (FLICKR_PHOTO_NOT_FOUND.equals(errCode) ||
-                                FLICKR_GROUP_NOT_FOUND.equals(errCode) ||
-                                FLICKR_ALREADY_IN_POOL.equals(errCode) ||
-                                FLICKR_PHOTO_IN_MAX_POOLS.equals(errCode) ||
-                                FLICKR_PHOTO_LIMIT_REACHED.equals(errCode) ||
-                                FLICKR_PHOTO_PENDING_MOD.equals(errCode) ||
-                                FLICKR_PHOTO_PENDING.equals(errCode) ||
-                                FLICKR_POOL_FULL.equals(errCode)) {
+                        if (FLICKR_PHOTOSET_NOT_FOUND.equals(errCode) ||
+                                FLICKR_PHOTO_NOT_FOUND.equals(errCode) ||
+                                FLICKR_PHOTO_ALREADY_IN_SET.equals(errCode) ||
+                                FLICKR_PHOTOSET_FULL.equals(errCode)) {
                             postToMainThread(listener, false, false);
                         } else {
                             Log.e(TAG, "Unknown FlickrException code: " +

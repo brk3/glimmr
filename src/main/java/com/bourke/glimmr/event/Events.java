@@ -7,6 +7,7 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
 import com.googlecode.flickrjandroid.photosets.Photosets;
+import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
@@ -82,6 +83,10 @@ public class Events {
         public void onLongClickDialogSelection(Group group, int which);
     }
 
+    public interface PhotosetItemLongClickDialogListener {
+        public void onLongClickDialogSelection(Photoset photoset, int which);
+    }
+
     /**
      * Called from the task in the event of a failure
      *
@@ -89,7 +94,7 @@ public class Events {
      * @param retry         If False, task is considered bad and should not be
      *                      queued for retry.
      */
-    public interface IAddItemToGroupListener {
+    public interface ITaskQueueServiceListener {
         public void onSuccess(final String itemId);
         public void onFailure(final String itemId, final boolean retry);
     }

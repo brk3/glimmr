@@ -5,12 +5,21 @@ import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+
 import android.util.Log;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.LoadPhotosetTask;
 
 import com.googlecode.flickrjandroid.people.User;
@@ -39,6 +48,36 @@ public class PhotosetGridFragment extends PhotoGridFragment
         PhotosetGridFragment newFragment = new PhotosetGridFragment();
         newFragment.mPhotoset = photoset;
         return newFragment;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.photosetviewer_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add_photos:
+                FragmentTransaction ft =
+                    mActivity.getSupportFragmentManager().beginTransaction();
+                ft.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+                Fragment prev = mActivity.getSupportFragmentManager()
+                    .findFragmentByTag(AddToPhotosetDialogFragment.TAG);
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+                SherlockDialogFragment newFragment =
+                    AddToPhotosetDialogFragment.newInstance(mPhotoset);
+                newFragment.show(ft, AddToPhotosetDialogFragment.TAG);
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
