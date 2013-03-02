@@ -82,8 +82,9 @@ public class GroupListFragment extends BaseFragment
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (mTask != null) {
             mTask.cancel(true);
-            if (Constants.DEBUG)
+            if (Constants.DEBUG) {
                 Log.d(TAG, "onPause: cancelling task");
+            }
         }
     }
 
