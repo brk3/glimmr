@@ -86,6 +86,7 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_menu, menu);
     }
 
