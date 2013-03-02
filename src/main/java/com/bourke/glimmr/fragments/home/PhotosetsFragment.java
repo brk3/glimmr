@@ -1,5 +1,12 @@
 package com.bourke.glimmr.fragments.home;
 
+import com.bourke.glimmr.fragments.photoset.AddToPhotosetDialogFragment;
+import android.app.AlertDialog;
+import android.app.Dialog;
+
+import android.content.Context;
+import android.content.DialogInterface;
+
 import android.graphics.Bitmap;
 
 import android.os.Bundle;
@@ -19,13 +26,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
 import com.androidquery.AQuery;
 
 import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
+import com.bourke.glimmr.event.Events.PhotosetItemLongClickDialogListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadPhotosetsTask;
@@ -36,9 +46,12 @@ import com.googlecode.flickrjandroid.photosets.Photosets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 
 public class PhotosetsFragment extends BaseFragment
-        implements IPhotosetsReadyListener {
+        implements IPhotosetsReadyListener,
+                   PhotosetItemLongClickDialogListener {
 
     private static final String TAG = "Glimmr/PhotosetsFragment";
 
@@ -109,6 +122,30 @@ public class PhotosetsFragment extends BaseFragment
                             mPhotosets.get(position));
                     }
                 });
+        mAdapterView.setOnItemLongClickListener(
+                new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent,
+                            View v, int position, long id) {
+                        if (position < mPhotosets.size()) {
+                            SherlockDialogFragment d =
+                                PhotosetItemLongClickDialog.newInstance(
+                                    mActivity, PhotosetsFragment.this,
+                                    mPhotosets.get(position));
+                            d.show(mActivity.getSupportFragmentManager(),
+                                "photoset_item_long_click");
+                        } else {
+                            Log.e(getLogTag(), String.format(
+                                    "Cannot call showGridItemContextMenu, " +
+                                    "mPhotosets.size(%d) != position:(%d)",
+                                    mPhotosets.size(), position));
+                        }
+                    /* True indicates we're finished with event and triggers
+                     * haptic feedback */
+                    return true;
+                }
+            });
+
         mAdapterView.setAdapter(mAdapter);
     }
 
@@ -136,6 +173,29 @@ public class PhotosetsFragment extends BaseFragment
         mPhotosets.clear();
         mAdapter.notifyDataSetChanged();
         startTask();
+    }
+
+    @Override
+    public void onLongClickDialogSelection(Photoset photoset, int which) {
+        Log.d(TAG, "onLongClickDialogSelection()");
+        FragmentTransaction ft =
+            mActivity.getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        if (photoset != null) {
+            Fragment prev = mActivity.getSupportFragmentManager()
+                .findFragmentByTag(AddToPhotosetDialogFragment.TAG);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+
+            SherlockDialogFragment newFragment =
+                AddToPhotosetDialogFragment.newInstance(photoset);
+            newFragment.show(ft, AddToPhotosetDialogFragment.TAG);
+        } else {
+            Log.e(TAG, "onLongClickDialogSelection: photoset is null");
+        }
     }
 
     @Override
@@ -209,4 +269,33 @@ public class PhotosetsFragment extends BaseFragment
             LinearLayout imageOverlay;
         }
     }
+
+    static class PhotosetItemLongClickDialog extends SherlockDialogFragment {
+        private PhotosetItemLongClickDialogListener mListener;
+        private Context mContext;
+        private Photoset mPhotoset;
+
+        public static PhotosetItemLongClickDialog newInstance(Context context,
+                PhotosetItemLongClickDialogListener listener,
+                Photoset photoset) {
+            PhotosetItemLongClickDialog d = new PhotosetItemLongClickDialog();
+            d.mListener = listener;
+            d.mContext = context;
+            d.mPhotoset = photoset;
+            return d;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setItems(R.array.photoset_item_long_click_dialog_items,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.onLongClickDialogSelection(mPhotoset, which);
+                    }
+                });
+            return builder.create();
+        }
+    }
+
 }

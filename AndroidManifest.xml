@@ -136,6 +136,8 @@
         <service android:name=".services.AppService" />
 
         <service android:name=".tape.AddToGroupTaskQueueService" />
+
+        <service android:name=".tape.AddToPhotosetTaskQueueService" />
     </application>
 
 </manifest>
