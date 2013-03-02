@@ -43,7 +43,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreateOptionsMenu");
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.groupviewer_fragment_menu, menu);
     }
 
