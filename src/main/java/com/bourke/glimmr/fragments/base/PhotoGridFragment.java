@@ -140,16 +140,22 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     @Override
     protected void refresh() {
-        Log.d(getLogTag(), "refresh");
+        if (Constants.DEBUG) Log.d(getLogTag(), "refresh");
         mPage = 1;
         mMorePages = true;
+        // TODO Test this again - does it have to be non empty to have
+        // cacheInBackground called?
         /* If the adapter is non-empty, clearing it and calling
          * notifyDataSetChanged will trigger cacheInBackground.  Otherwise we
          * need to manually call startTask() */
         if (mPhotos.size() > 0) {
+            if (Constants.DEBUG) Log.d(getLogTag(), "notifyDataSetChanged");
             mPhotos.clear();
+            mAdapter.restartAppending();
             mAdapter.notifyDataSetChanged();
         } else {
+            // TODO this won't work for paginated fragments (i.e. most) as they
+            // have a private startTask ?
             startTask();
         }
     }
