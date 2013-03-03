@@ -8,6 +8,7 @@ import com.bourke.glimmrpro.activities.SearchActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmrpro.fragments.search.AbstractPhotoSearchGridFragment;
 import com.bourke.glimmrpro.fragments.search.PhotoSearchGridFragment;
 
 import com.googlecode.flickrjandroid.Flickr;
@@ -29,6 +30,7 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
     private int mPage;
     private String mSearchTerm;
     private int mSortType;
+    private String mUserId;
 
     public SearchPhotosTask(IPhotoListReadyListener listener,
             String searchTerm, int sortType, int page) {
@@ -36,6 +38,12 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
         mPage = page;
         mSearchTerm = searchTerm;
         mSortType = sortType;
+    }
+
+    public SearchPhotosTask(IPhotoListReadyListener listener,
+            String searchTerm, int sortType, int page, String userId) {
+        this(listener, searchTerm, sortType, page);
+        mUserId = userId;
     }
 
     @Override
@@ -50,16 +58,19 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
         SearchParameters sp = new SearchParameters();
         sp.setExtras(Constants.EXTRAS);
         sp.setText(mSearchTerm);
+        if (mUserId != null) {
+            sp.setUserId(mUserId);
+        }
         switch (mSortType) {
-            case PhotoSearchGridFragment.SORT_TYPE_RECENT:
+            case AbstractPhotoSearchGridFragment.SORT_TYPE_RECENT:
                 if (Constants.DEBUG) Log.d(TAG, "Search type:RECENT");
                 sp.setSort(SearchParameters.DATE_POSTED_DESC);
                 break;
-            case PhotoSearchGridFragment.SORT_TYPE_INTERESTING:
+            case AbstractPhotoSearchGridFragment.SORT_TYPE_INTERESTING:
                 if (Constants.DEBUG) Log.d(TAG, "Search type:INTERESTINGNESS");
                 sp.setSort(SearchParameters.INTERESTINGNESS_DESC);
                 break;
-            case PhotoSearchGridFragment.SORT_TYPE_RELAVANCE:
+            case AbstractPhotoSearchGridFragment.SORT_TYPE_RELAVANCE:
                 if (Constants.DEBUG) Log.d(TAG, "Search type:RELAVANCE");
                 sp.setSort(SearchParameters.RELEVANCE);
                 break;

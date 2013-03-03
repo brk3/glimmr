@@ -90,6 +90,7 @@ public abstract class BaseFragment extends SherlockFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (Constants.DEBUG) Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
             case R.id.menu_refresh:
                 refresh();
