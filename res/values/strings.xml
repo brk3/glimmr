@@ -39,6 +39,7 @@
     <string name="menu_view_comments">Comments</string>
     <string name="menu_view_exif">View Exif Info</string>
     <string name="most_recent">Most Recent</string>
+    <string name="my_photos">My Photos</string>
     <string name="new_activity">New activity on your photo</string>
     <string name="no_connection">Something went wrong.\nTry refreshing?</string>
     <string name="none">None</string>
@@ -58,6 +59,7 @@
     <string name="pool">Pool</string>
     <string name="pref_category_general">General (Pro only)</string>
     <string name="pref_category_notifications">Notifications</string>
+    <string name="public_photos">Public</string>
     <string name="cb_enable_activity_notifications_title">Flickr Activity</string>
     <string name="cb_enable_activity_notifications_summary">Notify about activity on your photos</string>
     <string name="cb_enable_contacts_notifications_title">Contacts Uploads</string>

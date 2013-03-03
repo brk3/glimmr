@@ -18,7 +18,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.fragments.search.PhotoSearchGridFragment;
+import com.bourke.glimmr.fragments.search.AbstractPhotoSearchGridFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.SearchPhotosTask;
@@ -27,27 +27,20 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
 
-public class PhotoSearchGridFragment extends PhotoGridFragment
+public abstract class AbstractPhotoSearchGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
 
-    private static final String TAG = "Glimmr/PhotoSearchGridFragment";
+    private static final String TAG = "Glimmr/AbstractPhotoSearchGridFragment";
 
     public static final int SORT_TYPE_RELAVANCE = 0;
     public static final int SORT_TYPE_RECENT = 1;
     public static final int SORT_TYPE_INTERESTING = 2;
 
-    private String mSearchQuery = "";
-    private View mNoResultsLayout;
-    private int mSortType;
+    protected String mSearchQuery = "";
+    protected int mSortType;
     protected SearchPhotosTask mTask;
 
-    public static PhotoSearchGridFragment newInstance(String searchTerm,
-            int sortType) {
-        PhotoSearchGridFragment fragment = new PhotoSearchGridFragment();
-        fragment.mSearchQuery = searchTerm;
-        fragment.mSortType = sortType;
-        return fragment;
-    }
+    private View mNoResultsLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,42 +83,25 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
         inflater.inflate(R.menu.search_menu, menu);
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.relevance:
                 mSortType = SORT_TYPE_RELAVANCE;
+                refresh();
                 break;
 
             case R.id.most_recent:
                 mSortType = SORT_TYPE_RECENT;
+                refresh();
                 break;
 
             case R.id.interestingness:
                 mSortType = SORT_TYPE_INTERESTING;
+                refresh();
                 break;
-
-            default:
-                return false;
         }
-        refresh();
-        return true;
-    }
-
-    /**
-     * Once the parent binds the adapter it will trigger cacheInBackground
-     * for us as it will be empty when first bound.
-     */
-    @Override
-    protected boolean cacheInBackground() {
-        startTask(mPage++);
-        return mMorePages;
-    }
-
-    private void startTask(int page) {
-        super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new SearchPhotosTask(this, mSearchQuery, mSortType, page);
-        mTask.execute(mOAuth);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -149,6 +125,7 @@ public class PhotoSearchGridFragment extends PhotoGridFragment
 
     @Override
     public void storeNewestPhotoId(Photo photo) {
+        /* Not needed for this fragment */
     }
 
     @Override
