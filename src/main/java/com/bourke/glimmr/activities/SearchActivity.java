@@ -12,23 +12,31 @@ import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.activities.BottomOverlayActivity;
+import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
+import com.bourke.glimmrpro.common.OAuthUtils;
+import com.bourke.glimmrpro.fragments.search.AbstractPhotoSearchGridFragment;
 import com.bourke.glimmrpro.fragments.search.PhotoSearchGridFragment;
+import com.bourke.glimmrpro.fragments.search.PhotostreamSearchGridFragment;
+import com.bourke.glimmrpro.fragments.search.PublicPhotoSearchGridFragment;
 import com.bourke.glimmrpro.R;
 
 public class SearchActivity extends BottomOverlayActivity {
 
     private static final String TAG = "Glimmr/SearchActivity";
 
-    public static final int RESULT_PHOTO_PAGE = 0;
-    public static final int RESULT_PEOPLE_PAGE = 1;
+    public static final int RESULT_PUBLIC_PHOTOS_PAGE = 0;
+    public static final int RESULT_PHOTOSTREAM_PAGE = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        CONTENT = new String[] { getString(R.string.photos) };
-            //getString(R.string.people) };
+        if (OAuthUtils.isLoggedIn(this)) {
+            CONTENT = new String[] { getString(R.string.public_photos),
+                getString(R.string.my_photos) };
+        } else {
+            CONTENT = new String[] { getString(R.string.public_photos) };
+        }
         super.onCreate(savedInstanceState);
     }
 
@@ -51,14 +59,14 @@ public class SearchActivity extends BottomOverlayActivity {
             @Override
             public SherlockFragment getItemImpl(int position) {
                 switch (position) {
-                    case RESULT_PHOTO_PAGE:
-                        return PhotoSearchGridFragment.newInstance(searchQuery,
-                                PhotoSearchGridFragment.SORT_TYPE_RELAVANCE);
-                    case RESULT_PEOPLE_PAGE:
-                        // TODO
-                        //return PeopleSearchFragment.
-                        //    .newInstance(mSearchQuery);
-                        break;
+                    case RESULT_PUBLIC_PHOTOS_PAGE:
+                        return PublicPhotoSearchGridFragment.newInstance(
+                                searchQuery, AbstractPhotoSearchGridFragment
+                                    .SORT_TYPE_RELAVANCE);
+                    case RESULT_PHOTOSTREAM_PAGE:
+                        return PhotostreamSearchGridFragment.newInstance(
+                                searchQuery, AbstractPhotoSearchGridFragment
+                                    .SORT_TYPE_RELAVANCE);
                 }
                 return null;
             }
