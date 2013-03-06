@@ -6,14 +6,30 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bourke</groupId>
     <artifactId>glimmr</artifactId>
-    <version>2.6-SNAPSHOT</version>
+    <version>2.7-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>glimmr</name>
+
+    <scm>
+        <developerConnection>
+            scm:git:git@bitbucket.org:brk3/glimmr.git
+        </developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>staging</id>
+            <url>
+                file:///${env.HOME}/Dropbox/android/glimmr/releases/
+            </url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <platform.version></platform.version>
     </properties>
 
+    <!-- local maven repos -->
     <repositories>
         <repository>
             <id>my-internal-site</id>
@@ -21,6 +37,7 @@
         </repository>
     </repositories>
 
+    <!-- build dependencies -->
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
@@ -47,7 +64,7 @@
         <dependency>
             <groupId>com.commonsware.cwac</groupId>
             <artifactId>adapter</artifactId>
-            <version>SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
@@ -166,8 +183,7 @@
                     <sdk>
                         <platform>17</platform>
                     </sdk>
-                    <!--<undeployBeforeDeploy>true</undeployBeforeDeploy>-->
-
+                    <undeployBeforeDeploy>false</undeployBeforeDeploy>
                     <lint>
                         <skip>false</skip>
                         <enableHtml>true</enableHtml>
@@ -185,6 +201,104 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <!-- via this activation the profile is automatically used when the
+                 release is done with the maven release plugin -->
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <!-- maven-jarsigner-plugin used for signing the apk -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jarsigner-plugin</artifactId>
+                        <version>1.2</version>
+                        <executions>
+                            <execution>
+                                <id>signing</id>
+                                <goals>
+                                    <goal>sign</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <inherited>true</inherited>
+                                <configuration>
+                                    <removeExistingSignatures>true</removeExistingSignatures>
+                                    <archiveDirectory/>
+                                    <includes>
+                                        <include>
+                                            ${project.build.directory}/${project.artifactId}.apk
+                                        </include>
+                                    </includes>
+                                    <keystore>${sign.keystore}</keystore>
+                                    <alias>${sign.alias}</alias>
+                                    <storepass>${sign.storepass}</storepass>
+                                    <keypass>${sign.keypass}</keypass>
+                                    <verbose>true</verbose>
+                                    <arguments>
+                                        <argument>-sigalg</argument><argument>MD5withRSA</argument>
+                                        <argument>-digestalg</argument><argument>SHA1</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- the signed apk then needs to be zipaligned -->
+                    <plugin>
+                        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                        <artifactId>android-maven-plugin</artifactId>
+                        <inherited>true</inherited>
+                        <version>3.5.1</version>
+                        <configuration>
+                            <sign>
+                                <debug>false</debug>
+                            </sign>
+                            <zipalign>
+                                <skip>false</skip>
+                                <verbose>true</verbose>
+                            </zipalign>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>alignApk</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>zipalign</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>update-manifest</id>
+                                <goals>
+                                    <goal>manifest-update</goal>
+                                </goals>
+                                <configuration>
+                                    <manifest>
+                                        <versionCodeAutoIncrement>true</versionCodeAutoIncrement>
+                                    </manifest>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
