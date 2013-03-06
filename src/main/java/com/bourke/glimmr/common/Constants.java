@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class Constants {
 
     /* Important: set to false when doing release builds */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     /* Global app prefs */
     public static final String PREFS_NAME = "glimmr_prefs";

@@ -29,7 +29,7 @@ mvn install:install-file \
     -Dfile=libs/CWAC-AdapterWrapper.jar \
     -DgroupId=com.commonsware.cwac \
     -DartifactId=adapter \
-    -Dversion=SNAPSHOT \
+    -Dversion=1.0 \
     -Dpackaging=jar
 
 mvn install:install-file \
