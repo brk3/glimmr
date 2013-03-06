@@ -1,15 +1,16 @@
 package com.bourke.glimmrpro.activities;
 
-import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.SharedPreferences;
 
 import android.net.Uri;
 
@@ -41,12 +42,12 @@ import com.bourke.glimmrpro.common.GlimmrAbCustomTitle;
 import com.bourke.glimmrpro.common.OAuthUtils;
 import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import android.content.SharedPreferences;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
 

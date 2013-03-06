@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bourke.glimmr.event;
+package com.bourke.glimmrpro.event;
 
 import com.squareup.otto.Bus;
 

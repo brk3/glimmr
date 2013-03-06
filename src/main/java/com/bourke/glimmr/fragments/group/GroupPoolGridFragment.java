@@ -1,6 +1,6 @@
 package com.bourke.glimmrpro.fragments.group;
 
-import com.bourke.glimmr.fragments.viewer.AddToGroupDialogFragment;
+import com.bourke.glimmrpro.fragments.viewer.AddToGroupDialogFragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -17,7 +17,6 @@ import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.common.OAuthUtils;
 import com.bourke.glimmrpro.fragments.search.AbstractPhotoSearchGridFragment;
-import com.bourke.glimmrpro.fragments.search.PhotoSearchGridFragment;
 import com.bourke.glimmrpro.fragments.search.PhotostreamSearchGridFragment;
 import com.bourke.glimmrpro.fragments.search.PublicPhotoSearchGridFragment;
 import com.bourke.glimmrpro.R;

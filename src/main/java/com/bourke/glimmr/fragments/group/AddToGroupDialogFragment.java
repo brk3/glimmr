@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.viewer;
+package com.bourke.glimmrpro.fragments.viewer;
 
 import android.content.Intent;
 
@@ -17,18 +17,18 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.TaskQueueDelegateFactory;
-import com.bourke.glimmr.common.TextUtils;
-import com.bourke.glimmr.event.BusProvider;
-import com.bourke.glimmr.event.Events.IGroupInfoReadyListener;
-import com.bourke.glimmr.fragments.base.BaseDialogFragment;
-import com.bourke.glimmr.fragments.base.PhotoGridFragment.PhotoGridItemClickedEvent;
-import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmr.R;
-import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
-import com.bourke.glimmr.tasks.AddItemToGroupTask;
-import com.bourke.glimmr.tasks.LoadGroupInfoTask;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.TaskQueueDelegateFactory;
+import com.bourke.glimmrpro.common.TextUtils;
+import com.bourke.glimmrpro.event.BusProvider;
+import com.bourke.glimmrpro.event.Events.IGroupInfoReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
+import com.bourke.glimmrpro.fragments.base.PhotoGridFragment.PhotoGridItemClickedEvent;
+import com.bourke.glimmrpro.fragments.home.PhotoStreamGridFragment;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
+import com.bourke.glimmrpro.tasks.AddItemToGroupTask;
+import com.bourke.glimmrpro.tasks.LoadGroupInfoTask;
 
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.Throttle;

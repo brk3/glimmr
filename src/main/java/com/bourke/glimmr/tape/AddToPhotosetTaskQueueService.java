@@ -1,9 +1,9 @@
-package com.bourke.glimmr.tape;
+package com.bourke.glimmrpro.tape;
 
-import com.bourke.glimmr.common.TaskQueueDelegateFactory;
-import com.bourke.glimmr.fragments.photoset.AddToPhotosetDialogFragment;
-import com.bourke.glimmr.tape.AddToPhotosetTaskQueueService;
-import com.bourke.glimmr.tasks.AddItemToPhotosetTask;
+import com.bourke.glimmrpro.common.TaskQueueDelegateFactory;
+import com.bourke.glimmrpro.fragments.photoset.AddToPhotosetDialogFragment;
+import com.bourke.glimmrpro.tape.AddToPhotosetTaskQueueService;
+import com.bourke.glimmrpro.tasks.AddItemToPhotosetTask;
 
 import com.squareup.tape.TaskQueue;
 
