@@ -1,5 +1,5 @@
 // Copyright 2012 Square, Inc.
-package com.bourke.glimmr.tape;
+package com.bourke.glimmrpro.tape;
 
 import com.google.gson.Gson;
 import com.squareup.tape.FileObjectQueue;

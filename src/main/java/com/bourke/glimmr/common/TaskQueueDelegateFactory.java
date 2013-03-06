@@ -1,8 +1,8 @@
-package com.bourke.glimmr.common;
+package com.bourke.glimmrpro.common;
 
 import android.content.Context;
 
-import com.bourke.glimmr.tape.GsonConverter;
+import com.bourke.glimmrpro.tape.GsonConverter;
 
 import com.google.gson.Gson;
 

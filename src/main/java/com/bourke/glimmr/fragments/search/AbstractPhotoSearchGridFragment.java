@@ -19,7 +19,6 @@ import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.fragments.search.AbstractPhotoSearchGridFragment;
-import com.bourke.glimmrpro.fragments.search.PhotoSearchGridFragment;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.SearchPhotosTask;
 

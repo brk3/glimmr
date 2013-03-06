@@ -1,9 +1,9 @@
-package com.bourke.glimmr.tape;
+package com.bourke.glimmrpro.tape;
 
-import com.bourke.glimmr.common.TaskQueueDelegateFactory;
-import com.bourke.glimmr.fragments.viewer.AddToGroupDialogFragment;
-import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
-import com.bourke.glimmr.tasks.AddItemToGroupTask;
+import com.bourke.glimmrpro.common.TaskQueueDelegateFactory;
+import com.bourke.glimmrpro.fragments.viewer.AddToGroupDialogFragment;
+import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
+import com.bourke.glimmrpro.tasks.AddItemToGroupTask;
 
 import com.squareup.tape.TaskQueue;
 

@@ -4,10 +4,10 @@
  * Based off Square's ImageUploadTaskService that ships as part of tape.
  */
 
-package com.bourke.glimmr.tape;
+package com.bourke.glimmrpro.tape;
 
 import android.app.Service;
-import com.bourke.glimmr.fragments.viewer.AddToGroupDialogFragment;
+import com.bourke.glimmrpro.fragments.viewer.AddToGroupDialogFragment;
 
 import android.content.Intent;
 
@@ -15,11 +15,11 @@ import android.os.IBinder;
 
 import android.util.Log;
 
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.event.Events.ITaskQueueServiceListener;
-import com.bourke.glimmr.tape.AbstractTaskQueueService;
-import com.bourke.glimmr.tape.GsonConverter;
-import com.bourke.glimmr.tasks.AddItemToGroupTask;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.event.Events.ITaskQueueServiceListener;
+import com.bourke.glimmrpro.tape.AbstractTaskQueueService;
+import com.bourke.glimmrpro.tape.GsonConverter;
+import com.bourke.glimmrpro.tasks.AddItemToGroupTask;
 
 import com.google.gson.Gson;
 
