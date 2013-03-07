@@ -9,15 +9,14 @@
   <string name="browse">bla gjennom</string>
   <string name="by">av</string>
   <string name="commented_on">kommenterte</string>
-  <string name="comment_sent">Kommentarer og favoritter</string>
-  <string name="contacts">Kommentar sendt!</string>
-  <string name="description">Kontakter</string>
+  <string name="comment_sent">Kommentar sendt!</string>
+  <string name="contacts">Kontakter</string>
   <string name="edit_text_hint">Legg til en kommentar …</string>
   <string name="exif_info">EXIF-informasjon</string>
   <string name="explore">Utforsk</string>
   <string name="favorited">favorittmarkerte</string>
   <string name="favorites">Favoritter</string>
-  <string name="focal_length">Brennvidde</string>
+  <string name="focal_length">BRENNVIDDE</string>
   <string name="four_hours">4 timer</string>
   <string name="groups">Grupper</string>
   <string name="group_info_fetch_error">Problem med innlasting av gruppe. Vennligst forsøk igjen.</string>
@@ -37,6 +36,7 @@
   <string name="menu_view_comments">Kommentarer</string>
   <string name="menu_view_exif">Vis EXIF-informasjon</string>
   <string name="most_recent">Nyligst</string>
+  <string name="my_photos">Mine bilder</string>
   <string name="new_activity">Ny aktivitet på bildet ditt</string>
   <string name="no_connection">Noe gikk galt.\nPrøv å oppdatere?</string>
   <string name="none">Ingen</string>
@@ -56,6 +56,7 @@
   <string name="pool">Bibliotek</string>
   <string name="pref_category_general">Generelt (kun Pro)</string>
   <string name="pref_category_notifications">Varsler</string>
+  <string name="public_photos">Offentlig</string>
   <string name="cb_enable_activity_notifications_title">Flickr-aktivitet</string>
   <string name="cb_enable_activity_notifications_summary">Varsle om aktivitet på bildene dine</string>
   <string name="cb_enable_contacts_notifications_title">Opplastinger fra kontakter</string>
@@ -64,6 +65,7 @@
   <string name="cb_high_quality_thumbnails_summary">Ser bedre ut, men kan være tregere</string>
   <string name="cb_enable_notifications_title">Skru på varsler</string>
   <string name="people">Intervall for synkronisering</string>
+  <string name="pref_notification_intervals_title">Synkroniseringsintervall</string>
   <string name="pro_donate">Pro/doner</string>
   <string name="menu_search">Søk</string>
   <string name="relevance">Relevans</string>
@@ -77,6 +79,7 @@
   <string name="sort_by">Sortér etter</string>
   <string name="tags">Tagger</string>
   <string name="tip_view_profile">Tips: Berør og hold på et bilde for å vise profilen til fotografen</string>
+  <string name="tip_add_to_group">Tips: Berør og hold en gruppe for å legge til bilder</string>
   <string name="thirty_mins">30 minutter</string>
   <string name="timezone_message">Er klokken og tidssonen din stilt riktig?</string>
   <string name="title">Tittel:</string>
