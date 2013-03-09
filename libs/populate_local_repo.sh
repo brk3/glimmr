@@ -17,14 +17,6 @@ mvn install:install-file \
     -Dpackaging=jar
 
 # jars
-# (https://github.com/androidquery/androidquery/issues/12)
-mvn install:install-file \
-    -Dfile=libs/android-query.0.24.3.jar \
-    -DgroupId=com.androidquery \
-    -DartifactId=androidquery \
-    -Dversion=0.24.3 \
-    -Dpackaging=jar
-
 mvn install:install-file \
     -Dfile=libs/CWAC-AdapterWrapper.jar \
     -DgroupId=com.commonsware.cwac \
