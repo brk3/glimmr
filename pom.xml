@@ -24,6 +24,7 @@
     </distributionManagement>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <platform.version />
     </properties>
 
@@ -54,8 +55,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.androidquery</groupId>
-            <artifactId>androidquery</artifactId>
+            <groupId>com.googlecode.android-query</groupId>
+            <artifactId>android-query</artifactId>
             <version>0.24.3</version>
         </dependency>
 
@@ -101,7 +102,7 @@
         <dependency>
             <groupId>com.googlecode.flickrj-android</groupId>
             <artifactId>flickrj-android</artifactId>
-            <version>2.0.5</version>
+            <version>2.0.7</version>
         </dependency>
 
         <dependency>
@@ -143,8 +144,8 @@
 
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
-            <artifactId>library</artifactId>
-            <version>4.2.0</version>
+            <artifactId>actionbarsherlock</artifactId>
+            <version>4.3.0</version>
             <type>apklib</type>
         </dependency>
 
@@ -166,7 +167,7 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.5.3</version>
                 <configuration>
                     <androidManifestFile>
                         ${project.basedir}/AndroidManifest.xml
