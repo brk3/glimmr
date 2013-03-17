@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import android.net.Uri;
+
 import android.os.Bundle;
 
 import android.preference.PreferenceManager;
@@ -24,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
 
@@ -61,6 +64,9 @@ import com.sbstrm.appirater.Appirater;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 import java.io.File;
 
 import java.util.ArrayList;
@@ -83,6 +89,7 @@ public class MainActivity extends BaseActivity {
         "glimmr_menudrawer_active_position";
 
     private List<PageItem> mContent;
+    private List<String> mPageTitles;
     private MenuDrawer mMenuDrawer;
     private MenuAdapter mMenuAdapter;
     private MenuListView mList;
@@ -93,6 +100,9 @@ public class MainActivity extends BaseActivity {
     private int mActivePosition = -1;
     private long mActivityListVersion = -1;
     private SharedPreferences mPrefs;
+
+    /* Used to only show tips once per session */
+    private List<Integer> mShownUsageTips;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -132,6 +142,7 @@ public class MainActivity extends BaseActivity {
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
         }
+        mShownUsageTips = new ArrayList<Integer>();
     }
 
     @Override
@@ -215,6 +226,11 @@ public class MainActivity extends BaseActivity {
         mContent.add(new PageItem(getString(R.string.explore),
                 R.drawable.ic_action_av_shuffle_dark,
                 RecentPublicPhotosFragment.class));
+
+        mPageTitles = new ArrayList<String>();
+        for (PageItem page : mContent) {
+            mPageTitles.add(page.mTitle);
+        }
     }
 
     public void updateMenuListItems(boolean forceRefresh) {
@@ -399,6 +415,7 @@ public class MainActivity extends BaseActivity {
                 new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(final int position) {
+                showUsageTip(mPageTitles.get(position));
                 if (mIndicator != null) {
                     mIndicator.setCurrentItem(position);
                 } else {
@@ -458,15 +475,59 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Shows a usage tip associated with pageTitle via crouton.
+     *
+     * Tips will only be shown once per session and not if disabled in user
+     * preferences.
+     */
+    private void showUsageTip(final String pageTitle) {
+        SharedPreferences defaultSharedPrefs =
+            PreferenceManager.getDefaultSharedPreferences(this);
+        boolean enableNotifications = defaultSharedPrefs.getBoolean(
+                Constants.KEY_ENABLE_USAGE_TIPS, false);
+        if (!enableNotifications) {
+            if (Constants.DEBUG) {
+                Log.d(TAG, "Usage tips disabled in preferences");
+            }
+            return;
+        }
+        Crouton.cancelAllCroutons();
+        if (pageTitle.equalsIgnoreCase(getString(R.string.explore)) &&
+                    !mShownUsageTips.contains(R.string.explore)) {
+            Crouton.makeText(this, R.string.tip_view_profile, Style.INFO)
+                .show();
+            mShownUsageTips.add(R.string.explore);
+        } else if (pageTitle.equalsIgnoreCase(getString(R.string.groups)) &&
+                    !mShownUsageTips.contains(R.string.groups)) {
+            Crouton.makeText(this, R.string.tip_add_to_group, Style.INFO)
+                .show();
+            mShownUsageTips.add(R.string.groups);
+        } else if (pageTitle.equalsIgnoreCase(getString(R.string.sets)) &&
+                    !mShownUsageTips.contains(R.string.sets)) {
+            Crouton.makeText(this, R.string.tip_add_to_set, Style.INFO)
+                .show();
+            mShownUsageTips.add(R.string.sets);
+        } else if (pageTitle.equalsIgnoreCase(getString(R.string.favorites)) &&
+                    !mShownUsageTips.contains(R.string.favorites)) {
+            Crouton.makeText(this, R.string.tip_glimmr_pro, Style.INFO)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        MainActivity.this.startActivity(intent);
+                    }
+                }).show();
+            mShownUsageTips.add(R.string.favorites);
+        }
+    }
+
     private void initViewPager() {
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
-        List<String> pageTitles = new ArrayList<String>();
-        for (PageItem page : mContent) {
-            pageTitles.add(page.mTitle);
-        }
         mPagerAdapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager(), mViewPager, mActionBar,
-                pageTitles.toArray(new String[pageTitles.size()])) {
+                mPageTitles.toArray(new String[mPageTitles.size()])) {
             @Override
             public SherlockFragment getItemImpl(int position) {
                 try {

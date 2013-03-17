@@ -9,6 +9,13 @@
             android:title="@string/cb_high_quality_thumbnails_title"
             android:summary="@string/cb_high_quality_thumbnails_summary"
             android:defaultValue="@bool/highQualityThumbnails" />
+
+        <CheckBoxPreference
+            android:key="enableUsageTips"
+            android:title="@string/show_usage_tips"
+            android:enabled="true"
+            android:summary="@string/cb_show_usage_tips_summary"
+            android:defaultValue="true" />
     </PreferenceCategory>
 
     <!-- Notification preferences -->
