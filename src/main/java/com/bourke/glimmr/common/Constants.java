@@ -49,6 +49,8 @@ public class Constants {
         = "enableContactsNotifications";
     public static final String KEY_ENABLE_ACTIVITY_NOTIFICATIONS
         = "enableActivityNotifications";
+    public static final String KEY_ENABLE_USAGE_TIPS
+        = "enableUsageTips";
 
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;
