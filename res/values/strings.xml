@@ -12,6 +12,7 @@
     <string name="commented_on">commented on</string>
     <string name="comment_sent">Comment Sent!</string>
     <string name="contacts">Contacts</string>
+    <string name="couldnt_load_video">Couldn\'t load this video, try again later?</string>
     <string name="description">Description:</string>
     <string name="edit_text_hint">Add your comment…</string>
     <string name="exif_info">Exif Info</string>

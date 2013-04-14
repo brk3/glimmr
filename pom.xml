@@ -264,7 +264,7 @@
                         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                         <artifactId>android-maven-plugin</artifactId>
                         <inherited>true</inherited>
-                        <version>3.5.1</version>
+                        <version>3.5.3</version>
                         <configuration>
                             <sign>
                                 <debug>false</debug>

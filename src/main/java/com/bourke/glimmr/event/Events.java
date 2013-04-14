@@ -12,6 +12,7 @@ import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
+import com.googlecode.flickrjandroid.photos.Size;
 
 public class Events {
 
@@ -97,5 +98,9 @@ public class Events {
     public interface ITaskQueueServiceListener {
         public void onSuccess(final String itemId);
         public void onFailure(final String itemId, final boolean retry);
+    }
+
+    public interface IPhotoSizesReadyListener {
+        public void onPhotoSizesReady(List<Size> sizes);
     }
 }
