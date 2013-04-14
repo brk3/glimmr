@@ -7,6 +7,8 @@ import android.content.res.Configuration;
 
 import android.graphics.Bitmap;
 
+import android.net.Uri;
+
 import android.os.Bundle;
 
 import android.util.Log;
@@ -34,10 +36,12 @@ import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
+import com.bourke.glimmr.event.Events.IPhotoSizesReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
+import com.bourke.glimmr.tasks.LoadPhotoSizesTask;
 import com.bourke.glimmr.tasks.SetFavoriteTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -46,12 +50,14 @@ import com.googlecode.flickrjandroid.photos.Size;
 import com.squareup.otto.Subscribe;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.List;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 
 public final class PhotoViewerFragment extends BaseFragment
-        implements IPhotoInfoReadyListener, IFavoriteReadyListener {
+        implements IPhotoInfoReadyListener, IFavoriteReadyListener,
+                   IPhotoSizesReadyListener {
 
     private final static String TAG = "Glimmr/PhotoViewerFragment";
 
@@ -64,6 +70,7 @@ public final class PhotoViewerFragment extends BaseFragment
     private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
     private Configuration mConfiguration;
     private ImageView mImageView;
+    private ImageView mVideoButton;
     private PhotoViewAttacher mAttacher;
     private TextView mTextViewTitle;
     private TextView mTextViewAuthor;
@@ -121,6 +128,8 @@ public final class PhotoViewerFragment extends BaseFragment
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
         mImageView = (ImageView) mLayout.findViewById(R.id.image);
+        mVideoButton = (ImageView) mLayout.findViewById(
+                R.id.play_video_overlay);
         mAttacher = new PhotoViewAttacher(mImageView);
         mTextViewTitle = (TextView) mLayout.findViewById(R.id.textViewTitle);
         mTextViewAuthor = (TextView) mLayout.findViewById(R.id.textViewAuthor);
@@ -278,7 +287,46 @@ public final class PhotoViewerFragment extends BaseFragment
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotoInfoReady");
         mPhotoExtendedInfo = photo;
         if (mPhotoExtendedInfo != null) {
+            /* update favorite button */
             updateFavoriteButtonIcon(mPhotoExtendedInfo.isFavorite());
+
+            /* if this photo is actually a video, show a play button overlay
+             * and set up intent to play it */
+            if (mPhotoExtendedInfo.getMedia().equals("video")) {
+                mVideoButton.setVisibility(View.VISIBLE);
+                mVideoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mActivity.setSupportProgressBarIndeterminateVisibility(
+                            Boolean.TRUE);
+                        new LoadPhotoSizesTask(PhotoViewerFragment.this,
+                            mBasePhoto.getId()).execute();
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void onPhotoSizesReady(List<Size> sizes) {
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        if (sizes != null && sizes.size() > 0) {
+            for (Size s : sizes) {
+                if (s.getLabel() == Size.MOBILE_MP4) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(s.getSource()), "video/*");
+                    startActivity(intent);
+                    break;
+                }
+            }
+        } else {
+            /* would like to use crouton here but the overlay actionbar makes
+             * the crouton also transparent, and hard to read */
+            Toast.makeText(mActivity, R.string.couldnt_load_video,
+                    Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "List of sizes null or empty, cannot create play " +
+                    "video intent");
         }
     }
 
