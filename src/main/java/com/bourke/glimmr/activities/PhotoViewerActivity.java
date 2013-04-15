@@ -349,7 +349,7 @@ public class PhotoViewerActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.photoviewer_activity_menu,
                 menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
