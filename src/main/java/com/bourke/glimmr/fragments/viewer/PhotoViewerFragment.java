@@ -32,6 +32,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 
+import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
@@ -200,6 +201,10 @@ public final class PhotoViewerFragment extends BaseFragment
         switch (item.getItemId()) {
             case R.id.menu_favorite:
                 onFavoriteButtonClick();
+                return true;
+            case R.id.menu_view_profile:
+                ProfileActivity.startProfileViewer(
+                        mActivity, mBasePhoto.getOwner());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
