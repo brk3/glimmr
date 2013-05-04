@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
@@ -11,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.SharedPreferences;
 
 import android.net.Uri;
 
@@ -42,12 +42,13 @@ import com.bourke.glimmr.common.GlimmrAbCustomTitle;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.R;
+import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
 
@@ -99,6 +100,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         }
         setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+        /* Load default preferences */
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         if (isTaskRoot()) {
             /* Tune the aquery cache */

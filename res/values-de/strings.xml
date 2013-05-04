@@ -1,11 +1,10 @@
 <resources>
   <string name="activity">Aktivität</string>
   <string name="about">Über</string>
-  <string name="about_text">Danke, dass Sie Glimmr unterstützen!\n\nFolgen Sie mir:http://twitter.com/brk3\nKontakt: pauldbourke@gmail.com\n\nÜbersetzer:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira</string>
+  <string name="about_text">Danke, dass Sie Glimmr unterstützen!\n\nFolgen Sie mir:http://twitter.com/brk3\nKontakt: pauldbourke@gmail.com\n\nÜbersetzer:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
   <string name="aperture">BLENDE</string>
   <string name="app_name">Glimmr</string>
   <string name="by">von</string>
-  <string name="comments">Kommentare und Favoriten</string>
   <string name="comment_sent">Durchsuchen</string>
   <string name="contacts">Kontakte</string>
   <string name="edit_text_hint">Kommentar hinzufügen…</string>

@@ -1,11 +1,10 @@
 <resources>
   <string name="activity">Aktivitet</string>
   <string name="about">Om Glimmr</string>
-  <string name="about_text">Tak fordi du støtter Glimmr!\n\nFølg mig: http://twitter.com/brk3\nKontakt:pauldbourke@gmail.com\n\nOversættere:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira</string>
+  <string name="about_text">Tak fordi du støtter Glimmr!\n\nFølg mig: http://twitter.com/brk3\nKontakt:pauldbourke@gmail.com\n\nOversættere:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
   <string name="aperture">BLÆNDE</string>
   <string name="app_name">Glimmr</string>
   <string name="by">af</string>
-  <string name="comments">Kommentarer og favoritter</string>
   <string name="comment_sent">Kommentar sendt!</string>
   <string name="contacts">Kontakter</string>
   <string name="edit_text_hint">Tilføj din kommentar…</string>

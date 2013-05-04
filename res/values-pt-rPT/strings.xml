@@ -1,13 +1,13 @@
 <resources>
   <string name="activity">Atividade</string>
   <string name="about">Sobre</string>
-  <string name="about_text">Obrigado por usar o Glimmr!\n\nSiga-me: http://twitter.com/brk3\nContato: pauldbourke@gmail.com\n\nTraduções:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira</string>
+  <string name="about_text">Obrigado por usar o Glimmr!\n\nSiga-me: http://twitter.com/brk3\nContato: pauldbourke@gmail.com\n\nTraduções:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
+  <string name="added_a_comment">adicionou um comentário</string>
   <string name="aperture">ABERTURA</string>
   <string name="app_name">Glimmr</string>
   <string name="browse">veja</string>
   <string name="by">por</string>
-  <string name="commented_on">comentado em</string>
-  <string name="comments">Comentários e Favoritos</string>
+  <string name="commented_on">comentou</string>
   <string name="comment_sent">Comentário enviado!</string>
   <string name="contacts">Contatos</string>
   <string name="edit_text_hint">Adicione o seu comentário</string>
@@ -15,6 +15,7 @@
   <string name="explore">Explorar</string>
   <string name="favorited">marcou como favorita</string>
   <string name="favorites">Favoritos</string>
+  <string name="focal_length">Distância focal</string>
   <string name="four_hours">4 horas</string>
   <string name="groups">Grupos</string>
   <string name="iso">ISO</string>
@@ -24,12 +25,13 @@
   <string name="login">Entrar</string>
   <string name="login_required">Precisa de iniciar sessão no Flickr para realizar esta operação!</string>
   <string name="login_to_flickr">INICIAR SESSÂO NO FLICKR</string>
-  <string name="menu_favorite">Marcar como Favorito</string>
+  <string name="menu_favorite">Marcar como Favorita</string>
   <string name="menu_preferences">Preferências</string>
   <string name="menu_refresh">Atualizar</string>
   <string name="menu_share">Compartilhar</string>
   <string name="menu_view_comments">Comentários</string>
   <string name="menu_view_exif">Visualizar Exif</string>
+  <string name="new_activity">Nova atividade na sua foto</string>
   <string name="no_connection">Ocorreu um problema.\nTente novamente.</string>
   <string name="no_search_results">Nenhum resultado encontrado.</string>
   <string name="no_exif_permission">O dono da foto não compartilhou as informações Exif.</string>
@@ -62,6 +64,7 @@
   <string name="set_wallpaper">Definir como Papel de Parede</string>
   <string name="setting_wallpaper">A definir papel de parede</string>
   <string name="shutter">EXPOSIÇÃO</string>
+  <string name="tags">Tags</string>
   <string name="thirty_mins">30 minutos</string>
   <string name="to">ao</string>
   <string name="untitled">Sem título</string>

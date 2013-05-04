@@ -1,14 +1,13 @@
 <resources>
   <string name="activity">Activiteit</string>
   <string name="about">Over</string>
-  <string name="about_text">Dank je wel voor het ondersteunen van Glimmr!\n\nVolg mij: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nVertalers:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson</string>
+  <string name="about_text">Dank je wel voor het ondersteunen van Glimmr!\n\nVolg mij: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nVertalers:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
   <string name="added_a_comment">commentaar toegevoegd</string>
   <string name="aperture">APERTURE</string>
   <string name="app_name">Glimmr</string>
   <string name="browse">navigeren</string>
   <string name="by">door</string>
   <string name="commented_on">gereageerd op</string>
-  <string name="comments">Commentaar en favorieten</string>
   <string name="comment_sent">Commentaar verzonden!</string>
   <string name="contacts">Contacten</string>
   <string name="edit_text_hint">Voeg commentaar toe</string>

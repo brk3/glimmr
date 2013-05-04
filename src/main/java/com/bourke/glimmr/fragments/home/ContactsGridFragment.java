@@ -12,9 +12,6 @@ import com.bourke.glimmr.tasks.LoadContactsPhotosTask;
 
 import com.googlecode.flickrjandroid.photos.Photo;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
-
 import java.util.List;
 
 public class ContactsGridFragment extends PhotoGridFragment {
@@ -53,14 +50,6 @@ public class ContactsGridFragment extends PhotoGridFragment {
     @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
-        final SharedPreferences prefs = mActivity.getSharedPreferences(
-                Constants.PREFS_NAME, Context.MODE_PRIVATE);
-        final boolean isFirstRun = prefs.getBoolean(
-                Constants.KEY_IS_FIRST_RUN, true);
-        if (isFirstRun) {
-            Crouton.makeText(mActivity, R.string.tip_view_profile,
-                    Style.INFO).show();
-        }
     }
 
     @Override
