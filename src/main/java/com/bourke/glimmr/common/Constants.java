@@ -6,7 +6,7 @@ import java.util.HashSet;
 public class Constants {
 
     /* Important: set to false when doing release builds */
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     /* Global app prefs */
     public static final String PREFS_NAME = "glimmr_prefs";
@@ -53,6 +53,8 @@ public class Constants {
         = "enableActivityNotifications";
     public static final String KEY_ENABLE_USAGE_TIPS
         = "enableUsageTips";
+    public static final String KEY_SLIDESHOW_INTERVAL
+        = "slideshowInterval";
 
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;
