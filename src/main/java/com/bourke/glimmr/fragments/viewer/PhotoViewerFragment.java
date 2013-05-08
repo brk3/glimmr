@@ -157,7 +157,7 @@ public final class PhotoViewerFragment extends BaseFragment
             public void onPhotoTap(View view, float x, float y) {
                 BusProvider.getInstance().post(
                     new PhotoViewerVisibilityChangeEvent(
-                        !mActionBar.isShowing()));
+                        !mActionBar.isShowing(), PhotoViewerFragment.this));
             }
         });
 
@@ -532,11 +532,14 @@ public final class PhotoViewerFragment extends BaseFragment
     /**
      * Event published when the main photo is clicked.
      */
-    public static class PhotoViewerVisibilityChangeEvent {
+    public static class PhotoViewerVisibilityChangeEvent<T> {
         public boolean visible;
+        public T sender;
 
-        public PhotoViewerVisibilityChangeEvent(final boolean visible) {
+        public PhotoViewerVisibilityChangeEvent(final boolean visible,
+                final T sender) {
             this.visible = visible;
+            this.sender = sender;
         }
     }
 }

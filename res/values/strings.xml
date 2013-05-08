@@ -61,6 +61,7 @@
     <string name="pool">Pool</string>
     <string name="pref_category_general">General</string>
     <string name="pref_category_notifications">Notifications</string>
+    <string name="pref_category_photoviewer">Photo Viewer</string>
     <string name="public_photos">Public</string>
     <string name="cb_show_usage_tips_summary">Show tips about how to use Glimmr</string>
     <string name="cb_enable_activity_notifications_title">Flickr Activity</string>
@@ -77,6 +78,8 @@
     <string name="relevance">Relevance</string>
     <string name="remaining">remaining</string>
     <string name="save_image">Save Image</string>
+    <string name="slideshow">Slideshow</string>
+    <string name="slideshow_interval">Slideshow Interval (seconds)</string>
     <string name="search_hint">Search images and people</string>
     <string name="set_preferences">Set Preferences</string>
     <string name="sets">Sets</string>

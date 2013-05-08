@@ -24,6 +24,8 @@ import com.bourke.glimmrpro.services.AppListener;
 import com.bourke.glimmrpro.services.AppService;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
+import com.googlecode.flickrjandroid.oauth.OAuth;
+import android.preference.EditTextPreference;
 
 public class PreferencesActivity extends SherlockPreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener{
@@ -32,6 +34,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity
 
     private SharedPreferences mSharedPrefs;
     private ListPreference mIntervalsListPreference;
+    private ListPreference mInitialTabListPreference;
+    private EditTextPreference mSlideshowIntervalPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,8 @@ public class PreferencesActivity extends SherlockPreferenceActivity
          * http://stackoverflow.com/a/531927/663370
          */
         updateIntervalSummary();
+        updateInitialTabSummary();
+        updateSlideshowIntervalSummary();
 
         /* Set up a listener whenever a key changes */
         mSharedPrefs.registerOnSharedPreferenceChangeListener(this);
@@ -100,6 +106,10 @@ public class PreferencesActivity extends SherlockPreferenceActivity
         } else if (key.equals(Constants.KEY_HIGH_QUALITY_THUMBNAILS)) {
             BitmapAjaxCallback.clearCache();
             AQUtility.getCacheDir(this).delete();
+        } else if (Constants.KEY_INITIAL_TAB_LIST_PREFERENCE.equals(key)) {
+            updateInitialTabSummary();
+        } else if (Constants.KEY_SLIDESHOW_INTERVAL.equals(key)) {
+            updateSlideshowIntervalSummary();
         }
     }
 
@@ -128,6 +138,12 @@ public class PreferencesActivity extends SherlockPreferenceActivity
                 "ListPreference entry: " + listPrefValue);
         }
         mIntervalsListPreference.setSummary(summaryString);
+    }
+
+    private void updateSlideshowIntervalSummary() {
+        String val = mSharedPrefs.getString(
+                Constants.KEY_SLIDESHOW_INTERVAL, "3");
+        mSlideshowIntervalPreference.setSummary(val);
     }
 
     @Override
