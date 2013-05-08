@@ -24,6 +24,7 @@
     <string name="groups">Groups</string>
     <string name="group_info_fetch_error">Problem fetching group.  Please try again.</string>
     <string name="group_limit_reached">You\'ve reached the limit for this group.</string>
+    <string name="image_saved">Image saved to gallery!</string>
     <string name="interestingness">Interestingness</string>
     <string name="iso">ISO</string>
     <string name="just_a_moment">Just a moment…</string>
@@ -75,6 +76,7 @@
     <string name="menu_search">Search</string>
     <string name="relevance">Relevance</string>
     <string name="remaining">remaining</string>
+    <string name="save_image">Save Image</string>
     <string name="search_hint">Search images and people</string>
     <string name="set_preferences">Set Preferences</string>
     <string name="sets">Sets</string>
@@ -82,6 +84,7 @@
     <string name="set_initial_tab">Set Initial Tab</string>
     <string name="setting_wallpaper">Setting Wallpaper…</string>
     <string name="show_usage_tips">Show Usage Tips</string>
+    <string name="storage_error">Problem accessing storage</string>
     <string name="shutter">SHUTTER</string>
     <string name="sort_by">Sort by</string>
     <string name="tags">Tags:</string>
