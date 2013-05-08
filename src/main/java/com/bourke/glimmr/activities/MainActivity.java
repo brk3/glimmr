@@ -30,8 +30,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
 
-import com.androidquery.AQuery;
-
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.common.MenuListView;
@@ -70,6 +68,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -119,13 +118,10 @@ public class MainActivity extends BaseActivity {
             }
             mPrefs = getSharedPreferences(Constants.PREFS_NAME,
                     Context.MODE_PRIVATE);
-            mAq = new AQuery(this);
+            mShownUsageTips = new ArrayList<Integer>();
             initPageItems();
-            mMenuDrawer = MenuDrawer.attach(this,
-                    MenuDrawer.MENU_DRAG_CONTENT);
-            mMenuDrawer.setContentView(R.layout.main_activity);
-            initViewPager();
             initMenuDrawer();
+            initViewPager();
             initNotificationAlarms();
             Appirater.appLaunched(this);
         }
@@ -202,6 +198,8 @@ public class MainActivity extends BaseActivity {
 
     private void initPageItems() {
         mContent = new ArrayList<PageItem>();
+        mPageTitles = Arrays.asList(
+                getResources().getStringArray(R.array.pageTitles));
 
         mContent.add(new PageItem(getString(R.string.contacts),
                 R.drawable.ic_action_social_person_dark,
@@ -226,11 +224,6 @@ public class MainActivity extends BaseActivity {
         mContent.add(new PageItem(getString(R.string.explore),
                 R.drawable.ic_action_av_shuffle_dark,
                 RecentPublicPhotosFragment.class));
-
-        mPageTitles = new ArrayList<String>();
-        for (PageItem page : mContent) {
-            mPageTitles.add(page.mTitle);
-        }
     }
 
     public void updateMenuListItems(boolean forceRefresh) {
@@ -346,9 +339,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initMenuDrawer() {
-        /* A custom ListView is needed so the drawer can be notified when it's
-         * scrolled. This is to update the position
-         * of the arrow indicator. */
+        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_CONTENT);
+        mMenuDrawer.setContentView(R.layout.main_activity);
         mList = new MenuListView(this);
         mMenuAdapter = new MenuAdapter();
         mList.setDivider(null);
@@ -410,29 +402,6 @@ public class MainActivity extends BaseActivity {
                         }
                     }
                 });
-
-        ViewPager.SimpleOnPageChangeListener pageChangeListener =
-                new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(final int position) {
-                showUsageTip(mPageTitles.get(position));
-                if (mIndicator != null) {
-                    mIndicator.setCurrentItem(position);
-                } else {
-                    mActionBar.setSelectedNavigationItem(position);
-                }
-                if (position == 0) {
-                    mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
-                } else {
-                    mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
-                }
-            }
-        };
-        if (mIndicator != null) {
-            mIndicator.setOnPageChangeListener(pageChangeListener);
-        } else {
-            mViewPager.setOnPageChangeListener(pageChangeListener);
-        }
 
         updateMenuListItems(false);
     }
@@ -525,6 +494,8 @@ public class MainActivity extends BaseActivity {
 
     private void initViewPager() {
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
+
+        /* create adapter and bind to viewpager */
         mPagerAdapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager(), mViewPager, mActionBar,
                 mPageTitles.toArray(new String[mPageTitles.size()])) {
@@ -540,13 +511,31 @@ public class MainActivity extends BaseActivity {
                 }
                 return null;
             }
+
+            @Override
+            public void onPageSelected(final int position) {
+                showUsageTip(mPageTitles.get(position));
+                if (mIndicator != null) {
+                    mIndicator.setCurrentItem(position);
+                } else {
+                    mActionBar.setSelectedNavigationItem(position);
+                }
+                if (position == 0) {
+                    mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
+                } else {
+                    mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
+                }
+            }
         };
         mViewPager.setAdapter(mPagerAdapter);
 
+        /* bind the listeners to either the indicator or the actionbar */
         mIndicator = (TitlePageIndicator) findViewById(R.id.indicator);
         if (mIndicator != null) {
+            mIndicator.setOnPageChangeListener(mPagerAdapter);
             mIndicator.setViewPager(mViewPager);
         } else {
+            mViewPager.setOnPageChangeListener(mPagerAdapter);
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
             for (PageItem page : mContent) {
                 ActionBar.Tab newTab =
@@ -555,6 +544,14 @@ public class MainActivity extends BaseActivity {
                 mActionBar.addTab(newTab);
             }
         }
+
+        /* set current tab to what's in preferences */
+        SharedPreferences defaultSharedPrefs =
+            PreferenceManager.getDefaultSharedPreferences(this);
+        String initialTabPref = defaultSharedPrefs.getString(
+                Constants.KEY_INITIAL_TAB_LIST_PREFERENCE,
+                getString(R.string.contacts));
+        mViewPager.setCurrentItem(mPageTitles.indexOf(initialTabPref));
     }
 
     private static final class PageItem {

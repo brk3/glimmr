@@ -30,4 +30,13 @@
         <item>@string/add_photos</item>
     </string-array>
 
+    <string-array name="pageTitles">
+        <item>@string/contacts</item>
+        <item>@string/photos</item>
+        <item>@string/favorites</item>
+        <item>@string/sets</item>
+        <item>@string/groups</item>
+        <item>@string/explore</item>
+    </string-array>
+
 </resources>
