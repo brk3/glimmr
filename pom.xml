@@ -157,7 +157,7 @@
 
         <dependency>
             <artifactId>crouton</artifactId>
-            <version>1.7</version>
+            <version>1.8.1</version>
             <groupId>de.keyboardsurfer.android.widget</groupId>
         </dependency>
     </dependencies>
