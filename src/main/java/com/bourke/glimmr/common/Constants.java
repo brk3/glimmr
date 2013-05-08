@@ -43,6 +43,8 @@ public class Constants {
     /* Global preferences keys */
     public static final String KEY_INTERVALS_LIST_PREFERENCE
         = "notificationIntervals";
+    public static final String KEY_INITIAL_TAB_LIST_PREFERENCE
+        = "initialTab";
     public static final String KEY_ENABLE_NOTIFICATIONS
         = "enableNotifications";
     public static final String KEY_ENABLE_CONTACTS_NOTIFICATIONS
