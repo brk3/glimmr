@@ -25,6 +25,16 @@
             android:title="@string/set_initial_tab" />
     </PreferenceCategory>
 
+    <!-- Photoviewer preferences -->
+    <PreferenceCategory android:title="@string/pref_category_photoviewer">
+        <EditTextPreference
+            android:key="slideshowInterval"
+            android:inputType="number"
+            android:title="@string/slideshow_interval"
+            android:maxLength="3"
+            android:defaultValue="3" />
+    </PreferenceCategory>
+
     <!-- Notification preferences -->
     <PreferenceCategory android:title="@string/pref_category_notifications">
         <CheckBoxPreference

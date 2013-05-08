@@ -25,4 +25,9 @@
           android:title="@string/menu_view_exif"
           android:icon="@drawable/ic_action_about_dark"
           android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/menu_slideshow"
+          android:title="@string/slideshow"
+          android:icon="@drawable/images_slideshow_dark"
+          android:showAsAction="ifRoom" />
 </menu>
