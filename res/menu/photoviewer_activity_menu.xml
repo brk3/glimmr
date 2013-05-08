@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-    These options should belong in the PhotoViewerFragment menu.
+    _These options should belong in the PhotoViewerFragment menu._
 
     There's a bug where fragment transactions for the comments/exif throw
     exceptions after a rotation.  Calling commit throws an
