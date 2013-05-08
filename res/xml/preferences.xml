@@ -17,6 +17,13 @@
             android:enabled="true"
             android:summary="@string/cb_show_usage_tips_summary"
             android:defaultValue="true" />
+
+        <ListPreference
+            android:key="initialTab"
+            android:entries="@array/pageTitles"
+            android:entryValues="@array/pageTitles"
+            android:summary="@string/contacts"
+            android:title="@string/set_initial_tab" />
     </PreferenceCategory>
 
     <!-- Notification preferences -->
