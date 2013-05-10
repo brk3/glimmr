@@ -25,6 +25,7 @@ import com.bourke.glimmr.services.AppService;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 import com.googlecode.flickrjandroid.oauth.OAuth;
+import android.preference.EditTextPreference;
 
 public class PreferencesActivity extends SherlockPreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener{
@@ -33,30 +34,40 @@ public class PreferencesActivity extends SherlockPreferenceActivity
 
     private SharedPreferences mSharedPrefs;
     private ListPreference mIntervalsListPreference;
+    private ListPreference mInitialTabListPreference;
+    private EditTextPreference mSlideshowIntervalPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         addPreferencesFromResource(R.xml.preferences);
         PreferenceManager.setDefaultValues(PreferencesActivity.this,
                 R.xml.preferences, false);
+
         mIntervalsListPreference = (ListPreference) getPreferenceScreen()
             .findPreference(Constants.KEY_INTERVALS_LIST_PREFERENCE);
+
+        mInitialTabListPreference = (ListPreference) getPreferenceScreen()
+            .findPreference(Constants.KEY_INITIAL_TAB_LIST_PREFERENCE);
+
+        mSlideshowIntervalPreference = (EditTextPreference)
+            getPreferenceScreen().findPreference(
+                    Constants.KEY_SLIDESHOW_INTERVAL);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        /**
-         * Setup the initial value
+        /* Setup the initial ListPreference values -
          * http://stackoverflow.com/a/531927/663370
          */
         updateIntervalSummary();
+        updateInitialTabSummary();
+        updateSlideshowIntervalSummary();
 
         /* Set up a listener whenever a key changes */
         mSharedPrefs.registerOnSharedPreferenceChangeListener(this);
@@ -94,7 +105,18 @@ public class PreferencesActivity extends SherlockPreferenceActivity
                 WakefulIntentService.scheduleAlarms(new AppListener(), this,
                         false);
             }
+        } else if (Constants.KEY_INITIAL_TAB_LIST_PREFERENCE.equals(key)) {
+            updateInitialTabSummary();
+        } else if (Constants.KEY_SLIDESHOW_INTERVAL.equals(key)) {
+            updateSlideshowIntervalSummary();
         }
+    }
+
+    private void updateInitialTabSummary() {
+        String listPrefValue = mSharedPrefs.getString(
+                Constants.KEY_INITIAL_TAB_LIST_PREFERENCE,
+                getString(R.string.contacts));
+        mInitialTabListPreference.setSummary(listPrefValue);
     }
 
     private void updateIntervalSummary() {
@@ -115,6 +137,12 @@ public class PreferencesActivity extends SherlockPreferenceActivity
                 "ListPreference entry: " + listPrefValue);
         }
         mIntervalsListPreference.setSummary(summaryString);
+    }
+
+    private void updateSlideshowIntervalSummary() {
+        String val = mSharedPrefs.getString(
+                Constants.KEY_SLIDESHOW_INTERVAL, "3");
+        mSlideshowIntervalPreference.setSummary(val);
     }
 
     @Override

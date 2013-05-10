@@ -43,6 +43,8 @@ public class Constants {
     /* Global preferences keys */
     public static final String KEY_INTERVALS_LIST_PREFERENCE
         = "notificationIntervals";
+    public static final String KEY_INITIAL_TAB_LIST_PREFERENCE
+        = "initialTab";
     public static final String KEY_ENABLE_NOTIFICATIONS
         = "enableNotifications";
     public static final String KEY_ENABLE_CONTACTS_NOTIFICATIONS
@@ -51,6 +53,8 @@ public class Constants {
         = "enableActivityNotifications";
     public static final String KEY_ENABLE_USAGE_TIPS
         = "enableUsageTips";
+    public static final String KEY_SLIDESHOW_INTERVAL
+        = "slideshowInterval";
 
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;

@@ -1,12 +1,15 @@
 package com.bourke.glimmr.activities;
 
-import com.squareup.otto.Subscribe;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import android.net.Uri;
 
 import android.os.Bundle;
+import android.os.Handler;
+
+import android.preference.PreferenceManager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +34,7 @@ import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.HackyViewPager;
 import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoInfoFragment;
@@ -45,11 +49,15 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import com.squareup.otto.Subscribe;
+
 import java.lang.reflect.Type;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Activity for viewing photos.
@@ -71,6 +79,8 @@ public class PhotoViewerActivity extends BaseActivity {
         "glimmr_photovieweractivity_info_showing";
     public static final String KEY_PHOTOVIEWER_ACTIONBAR_SHOW =
         "glimmr_photovieweractivity_actionbar_show";
+    public static final String KEY_PHOTOVIEWER_SLIDESHOW_RUNNING =
+        "glimmr_photovieweractivity_slideshow_running";
     public static final String KEY_PHOTO_LIST_FILE =
         "com.bourke.glimmr.PHOTO_LIST_FILE";
     public static final String PHOTO_LIST_FILE =
@@ -85,6 +95,7 @@ public class PhotoViewerActivity extends BaseActivity {
     private boolean mCommentsFragmentShowing = false;
     private boolean mPhotoInfoFragmentShowing = false;
     private ActionBarTitle mActionbarTitle;
+    private Timer mTimer;
 
     /**
      * Start the PhotoViewerActivity with a list of photos to view and an index
@@ -186,6 +197,49 @@ public class PhotoViewerActivity extends BaseActivity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    private void startSlideshow() {
+        final Handler handler = new Handler();
+        SharedPreferences defaultSharedPrefs =
+            PreferenceManager.getDefaultSharedPreferences(this);
+        final int delay_m = Integer.parseInt(defaultSharedPrefs.getString(
+                Constants.KEY_SLIDESHOW_INTERVAL, "3")) * 1000;
+        if (Constants.DEBUG) {
+            Log.d(TAG, "slideshow delay: " + delay_m);
+        }
+        mTimer = new Timer();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        mTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int currentPosition = mPager.getCurrentItem();
+                        currentPosition++;
+                        if (currentPosition >= mAdapter.getCount()) {
+                            currentPosition = 0;
+                        }
+                        mPager.setCurrentItem(currentPosition);
+                    }
+                });
+            }
+        }, delay_m, delay_m);
+        BusProvider.getInstance().post(new PhotoViewerVisibilityChangeEvent(
+                !mActionBar.isShowing(), this));
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // FIXME: unbelievably annoying bug that causes FragmentTransactions to
         // throw an IllegalStateException after rotate.
@@ -200,6 +254,9 @@ public class PhotoViewerActivity extends BaseActivity {
                 mCommentsFragmentShowing);
         savedInstanceState.putBoolean(KEY_PHOTOVIEWER_INFO_SHOWING,
                 mPhotoInfoFragmentShowing);
+
+        savedInstanceState.putBoolean(KEY_PHOTOVIEWER_SLIDESHOW_RUNNING,
+                (mTimer != null));
     }
 
     @Override
@@ -233,6 +290,10 @@ public class PhotoViewerActivity extends BaseActivity {
             setCommentsFragmentVisibility(photo, true, animateTransition);
         } else if (mPhotoInfoFragmentShowing) {
             setPhotoInfoFragmentVisibility(photo, true, animateTransition);
+        }
+        if (savedInstanceState.getBoolean(
+                    KEY_PHOTOVIEWER_SLIDESHOW_RUNNING, false)) {
+            startSlideshow();
         }
     }
 
@@ -362,6 +423,9 @@ public class PhotoViewerActivity extends BaseActivity {
             case R.id.menu_view_info:
                 onPhotoInfoButtonClick(currentlyShowing);
                 return true;
+            case R.id.menu_slideshow:
+                startSlideshow();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -376,6 +440,7 @@ public class PhotoViewerActivity extends BaseActivity {
     public void onVisibilityChanged(
             final PhotoViewerVisibilityChangeEvent event) {
         if (Constants.DEBUG) Log.d(TAG, "onVisibilityChanged");
+
         /* If overlay is being switched off and info/comments fragments are
          * showing, dismiss(hide) these and return */
         if (!event.visible) {
@@ -388,6 +453,16 @@ public class PhotoViewerActivity extends BaseActivity {
                 setCommentsFragmentVisibility(null, false, true);
                 return;
             }
+        }
+        if (event.sender instanceof PhotoViewerFragment && mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;  /* ensure timer isn't wrongly restarted
+                               onSaveInstanceState */
+            if (Constants.DEBUG) {
+                Log.d(TAG, "stopping slideshow");
+            }
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 

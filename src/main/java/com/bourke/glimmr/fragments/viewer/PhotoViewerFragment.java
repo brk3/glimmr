@@ -7,9 +7,12 @@ import android.content.res.Configuration;
 
 import android.graphics.Bitmap;
 
+import android.media.MediaScannerConnection;
+
 import android.net.Uri;
 
 import android.os.Bundle;
+import android.os.Environment;
 
 import android.util.Log;
 
@@ -31,6 +34,7 @@ import com.actionbarsherlock.widget.ShareActionProvider;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
+import com.androidquery.util.AQUtility;
 
 import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
@@ -49,6 +53,13 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.Size;
 
 import com.squareup.otto.Subscribe;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.List;
@@ -141,7 +152,7 @@ public final class PhotoViewerFragment extends BaseFragment
             public void onPhotoTap(View view, float x, float y) {
                 BusProvider.getInstance().post(
                     new PhotoViewerVisibilityChangeEvent(
-                        !mActionBar.isShowing()));
+                        !mActionBar.isShowing(), PhotoViewerFragment.this));
             }
         });
 
@@ -196,6 +207,8 @@ public final class PhotoViewerFragment extends BaseFragment
         return intent;
     }
 
+    /* NOTE: duplicate onOptionsItemSelected here and in parent activity, see
+     * comments in photoviweer_activity_menu.xml */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -206,8 +219,21 @@ public final class PhotoViewerFragment extends BaseFragment
                 ProfileActivity.startProfileViewer(
                         mActivity, mBasePhoto.getOwner());
                 return true;
+            case R.id.menu_save_image:
+                saveImageToExternalStorage();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void saveImageToExternalStorage() {
+        String url = getLargestUrlAvailable(mBasePhoto);
+        File file = mAq.makeSharedFile(url, mBasePhoto.getTitle() + ".jpg");
+        if (file != null) {
+            createExternalStoragePublicPicture(file);
+        } else {
+            Log.e(TAG, "Couldn't save image, makeSharedFile returned null");
         }
     }
 
@@ -335,18 +361,28 @@ public final class PhotoViewerFragment extends BaseFragment
         }
     }
 
+    /**
+     * Return the largest size available for a given photo.
+     *
+     * All should have medium, but not all have large.
+     */
+    private String getLargestUrlAvailable(Photo photo) {
+        String url = "";
+        Size size = photo.getLargeSize();
+        if (size != null) {
+            url = photo.getLargeUrl();
+        } else {
+            /* No large size available, fall back to medium */
+            url = photo.getMediumUrl();
+        }
+        return url;
+    }
+
     private void displayImage() {
         if (Constants.DEBUG) Log.d(TAG, "displayImage()");
+        /* Fetch the main image */
         if (mBasePhoto != null) {
-            /* Fetch the main image */
-            String urlToFetch = "";
-            Size size = mBasePhoto.getLargeSize();
-            if (size != null) {
-                urlToFetch = mBasePhoto.getLargeUrl();
-            } else {
-                /* No large size available, fall back to medium */
-                urlToFetch = mBasePhoto.getMediumUrl();
-            }
+            String urlToFetch = getLargestUrlAvailable(mBasePhoto);
             mAq.id(R.id.image).progress(R.id.progress).image(
                     urlToFetch, Constants.USE_MEMORY_CACHE,
                     Constants.USE_FILE_CACHE, 0, 0, new BitmapAjaxCallback(){
@@ -413,6 +449,45 @@ public final class PhotoViewerFragment extends BaseFragment
         }
     }
 
+    /**
+     * Save an image to external storage.
+     *
+     * http://developer.android.com/reference/android/os/Environment.html
+     */
+    private void createExternalStoragePublicPicture(File image) {
+        File path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File file = new File(path, image.getName());
+        try {
+            path.mkdirs();
+
+            /* copy the file from cache to external storage */
+            InputStream fis = new FileInputStream(image);
+            OutputStream fos = new FileOutputStream(file);
+            AQUtility.copy(fis, fos);
+
+            /* Tell the media scanner about the new file so that it is
+             * immediately available to the user. */
+            MediaScannerConnection.scanFile(mActivity,
+                    new String[] { file.toString() }, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
+
+            Toast.makeText(mActivity, getString(R.string.image_saved),
+                    Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            /* Unable to create file, likely because external storage is not
+             * currently mounted. */
+            Log.e("ExternalStorage", "Error writing " + file, e);
+            Toast.makeText(mActivity, getString(R.string.storage_error),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     protected String getLogTag() {
         return TAG;
@@ -421,11 +496,14 @@ public final class PhotoViewerFragment extends BaseFragment
     /**
      * Event published when the main photo is clicked.
      */
-    public static class PhotoViewerVisibilityChangeEvent {
+    public static class PhotoViewerVisibilityChangeEvent<T> {
         public boolean visible;
+        public T sender;
 
-        public PhotoViewerVisibilityChangeEvent(final boolean visible) {
+        public PhotoViewerVisibilityChangeEvent(final boolean visible,
+                final T sender) {
             this.visible = visible;
+            this.sender = sender;
         }
     }
 }
