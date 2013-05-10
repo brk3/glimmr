@@ -70,8 +70,47 @@ public class GroupListFragment extends BaseFragment
         mNoConnectionLayout =
             (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
         mListView = (AdapterView) mLayout.findViewById(R.id.list);
+        initAdapterView();
         return mLayout;
     }
+
+    private void initAdapterView() {
+        mAdapter = new GroupListAdapter(mActivity, R.layout.group_list_row,
+                (ArrayList<Group>) mGroups);
+        mListView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                GroupViewerActivity.startGroupViewer(mActivity,
+                    mGroups.get(position));
+            }
+        });
+        mListView.setOnItemLongClickListener(
+                new ListView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View v,
+                    int position, long id) {
+                if (position < mGroups.size()) {
+                    SherlockDialogFragment d =
+                        GroupItemLongClickDialog.newInstance(mActivity,
+                            GroupListFragment.this, mGroups.get(position));
+                    d.show(mActivity.getSupportFragmentManager(),
+                        "group_item_long_click");
+                } else {
+                    Log.e(getLogTag(), String.format(
+                            "Cannot call showGridItemContextMenu, " +
+                            "mGroups.size(%d) != position:(%d)",
+                            mGroups.size(), position));
+                }
+                /* True indicates we're finished with event and triggers
+                 * haptic feedback */
+                return true;
+            }
+        });
+        mListView.setAdapter(mAdapter);
+    }
+
 
     @Override
     public void onPause() {
@@ -104,41 +143,9 @@ public class GroupListFragment extends BaseFragment
         } else {
             mListView.setVisibility(View.VISIBLE);
             mNoConnectionLayout.setVisibility(View.GONE);
-            mGroups = (List<Group>) groups;
-            mAdapter = new GroupListAdapter(mActivity, R.layout.group_list_row,
-                    (ArrayList<Group>) groups);
-            mListView.setAdapter(mAdapter);
-            mListView.setOnItemClickListener(
-                    new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                        int position, long id) {
-                    GroupViewerActivity.startGroupViewer(mActivity,
-                        mGroups.get(position));
-                }
-            });
-            mListView.setOnItemLongClickListener(
-                    new ListView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View v,
-                        int position, long id) {
-                    if (position < mGroups.size()) {
-                        SherlockDialogFragment d =
-                            GroupItemLongClickDialog.newInstance(mActivity,
-                                GroupListFragment.this, mGroups.get(position));
-                        d.show(mActivity.getSupportFragmentManager(),
-                            "group_item_long_click");
-                    } else {
-                        Log.e(getLogTag(), String.format(
-                                "Cannot call showGridItemContextMenu, " +
-                                "mGroups.size(%d) != position:(%d)",
-                                mGroups.size(), position));
-                    }
-                    /* True indicates we're finished with event and triggers
-                     * haptic feedback */
-                    return true;
-                }
-            });
+            mGroups.clear();
+            mGroups.addAll(groups);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
