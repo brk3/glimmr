@@ -36,15 +36,13 @@ public class ProfileActivity extends BottomOverlayActivity
 
     private static final String TAG = "Glimmr/ProfileActivity";
 
-    public static final String PROFILEVIEWER_USER_FILE =
+    private static final String PROFILEVIEWER_USER_FILE =
         "glimmr_profilevieweractivity_user.json";
 
     public static final int PHOTO_STREAM_PAGE = 0;
     public static final int FAVORITES_STREAM_PAGE = 1;
     public static final int SETS_PAGE = 2;
     public static final int CONTACTS_PAGE = 3;
-
-    private LoadUserTask mTask;
 
     public static void startProfileViewer(BaseActivity activity, User user) {
         if (user == null) {
@@ -78,7 +76,7 @@ public class ProfileActivity extends BottomOverlayActivity
                         PROFILEVIEWER_USER_FILE));
             return;
         }
-        mUser = gson.fromJson(json.toString(), User.class);
+        mUser = gson.fromJson(json, User.class);
         initViewPager();
         fetchUser();
     }
@@ -103,8 +101,7 @@ public class ProfileActivity extends BottomOverlayActivity
             return;
         }
         setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadUserTask(this, this, mUser.getId());
-        mTask.execute(mOAuth);
+        new LoadUserTask(this, this, mUser.getId()).execute(mOAuth);
     }
 
     @Override

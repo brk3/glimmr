@@ -24,8 +24,8 @@ public class SearchActivity extends BottomOverlayActivity {
 
     private static final String TAG = "Glimmr/SearchActivity";
 
-    public static final int RESULT_PUBLIC_PHOTOS_PAGE = 0;
-    public static final int RESULT_PHOTOSTREAM_PAGE = 1;
+    private static final int RESULT_PUBLIC_PHOTOS_PAGE = 0;
+    private static final int RESULT_PHOTOSTREAM_PAGE = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

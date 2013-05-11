@@ -15,12 +15,13 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
 
+@SuppressWarnings("EmptyMethod")
 public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
 
     private static final String TAG = "Glimmr/LoadGroupInfoTask";
 
-    private IGroupInfoReadyListener mListener;
-    private String mGroupId;
+    private final IGroupInfoReadyListener mListener;
+    private final String mGroupId;
 
     public LoadGroupInfoTask(String groupId,
             IGroupInfoReadyListener listener) {

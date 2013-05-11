@@ -79,9 +79,7 @@ public final class PhotoViewerFragment extends BaseFragment
     private Photo mPhotoExtendedInfo;
     private MenuItem mFavoriteButton;
     private LoadPhotoInfoTask mTask;
-    private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
-    private Configuration mConfiguration;
-    private ImageView mImageView;
+    private final AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
     private ImageView mVideoButton;
     private PhotoViewAttacher mAttacher;
     private TextView mTextViewTitle;
@@ -130,7 +128,6 @@ public final class PhotoViewerFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         if (Constants.DEBUG) Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        mConfiguration = mActivity.getResources().getConfiguration();
     }
 
     @Override
@@ -139,7 +136,7 @@ public final class PhotoViewerFragment extends BaseFragment
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
-        mImageView = (ImageView) mLayout.findViewById(R.id.image);
+        ImageView mImageView = (ImageView) mLayout.findViewById(R.id.image);
         mVideoButton = (ImageView) mLayout.findViewById(
                 R.id.play_video_overlay);
         mAttacher = new PhotoViewAttacher(mImageView);
@@ -497,8 +494,8 @@ public final class PhotoViewerFragment extends BaseFragment
      * Event published when the main photo is clicked.
      */
     public static class PhotoViewerVisibilityChangeEvent<T> {
-        public boolean visible;
-        public T sender;
+        public final boolean visible;
+        public final T sender;
 
         public PhotoViewerVisibilityChangeEvent(final boolean visible,
                 final T sender) {

@@ -28,7 +28,7 @@ import com.googlecode.flickrjandroid.people.User;
 
 public class StackViewWidgetConfigure extends BaseActivity {
 
-    public static final String TAG = "Glimmr/StackViewWidgetConfigure";
+    private static final String TAG = "Glimmr/StackViewWidgetConfigure";
 
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -39,7 +39,7 @@ public class StackViewWidgetConfigure extends BaseActivity {
     public static final int WIDGET_TYPE_FAVORITES = 1;
     public static final int WIDGET_TYPE_PHOTOS= 2;
     public static final int WIDGET_TYPE_CONTACTS = 3;
-    public static final int[] LOGIN_REQUIRED = { WIDGET_TYPE_FAVORITES,
+    private static final int[] LOGIN_REQUIRED = { WIDGET_TYPE_FAVORITES,
         WIDGET_TYPE_PHOTOS, WIDGET_TYPE_CONTACTS };
 
     @Override

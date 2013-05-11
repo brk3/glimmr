@@ -21,14 +21,11 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/PhotoStreamGridFragment";
 
-    public static final String KEY_NEWEST_PHOTOSTREAM_PHOTO_ID =
+    private static final String KEY_NEWEST_PHOTOSTREAM_PHOTO_ID =
         "glimmr_newest_photostream_photo_id";
 
-    protected LoadPhotostreamTask mTask;
-
     public static PhotoStreamGridFragment newInstance() {
-        PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
-        return newFragment;
+        return new PhotoStreamGridFragment();
     }
 
     public static PhotoStreamGridFragment newInstance(
@@ -77,17 +74,16 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
     private void startTask(int page) {
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadPhotostreamTask(this, mActivity.getUser(), page);
-        mTask.execute(mOAuth);
+        mTask = new LoadPhotostreamTask(this, mActivity.getUser(), page)
+                .execute(mOAuth);
     }
 
     @Override
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        String newestId = prefs.getString(KEY_NEWEST_PHOTOSTREAM_PHOTO_ID,
+        return prefs.getString(KEY_NEWEST_PHOTOSTREAM_PHOTO_ID,
                 null);
-        return newestId;
     }
 
     @Override

@@ -36,7 +36,7 @@ import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.GroupItemLongClickDialogListener;
 import com.bourke.glimmr.event.Events.IGroupListReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.fragments.viewer.AddToGroupDialogFragment;
+import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadGroupsTask;
 
@@ -50,15 +50,14 @@ public class GroupListFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/GroupListFragment";
 
-    private List<Group> mGroups = new ArrayList<Group>();
+    private final List<Group> mGroups = new ArrayList<Group>();
     private LoadGroupsTask mTask;
     private ViewGroup mNoConnectionLayout;
     private AdapterView mListView;
     private GroupListAdapter mAdapter;
 
     public static GroupListFragment newInstance() {
-        GroupListFragment newFragment = new GroupListFragment();
-        return newFragment;
+        return new GroupListFragment();
     }
 
     @Override

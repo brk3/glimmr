@@ -71,15 +71,15 @@ public class PhotoViewerActivity extends BaseActivity {
 
     public static final String KEY_PHOTOVIEWER_START_INDEX =
         "glimmr_photovieweractivity_start_index";
-    public static final String KEY_PHOTOVIEWER_CURRENT_INDEX =
+    private static final String KEY_PHOTOVIEWER_CURRENT_INDEX =
         "glimmr_photovieweractivity_current_index";
-    public static final String KEY_PHOTOVIEWER_COMMENTS_SHOWING =
+    private static final String KEY_PHOTOVIEWER_COMMENTS_SHOWING =
         "glimmr_photovieweractivity_comments_showing";
-    public static final String KEY_PHOTOVIEWER_INFO_SHOWING =
+    private static final String KEY_PHOTOVIEWER_INFO_SHOWING =
         "glimmr_photovieweractivity_info_showing";
-    public static final String KEY_PHOTOVIEWER_ACTIONBAR_SHOW =
+    private static final String KEY_PHOTOVIEWER_ACTIONBAR_SHOW =
         "glimmr_photovieweractivity_actionbar_show";
-    public static final String KEY_PHOTOVIEWER_SLIDESHOW_RUNNING =
+    private static final String KEY_PHOTOVIEWER_SLIDESHOW_RUNNING =
         "glimmr_photovieweractivity_slideshow_running";
     public static final String KEY_PHOTO_LIST_FILE =
         "com.bourke.glimmr.PHOTO_LIST_FILE";
@@ -157,7 +157,7 @@ public class PhotoViewerActivity extends BaseActivity {
             }
             Type collectionType =
                 new TypeToken<Collection<Photo>>(){}.getType();
-            mPhotos = new Gson().fromJson(json.toString(), collectionType);
+            mPhotos = new Gson().fromJson(json, collectionType);
             initViewPager(startIndex, true);
         }
     }
@@ -444,7 +444,6 @@ public class PhotoViewerActivity extends BaseActivity {
         /* If overlay is being switched off and info/comments fragments are
          * showing, dismiss(hide) these and return */
         if (!event.visible) {
-            boolean animateTransition = true;
             if (mPhotoInfoFragmentShowing) {
                 setPhotoInfoFragmentVisibility(null, false, true);
                 return;
@@ -468,7 +467,7 @@ public class PhotoViewerActivity extends BaseActivity {
 
     class PhotoViewerPagerAdapter extends FragmentStatePagerAdapter
             implements ViewPager.OnPageChangeListener {
-        private boolean mFetchExtraInfo;
+        private final boolean mFetchExtraInfo;
 
         public PhotoViewerPagerAdapter(FragmentManager fm,
                 boolean fetchExtraInfo) {
@@ -538,7 +537,7 @@ public class PhotoViewerActivity extends BaseActivity {
     class ActionBarTitle {
         private TextView mPhotoTitle;
         private TextView mPhotoAuthor;
-        private Context mContext;
+        private final Context mContext;
 
         public ActionBarTitle(Context context) {
             mContext = context;
