@@ -15,13 +15,14 @@ import java.util.List;
 
 import static junit.framework.Assert.*;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadPhotoSizesTask
         extends AsyncTask<Void, Void, Collection<Size>> {
 
     private static final String TAG = "Glimmr/LoadPhotoSizesTask";
 
-    private IPhotoSizesReadyListener mListener;
-    private String mId;
+    private final IPhotoSizesReadyListener mListener;
+    private final String mId;
 
     public LoadPhotoSizesTask(IPhotoSizesReadyListener listener, String id) {
         mListener = listener;
@@ -46,11 +47,12 @@ public class LoadPhotoSizesTask
 
     @Override
     protected void onPostExecute(final Collection<Size> result) {
-        if (result == null) {
+        List<Size> ret = new ArrayList<Size>();
+        if (result != null) {
+            ret.addAll(result);
+        } else {
             Log.e(TAG, "Error fetching photo sizes, result is null");
         }
-        List<Size> ret = new ArrayList<Size>();
-        ret.addAll(result);
         mListener.onPhotoSizesReady(ret);
     }
 }

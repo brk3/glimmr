@@ -16,12 +16,13 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import java.util.List;
 import java.util.List;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadFlickrActivityTask
         extends AsyncTask<OAuth, Void, List<Item>> {
 
     private static final String TAG = "Glimmr/LoadFlickrActivityTask";
 
-    private IActivityItemsReadyListener mListener;
+    private final IActivityItemsReadyListener mListener;
 
     public LoadFlickrActivityTask(IActivityItemsReadyListener listener) {
         mListener = listener;

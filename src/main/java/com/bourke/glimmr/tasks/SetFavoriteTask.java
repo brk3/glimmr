@@ -12,12 +12,13 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
 
+@SuppressWarnings("EmptyMethod")
 public class SetFavoriteTask extends AsyncTask<OAuth, Void, Exception> {
 
     private static final String TAG = "Glimmr/SetFavoriteTask";
 
-    private IFavoriteReadyListener mListener;
-    private Photo mPhoto;
+    private final IFavoriteReadyListener mListener;
+    private final Photo mPhoto;
 
     public SetFavoriteTask(IFavoriteReadyListener listener, Photo photo) {
         mListener = listener;

@@ -1,13 +1,10 @@
 package com.bourke.glimmrpro.tasks;
 
 import android.os.AsyncTask;
-
 import android.util.Log;
-
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IPhotosetsReadyListener;
-
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
@@ -18,8 +15,8 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
 
     private static final String TAG = "Glimmr/LoadPhotosetsTask";
 
-    private IPhotosetsReadyListener mListener;
-    private User mUser;
+    private final IPhotosetsReadyListener mListener;
+    private final User mUser;
 
     public LoadPhotosetsTask(IPhotosetsReadyListener listener, User user) {
         mListener = listener;

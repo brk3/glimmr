@@ -89,7 +89,6 @@ public final class LoginFragment extends BaseFragment
             FragmentManager fm = mActivity.getSupportFragmentManager();
             LoginErrorTipDialog d = new LoginErrorTipDialog();
             d.show(fm, "LoginErrorTipDialog");
-            return;
         } else if (authUri != null && !authUri.startsWith("error")) {
             mActivity.startActivity(new Intent(
                         Intent.ACTION_VIEW, Uri.parse(authUri)));

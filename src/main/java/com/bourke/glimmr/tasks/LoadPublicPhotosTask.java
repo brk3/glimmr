@@ -13,12 +13,13 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/LoadPublicPhotosTask";
 
-    private IPhotoListReadyListener mListener;
-    private int mPage;
+    private final IPhotoListReadyListener mListener;
+    private final int mPage;
 
     public LoadPublicPhotosTask(IPhotoListReadyListener listener, int page) {
         mListener = listener;

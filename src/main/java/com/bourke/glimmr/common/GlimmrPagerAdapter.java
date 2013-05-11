@@ -19,9 +19,9 @@ public abstract class GlimmrPagerAdapter extends FragmentPagerAdapter
 
     private static final String TAG = "Glimmr/GlimmrPagerAdapter";
 
-    private String[] mContent;
-    private ViewPager mViewPager;
-    private ActionBar mActionBar;
+    private final String[] mContent;
+    private final ViewPager mViewPager;
+    private final ActionBar mActionBar;
 
     public abstract SherlockFragment getItemImpl(int position);
 

@@ -16,13 +16,14 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/LoadPhotostreamTask";
 
-    private IPhotoListReadyListener mListener;
-    private User mUser;
-    private int mPage;
+    private final IPhotoListReadyListener mListener;
+    private final User mUser;
+    private final int mPage;
 
     public LoadPhotostreamTask(IPhotoListReadyListener listener,
             User user, int page) {

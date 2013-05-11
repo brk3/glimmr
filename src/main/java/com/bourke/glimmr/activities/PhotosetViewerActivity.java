@@ -28,14 +28,14 @@ import com.google.gson.Gson;
 
 public class PhotosetViewerActivity extends BottomOverlayActivity {
 
-    public static final String TAG = "Glimmr/PhotosetViewerActivity";
+    private static final String TAG = "Glimmr/PhotosetViewerActivity";
 
-    public static final String PHOTOSETVIEWER_SET_FILE =
+    private static final String PHOTOSETVIEWER_SET_FILE =
         "glimmr_photosetvieweractivity_set.json";
-    public static final String PHOTOSETVIEWER_USER_FILE =
+    private static final String PHOTOSETVIEWER_USER_FILE =
         "glimmr_photosetvieweractivity_user.json";
 
-    public static final int PHOTOSET_PAGE = 0;
+    private static final int PHOTOSET_PAGE = 0;
 
     private Photoset mPhotoset = new Photoset();
 
@@ -81,7 +81,7 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
                         PHOTOSETVIEWER_SET_FILE));
             return;
         }
-        mPhotoset = gson.fromJson(json.toString(), Photoset.class);
+        mPhotoset = gson.fromJson(json, Photoset.class);
 
         json = gsonHelper.loadJson(PHOTOSETVIEWER_USER_FILE);
         if (json.length() == 0) {
@@ -89,7 +89,7 @@ public class PhotosetViewerActivity extends BottomOverlayActivity {
                         PHOTOSETVIEWER_USER_FILE));
             return;
         }
-        mUser = gson.fromJson(json.toString(), User.class);
+        mUser = gson.fromJson(json, User.class);
 
         if (Constants.DEBUG) {
             Log.d(TAG, "Got photoset to view: " +mPhotoset.getTitle());

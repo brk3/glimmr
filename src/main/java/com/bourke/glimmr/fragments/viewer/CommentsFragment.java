@@ -55,16 +55,15 @@ public final class CommentsFragment extends BaseDialogFragment
         implements ICommentsReadyListener, ICommentAddedListener,
                    IUserReadyListener {
 
-    public static final String TAG = "Glimmr/CommentsFragment";
+    private static final String TAG = "Glimmr/CommentsFragment";
 
     private LoadCommentsTask mTask;
     private Photo mPhoto;
     private ArrayAdapter<Comment> mAdapter;
-    private Map<String, UserItem> mUsers = Collections.synchronizedMap(
+    private final Map<String, UserItem> mUsers = Collections.synchronizedMap(
             new HashMap<String, UserItem>());
-    private List<LoadUserTask> mLoadUserTasks = new ArrayList<LoadUserTask>();
+    private final List<LoadUserTask> mLoadUserTasks = new ArrayList<LoadUserTask>();
     private PrettyTime mPrettyTime;
-    private ImageButton mSubmitButton;
     private ProgressBar mProgressBar;
     private ListView mListView;
 
@@ -88,8 +87,9 @@ public final class CommentsFragment extends BaseDialogFragment
                 R.layout.comments_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
 
-        mSubmitButton = (ImageButton) mLayout.findViewById(R.id.submitButton);
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton submitButton = (ImageButton)
+                mLayout.findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CommentsFragment.this.submitButtonClicked();
@@ -293,7 +293,7 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     class UserItem {
-        public User user;
+        public final User user;
         public boolean isLoading = true;
 
         public UserItem(User user, boolean isLoading) {

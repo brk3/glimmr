@@ -1,24 +1,17 @@
 package com.bourke.glimmrpro.appwidget;
 
 import android.annotation.TargetApi;
-
 import android.app.PendingIntent;
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-
 import android.content.Context;
 import android.content.Intent;
-
 import android.net.Uri;
-
 import android.util.Log;
-
 import android.widget.RemoteViews;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.PhotoViewerActivity;
 import com.bourke.glimmrpro.common.Constants;
-import com.bourke.glimmrpro.R;
 
 @TargetApi(11)
 public class StackWidgetProvider extends AppWidgetProvider {
@@ -39,9 +32,9 @@ public class StackWidgetProvider extends AppWidgetProvider {
         AppWidgetManager mgr = AppWidgetManager.getInstance(context);
 
         if (intent.getAction().equals(ACTION_START_VIEWER)) {
-            int appWidgetId = intent.getIntExtra(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
+            //int appWidgetId = intent.getIntExtra(
+            //        AppWidgetManager.EXTRA_APPWIDGET_ID,
+            //        AppWidgetManager.INVALID_APPWIDGET_ID);
             int viewIndex = intent.getIntExtra(VIEW_INDEX, 0);
             String photoListFile = intent.getStringExtra(
                     PhotoViewerActivity.KEY_PHOTO_LIST_FILE);
@@ -76,18 +69,17 @@ public class StackWidgetProvider extends AppWidgetProvider {
             int[] appWidgetIds) {
         if (Constants.DEBUG) Log.d(TAG, "onUpdate: " + appWidgetIds.length);
 
-        for (int i = 0; i < appWidgetIds.length; ++i) {
-
+        for (int appWidgetId : appWidgetIds) {
             /* Intent for creating the collection's views */
             Intent intent = new Intent(context, StackWidgetService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    appWidgetIds[i]);
+                    appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             RemoteViews rv = new RemoteViews(context.getPackageName(),
                     R.layout.stackview_widget_layout);
             rv.setEmptyView(R.id.stack_view, R.id.empty_view);
 
-            rv.setRemoteAdapter(appWidgetIds[i], R.id.stack_view, intent);
+            rv.setRemoteAdapter(appWidgetId, R.id.stack_view, intent);
 
             /* Intent for clicking on an item */
             Intent photoViewerIntent = new Intent(context,
@@ -95,7 +87,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
             photoViewerIntent.setAction(
                     StackWidgetProvider.ACTION_START_VIEWER);
             photoViewerIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    appWidgetIds[i]);
+                    appWidgetId);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
                     context, 0, photoViewerIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
@@ -106,13 +98,13 @@ public class StackWidgetProvider extends AppWidgetProvider {
                     StackWidgetProvider.class);
             refreshIntent.setAction(ACTION_REFRESH);
             refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    appWidgetIds[i]);
+                    appWidgetId);
             PendingIntent pendingIntent2 = PendingIntent.getBroadcast(
                     context, 0, refreshIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
             rv.setOnClickPendingIntent(R.id.empty_view, pendingIntent2);
 
-            appWidgetManager.updateAppWidget(appWidgetIds[i], rv);
+            appWidgetManager.updateAppWidget(appWidgetId, rv);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }

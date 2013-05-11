@@ -31,13 +31,13 @@ public class GroupViewerActivity extends BottomOverlayActivity {
 
     private static final String TAG = "Glimmr/GroupViewerActivity";
 
-    public static final String GROUPVIEWER_GROUP_FILE =
+    private static final String GROUPVIEWER_GROUP_FILE =
         "glimmr_groupvieweractivity_group.json";
-    public static final String GROUPVIEWER_USER_FILE =
+    private static final String GROUPVIEWER_USER_FILE =
         "glimmr_groupvieweractivity_user.json";
 
-    public static final int GROUP_POOL_PAGE = 0;
-    public static final int GROUP_ABOUT_PAGE = 1;
+    private static final int GROUP_POOL_PAGE = 0;
+    private static final int GROUP_ABOUT_PAGE = 1;
 
     private Group mGroup = new Group();
 
@@ -88,7 +88,7 @@ public class GroupViewerActivity extends BottomOverlayActivity {
                         GROUPVIEWER_GROUP_FILE));
             return;
         }
-        mGroup = gson.fromJson(json.toString(), Group.class);
+        mGroup = gson.fromJson(json, Group.class);
 
         json = gsonHelper.loadJson(GROUPVIEWER_USER_FILE);
         if (json.length() == 0) {
@@ -96,7 +96,7 @@ public class GroupViewerActivity extends BottomOverlayActivity {
                         GROUPVIEWER_USER_FILE));
             return;
         }
-        mUser = gson.fromJson(json.toString(), User.class);
+        mUser = gson.fromJson(json, User.class);
 
         if (Constants.DEBUG) {
             Log.d(TAG, "Got group to view: " + mGroup.getName());

@@ -11,7 +11,7 @@ public class AddToPhotosetTaskQueueService extends AbstractTaskQueueService {
 
     private static final String TAG = "Glimmr/AddToPhotosetTaskQueueService";
 
-    public static boolean IS_RUNNING;
+    private static boolean IS_RUNNING;
 
     @Override
     public void onCreate() {

@@ -60,18 +60,18 @@ public class ActivityNotificationHandler
         implements GlimmrNotificationHandler<String>,
                    IActivityItemsReadyListener {
 
-    public static final String TAG = "Glimmr/ActivityNotificationHandler";
+    private static final String TAG = "Glimmr/ActivityNotificationHandler";
 
-    public static final String KEY_NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID =
+    private static final String KEY_NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID =
         "glimmr_notification_newest_activity_event_id";
     public static final String KEY_TIME_ACTIVITY_ITEMS_LAST_UPDATED =
         "glimmr_time_activity_items_last_updated";
     public static final String ACTIVITY_ITEMLIST_FILE =
         "glimmr_activity_items.json";
 
-    private Context mContext;
-    private SharedPreferences mPrefs;
-    private SharedPreferences.Editor mPrefsEditor;
+    private final Context mContext;
+    private final SharedPreferences mPrefs;
+    private final SharedPreferences.Editor mPrefsEditor;
     private OAuth mOAuth;
 
     public ActivityNotificationHandler(Context context) {
@@ -111,12 +111,13 @@ public class ActivityNotificationHandler
      * either new, or has updated events.
      */
     private void checkForNewItemEvents(List<Item> fetchedItems) {
-        assertNotNull(fetchedItems != null);
-        assertTrue(!fetchedItems.isEmpty());
-
         if (Constants.DEBUG) {
             Log.d(TAG, "Loading existing item list and comparing it against " +
                     "the ones we just fetched");
+        }
+        if (fetchedItems == null || fetchedItems.isEmpty()) {
+            Log.d(TAG, "fetchedItems null or empty, returning");
+            return;
         }
         List<Item> currentItems = loadItemList(mContext);
         if (currentItems == null || currentItems.isEmpty()) {
@@ -222,7 +223,8 @@ public class ActivityNotificationHandler
                 }
             }
             if (i == 1 && i < newEvents.size()) {
-                contentText.append("+ " + (newEvents.size()-2) + " others");
+                contentText.append("+ ").append(newEvents.size() - 2)
+                        .append(" others");
                 break;
             }
         }
@@ -340,7 +342,7 @@ public class ActivityNotificationHandler
             return ret;
         }
         Type collectionType = new TypeToken<Collection<Item>>(){}.getType();
-        ret = new Gson().fromJson(json.toString(), collectionType);
+        ret = new Gson().fromJson(json, collectionType);
 
         if (Constants.DEBUG) {
             Log.d(TAG, String.format("Sucessfully read %d items from %s",

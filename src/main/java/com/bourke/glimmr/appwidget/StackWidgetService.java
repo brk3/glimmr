@@ -55,9 +55,8 @@ class StackRemoteViewsFactory
     private static final int PAGE = 0;
 
     private List<Photo> mPhotos;
-    private Context mContext;
+    private final Context mContext;
 
-    private int mAppWidgetId;
     private int mWidgetType;
 
     private OAuth mOAuth;
@@ -65,8 +64,6 @@ class StackRemoteViewsFactory
 
     public StackRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
-        mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
     /**

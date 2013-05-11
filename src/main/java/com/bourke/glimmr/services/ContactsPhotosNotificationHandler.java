@@ -33,16 +33,17 @@ import java.util.List;
 public class ContactsPhotosNotificationHandler
     implements GlimmrNotificationHandler<Photo>, IPhotoListReadyListener {
 
-    public static final String TAG =
+    private static final String TAG =
         "Glimmr/ContactsPhotosNotificationHandler";
 
-    public static final String KEY_NOTIFICATION_NEWEST_CONTACT_PHOTO_ID =
+    private static final String KEY_NOTIFICATION_NEWEST_CONTACT_PHOTO_ID =
         "glimmr_notification_newest_contact_photo_id";
 
-    private Context mContext;
-    private SharedPreferences mPrefs;
-    private SharedPreferences.Editor mPrefsEditor;
+    private final Context mContext;
+    private final SharedPreferences mPrefs;
+    private final SharedPreferences.Editor mPrefsEditor;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final int PAGE_TO_FETCH = 1;
 
     public ContactsPhotosNotificationHandler(Context context) {

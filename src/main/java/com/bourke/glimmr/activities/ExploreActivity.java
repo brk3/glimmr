@@ -41,15 +41,15 @@ import com.googlecode.flickrjandroid.people.User;
 public class ExploreActivity extends BaseActivity
         implements LoginFragment.IOnNotNowClicked {
 
-    public static final String TAG = "Glimmr/ExploreActivity";
+    private static final String TAG = "Glimmr/ExploreActivity";
 
-    public static final String KEY_LOGIN_LATER_SELECTED =
+    private static final String KEY_LOGIN_LATER_SELECTED =
         "glimmr_login_later_selected";
 
-    public static final int INTERESTING_PAGE = 0;
+    private static final int INTERESTING_PAGE = 0;
     //public static final int TAGS_PAGE = 1;
 
-    public static String[] CONTENT;
+    private static String[] CONTENT;
 
     private LoginFragment mLoginFragment;
 
