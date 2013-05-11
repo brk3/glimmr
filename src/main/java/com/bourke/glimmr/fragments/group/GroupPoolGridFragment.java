@@ -1,6 +1,6 @@
 package com.bourke.glimmr.fragments.group;
 
-import com.bourke.glimmr.fragments.viewer.AddToGroupDialogFragment;
+import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,14 +27,12 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/GroupPoolGridFragment";
 
-    public static final String KEY_NEWEST_GROUPPOOL_PHOTO_ID =
+    private static final String KEY_NEWEST_GROUPPOOL_PHOTO_ID =
         "glimmr_newest_grouppool_photo_id";
-    public static final String KEY_GROUP_FRAGMENT_GROUP_ID =
+    private static final String KEY_GROUP_FRAGMENT_GROUP_ID =
         "glimmr_grouppool_group_id";
 
     private Group mGroup;
-
-    protected LoadGroupPoolTask mTask;
 
     public static GroupPoolGridFragment newInstance(Group group) {
         GroupPoolGridFragment newFragment = new GroupPoolGridFragment();
@@ -89,8 +87,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
             loadGroup();
         }
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadGroupPoolTask(this, mGroup, page);
-        mTask.execute(mOAuth);
+        new LoadGroupPoolTask(this, mGroup, page).execute(mOAuth);
     }
 
     /**
@@ -128,8 +125,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        String newestId = prefs.getString(KEY_NEWEST_GROUPPOOL_PHOTO_ID, null);
-        return newestId;
+        return prefs.getString(KEY_NEWEST_GROUPPOOL_PHOTO_ID, null);
     }
 
     @Override

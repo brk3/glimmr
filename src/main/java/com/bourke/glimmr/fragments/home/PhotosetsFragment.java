@@ -56,7 +56,7 @@ public class PhotosetsFragment extends BaseFragment
     private static final String TAG = "Glimmr/PhotosetsFragment";
 
     private LoadPhotosetsTask mTask;
-    private List<Photoset> mPhotosets = new ArrayList<Photoset>();
+    private final List<Photoset> mPhotosets = new ArrayList<Photoset>();
 
     private View mLayoutNoConnection;
     private AdapterView mAdapterView;  /* Will either be a GridView or ListView
@@ -64,8 +64,7 @@ public class PhotosetsFragment extends BaseFragment
     private SetListAdapter mAdapter;
 
     public static PhotosetsFragment newInstance() {
-        PhotosetsFragment newFragment = new PhotosetsFragment();
-        return newFragment;
+        return new PhotosetsFragment();
     }
 
     @Override

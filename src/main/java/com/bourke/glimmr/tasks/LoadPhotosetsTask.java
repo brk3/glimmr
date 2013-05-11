@@ -16,12 +16,13 @@ import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photosets;
 
 
+@SuppressWarnings("EmptyMethod")
 public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
 
     private static final String TAG = "Glimmr/LoadPhotosetsTask";
 
-    private IPhotosetsReadyListener mListener;
-    private User mUser;
+    private final IPhotosetsReadyListener mListener;
+    private final User mUser;
 
     public LoadPhotosetsTask(IPhotosetsReadyListener listener, User user) {
         mListener = listener;

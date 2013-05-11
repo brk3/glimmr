@@ -1,4 +1,4 @@
-package net.simonvt.menudrawer.samples;
+package com.bourke.glimmr.common;
 
 import android.content.Context;
 import android.util.AttributeSet;

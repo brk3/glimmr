@@ -13,7 +13,7 @@ import com.googlecode.flickrjandroid.people.User;
 
 public class OAuthUtils {
 
-    public static final String TAG = "Glimmr/OAuthUtils";
+    private static final String TAG = "Glimmr/OAuthUtils";
 
     public static boolean isLoggedIn(Context context) {
         OAuth oauth = loadAccessToken(context);

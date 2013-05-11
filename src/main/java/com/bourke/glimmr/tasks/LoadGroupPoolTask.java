@@ -19,13 +19,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/LoadGroupPoolTask";
 
-    private IPhotoListReadyListener mListener;
-    private Group mGroup;
-    private int mPage;
+    private final IPhotoListReadyListener mListener;
+    private final Group mGroup;
+    private final int mPage;
 
     public LoadGroupPoolTask(IPhotoListReadyListener listener, Group group,
             int page) {

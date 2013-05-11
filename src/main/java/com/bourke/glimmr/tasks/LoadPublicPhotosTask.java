@@ -15,12 +15,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/LoadPublicPhotosTask";
 
-    private IPhotoListReadyListener mListener;
-    private int mPage;
+    private final IPhotoListReadyListener mListener;
+    private final int mPage;
 
     public LoadPublicPhotosTask(IPhotoListReadyListener listener, int page) {
         mListener = listener;

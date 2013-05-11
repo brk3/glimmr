@@ -33,7 +33,7 @@ import java.util.List;
 public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {
 
-    public static final String TAG = "Glimmr/ExifInfoFragment";
+    private static final String TAG = "Glimmr/ExifInfoFragment";
 
     private Photo mPhoto = new Photo();
     private LoadExifInfoTask mTask;

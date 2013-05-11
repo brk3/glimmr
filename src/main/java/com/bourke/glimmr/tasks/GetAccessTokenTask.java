@@ -17,7 +17,7 @@ public class GetAccessTokenTask extends AsyncTask<String, Integer, OAuth> {
 
     private static final String TAG = "Glimmr/GetAccessTokenTask";
 
-    private IAccessTokenReadyListener mListener;
+    private final IAccessTokenReadyListener mListener;
 
     public GetAccessTokenTask(IAccessTokenReadyListener listener) {
         mListener = listener;

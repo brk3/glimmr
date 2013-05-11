@@ -18,10 +18,9 @@ import com.bourke.glimmr.R;
  */
 public class GlimmrAbCustomTitle {
 
-    protected TextView mAbTitle;
-    protected BaseActivity mActivity;
+    private final BaseActivity mActivity;
 
-    private TextUtils mTextUtils;
+    private final TextUtils mTextUtils;
 
     public GlimmrAbCustomTitle(BaseActivity a) {
         mActivity = a;
@@ -32,9 +31,9 @@ public class GlimmrAbCustomTitle {
         LayoutInflater inflator = (LayoutInflater)
             mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.action_bar_title_item, null);
-        mAbTitle = (TextView) v.findViewById(R.id.abTitle);
-        mTextUtils.setFont(mAbTitle, TextUtils.FONT_SHADOWSINTOLIGHT);
-        mAbTitle.setText(mActivity.getString(R.string.app_name));
+        TextView abTitle = (TextView) v.findViewById(R.id.abTitle);
+        mTextUtils.setFont(abTitle, TextUtils.FONT_SHADOWSINTOLIGHT);
+        abTitle.setText(mActivity.getString(R.string.app_name));
         actionbar.setDisplayShowCustomEnabled(true);
         actionbar.setDisplayShowTitleEnabled(false);
         actionbar.setCustomView(v);

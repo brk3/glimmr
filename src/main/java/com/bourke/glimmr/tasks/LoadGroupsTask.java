@@ -21,11 +21,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
 
     private static final String TAG = "Glimmr/LoadGroupsTask";
 
-    private IGroupListReadyListener mListener;
+    private final IGroupListReadyListener mListener;
 
     public LoadGroupsTask(IGroupListReadyListener listener) {
         mListener = listener;

@@ -20,15 +20,16 @@ import com.googlecode.flickrjandroid.photos.SearchParameters;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("EmptyMethod")
 public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/SearchPhotosTask";
 
-    private IPhotoListReadyListener mListener;
+    private final IPhotoListReadyListener mListener;
     private Photoset mPhotoset;
-    private int mPage;
-    private String mSearchTerm;
-    private int mSortType;
+    private final int mPage;
+    private final String mSearchTerm;
+    private final int mSortType;
     private String mUserId;
 
     public SearchPhotosTask(IPhotoListReadyListener listener,
