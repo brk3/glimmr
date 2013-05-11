@@ -48,20 +48,17 @@ public class MainActivity extends BaseActivity {
 
     private static final String TAG = "Glimmr/MainActivity";
 
-    public static final String KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED =
+    private static final String KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED =
         "glimmr_time_menudrawer_items_last_updated";
-    public static final String KEY_STATE_MENUDRAWER =
+    private static final String KEY_STATE_MENUDRAWER =
         "glimmr_menudrawer_state";
-    public static final String KEY_STATE_ACTIVE_POSITION =
+    private static final String KEY_STATE_ACTIVE_POSITION =
         "glimmr_menudrawer_active_position";
 
     private List<PageItem> mContent;
     private List<String> mPageTitles;
     private MenuDrawer mMenuDrawer;
-    private MenuAdapter mMenuAdapter;
-    private MenuListView mList;
-    private boolean mDisplayHomeAsUp = true;
-    private GlimmrPagerAdapter mPagerAdapter;
+    private final MenuAdapter mMenuAdapter = new MenuAdapter();
     private ViewPager mViewPager;
     private PageIndicator mIndicator;
     private int mActivePosition = -1;
@@ -309,18 +306,17 @@ public class MainActivity extends BaseActivity {
     private void initMenuDrawer() {
         mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_CONTENT);
         mMenuDrawer.setContentView(R.layout.main_activity);
-        mList = new MenuListView(this);
-        mMenuAdapter = new MenuAdapter();
-        mList.setDivider(null);
-        mList.setDividerHeight(0);
-        mList.setCacheColorHint(0);
-        mList.setBackgroundResource(R.drawable.navy_blue_tiled);
-        mList.setSelector(R.drawable.selectable_background_glimmrdark);
-        mList.setAdapter(mMenuAdapter);
-        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        MenuListView menuListView = new MenuListView(this);
+        menuListView.setDivider(null);
+        menuListView.setDividerHeight(0);
+        menuListView.setCacheColorHint(0);
+        menuListView.setBackgroundResource(R.drawable.navy_blue_tiled);
+        menuListView.setSelector(R.drawable.selectable_background_glimmrdark);
+        menuListView.setAdapter(mMenuAdapter);
+        menuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+                                    int position, long id) {
                 switch (mMenuAdapter.getItemViewType(position)) {
                     case MENU_DRAWER_ITEM:
                         mViewPager.setCurrentItem(position);
@@ -331,18 +327,18 @@ public class MainActivity extends BaseActivity {
                     case MENU_DRAWER_ACTIVITY_ITEM:
                         /* offset the position by number of content items + 1
                          * for the category item */
-                        startViewerForActivityItem(position-mContent.size()-1);
+                        startViewerForActivityItem(position - mContent.size() - 1);
                         break;
                 }
             }
         });
-        mList.setOnScrollChangedListener(
+        menuListView.setOnScrollChangedListener(
                 new MenuListView.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                mMenuDrawer.invalidate();
-            }
-        });
+                    @Override
+                    public void onScrollChanged() {
+                        mMenuDrawer.invalidate();
+                    }
+                });
 
         /* If first run, make the "up" button blink until clicked */
         final boolean isFirstRun = mPrefs.getBoolean(
@@ -352,7 +348,7 @@ public class MainActivity extends BaseActivity {
             mMenuDrawer.peekDrawer();
         }
 
-        mMenuDrawer.setMenuView(mList);
+        mMenuDrawer.setMenuView(menuListView);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
         mMenuDrawer.setOnDrawerStateChangeListener(
@@ -361,9 +357,6 @@ public class MainActivity extends BaseActivity {
                     public void onDrawerStateChange(int oldState,
                             int newState) {
                         if (newState == MenuDrawer.STATE_OPEN) {
-                            if (!mDisplayHomeAsUp) {
-                                mActionBar.setDisplayHomeAsUpEnabled(true);
-                            }
                             if (activityItemsNeedsUpdate()) {
                                 updateMenuListItems(false);
                             }
@@ -452,14 +445,14 @@ public class MainActivity extends BaseActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
         /* create adapter and bind to viewpager */
-        mPagerAdapter = new GlimmrPagerAdapter(
+        GlimmrPagerAdapter glimmrPagerAdapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager(), mViewPager, mActionBar,
                 mPageTitles.toArray(new String[mPageTitles.size()])) {
             @Override
             public SherlockFragment getItemImpl(int position) {
                 try {
                     return (SherlockFragment)
-                        mContent.get(position).mFragmentClass.newInstance();
+                            mContent.get(position).mFragmentClass.newInstance();
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
@@ -483,20 +476,20 @@ public class MainActivity extends BaseActivity {
                 }
             }
         };
-        mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setAdapter(glimmrPagerAdapter);
 
         /* bind the listeners to either the indicator or the actionbar */
         mIndicator = (TitlePageIndicator) findViewById(R.id.indicator);
         if (mIndicator != null) {
-            mIndicator.setOnPageChangeListener(mPagerAdapter);
+            mIndicator.setOnPageChangeListener(glimmrPagerAdapter);
             mIndicator.setViewPager(mViewPager);
         } else {
-            mViewPager.setOnPageChangeListener(mPagerAdapter);
+            mViewPager.setOnPageChangeListener(glimmrPagerAdapter);
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
             for (PageItem page : mContent) {
                 ActionBar.Tab newTab =
                     mActionBar.newTab().setText(page.mTitle);
-                newTab.setTabListener(mPagerAdapter);
+                newTab.setTabListener(glimmrPagerAdapter);
                 mActionBar.addTab(newTab);
             }
         }
@@ -511,9 +504,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private static final class PageItem {
-        public String mTitle;
-        public Integer mIconDrawable;
-        public Class mFragmentClass;
+        public final String mTitle;
+        public final Integer mIconDrawable;
+        public final Class mFragmentClass;
 
         PageItem(String title, int iconDrawable, Class fragmentClass) {
             mTitle = title;
@@ -523,8 +516,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private static final class MenuDrawerItem {
-        public String mTitle;
-        public int mIconRes;
+        public final String mTitle;
+        public final int mIconRes;
 
         MenuDrawerItem(String title, int iconRes) {
             mTitle = title;
@@ -533,7 +526,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private static final class MenuDrawerCategory {
-        public String mTitle;
+        public final String mTitle;
 
         MenuDrawerCategory(String title) {
             mTitle = title;
@@ -541,8 +534,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private static final class MenuDrawerActivityItem {
-        public String mTitle;
-        public int mIconRes;
+        public final String mTitle;
+        public final int mIconRes;
 
         MenuDrawerActivityItem(String title, int iconRes) {
             mTitle = title;
@@ -550,9 +543,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public static final int MENU_DRAWER_ITEM = 0;
-    public static final int MENU_DRAWER_CATEGORY_ITEM = 1;
-    public static final int MENU_DRAWER_ACTIVITY_ITEM = 2;
+    private static final int MENU_DRAWER_ITEM = 0;
+    private static final int MENU_DRAWER_CATEGORY_ITEM = 1;
+    private static final int MENU_DRAWER_ACTIVITY_ITEM = 2;
 
     private class MenuAdapter extends BaseAdapter {
         private List<Object> mItems;

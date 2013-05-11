@@ -11,8 +11,6 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/RecentPublicPhotosFragment";
 
-    protected LoadPublicPhotosTask mTask;
-
     public static RecentPublicPhotosFragment newInstance() {
         return new RecentPublicPhotosFragment();
     }
@@ -36,8 +34,7 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment {
     private void startTask(int page) {
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadPublicPhotosTask(this, page);
-        mTask.execute();
+        new LoadPublicPhotosTask(this, page).execute();
     }
 
     @Override

@@ -28,9 +28,9 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
     private static final String TAG = "Glimmr/GetRequestToken";
 
     private ProgressDialog mProgressDialog;
-    private Activity mActivity;
-    private IRequestTokenReadyListener mListener;
-    private Uri mOAuthCallbackUri;
+    private final Activity mActivity;
+    private final IRequestTokenReadyListener mListener;
+    private final Uri mOAuthCallbackUri;
     private Exception mException = null;
 
     public GetRequestToken(IRequestTokenReadyListener listener, Activity a) {
@@ -63,8 +63,7 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
 
             OAuthToken oauthToken = f.getOAuthInterface().getRequestToken(
                     mOAuthCallbackUri.toString());
-            saveRequestToken(null, null, null,
-                    oauthToken.getOauthTokenSecret());
+            saveRequestToken(oauthToken.getOauthTokenSecret());
 
             URL oauthUrl = f.getOAuthInterface().buildAuthenticationUrl(
                     Permission.WRITE, oauthToken);
@@ -77,15 +76,11 @@ public class GetRequestToken extends AsyncTask<Void, Integer, String> {
         return null;
     }
 
-    private void saveRequestToken(String userName, String userId,
-            String token, String tokenSecret) {
+    private void saveRequestToken(String tokenSecret) {
         SharedPreferences sp = mActivity.getSharedPreferences(
                 Constants.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(Constants.KEY_OAUTH_TOKEN, token);
         editor.putString(Constants.KEY_TOKEN_SECRET, tokenSecret);
-        editor.putString(Constants.KEY_USER_NAME, userName);
-        editor.putString(Constants.KEY_USER_ID, userId);
         editor.commit();
     }
 

@@ -69,8 +69,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected AQuery mAq;
     protected ActionBar mActionBar;
 
-    private GlimmrAbCustomTitle mActionbarTitle;
-
     protected TextUtils mTextUtils;
 
     public abstract User getUser();
@@ -94,8 +92,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             if (!getResources().getBoolean(R.bool.sw600dp)) {
-                mActionbarTitle = new GlimmrAbCustomTitle(this);
-                mActionbarTitle.init(mActionBar);
+                new GlimmrAbCustomTitle(this).init(mActionBar);
             } else {
                 mActionBar.setTitle("");
             }

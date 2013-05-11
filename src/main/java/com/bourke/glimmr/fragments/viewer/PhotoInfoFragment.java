@@ -28,13 +28,10 @@ public class PhotoInfoFragment extends BaseDialogFragment {
 
     public static final String TAG = "Glimmr/PhotoInfoFragment";
 
-    public static final int OVERVIEW_PAGE = 0;
-    public static final int MORE_PAGE = 1;
+    private static final int OVERVIEW_PAGE = 0;
+    private static final int MORE_PAGE = 1;
 
     private static String[] CONTENT;
-
-    private GlimmrPagerAdapter mAdapter;
-    private ViewPager mViewPager;
 
     private Photo mPhoto;
 
@@ -61,10 +58,10 @@ public class PhotoInfoFragment extends BaseDialogFragment {
     }
 
     private void initViewPager() {
-        mViewPager = (ViewPager) mLayout.findViewById(R.id.viewPager);
+        ViewPager viewPager = (ViewPager) mLayout.findViewById(R.id.viewPager);
         /* http://stackoverflow.com/a/13684139/663370 */
-        mAdapter = new GlimmrPagerAdapter(
-                getChildFragmentManager(), mViewPager,
+        GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
+                getChildFragmentManager(), viewPager,
                 mActivity.getSupportActionBar(), CONTENT) {
             @Override
             public SherlockFragment getItemImpl(int position) {
@@ -80,9 +77,9 @@ public class PhotoInfoFragment extends BaseDialogFragment {
                 return null;
             }
         };
-        mViewPager.setAdapter(mAdapter);
+        viewPager.setAdapter(adapter);
         PageIndicator indicator =
             (TabPageIndicator) mLayout.findViewById(R.id.indicator);
-        indicator.setViewPager(mViewPager);
+        indicator.setViewPager(viewPager);
     }
 }

@@ -17,13 +17,14 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadPhotosetTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/LoadPhotosetTask";
 
-    private IPhotoListReadyListener mListener;
-    private Photoset mPhotoset;
-    private int mPage;
+    private final IPhotoListReadyListener mListener;
+    private final Photoset mPhotoset;
+    private final int mPage;
 
     public LoadPhotosetTask(IPhotoListReadyListener listener,
             Photoset photoset, int page) {

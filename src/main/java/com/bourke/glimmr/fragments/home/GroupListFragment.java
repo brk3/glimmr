@@ -2,33 +2,20 @@ package com.bourke.glimmrpro.fragments.home;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import com.androidquery.AQuery;
-
+import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.activities.GroupViewerActivity;
 import com.bourke.glimmrpro.common.Constants;
@@ -36,10 +23,7 @@ import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.GroupItemLongClickDialogListener;
 import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
-import com.bourke.glimmrpro.fragments.viewer.AddToGroupDialogFragment;
-import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.LoadGroupsTask;
-
 import com.googlecode.flickrjandroid.groups.Group;
 
 import java.util.ArrayList;
@@ -50,15 +34,14 @@ public class GroupListFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/GroupListFragment";
 
-    private List<Group> mGroups = new ArrayList<Group>();
+    private final List<Group> mGroups = new ArrayList<Group>();
     private LoadGroupsTask mTask;
     private ViewGroup mNoConnectionLayout;
     private AdapterView mListView;
     private GroupListAdapter mAdapter;
 
     public static GroupListFragment newInstance() {
-        GroupListFragment newFragment = new GroupListFragment();
-        return newFragment;
+        return new GroupListFragment();
     }
 
     @Override

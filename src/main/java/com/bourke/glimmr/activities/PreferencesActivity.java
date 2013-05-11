@@ -30,7 +30,7 @@ import android.preference.EditTextPreference;
 public class PreferencesActivity extends SherlockPreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener{
 
-    public static final String TAG = "Glimmr/PreferenceManager";
+    private static final String TAG = "Glimmr/PreferenceManager";
 
     private SharedPreferences mSharedPrefs;
     private ListPreference mIntervalsListPreference;

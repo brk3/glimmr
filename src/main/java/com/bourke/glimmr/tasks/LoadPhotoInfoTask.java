@@ -15,13 +15,14 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import static junit.framework.Assert.*;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
 
     private static final String TAG = "Glimmr/LoadPhotoInfoTask";
 
-    private IPhotoInfoReadyListener mListener;
-    private String mId;
-    private String mSecret;
+    private final IPhotoInfoReadyListener mListener;
+    private final String mId;
+    private final String mSecret;
 
     public LoadPhotoInfoTask(IPhotoInfoReadyListener listener, String id,
             String secret) {

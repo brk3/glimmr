@@ -15,14 +15,11 @@ public class FavoritesGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/FavoritesGridFragment";
 
-    public static final String KEY_NEWEST_FAVORITES_PHOTO_ID =
+    private static final String KEY_NEWEST_FAVORITES_PHOTO_ID =
         "glimmr_newest_favorites_photo_id";
 
-    protected LoadFavoritesTask mTask;
-
     public static FavoritesGridFragment newInstance() {
-        FavoritesGridFragment newFragment = new FavoritesGridFragment();
-        return newFragment;
+        return new FavoritesGridFragment();
     }
 
     /**
@@ -38,16 +35,14 @@ public class FavoritesGridFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadFavoritesTask(this, mActivity.getUser(), page);
-        mTask.execute(mOAuth);
+        new LoadFavoritesTask(this, mActivity.getUser(), page).execute(mOAuth);
     }
 
     @Override
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        String newestId = prefs.getString(KEY_NEWEST_FAVORITES_PHOTO_ID, null);
-        return newestId;
+        return prefs.getString(KEY_NEWEST_FAVORITES_PHOTO_ID, null);
     }
 
     @Override

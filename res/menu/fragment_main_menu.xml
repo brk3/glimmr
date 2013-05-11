@@ -17,7 +17,7 @@
     <item android:id="@+id/menu_refresh"
           android:title="@string/menu_refresh"
           android:icon="@drawable/ic_action_refresh_dark"
-          android:showAsAction="@string/refreshShowAsAction" />
+          android:showAsAction="never" />
 
     <item android:id="@+id/menu_preferences"
           android:icon="@android:drawable/ic_menu_preferences"

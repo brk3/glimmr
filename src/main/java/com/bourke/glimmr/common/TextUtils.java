@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class TextUtils {
 
-    public static final String TAG = "Glimmr/TextUtils";
+    private static final String TAG = "Glimmr/TextUtils";
 
     public static final int FONT_SHADOWSINTOLIGHT = 0;
     public static final int FONT_ROBOTOREGULAR = 1;
@@ -36,11 +36,11 @@ public class TextUtils {
     private static final String FONT_PATH_ROBOTOBOLD =
         "fonts/Roboto-Bold.ttf";
 
-    private Typeface mFontShadowsIntoLight;
-    private Typeface mFontRobotoRegular;
-    private Typeface mFontRobotoThin;
-    private Typeface mFontRobotoLight;
-    private Typeface mFontRobotoBold;
+    private final Typeface mFontShadowsIntoLight;
+    private final Typeface mFontRobotoRegular;
+    private final Typeface mFontRobotoThin;
+    private final Typeface mFontRobotoLight;
+    private final Typeface mFontRobotoBold;
 
     public TextUtils(AssetManager assets) {
         mFontShadowsIntoLight = Typeface.createFromAsset(

@@ -1,22 +1,17 @@
-package com.bourke.glimmrpro.fragments.viewer;
+package com.bourke.glimmrpro.fragments.group;
 
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentTransaction;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.TaskQueueDelegateFactory;
 import com.bourke.glimmrpro.common.TextUtils;
@@ -25,18 +20,14 @@ import com.bourke.glimmrpro.event.Events.IGroupInfoReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment.PhotoGridItemClickedEvent;
 import com.bourke.glimmrpro.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
 import com.bourke.glimmrpro.tasks.AddItemToGroupTask;
 import com.bourke.glimmrpro.tasks.LoadGroupInfoTask;
-
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.Throttle;
 import com.googlecode.flickrjandroid.photos.Photo;
-
 import com.squareup.otto.Subscribe;
 import com.squareup.tape.TaskQueue;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -65,7 +56,6 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
     public static final String QUEUE_FILE = "group_task_queue.json";
 
     private Group mGroup;
-    private Throttle mThrottle;
     private TaskQueue mQueue;
     private ProgressBar mProgressBar;
     private TextView mTitleView;
@@ -178,13 +168,13 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
         }
 
         /* Get group throttle info */
-        mThrottle = group.getThrottle();
-        if ("none".equals(mThrottle.getMode())) {
+        Throttle throttle = group.getThrottle();
+        if ("none".equals(throttle.getMode())) {
             mCount = ADD_AT_A_TIME;
             mRemaining = ADD_AT_A_TIME;
         } else {
-            mRemaining = mThrottle.getRemaining();
-            mCount = mThrottle.getCount();
+            mRemaining = throttle.getRemaining();
+            mCount = throttle.getCount();
         }
 
         if (mRemaining == 0) {
@@ -200,8 +190,8 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
 
         if (Constants.DEBUG) {
             Log.d(TAG, String.format("Remaining: %d, Mode: %s, Count: %d",
-                        mThrottle.getRemaining(), mThrottle.getMode(),
-                        mThrottle.getCount()));
+                    throttle.getRemaining(), throttle.getMode(),
+                    throttle.getCount()));
         }
     }
 }

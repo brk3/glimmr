@@ -35,8 +35,7 @@ public final class FlickrHelper {
 
     public Flickr getFlickr() {
         try {
-            Flickr f = new Flickr(Keys.API_KEY, Keys.API_SECRET, new REST());
-            return f;
+            return new Flickr(Keys.API_KEY, Keys.API_SECRET, new REST());
         } catch (ParserConfigurationException e) {
             return null;
         }

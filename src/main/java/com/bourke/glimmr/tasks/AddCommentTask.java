@@ -13,13 +13,14 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
 
+@SuppressWarnings("EmptyMethod")
 public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
 
     private static final String TAG = "Glimmr/AddCommentTask";
 
-    private ICommentAddedListener mListener;
-    private Photo mPhoto;
-    private String mCommentText;
+    private final ICommentAddedListener mListener;
+    private final Photo mPhoto;
+    private final String mCommentText;
 
     public AddCommentTask(ICommentAddedListener listener,
             Photo photo, String commentText) {

@@ -71,7 +71,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected GridViewCompat mGridView;
     protected EndlessGridAdapter mAdapter;
 
-    protected List<Photo> mPhotos = new ArrayList<Photo>();
+    protected final List<Photo> mPhotos = new ArrayList<Photo>();
     protected List<Photo> mNewPhotos = new ArrayList<Photo>();
     protected int mPage = 1;
     protected boolean mMorePages = true;
@@ -84,8 +84,8 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private ViewGroup mNoConnectionLayout;
 
-    public abstract String getNewestPhotoId();
-    public abstract void storeNewestPhotoId(Photo photo);
+    protected abstract String getNewestPhotoId();
+    protected abstract void storeNewestPhotoId(Photo photo);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -118,7 +118,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         if (Constants.DEBUG) {
             Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
         }
-        if (mPhotos != null && !mPhotos.isEmpty()) {
+        if (!mPhotos.isEmpty()) {
             GridViewCompat gridView = (GridViewCompat)
                 mLayout.findViewById(R.id.gridview);
             gridView.setVisibility(View.VISIBLE);
@@ -269,9 +269,6 @@ public abstract class PhotoGridFragment extends BaseFragment
         }
 
         mNewPhotos = new ArrayList<Photo>();
-        SharedPreferences prefs = mActivity.getSharedPreferences(Constants
-                .PREFS_NAME, Context.MODE_PRIVATE);
-
         String newestId = getNewestPhotoId();
         if (newestId != null) {
             for (int i=0; i < photos.size(); i++) {
@@ -491,7 +488,7 @@ public abstract class PhotoGridFragment extends BaseFragment
      * Event published when an item in the grid is clicked.
      */
     public static class PhotoGridItemClickedEvent {
-        public boolean mIsChecked;
+        public final boolean mIsChecked;
 
         public PhotoGridItemClickedEvent(boolean isChecked) {
             mIsChecked = isChecked;
