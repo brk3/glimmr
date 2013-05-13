@@ -1,22 +1,15 @@
 package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
-
 import android.util.Log;
-
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
-
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.googlecode.flickrjandroid.photos.Photo;
 
-import static junit.framework.Assert.*;
-
-@SuppressWarnings("EmptyMethod")
 public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
 
     private static final String TAG = "Glimmr/LoadPhotoInfoTask";
@@ -32,31 +25,39 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
         mSecret = secret;
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
+    public LoadPhotoInfoTask(IPhotoInfoReadyListener listener, String id) {
+        mListener = listener;
+        mId = id;
+        mSecret = null;
     }
 
     @Override
     protected Photo doInBackground(OAuth... params) {
-        assertTrue(params.length > 0);
-
-        OAuth oauth = params[0];
-
+        OAuth oauth = null;
+        if (params.length > 0) {
+            oauth = params[0];
+        }
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
             try {
                 Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                         token.getOauthToken(), token.getOauthTokenSecret());
-                return f.getPhotosInterface().getInfo(mId, mSecret);
+                if (mSecret != null) {
+                    return f.getPhotosInterface().getInfo(mId, mSecret);
+                }
+                return f.getPhotosInterface().getPhoto(mId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
             try {
+                if (mSecret != null) {
+                    return FlickrHelper.getInstance().getPhotosInterface()
+                            .getInfo(mId, mSecret);
+                }
                 return FlickrHelper.getInstance().getPhotosInterface()
-                    .getInfo(mId, mSecret);
+                        .getPhoto(mId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -66,14 +67,6 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
 
     @Override
     protected void onPostExecute(final Photo result) {
-        if (result == null) {
-            Log.e(TAG, "Error fetching photo info, result is null");
-        }
         mListener.onPhotoInfoReady(result);
-    }
-
-    @Override
-    protected void onCancelled(final Photo result) {
-        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

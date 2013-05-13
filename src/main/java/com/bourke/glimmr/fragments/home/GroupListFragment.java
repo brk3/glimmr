@@ -2,33 +2,20 @@ package com.bourke.glimmr.fragments.home;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-
+import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import com.androidquery.AQuery;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.GroupViewerActivity;
 import com.bourke.glimmr.common.Constants;
@@ -37,9 +24,7 @@ import com.bourke.glimmr.event.Events.GroupItemLongClickDialogListener;
 import com.bourke.glimmr.event.Events.IGroupListReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadGroupsTask;
-
 import com.googlecode.flickrjandroid.groups.Group;
 
 import java.util.ArrayList;
@@ -81,52 +66,43 @@ public class GroupListFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                GroupViewerActivity.startGroupViewer(mActivity,
-                    mGroups.get(position));
+                Intent groupViewer = new Intent(mActivity,
+                        GroupViewerActivity.class);
+                groupViewer.putExtra(GroupViewerActivity.KEY_GROUP_ID,
+                        mGroups.get(position).getId());
+                groupViewer.setAction(GroupViewerActivity
+                        .ACTION_VIEW_GROUP_BY_ID);
+                startActivity(groupViewer);
             }
         });
         mListView.setOnItemLongClickListener(
                 new ListView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View v,
-                    int position, long id) {
-                if (position < mGroups.size()) {
-                    SherlockDialogFragment d =
-                        GroupItemLongClickDialog.newInstance(mActivity,
-                            GroupListFragment.this, mGroups.get(position));
-                    d.show(mActivity.getSupportFragmentManager(),
-                        "group_item_long_click");
-                } else {
-                    Log.e(getLogTag(), String.format(
-                            "Cannot call showGridItemContextMenu, " +
-                            "mGroups.size(%d) != position:(%d)",
-                            mGroups.size(), position));
-                }
+                    @Override
+                    public boolean onItemLongClick(AdapterView <?> parent, View v,
+                                                   int position, long id) {
+                        if (position < mGroups.size()) {
+                            SherlockDialogFragment d =
+                                    GroupItemLongClickDialog.newInstance(mActivity,
+                                            GroupListFragment.this, mGroups.get(position));
+                            d.show(mActivity.getSupportFragmentManager(),
+                                    "group_item_long_click");
+                        } else {
+                            Log.e(getLogTag(), String.format(
+                                    "Cannot call showGridItemContextMenu, " +
+                                            "mGroups.size(%d) != position:(%d)",
+                                    mGroups.size(), position));
+                        }
                 /* True indicates we're finished with event and triggers
                  * haptic feedback */
-                return true;
-            }
-        });
+                        return true;
+                    }
+                });
         mListView.setAdapter(mAdapter);
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
-        if (mTask != null) {
-            mTask.cancel(true);
-            if (Constants.DEBUG) {
-                Log.d(TAG, "onPause: cancelling task");
-            }
-        }
     }
 
     @Override
     protected void startTask() {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         mTask = new LoadGroupsTask(this);
         mTask.execute(mOAuth);
     }
@@ -134,8 +110,6 @@ public class GroupListFragment extends BaseFragment
     @Override
     public void onGroupListReady(List<Group> groups) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onGroupListReady");
-
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (groups == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
             mListView.setVisibility(View.GONE);

@@ -33,7 +33,6 @@ public class ContactsGridFragment extends PhotoGridFragment {
      */
     @Override
     protected boolean cacheInBackground() {
-        Log.d(getLogTag(), "cacheInBackground");
         startTask(mPage++);
         return mMorePages;
     }

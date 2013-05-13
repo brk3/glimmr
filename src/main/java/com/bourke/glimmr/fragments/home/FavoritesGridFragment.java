@@ -2,13 +2,11 @@ package com.bourke.glimmr.fragments.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.util.Log;
-
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadFavoritesTask;
-
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 public class FavoritesGridFragment extends PhotoGridFragment {
@@ -18,8 +16,12 @@ public class FavoritesGridFragment extends PhotoGridFragment {
     private static final String KEY_NEWEST_FAVORITES_PHOTO_ID =
         "glimmr_newest_favorites_photo_id";
 
-    public static FavoritesGridFragment newInstance() {
-        return new FavoritesGridFragment();
+    private User mUserToView;
+
+    public static FavoritesGridFragment newInstance(User userToView) {
+        FavoritesGridFragment f = new FavoritesGridFragment();
+        f.mUserToView = userToView;
+        return f;
     }
 
     /**
@@ -35,7 +37,7 @@ public class FavoritesGridFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        new LoadFavoritesTask(this, mActivity.getUser(), page).execute(mOAuth);
+        new LoadFavoritesTask(this, mUserToView, page).execute(mOAuth);
     }
 
     @Override

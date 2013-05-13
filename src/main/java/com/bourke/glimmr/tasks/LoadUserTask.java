@@ -36,7 +36,10 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
 
     @Override
     protected User doInBackground(OAuth... params) {
-        OAuth oauth = params[0];
+        OAuth oauth = null;
+        if (params.length > 0) {
+            oauth = params[0];
+        }
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
             try {

@@ -1,23 +1,14 @@
 package com.bourke.glimmr.fragments.base;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
 import android.util.Log;
-
 import android.view.ViewGroup;
-
 import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import com.androidquery.AQuery;
-
 import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
-
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
 public abstract class BaseDialogFragment extends SherlockDialogFragment {
@@ -42,14 +33,16 @@ public abstract class BaseDialogFragment extends SherlockDialogFragment {
 
         mActivity = (BaseActivity) getSherlockActivity();
         mTextUtils = new TextUtils(mActivity.getAssets());
+        mOAuth = OAuthUtils.loadAccessToken(mActivity);
         setRetainInstance(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (Constants.DEBUG) Log.d(getLogTag(), "onResume");
-
+        if (mOAuth == null || mOAuth.getUser() == null) {
+            mOAuth = OAuthUtils.loadAccessToken(mActivity);
+        }
         /* Update our reference to the activity as it may have changed */
         mActivity = (BaseActivity) getSherlockActivity();
         startTask();
@@ -69,13 +62,6 @@ public abstract class BaseDialogFragment extends SherlockDialogFragment {
 
     protected void startTask() {
         if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
-        if (mOAuth == null || mOAuth.getUser() == null) {
-            mOAuth = OAuthUtils.loadAccessToken(mActivity);
-        }
-    }
-
-    protected void refresh() {
-        Log.e(getLogTag(), "refresh");
     }
 
     protected String getLogTag() {

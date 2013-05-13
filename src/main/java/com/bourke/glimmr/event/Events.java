@@ -24,10 +24,6 @@ public class Events {
         void onCommentsReady(List<Comment> exifItems);
     }
 
-    public interface IContactsPhotosReadyListener {
-        void onContactsPhotosReady(List<Photo> contactsAndPhotos);
-    }
-
     public interface IExifInfoReadyListener {
         void onExifInfoReady(List<Exif> exifItems, Exception e);
     }
@@ -102,5 +98,17 @@ public class Events {
 
     public interface IPhotoSizesReadyListener {
         public void onPhotoSizesReady(List<Size> sizes);
+    }
+
+    public interface IPhotosetReadyListener {
+        public void onPhotosetReady(Photoset photoset);
+    }
+
+    public interface IGroupIdReadyListener {
+        public void onGroupIdReady(String groupId);
+    }
+
+    public interface IProfileIdReadyListener {
+        public void onProfileIdReady(String profileId);
     }
 }
