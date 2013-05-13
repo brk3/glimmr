@@ -50,6 +50,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
             photoViewer.putExtra(
                     PhotoViewerActivity.KEY_PHOTOVIEWER_START_INDEX,
                     viewIndex);
+            photoViewer.setAction(PhotoViewerActivity.ACTION_VIEW_PHOTOLIST);
             photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,
                     photoListFile);
             photoViewer.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

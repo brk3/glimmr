@@ -64,7 +64,7 @@ public class SearchActivity extends BottomOverlayActivity {
                     case RESULT_PHOTOSTREAM_PAGE:
                         return PhotostreamSearchGridFragment.newInstance(
                                 searchQuery, AbstractPhotoSearchGridFragment
-                                    .SORT_TYPE_RELAVANCE);
+                                    .SORT_TYPE_RELAVANCE, mUser);
                 }
                 return null;
             }
@@ -74,5 +74,6 @@ public class SearchActivity extends BottomOverlayActivity {
 
     @Override
     protected void updateBottomOverlay() {
+        // TODO
     }
 }

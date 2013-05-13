@@ -20,6 +20,7 @@ import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.R;
+import com.bourke.glimmr.tasks.LoadPhotosetPhotosTask;
 import com.bourke.glimmr.tasks.LoadPhotosetTask;
 
 import com.googlecode.flickrjandroid.people.User;
@@ -101,7 +102,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
             loadPhotoset();
         }
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        new LoadPhotosetTask(this, mPhotoset, page).execute(mOAuth);
+        new LoadPhotosetPhotosTask(this, mPhotoset, page).execute(mOAuth);
     }
 
     @Override

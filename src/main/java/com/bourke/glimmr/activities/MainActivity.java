@@ -3,78 +3,47 @@ package com.bourke.glimmr.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.net.Uri;
-
 import android.os.Bundle;
-
 import android.preference.PreferenceManager;
-
 import android.support.v4.view.ViewPager;
-
 import android.text.Html;
-
 import android.util.Log;
-
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
-
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.GlimmrPagerAdapter;
-import com.bourke.glimmr.common.MenuListView;
-import com.bourke.glimmr.common.OAuthUtils;
-import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.R;
+import com.bourke.glimmr.common.*;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
-import com.bourke.glimmr.fragments.home.ContactsGridFragment;
-import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
-import com.bourke.glimmr.fragments.home.GroupListFragment;
-import com.bourke.glimmr.fragments.home.PhotosetsFragment;
-import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmr.R;
+import com.bourke.glimmr.fragments.home.*;
 import com.bourke.glimmr.services.ActivityNotificationHandler;
 import com.bourke.glimmr.services.AppListener;
 import com.bourke.glimmr.services.AppService;
 import com.bourke.glimmr.tasks.LoadFlickrActivityTask;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
-
 import com.commonsware.cwac.wakeful.WakefulIntentService;
-
 import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-
 import com.sbstrm.appirater.Appirater;
-
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import net.simonvt.menudrawer.MenuDrawer;
+import org.ocpsoft.prettytime.PrettyTime;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
-import net.simonvt.menudrawer.MenuDrawer;
-
-import org.ocpsoft.prettytime.PrettyTime;
 
 public class MainActivity extends BaseActivity {
 
@@ -186,39 +155,28 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public User getUser() {
-        return mUser;
-    }
-
     private void initPageItems() {
         mContent = new ArrayList<PageItem>();
         mPageTitles = Arrays.asList(
                 getResources().getStringArray(R.array.pageTitles));
 
         mContent.add(new PageItem(getString(R.string.contacts),
-                R.drawable.ic_action_social_person_dark,
-                ContactsGridFragment.class));
+                R.drawable.ic_action_social_person_dark));
 
         mContent.add(new PageItem(getString(R.string.photos),
-                R.drawable.ic_content_picture_dark,
-                PhotoStreamGridFragment.class));
+                R.drawable.ic_content_picture_dark));
 
         mContent.add(new PageItem(getString(R.string.favorites),
-                R.drawable.ic_action_rating_important_dark,
-                FavoritesGridFragment.class));
+                R.drawable.ic_action_rating_important_dark));
 
         mContent.add(new PageItem(getString(R.string.sets),
-                R.drawable.collections_collection_dark,
-                PhotosetsFragment.class));
+                R.drawable.collections_collection_dark));
 
         mContent.add(new PageItem(getString(R.string.groups),
-                R.drawable.ic_action_social_group_dark,
-                GroupListFragment.class));
+                R.drawable.ic_action_social_group_dark));
 
         mContent.add(new PageItem(getString(R.string.explore),
-                R.drawable.ic_action_av_shuffle_dark,
-                RecentPublicPhotosFragment.class));
+                R.drawable.ic_action_av_shuffle_dark));
     }
 
     public void updateMenuListItems(boolean forceRefresh) {
@@ -493,11 +451,10 @@ public class MainActivity extends BaseActivity {
             @Override
             public SherlockFragment getItemImpl(int position) {
                 try {
-                    return (SherlockFragment)
-                            mContent.get(position).mFragmentClass.newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                    PageItem page = mContent.get(position);
+                    return GlimmrFragmentFactory.getInstance(MainActivity.this,
+                            page.mTitle, mUser);
+                } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                 }
                 return null;
@@ -548,12 +505,10 @@ public class MainActivity extends BaseActivity {
     private static final class PageItem {
         public final String mTitle;
         public final Integer mIconDrawable;
-        public final Class mFragmentClass;
 
-        PageItem(String title, int iconDrawable, Class fragmentClass) {
+        PageItem(String title, int iconDrawable) {
             mTitle = title;
             mIconDrawable = iconDrawable;
-            mFragmentClass = fragmentClass;
         }
     }
 
@@ -700,6 +655,28 @@ public class MainActivity extends BaseActivity {
             }
 
             return v;
+        }
+    }
+
+    public static class GlimmrFragmentFactory {
+        public static SherlockFragment getInstance(Context context,
+                String name, User user) {
+            if (context.getString(R.string.contacts).equals(name))  {
+                return ContactsGridFragment.newInstance();
+            } else if (context.getString(R.string.photos).equals(name))  {
+                return PhotoStreamGridFragment.newInstance(user);
+            } else if (context.getString(R.string.favorites).equals(name))  {
+                return FavoritesGridFragment.newInstance(user);
+            } else if (context.getString(R.string.sets).equals(name))  {
+                return PhotosetsFragment.newInstance(user);
+            } else if (context.getString(R.string.groups).equals(name))  {
+                return GroupListFragment.newInstance();
+            } else if (context.getString(R.string.explore).equals(name))  {
+                return RecentPublicPhotosFragment.newInstance();
+            } else {
+               throw new IllegalArgumentException(
+                       "Unknown fragment type requested: " + name);
+            }
         }
     }
 }

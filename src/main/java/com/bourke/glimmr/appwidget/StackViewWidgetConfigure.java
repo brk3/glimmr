@@ -1,30 +1,21 @@
 package com.bourke.glimmr.appwidget;
 
 import android.appwidget.AppWidgetManager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
 import android.util.Log;
-
 import android.view.View;
-
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
-import com.bourke.glimmr.R;
-
-import com.googlecode.flickrjandroid.people.User;
 
 public class StackViewWidgetConfigure extends BaseActivity {
 
@@ -124,11 +115,6 @@ public class StackViewWidgetConfigure extends BaseActivity {
             widgetType = WIDGET_TYPE_EXPORE;
         }
         return widgetType;
-    }
-
-    @Override
-    public User getUser() {
-        return mUser;
     }
 
     /* Disable menu for this activity */

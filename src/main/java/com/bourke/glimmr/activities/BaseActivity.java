@@ -70,8 +70,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     protected TextUtils mTextUtils;
 
-    public abstract User getUser();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
