@@ -1,33 +1,22 @@
 package com.bourke.glimmrpro.appwidget;
 
 import android.annotation.TargetApi;
-
-import android.appwidget.AppWidgetManager;
-
 import android.content.Context;
 import android.content.Intent;
-
 import android.graphics.Bitmap;
-
 import android.os.Bundle;
-
 import android.util.Log;
-
 import android.view.View;
-
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.PhotoViewerActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.common.OAuthUtils;
-import com.bourke.glimmrpro.R;
-
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;

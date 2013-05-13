@@ -1,33 +1,24 @@
 package com.bourke.glimmrpro.fragments.photoset;
 
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.TaskQueueDelegateFactory;
 import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
 import com.bourke.glimmrpro.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tape.AddToPhotosetTaskQueueService;
 import com.bourke.glimmrpro.tasks.AddItemToPhotosetTask;
-
-import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Photo;
-
+import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.squareup.tape.TaskQueue;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -86,8 +77,8 @@ public class AddToPhotosetDialogFragment extends BaseDialogFragment {
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         final boolean retainInstance = false;
         final PhotoStreamGridFragment frag =
-            PhotoStreamGridFragment.newInstance(retainInstance,
-                    ListView.CHOICE_MODE_MULTIPLE);
+            PhotoStreamGridFragment.newInstance(mOAuth.getUser(),
+                    retainInstance, ListView.CHOICE_MODE_MULTIPLE);
         ft.replace(R.id.photoStreamFragment, frag);
         ft.commit();
 

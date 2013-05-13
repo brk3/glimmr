@@ -1,21 +1,17 @@
 package com.bourke.glimmrpro.tasks;
 
 import android.os.AsyncTask;
-
 import android.util.Log;
-
-import com.bourke.glimmrpro.activities.SearchActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.search.AbstractPhotoSearchGridFragment;
-
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
-import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.SearchParameters;
+import com.googlecode.flickrjandroid.photosets.Photoset;
 
 import java.util.Collections;
 import java.util.List;

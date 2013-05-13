@@ -1,7 +1,6 @@
 package com.bourke.glimmrpro.common;
 
 import android.content.Context;
-
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;

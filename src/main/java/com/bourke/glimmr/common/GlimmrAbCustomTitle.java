@@ -1,17 +1,12 @@
 package com.bourke.glimmrpro.common;
 
 import android.content.Context;
-
 import android.view.LayoutInflater;
 import android.view.View;
-
 import android.widget.TextView;
-
 import com.actionbarsherlock.app.ActionBar;
-
-import com.bourke.glimmrpro.activities.BaseActivity;
-import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.activities.BaseActivity;
 
 /**
  * Use to create an actionbar with a custom title font.

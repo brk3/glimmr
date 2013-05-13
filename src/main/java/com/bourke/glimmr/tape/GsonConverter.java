@@ -4,13 +4,7 @@ package com.bourke.glimmrpro.tape;
 import com.google.gson.Gson;
 import com.squareup.tape.FileObjectQueue;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * Use GSON to serialize classes to a bytes.

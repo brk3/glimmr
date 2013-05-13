@@ -1,31 +1,32 @@
-package com.bourke.glimmrpro.tasks;
+package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import com.bourke.glimmrpro.common.Constants;
-import com.bourke.glimmrpro.common.FlickrHelper;
-import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photosets.Photoset;
 
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("EmptyMethod")
-public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
+public class LoadPhotosetPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
-    private static final String TAG = "Glimmr/LoadGroupPoolTask";
+    private static final String TAG = "Glimmr/LoadPhotosetTask";
 
     private final IPhotoListReadyListener mListener;
-    private final Group mGroup;
+    private final Photoset mPhotoset;
     private final int mPage;
 
-    public LoadGroupPoolTask(IPhotoListReadyListener listener, Group group,
-            int page) {
+    public LoadPhotosetPhotosTask(IPhotoListReadyListener listener,
+                                  Photoset photoset, int page) {
         mListener = listener;
-        mGroup = group;
+        mPhotoset = photoset;
         mPage = page;
     }
 
@@ -43,8 +44,10 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
                     token.getOauthToken(), token.getOauthTokenSecret());
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
-                return f.getPoolsInterface().getPhotos(mGroup.getId(), null,
-                        Constants.EXTRAS, Constants.FETCH_PER_PAGE, mPage);
+                return f.getPhotosetsInterface().getPhotos(
+                        ""+mPhotoset.getId(), Constants.EXTRAS,
+                        Flickr.PRIVACY_LEVEL_NO_FILTER,
+                        Constants.FETCH_PER_PAGE, mPage).getPhotoList();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -52,9 +55,10 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
             if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
-                return FlickrHelper.getInstance().getPoolsInterface()
-                    .getPhotos(mGroup.getId(), null, Constants.EXTRAS,
-                            Constants.FETCH_PER_PAGE, mPage);
+                return FlickrHelper.getInstance().getPhotosetsInterface()
+                    .getPhotos(""+mPhotoset.getId(), Constants.EXTRAS,
+                            Flickr.PRIVACY_LEVEL_NO_FILTER,
+                            Constants.FETCH_PER_PAGE, mPage).getPhotoList();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -63,9 +67,12 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
     }
 
     @Override
-    protected void onPostExecute(final List<Photo> result) {
+    protected void onPostExecute(List<Photo> result) {
         if (result == null) {
-            Log.e(TAG, "error fetching photolist, result is null");
+            if (Constants.DEBUG) {
+                Log.e(TAG, "Error fetching photolist, result is null");
+            }
+            result = Collections.EMPTY_LIST;
         }
         mListener.onPhotosReady(result);
     }

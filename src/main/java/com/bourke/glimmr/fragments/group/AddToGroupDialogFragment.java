@@ -123,8 +123,8 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         final boolean retainInstance = false;
         final PhotoStreamGridFragment frag =
-            PhotoStreamGridFragment.newInstance(retainInstance,
-                    ListView.CHOICE_MODE_MULTIPLE);
+            PhotoStreamGridFragment.newInstance(mOAuth.getUser(),
+                    retainInstance, ListView.CHOICE_MODE_MULTIPLE);
         ft.replace(R.id.photoStreamFragment, frag);
         ft.commit();
 

@@ -2,20 +2,17 @@ package com.bourke.glimmrpro.tasks;
 
 import android.os.Handler;
 import android.os.Looper;
-
 import android.util.Log;
-
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.ITaskQueueServiceListener;
-
 import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
-
 import com.squareup.tape.Task;
-import com.googlecode.flickrjandroid.FlickrException;
 import org.json.JSONException;
+
 import java.io.IOException;
 
 public class AddItemToGroupTask

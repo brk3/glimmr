@@ -17,6 +17,8 @@ lint.xml
 classes
 gen-external-apklibs
 out/
+build.log
+build-log.xml
 
 #Maven
 target

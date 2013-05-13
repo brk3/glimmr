@@ -1,21 +1,15 @@
 package com.bourke.glimmrpro.tasks;
 
 import android.os.AsyncTask;
-
 import android.util.Log;
-
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IGroupInfoReadyListener;
-
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
-import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
-
-@SuppressWarnings("EmptyMethod")
 public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
 
     private static final String TAG = "Glimmr/LoadGroupInfoTask";
@@ -27,11 +21,6 @@ public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
             IGroupInfoReadyListener listener) {
         mGroupId = groupId;
         mListener = listener;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 
     @Override
@@ -62,9 +51,6 @@ public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
 
     @Override
     protected void onPostExecute(final Group result) {
-        if (result == null) {
-            Log.e(TAG, "error fetching group info, result is null");
-        }
         mListener.onGroupInfoReady(result);
     }
 }

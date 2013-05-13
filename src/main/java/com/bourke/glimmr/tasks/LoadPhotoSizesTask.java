@@ -1,19 +1,14 @@
 package com.bourke.glimmrpro.tasks;
 
 import android.os.AsyncTask;
-
 import android.util.Log;
-
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoSizesReadyListener;
-
 import com.googlecode.flickrjandroid.photos.Size;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static junit.framework.Assert.*;
 
 @SuppressWarnings("EmptyMethod")
 public class LoadPhotoSizesTask

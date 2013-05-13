@@ -1,18 +1,18 @@
 package com.bourke.glimmrpro.event;
 
-import com.googlecode.flickrjandroid.tags.Tag;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
-import com.googlecode.flickrjandroid.photos.comments.Comment;
-import com.googlecode.flickrjandroid.photosets.Photosets;
-import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photos.Size;
+import com.googlecode.flickrjandroid.photos.comments.Comment;
+import com.googlecode.flickrjandroid.photosets.Photoset;
+import com.googlecode.flickrjandroid.photosets.Photosets;
+import com.googlecode.flickrjandroid.tags.Tag;
 
 import java.util.List;
-import com.googlecode.flickrjandroid.photos.Size;
 
 public class Events {
 
@@ -22,10 +22,6 @@ public class Events {
 
     public interface ICommentsReadyListener {
         void onCommentsReady(List<Comment> exifItems);
-    }
-
-    public interface IContactsPhotosReadyListener {
-        void onContactsPhotosReady(List<Photo> contactsAndPhotos);
     }
 
     public interface IExifInfoReadyListener {
@@ -102,5 +98,17 @@ public class Events {
 
     public interface IPhotoSizesReadyListener {
         public void onPhotoSizesReady(List<Size> sizes);
+    }
+
+    public interface IPhotosetReadyListener {
+        public void onPhotosetReady(Photoset photoset);
+    }
+
+    public interface IGroupIdReadyListener {
+        public void onGroupIdReady(String groupId);
+    }
+
+    public interface IProfileIdReadyListener {
+        public void onProfileIdReady(String profileId);
     }
 }
