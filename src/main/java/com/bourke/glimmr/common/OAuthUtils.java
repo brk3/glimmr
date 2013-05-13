@@ -2,11 +2,7 @@ package com.bourke.glimmrpro.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.util.Log;
-
-import com.bourke.glimmrpro.common.Constants;
-
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;

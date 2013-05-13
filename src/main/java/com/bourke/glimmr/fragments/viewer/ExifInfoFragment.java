@@ -1,29 +1,20 @@
 package com.bourke.glimmrpro.fragments.viewer;
 
-import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import android.os.Bundle;
-
 import android.text.TextUtils;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import com.androidquery.AQuery;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IExifInfoReadyListener;
-import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
-import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import com.bourke.glimmrpro.tasks.LoadExifInfoTask;
-
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;

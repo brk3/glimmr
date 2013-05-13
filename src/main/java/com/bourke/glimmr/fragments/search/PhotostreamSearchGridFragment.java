@@ -1,19 +1,23 @@
 package com.bourke.glimmrpro.fragments.search;
 
-import com.bourke.glimmrpro.tasks.SearchPhotosTask;
 import android.util.Log;
+import com.bourke.glimmrpro.tasks.SearchPhotosTask;
+import com.googlecode.flickrjandroid.people.User;
 
 public class PhotostreamSearchGridFragment
         extends AbstractPhotoSearchGridFragment {
 
     private static final String TAG = "Glimmr/PhotostreamSearchGridFragment";
 
+    private User mUserToView;
+
     public static PhotostreamSearchGridFragment newInstance(String searchTerm,
-            int sortType) {
+            int sortType, User userToView) {
         PhotostreamSearchGridFragment fragment =
             new PhotostreamSearchGridFragment();
         fragment.mSearchQuery = searchTerm;
         fragment.mSortType = sortType;
+        fragment.mUserToView = userToView;
         return fragment;
     }
 
@@ -28,7 +32,7 @@ public class PhotostreamSearchGridFragment
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         mTask = new SearchPhotosTask(this, mSearchQuery, mSortType, page,
-                mActivity.getUser().getId());
+                mUserToView.getId());
         mTask.execute(mOAuth);
     }
 

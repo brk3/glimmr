@@ -2,26 +2,19 @@ package com.bourke.glimmrpro.fragments.search;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.RelativeLayout;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
-import com.bourke.glimmrpro.fragments.search.AbstractPhotoSearchGridFragment;
-import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.SearchPhotosTask;
-
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;

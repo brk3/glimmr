@@ -2,14 +2,10 @@ package com.bourke.glimmrpro.fragments.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.util.Log;
-
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
-import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tasks.LoadContactsPhotosTask;
-
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
@@ -33,7 +29,6 @@ public class ContactsGridFragment extends PhotoGridFragment {
      */
     @Override
     protected boolean cacheInBackground() {
-        Log.d(getLogTag(), "cacheInBackground");
         startTask(mPage++);
         return mMorePages;
     }

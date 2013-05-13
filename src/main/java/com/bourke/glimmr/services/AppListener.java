@@ -2,18 +2,12 @@ package com.bourke.glimmrpro.services;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.os.SystemClock;
-
 import android.preference.PreferenceManager;
-
 import android.util.Log;
-
 import com.bourke.glimmrpro.common.Constants;
-
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 public class AppListener implements WakefulIntentService.AlarmListener {

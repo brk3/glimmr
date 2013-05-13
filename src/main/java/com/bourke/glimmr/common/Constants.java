@@ -1,15 +1,12 @@
 package com.bourke.glimmrpro.common;
 
-import java.util.Set;
 import java.util.HashSet;
-
 import java.util.Set;
-import java.util.HashSet;
 
 public class Constants {
 
     /* Important: set to false when doing release builds */
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     /* Global app prefs */
     public static final String PREFS_NAME = "glimmr_prefs";

@@ -3,52 +3,39 @@ package com.bourke.glimmrpro.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.SharedPreferences;
-
 import android.net.Uri;
-
 import android.os.Bundle;
-
 import android.preference.PreferenceManager;
-
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-
 import android.text.SpannableString;
 import android.text.util.Linkify;
-
 import android.util.Log;
-
 import android.widget.TextView;
-
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.SearchView;
-
 import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrAbCustomTitle;
 import com.bourke.glimmrpro.common.OAuthUtils;
 import com.bourke.glimmrpro.common.TextUtils;
-import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
-
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
@@ -70,8 +57,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected ActionBar mActionBar;
 
     protected TextUtils mTextUtils;
-
-    public abstract User getUser();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,7 +138,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             if (Constants.DEBUG)
                 Log.d(getLogTag(), "Trimming file cache");
             AQUtility.cleanCacheAsync(this, Constants.CACHE_TRIM_TRIGGER_SIZE,
-                   Constants.CACHE_TRIM_TARGET_SIZE);
+                    Constants.CACHE_TRIM_TARGET_SIZE);
         }
         Crouton.cancelAllCroutons();
     }

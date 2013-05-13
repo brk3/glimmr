@@ -2,23 +2,18 @@ package com.bourke.glimmrpro.tasks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences;
-
 import android.net.Uri;
-
 import android.os.AsyncTask;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IRequestTokenReadyListener;
-import com.bourke.glimmrpro.R;
-
-import com.googlecode.flickrjandroid.auth.Permission;
 import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.auth.Permission;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
 import java.net.URL;

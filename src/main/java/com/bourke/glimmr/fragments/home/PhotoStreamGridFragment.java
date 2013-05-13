@@ -2,20 +2,16 @@ package com.bourke.glimmrpro.fragments.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
 import android.util.Log;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.tasks.LoadPhotostreamTask;
-
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-import android.widget.GridView;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.view.View;
 
 public class PhotoStreamGridFragment extends PhotoGridFragment {
 
@@ -24,13 +20,18 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
     private static final String KEY_NEWEST_PHOTOSTREAM_PHOTO_ID =
         "glimmr_newest_photostream_photo_id";
 
-    public static PhotoStreamGridFragment newInstance() {
-        return new PhotoStreamGridFragment();
+    private User mUserToView;
+
+    public static PhotoStreamGridFragment newInstance(User userToView) {
+        PhotoStreamGridFragment f = new PhotoStreamGridFragment();
+        f.mUserToView = userToView;
+        return f;
     }
 
-    public static PhotoStreamGridFragment newInstance(
+    public static PhotoStreamGridFragment newInstance(User userToView,
             boolean retainInstance, int gridChoiceMode) {
         PhotoStreamGridFragment newFragment = new PhotoStreamGridFragment();
+        newFragment.mUserToView = userToView;
         newFragment.mRetainInstance = retainInstance;
         newFragment.mGridChoiceMode = gridChoiceMode;
         return newFragment;
@@ -74,7 +75,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
     private void startTask(int page) {
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadPhotostreamTask(this, mActivity.getUser(), page)
+        mTask = new LoadPhotostreamTask(this, mUserToView, page)
                 .execute(mOAuth);
     }
 

@@ -3,37 +3,21 @@ package com.bourke.glimmrpro.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.net.Uri;
-
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-
 import android.util.Log;
-
 import android.widget.Toast;
-import android.widget.Toast;
-import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem;
-
 import com.androidquery.AQuery;
-import com.androidquery.AQuery;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
-import com.bourke.glimmrpro.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmrpro.fragments.LoginFragment;
-import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmrpro.tasks.GetAccessTokenTask;
-
-import com.googlecode.flickrjandroid.people.User;
 
 /**
  * Hosts fragments that don't require log in.
@@ -195,10 +179,5 @@ public class ExploreActivity extends BaseActivity
         } else {
             setLoginFragmentVisibility(true);
         }
-    }
-
-    @Override
-    public User getUser() {
-        return mUser;
     }
 }

@@ -43,6 +43,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
             photoViewer.putExtra(
                     PhotoViewerActivity.KEY_PHOTOVIEWER_START_INDEX,
                     viewIndex);
+            photoViewer.setAction(PhotoViewerActivity.ACTION_VIEW_PHOTOLIST);
             photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,
                     photoListFile);
             photoViewer.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -71,7 +72,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
 
         for (int appWidgetId : appWidgetIds) {
             /* Intent for creating the collection's views */
-            Intent intent = new Intent(context, StackWidgetService.class);
+            Intent intent = new Intent(context, com.bourke.glimmrpro.appwidget.StackWidgetService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));

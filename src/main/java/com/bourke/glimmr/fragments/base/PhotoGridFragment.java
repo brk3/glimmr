@@ -1,44 +1,24 @@
 package com.bourke.glimmrpro.fragments.base;
 
 import android.annotation.SuppressLint;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-
-import android.os.AsyncTask;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.preference.PreferenceManager;
-
 import android.util.Log;
 import android.util.SparseBooleanArray;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import com.androidquery.AQuery;
-
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.PhotoViewerActivity;
 import com.bourke.glimmrpro.activities.ProfileActivity;
 import com.bourke.glimmrpro.common.Constants;
@@ -46,12 +26,8 @@ import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.BusProvider;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.event.Events.PhotoItemLongClickDialogListener;
-import com.bourke.glimmrpro.R;
-
 import com.commonsware.cwac.endless.EndlessAdapter;
-
 import com.googlecode.flickrjandroid.photos.Photo;
-
 import com.rokoder.android.lib.support.v4.widget.GridViewCompat;
 
 import java.util.ArrayList;
@@ -249,11 +225,16 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     @Override
     public void onLongClickDialogSelection(Photo photo, int which) {
-        if (photo == null) {
+        if (photo != null) {
+            Intent profileViewer = new Intent(mActivity,
+                    ProfileActivity.class);
+            profileViewer.putExtra(ProfileActivity.KEY_PROFILE_ID,
+                    photo.getOwner().getId());
+            profileViewer.setAction(ProfileActivity.ACTION_VIEW_USER_BY_ID);
+            startActivity(profileViewer);
+        } else {
             Log.e(getLogTag(), "showGridItemContextMenu: photo is null");
-            return;
         }
-        ProfileActivity.startProfileViewer(mActivity, photo.getOwner());
     }
 
     /**
@@ -343,7 +324,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                 PreferenceManager.getDefaultSharedPreferences(mActivity);
             mHighQualityThumbnails = defaultPrefs.getBoolean(
                     Constants.KEY_HIGH_QUALITY_THUMBNAILS, false);
-            Log.d(TAG, "mHighQualityThumbnails="+mHighQualityThumbnails);
+            Log.d(TAG, "mHighQualityThumbnails=" + mHighQualityThumbnails);
         }
 
         @SuppressLint("NewApi")
@@ -410,8 +391,13 @@ public abstract class PhotoGridFragment extends BaseFragment
                             new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ProfileActivity.startProfileViewer(mActivity,
-                                photo.getOwner());
+                            Intent profileViewer = new Intent(mActivity,
+                                    ProfileActivity.class);
+                            profileViewer.putExtra(
+                                    ProfileActivity.KEY_PROFILE_ID,
+                                    photo.getOwner().getId());
+                            profileViewer.setAction(ProfileActivity.ACTION_VIEW_USER_BY_ID);
+                            startActivity(profileViewer);
                         }
                     });
                 }

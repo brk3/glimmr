@@ -2,31 +2,24 @@ package com.bourke.glimmrpro.fragments.photoset;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-
 import android.util.Log;
-
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
+import com.bourke.glimmr.tasks.LoadPhotosetPhotosTask;
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
-import com.bourke.glimmrpro.R;
-import com.bourke.glimmrpro.tasks.LoadPhotosetTask;
-
-import com.googlecode.flickrjandroid.people.User;
-import com.googlecode.flickrjandroid.photosets.Photoset;
-import com.googlecode.flickrjandroid.photos.Photo;
-
 import com.google.gson.Gson;
+import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photosets.Photoset;
 
 import java.util.List;
 
@@ -101,7 +94,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
             loadPhotoset();
         }
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        new LoadPhotosetTask(this, mPhotoset, page).execute(mOAuth);
+        new LoadPhotosetPhotosTask(this, mPhotoset, page).execute(mOAuth);
     }
 
     @Override

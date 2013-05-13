@@ -1,22 +1,17 @@
 package com.bourke.glimmrpro.tasks;
 
 import android.os.AsyncTask;
-
 import android.util.Log;
-
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
-
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
-import com.googlecode.flickrjandroid.people.User;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

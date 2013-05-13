@@ -1,25 +1,18 @@
 package com.bourke.glimmrpro.activities;
 
 import android.app.SearchManager;
-
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.support.v4.view.ViewPager;
-
 import android.util.Log;
-
 import com.actionbarsherlock.app.SherlockFragment;
-
-import com.bourke.glimmrpro.activities.BottomOverlayActivity;
+import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.common.OAuthUtils;
 import com.bourke.glimmrpro.fragments.search.AbstractPhotoSearchGridFragment;
 import com.bourke.glimmrpro.fragments.search.PhotostreamSearchGridFragment;
 import com.bourke.glimmrpro.fragments.search.PublicPhotoSearchGridFragment;
-import com.bourke.glimmrpro.R;
 
 public class SearchActivity extends BottomOverlayActivity {
 
@@ -65,7 +58,7 @@ public class SearchActivity extends BottomOverlayActivity {
                     case RESULT_PHOTOSTREAM_PAGE:
                         return PhotostreamSearchGridFragment.newInstance(
                                 searchQuery, AbstractPhotoSearchGridFragment
-                                    .SORT_TYPE_RELAVANCE);
+                                    .SORT_TYPE_RELAVANCE, mUser);
                 }
                 return null;
             }
@@ -75,5 +68,6 @@ public class SearchActivity extends BottomOverlayActivity {
 
     @Override
     protected void updateBottomOverlay() {
+        // TODO
     }
 }
