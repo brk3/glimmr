@@ -3,78 +3,46 @@ package com.bourke.glimmrpro.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
-import android.net.Uri;
-
 import android.os.Bundle;
-
 import android.preference.PreferenceManager;
-
 import android.support.v4.view.ViewPager;
-
 import android.text.Html;
-
 import android.util.Log;
-
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
-
-import com.bourke.glimmrpro.common.Constants;
-import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
-import com.bourke.glimmrpro.common.MenuListView;
-import com.bourke.glimmrpro.common.OAuthUtils;
-import com.bourke.glimmrpro.common.TextUtils;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.common.*;
 import com.bourke.glimmrpro.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmrpro.fragments.explore.RecentPublicPhotosFragment;
-import com.bourke.glimmrpro.fragments.home.ContactsGridFragment;
-import com.bourke.glimmrpro.fragments.home.FavoritesGridFragment;
-import com.bourke.glimmrpro.fragments.home.GroupListFragment;
-import com.bourke.glimmrpro.fragments.home.PhotosetsFragment;
-import com.bourke.glimmrpro.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.fragments.home.*;
 import com.bourke.glimmrpro.services.ActivityNotificationHandler;
 import com.bourke.glimmrpro.services.AppListener;
 import com.bourke.glimmrpro.services.AppService;
 import com.bourke.glimmrpro.tasks.LoadFlickrActivityTask;
 import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
-
 import com.commonsware.cwac.wakeful.WakefulIntentService;
-
 import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-
 import com.sbstrm.appirater.Appirater;
-
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import net.simonvt.menudrawer.MenuDrawer;
+import org.ocpsoft.prettytime.PrettyTime;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
-import net.simonvt.menudrawer.MenuDrawer;
-
-import org.ocpsoft.prettytime.PrettyTime;
 
 public class MainActivity extends BaseActivity {
 
@@ -477,18 +445,6 @@ public class MainActivity extends BaseActivity {
             Crouton.makeText(this, R.string.tip_add_to_set, Style.INFO)
                 .show();
             mShownUsageTips.add(R.string.sets);
-        } else if (pageTitle.equalsIgnoreCase(getString(R.string.favorites)) &&
-                    !mShownUsageTips.contains(R.string.favorites)) {
-            Crouton.makeText(this, R.string.tip_glimmr_pro, Style.INFO)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        MainActivity.this.startActivity(intent);
-                    }
-                }).show();
-            mShownUsageTips.add(R.string.favorites);
         }
     }
 
