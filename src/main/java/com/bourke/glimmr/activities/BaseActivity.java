@@ -219,7 +219,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         return new AlertDialog.Builder(this).
             setTitle(aboutTitle).
             setCancelable(true).
-            setIcon(R.drawable.ic_launcher).
+            setIcon(R.drawable.app_icon).
             setNegativeButton(getString(R.string.pro_donate),
                 new DialogInterface.OnClickListener() {
                     @Override
