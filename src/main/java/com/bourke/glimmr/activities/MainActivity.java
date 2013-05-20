@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
@@ -150,9 +151,9 @@ public class MainActivity extends BaseActivity {
         super.onRestoreInstanceState(inState);
         mActivityListVersion = inState.getLong(
                 KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED, -1);
-        if (mMenuDrawer != null) {
-            mMenuDrawer.restoreState(inState.getParcelable(
-                        KEY_STATE_MENUDRAWER));
+        Parcelable drawerState = inState.getParcelable(KEY_STATE_MENUDRAWER);
+        if (mMenuDrawer != null && drawerState != null) {
+            mMenuDrawer.restoreState(drawerState);
         }
     }
 
