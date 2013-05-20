@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         if (mOAuth == null) {
-            startActivity(new Intent(this, ExploreActivity.class));
+            startActivityForResult(new Intent(this, ExploreActivity.class), 0);
         } else {
             if (savedInstanceState != null) {
                 mActivePosition =
@@ -89,6 +89,14 @@ public class MainActivity extends BaseActivity {
             initViewPager();
             initNotificationAlarms();
             Appirater.appLaunched(this);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (resultCode == ExploreActivity.ACTIVITY_RESULT_EXIT) {
+            finish();
         }
     }
 
