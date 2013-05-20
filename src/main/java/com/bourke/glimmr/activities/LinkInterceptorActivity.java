@@ -1,11 +1,11 @@
-package com.bourke.glimmr.activities;
+package com.bourke.glimmrpro.activities;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmrpro.common.Constants;
 
 import java.util.List;
 
@@ -48,16 +48,16 @@ public class LinkInterceptorActivity extends SherlockActivity {
     private void parseGroup(Uri uri, List<String> params) {
         if (params.size() > 1) {
             String s = params.get(1);
-            Intent groupViewer = new Intent(this, GroupViewerActivity.class);
+            Intent groupViewer = new Intent(this, com.bourke.glimmrpro.activities.GroupViewerActivity.class);
             if (isFlickrId(s)) {
-                groupViewer.putExtra(GroupViewerActivity.KEY_GROUP_ID, s);
+                groupViewer.putExtra(com.bourke.glimmrpro.activities.GroupViewerActivity.KEY_GROUP_ID, s);
                 groupViewer.setAction(
-                        GroupViewerActivity.ACTION_VIEW_GROUP_BY_ID);
+                        com.bourke.glimmrpro.activities.GroupViewerActivity.ACTION_VIEW_GROUP_BY_ID);
             } else {
-                groupViewer.putExtra(GroupViewerActivity.KEY_GROUP_URL,
+                groupViewer.putExtra(com.bourke.glimmrpro.activities.GroupViewerActivity.KEY_GROUP_URL,
                         uri.toString());
                 groupViewer.setAction(
-                        GroupViewerActivity.ACTION_VIEW_GROUP_BY_NAME);
+                        com.bourke.glimmrpro.activities.GroupViewerActivity.ACTION_VIEW_GROUP_BY_NAME);
             }
             startActivity(groupViewer);
         } else {
@@ -68,17 +68,17 @@ public class LinkInterceptorActivity extends SherlockActivity {
     /* Profile: http://www.flickr.com/people/{user-id}|{user-name}/ */
     private void parseProfile(Uri uri, List<String> params) {
         if (params.size() > 1) {
-            Intent profileViewer = new Intent(this, ProfileActivity.class);
+            Intent profileViewer = new Intent(this, com.bourke.glimmrpro.activities.ProfileActivity.class);
             String s = params.get(1);
             if (isFlickrId(s)) {
                 profileViewer.putExtra(
-                        ProfileActivity.KEY_PROFILE_ID, s);
-                profileViewer.setAction(ProfileActivity
+                        com.bourke.glimmrpro.activities.ProfileActivity.KEY_PROFILE_ID, s);
+                profileViewer.setAction(com.bourke.glimmrpro.activities.ProfileActivity
                         .ACTION_VIEW_USER_BY_ID);
             } else {
                 profileViewer.putExtra(
-                        ProfileActivity.KEY_PROFILE_URL, uri.toString());
-                profileViewer.setAction(ProfileActivity
+                        com.bourke.glimmrpro.activities.ProfileActivity.KEY_PROFILE_URL, uri.toString());
+                profileViewer.setAction(com.bourke.glimmrpro.activities.ProfileActivity
                         .ACTION_VIEW_USER_BY_URL);
             }
             startActivity(profileViewer);
@@ -91,7 +91,7 @@ public class LinkInterceptorActivity extends SherlockActivity {
     private void parseSinglePhoto(List<String> params) {
         if (params.size() > 2) {
             String photoId = params.get(2);
-            PhotoViewerActivity.startPhotoViewer(this, photoId);
+            com.bourke.glimmrpro.activities.PhotoViewerActivity.startPhotoViewer(this, photoId);
         } else {
             Log.e(TAG, "Not enough params to parse photo");
         }
@@ -101,7 +101,7 @@ public class LinkInterceptorActivity extends SherlockActivity {
     private void parsePhotoset(List<String> params) {
        if (params.size() > 3) {
            String setId = params.get(3);
-           PhotosetViewerActivity.startPhotosetViewer(this, setId);
+           com.bourke.glimmrpro.activities.PhotosetViewerActivity.startPhotosetViewer(this, setId);
        } else {
            Log.e(TAG, "Not enough params to parse set");
        }

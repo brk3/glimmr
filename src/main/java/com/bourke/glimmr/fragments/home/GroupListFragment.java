@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
-import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
+import com.bourke.glimmrpro.fragments.group.AddToGroupDialogFragment;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.activities.GroupViewerActivity;

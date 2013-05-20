@@ -30,6 +30,8 @@ public class ExploreActivity extends BaseActivity
     private static final String KEY_LOGIN_LATER_SELECTED =
         "glimmr_login_later_selected";
 
+    public static final int ACTIVITY_RESULT_EXIT = 0;
+
     private static final int INTERESTING_PAGE = 0;
     //public static final int TAGS_PAGE = 1;
 
@@ -59,6 +61,18 @@ public class ExploreActivity extends BaseActivity
     public void onResume() {
         super.onResume();
         refreshLoginFragment();
+    }
+
+    @Override
+    public void onBackPressed() {
+        /* If user presses back and the login fragment is showing, hide it.
+         * Otherwise signal to the parent activity to finish */
+        if (mLoginFragment.isVisible()) {
+            onNotNowClicked();
+        } else {
+            setResult(ACTIVITY_RESULT_EXIT);
+            super.onBackPressed();
+        }
     }
 
     @Override
