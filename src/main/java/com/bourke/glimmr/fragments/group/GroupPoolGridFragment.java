@@ -48,15 +48,15 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
                 ft.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
                 Fragment prev = mActivity.getSupportFragmentManager()
-                    .findFragmentByTag(AddToGroupDialogFragment.TAG);
+                    .findFragmentByTag(com.bourke.glimmrpro.fragments.group.AddToGroupDialogFragment.TAG);
                 if (prev != null) {
                     ft.remove(prev);
                 }
                 ft.addToBackStack(null);
 
                 SherlockDialogFragment newFragment =
-                    AddToGroupDialogFragment.newInstance(mGroup);
-                newFragment.show(ft, AddToGroupDialogFragment.TAG);
+                    com.bourke.glimmrpro.fragments.group.AddToGroupDialogFragment.newInstance(mGroup);
+                newFragment.show(ft, com.bourke.glimmrpro.fragments.group.AddToGroupDialogFragment.TAG);
 
                 return true;
         }

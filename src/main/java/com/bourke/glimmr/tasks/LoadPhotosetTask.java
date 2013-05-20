@@ -1,7 +1,7 @@
 package com.bourke.glimmrpro.tasks;
 
 import android.os.AsyncTask;
-import com.bourke.glimmr.event.Events;
+import com.bourke.glimmrpro.event.Events;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.oauth.OAuth;

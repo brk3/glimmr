@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,7 +40,7 @@ import java.util.List;
  * Can be used to display many of the Flickr "categories" of photos, i.e.
  * photostreams, favorites, contacts photos, etc.
  */
-public abstract class PhotoGridFragment extends BaseFragment
+public abstract class PhotoGridFragment extends com.bourke.glimmrpro.fragments.base.BaseFragment
         implements IPhotoListReadyListener, PhotoItemLongClickDialogListener {
 
     private static final String TAG = "Glimmr/PhotoGridFragment";

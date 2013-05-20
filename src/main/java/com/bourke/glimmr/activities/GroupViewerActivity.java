@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
-import com.bourke.glimmr.tasks.LoadGroupIdTask;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
@@ -15,12 +14,13 @@ import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.event.Events;
 import com.bourke.glimmrpro.fragments.group.GroupAboutFragment;
 import com.bourke.glimmrpro.fragments.group.GroupPoolGridFragment;
+import com.bourke.glimmrpro.tasks.LoadGroupIdTask;
 import com.bourke.glimmrpro.tasks.LoadGroupInfoTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.people.User;
 
-public class GroupViewerActivity extends BottomOverlayActivity
+public class GroupViewerActivity extends com.bourke.glimmrpro.activities.BottomOverlayActivity
         implements Events.IGroupInfoReadyListener {
 
     private static final String TAG = "Glimmr/GroupViewerActivity";

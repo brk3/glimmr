@@ -1,10 +1,10 @@
-package com.bourke.glimmr.tasks;
+package com.bourke.glimmrpro.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.FlickrHelper;
-import com.bourke.glimmr.event.Events;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
+import com.bourke.glimmrpro.event.Events;
 
 public class LoadGroupIdTask extends AsyncTask<Void, Void, String> {
 

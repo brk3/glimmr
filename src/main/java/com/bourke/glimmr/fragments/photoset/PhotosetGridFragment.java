@@ -10,12 +10,12 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.bourke.glimmr.tasks.LoadPhotosetPhotosTask;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
+import com.bourke.glimmrpro.tasks.LoadPhotosetPhotosTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -56,15 +56,15 @@ public class PhotosetGridFragment extends PhotoGridFragment
                 ft.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
                 Fragment prev = mActivity.getSupportFragmentManager()
-                    .findFragmentByTag(AddToPhotosetDialogFragment.TAG);
+                    .findFragmentByTag(com.bourke.glimmrpro.fragments.photoset.AddToPhotosetDialogFragment.TAG);
                 if (prev != null) {
                     ft.remove(prev);
                 }
                 ft.addToBackStack(null);
 
                 SherlockDialogFragment newFragment =
-                    AddToPhotosetDialogFragment.newInstance(mPhotoset);
-                newFragment.show(ft, AddToPhotosetDialogFragment.TAG);
+                    com.bourke.glimmrpro.fragments.photoset.AddToPhotosetDialogFragment.newInstance(mPhotoset);
+                newFragment.show(ft, com.bourke.glimmrpro.fragments.photoset.AddToPhotosetDialogFragment.TAG);
 
                 return true;
         }
