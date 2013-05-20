@@ -294,6 +294,9 @@ public class MainActivity extends BaseActivity {
     private void initMenuDrawer() {
         mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_CONTENT);
         mMenuDrawer.setContentView(R.layout.main_activity);
+        /* The drawable that replaces the up indicator in the action bar */
+        mMenuDrawer.setSlideDrawable(R.drawable.ic_drawer);
+        mMenuDrawer.setDrawerIndicatorEnabled(true);
         MenuListView menuListView = new MenuListView(this);
         menuListView.setDivider(null);
         menuListView.setDividerHeight(0);
@@ -349,6 +352,10 @@ public class MainActivity extends BaseActivity {
                                 updateMenuListItems(false);
                             }
                         }
+                    }
+                    @Override
+                    public void onDrawerSlide(float openRatio,
+                            int offsetPixels) {
                     }
                 });
 
