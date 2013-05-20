@@ -84,11 +84,15 @@ public final class LoginFragment extends BaseFragment
 
     @Override
     public void onRequestTokenReady(String authUri, Exception e) {
-        if (e != null && e.getMessage()
-                .equals("No authentication challenges found")) {
-            FragmentManager fm = mActivity.getSupportFragmentManager();
-            LoginErrorTipDialog d = new LoginErrorTipDialog();
-            d.show(fm, "LoginErrorTipDialog");
+        if (e != null) {
+            /* Usually down to a bad clock / timezone on device */
+            if (e.getMessage().equals("No authentication challenges found") ||
+                    e.getMessage().equals("Received authentication " +
+                            "challenge is null")) {
+                FragmentManager fm = mActivity.getSupportFragmentManager();
+                LoginErrorTipDialog d = new LoginErrorTipDialog();
+                d.show(fm, "LoginErrorTipDialog");
+            }
         } else if (authUri != null && !authUri.startsWith("error")) {
             mActivity.startActivity(new Intent(
                         Intent.ACTION_VIEW, Uri.parse(authUri)));
