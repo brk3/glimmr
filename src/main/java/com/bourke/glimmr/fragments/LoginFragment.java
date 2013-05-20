@@ -107,10 +107,14 @@ public final class LoginFragment extends BaseFragment
         }
         Toast.makeText(mActivity, getString(R.string.logged_in),
                 Toast.LENGTH_SHORT).show();
-        mActivity.startActivity(new Intent(mActivity, MainActivity.class));
 
         /* Prevent the user pressing back to get to the unauthed activity */
+        Intent intent = new Intent(mActivity, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mActivity.finish();
+
+        mActivity.startActivity(intent);
     }
 
     private void persistAccessToken(OAuth oauth) {
