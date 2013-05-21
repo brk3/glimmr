@@ -43,7 +43,7 @@
     <Button
         android:id="@+id/buttonAddToGroup"
         android:layout_weight="0"
-        android:text="Add"
+        android:text="@string/add"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

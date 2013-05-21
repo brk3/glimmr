@@ -42,7 +42,7 @@ import java.util.List;
 public final class PhotoOverviewFragment extends BaseFragment
         implements IExifInfoReadyListener, TagClickDialogListener {
 
-    public static final String TAG = "Glimmr/PhotoOverviewFragment";
+    private static final String TAG = "Glimmr/PhotoOverviewFragment";
 
     private Photo mPhoto = new Photo();
     private LoadExifInfoTask mTask;
@@ -51,9 +51,6 @@ public final class PhotoOverviewFragment extends BaseFragment
     private TextView mTextViewShutter;
     private TextView mTextViewAperture;
     private TextView mTextViewFocalLength;
-    private TextView mTextViewTitle;
-    private TextView mTextViewDescription;
-    private TextView mTextTags;
 
     /* http://www.flickr.com/services/api/flickr.photos.getExif.html */
     private static final String ERR_PERMISSION_DENIED = "2";
@@ -89,17 +86,17 @@ public final class PhotoOverviewFragment extends BaseFragment
             mLayout.findViewById(R.id.textViewFocalLength);
 
         /* build the title textview */
-        mTextViewTitle = (TextView)
-            mLayout.findViewById(R.id.textViewTitle);
+        TextView titleTextView = (TextView)
+                mLayout.findViewById(R.id.textViewTitle);
         String title = mPhoto.getTitle();
         if ("".equals(title)) {
-            mTextViewTitle.setText("‘" + getString(R.string.none) + "’");
+            titleTextView.setText("‘" + getString(R.string.none) + "’");
         } else {
-            mTextViewTitle.setText("‘" + title + "’");
+            titleTextView.setText("‘" + title + "’");
         }
 
         /* build the tags textview */
-        mTextTags = (TextView) mLayout.findViewById(R.id.textViewTags);
+        TextView mTextTags = (TextView) mLayout.findViewById(R.id.textViewTags);
         StringBuilder tags = new StringBuilder();
         final Collection<Tag> allTags = mPhoto.getTags();
         int count = 0;
@@ -118,22 +115,22 @@ public final class PhotoOverviewFragment extends BaseFragment
                 @Override
                 public void onClick(View v) {
                     TagClickDialog d = new TagClickDialog(mActivity,
-                        PhotoOverviewFragment.this,
-                        allTags.toArray(new Tag[allTags.size()]));
+                            PhotoOverviewFragment.this,
+                            allTags.toArray(new Tag[allTags.size()]));
                     d.show(mActivity.getSupportFragmentManager(),
-                        "tags_click_dialog");
+                            "tags_click_dialog");
                 }
             });
         }
 
         /* build the description textview */
-        mTextViewDescription = (TextView)
-            mLayout.findViewById(R.id.textViewDescription);
+        TextView textviewDescription = (TextView)
+                mLayout.findViewById(R.id.textViewDescription);
         String description = mPhoto.getDescription();
         if ("".equals(description)) {
-            mTextViewDescription.setText("‘" + getString(R.string.none) + "’");
+            textviewDescription.setText("‘" + getString(R.string.none) + "’");
         } else {
-            mTextViewDescription.setText(Html.fromHtml(description));
+            textviewDescription.setText(Html.fromHtml(description));
         }
 
         return mLayout;
@@ -223,9 +220,9 @@ public final class PhotoOverviewFragment extends BaseFragment
     }
 
     class TagClickDialog extends SherlockDialogFragment {
-        private TagClickDialogListener mListener;
-        private Context mContext;
-        private Tag[] mTags;
+        private final TagClickDialogListener mListener;
+        private final Context mContext;
+        private final Tag[] mTags;
 
         public TagClickDialog(Context context,
                 TagClickDialogListener listener, Tag[] tags) {

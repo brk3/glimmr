@@ -8,5 +8,6 @@
     android:initialLayout="@layout/stackview_widget_layout"
     android:autoAdvanceViewId="@id/stack_view"
     android:configure="com.bourke.glimmr.appwidget.StackViewWidgetConfigure"
+    android:widgetCategory="keyguard|home_screen"
     android:previewImage="@drawable/stackwidget_preview"
     android:resizeMode="horizontal|vertical" />

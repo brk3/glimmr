@@ -1,69 +1,48 @@
 package com.bourke.glimmr.fragments.viewer;
 
 import android.content.Context;
-
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.text.Html;
-
 import android.util.Log;
-
-import android.view.inputmethod.InputMethodManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.view.inputmethod.InputMethodManager;
+import android.widget.*;
 import com.androidquery.AQuery;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileActivity;
-import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.ICommentAddedListener;
 import com.bourke.glimmr.event.Events.ICommentsReadyListener;
 import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.AddCommentTask;
 import com.bourke.glimmr.tasks.LoadCommentsTask;
 import com.bourke.glimmr.tasks.LoadUserTask;
-
 import com.googlecode.flickrjandroid.people.User;
-import com.googlecode.flickrjandroid.photos.comments.Comment;
 import com.googlecode.flickrjandroid.photos.Photo;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
+import com.googlecode.flickrjandroid.photos.comments.Comment;
 import org.ocpsoft.prettytime.PrettyTime;
-import android.widget.LinearLayout;
+
+import java.util.*;
 
 public final class CommentsFragment extends BaseDialogFragment
         implements ICommentsReadyListener, ICommentAddedListener,
                    IUserReadyListener {
 
-    public static final String TAG = "Glimmr/CommentsFragment";
+    private static final String TAG = "Glimmr/CommentsFragment";
 
     private LoadCommentsTask mTask;
     private Photo mPhoto;
     private ArrayAdapter<Comment> mAdapter;
-    private Map<String, UserItem> mUsers = Collections.synchronizedMap(
+    private final Map<String, UserItem> mUsers = Collections.synchronizedMap(
             new HashMap<String, UserItem>());
-    private List<LoadUserTask> mLoadUserTasks = new ArrayList<LoadUserTask>();
+    private final List<LoadUserTask> mLoadUserTasks = new ArrayList<LoadUserTask>();
     private PrettyTime mPrettyTime;
-    private ImageButton mSubmitButton;
     private ProgressBar mProgressBar;
     private ListView mListView;
 
@@ -87,8 +66,9 @@ public final class CommentsFragment extends BaseDialogFragment
                 R.layout.comments_fragment, container, false);
         mAq = new AQuery(mActivity, mLayout);
 
-        mSubmitButton = (ImageButton) mLayout.findViewById(R.id.submitButton);
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton submitButton = (ImageButton)
+                mLayout.findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CommentsFragment.this.submitButtonClicked();
@@ -140,7 +120,7 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     public void submitButtonClicked() {
-        if (mActivity.getUser() == null) {
+        if (mOAuth == null || mOAuth.getUser() == null) {
             Toast.makeText(mActivity, getString(R.string.login_required),
                     Toast.LENGTH_SHORT).show();
             return;
@@ -258,8 +238,14 @@ public final class CommentsFragment extends BaseDialogFragment
                                 new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ProfileActivity.startProfileViewer(
-                                    mActivity, author.user);
+                                Intent profileViewer = new Intent(mActivity,
+                                        ProfileActivity.class);
+                                profileViewer.putExtra(
+                                        ProfileActivity.KEY_PROFILE_ID,
+                                        author.user.getId());
+                                profileViewer.setAction(
+                                        ProfileActivity.ACTION_VIEW_USER_BY_ID);
+                                startActivity(profileViewer);
                             }
                         });
                     }
@@ -292,7 +278,7 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     class UserItem {
-        public User user;
+        public final User user;
         public boolean isLoading = true;
 
         public UserItem(User user, boolean isLoading) {

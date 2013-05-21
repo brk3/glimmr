@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 
 public class GsonHelper {
 
-    private Context mContext;
+    private final Context mContext;
 
     public GsonHelper(Context context) {
         mContext = context;

@@ -1,20 +1,20 @@
 package com.bourke.glimmr.common;
 
-import com.googlecode.flickrjandroid.activity.ActivityInterface;
+import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.REST;
+import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.contacts.ContactsInterface;
 import com.googlecode.flickrjandroid.favorites.FavoritesInterface;
-import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.groups.GroupsInterface;
 import com.googlecode.flickrjandroid.groups.pools.PoolsInterface;
 import com.googlecode.flickrjandroid.interestingness.InterestingnessInterface;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.PeopleInterface;
+import com.googlecode.flickrjandroid.photos.PhotosInterface;
 import com.googlecode.flickrjandroid.photos.comments.CommentsInterface;
 import com.googlecode.flickrjandroid.photosets.PhotosetsInterface;
-import com.googlecode.flickrjandroid.photos.PhotosInterface;
-import com.googlecode.flickrjandroid.RequestContext;
-import com.googlecode.flickrjandroid.REST;
+import com.googlecode.flickrjandroid.urls.UrlsInterface;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -35,8 +35,7 @@ public final class FlickrHelper {
 
     public Flickr getFlickr() {
         try {
-            Flickr f = new Flickr(Keys.API_KEY, Keys.API_SECRET, new REST());
-            return f;
+            return new Flickr(Keys.API_KEY, Keys.API_SECRET, new REST());
         } catch (ParserConfigurationException e) {
             return null;
         }
@@ -123,19 +122,19 @@ public final class FlickrHelper {
         }
     }
 
-    public ActivityInterface getActivityInterface() {
+    public GroupsInterface getGroupsInterface() {
         Flickr f = getFlickr();
         if (f != null) {
-            return f.getActivityInterface();
+            return f.getGroupsInterface();
         } else {
             return null;
         }
     }
 
-    public GroupsInterface getGroupsInterface() {
+    public UrlsInterface getUrlsInterface() {
         Flickr f = getFlickr();
         if (f != null) {
-            return f.getGroupsInterface();
+            return f.getUrlsInterface();
         } else {
             return null;
         }

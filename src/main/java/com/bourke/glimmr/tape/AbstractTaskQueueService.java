@@ -7,7 +7,7 @@
 package com.bourke.glimmr.tape;
 
 import android.app.Service;
-import com.bourke.glimmr.fragments.viewer.AddToGroupDialogFragment;
+import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
 
 import android.content.Intent;
 

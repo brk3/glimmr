@@ -1,38 +1,23 @@
 package com.bourke.glimmr.fragments.base;
 
 import android.annotation.SuppressLint;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-
+import android.content.Intent;
 import android.graphics.Bitmap;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.util.SparseBooleanArray;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import com.androidquery.AQuery;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
@@ -40,12 +25,8 @@ import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.PhotoItemLongClickDialogListener;
-import com.bourke.glimmr.R;
-
 import com.commonsware.cwac.endless.EndlessAdapter;
-
 import com.googlecode.flickrjandroid.photos.Photo;
-
 import com.rokoder.android.lib.support.v4.widget.GridViewCompat;
 
 import java.util.ArrayList;
@@ -65,7 +46,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected GridViewCompat mGridView;
     protected EndlessGridAdapter mAdapter;
 
-    protected List<Photo> mPhotos = new ArrayList<Photo>();
+    protected final List<Photo> mPhotos = new ArrayList<Photo>();
     protected List<Photo> mNewPhotos = new ArrayList<Photo>();
     protected int mPage = 1;
     protected boolean mMorePages = true;
@@ -78,8 +59,8 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private ViewGroup mNoConnectionLayout;
 
-    public abstract String getNewestPhotoId();
-    public abstract void storeNewestPhotoId(Photo photo);
+    protected abstract String getNewestPhotoId();
+    protected abstract void storeNewestPhotoId(Photo photo);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,7 +93,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         if (Constants.DEBUG) {
             Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
         }
-        if (mPhotos != null && !mPhotos.isEmpty()) {
+        if (!mPhotos.isEmpty()) {
             GridViewCompat gridView = (GridViewCompat)
                 mLayout.findViewById(R.id.gridview);
             gridView.setVisibility(View.VISIBLE);
@@ -243,11 +224,16 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     @Override
     public void onLongClickDialogSelection(Photo photo, int which) {
-        if (photo == null) {
+        if (photo != null) {
+            Intent profileViewer = new Intent(mActivity,
+                    ProfileActivity.class);
+            profileViewer.putExtra(ProfileActivity.KEY_PROFILE_ID,
+                    photo.getOwner().getId());
+            profileViewer.setAction(ProfileActivity.ACTION_VIEW_USER_BY_ID);
+            startActivity(profileViewer);
+        } else {
             Log.e(getLogTag(), "showGridItemContextMenu: photo is null");
-            return;
         }
-        ProfileActivity.startProfileViewer(mActivity, photo.getOwner());
     }
 
     /**
@@ -263,9 +249,6 @@ public abstract class PhotoGridFragment extends BaseFragment
         }
 
         mNewPhotos = new ArrayList<Photo>();
-        SharedPreferences prefs = mActivity.getSharedPreferences(Constants
-                .PREFS_NAME, Context.MODE_PRIVATE);
-
         String newestId = getNewestPhotoId();
         if (newestId != null) {
             for (int i=0; i < photos.size(); i++) {
@@ -396,8 +379,13 @@ public abstract class PhotoGridFragment extends BaseFragment
                             new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ProfileActivity.startProfileViewer(mActivity,
-                                photo.getOwner());
+                            Intent profileViewer = new Intent(mActivity,
+                                    ProfileActivity.class);
+                            profileViewer.putExtra(
+                                    ProfileActivity.KEY_PROFILE_ID,
+                                    photo.getOwner().getId());
+                            profileViewer.setAction(ProfileActivity.ACTION_VIEW_USER_BY_ID);
+                            startActivity(profileViewer);
                         }
                     });
                 }
@@ -474,7 +462,7 @@ public abstract class PhotoGridFragment extends BaseFragment
      * Event published when an item in the grid is clicked.
      */
     public static class PhotoGridItemClickedEvent {
-        public boolean mIsChecked;
+        public final boolean mIsChecked;
 
         public PhotoGridItemClickedEvent(boolean isChecked) {
             mIsChecked = isChecked;

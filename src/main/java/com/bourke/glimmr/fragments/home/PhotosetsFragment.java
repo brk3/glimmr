@@ -1,35 +1,21 @@
 package com.bourke.glimmr.fragments.home;
 
-import com.bourke.glimmr.fragments.photoset.AddToPhotosetDialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
-
 import android.graphics.Bitmap;
-
 import android.os.Bundle;
-
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import com.androidquery.AQuery;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
 import com.bourke.glimmr.common.Constants;
@@ -37,17 +23,15 @@ import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
 import com.bourke.glimmr.event.Events.PhotosetItemLongClickDialogListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.R;
+import com.bourke.glimmr.fragments.photoset.AddToPhotosetDialogFragment;
 import com.bourke.glimmr.tasks.LoadPhotosetsTask;
-
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photosets.Photosets;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
 
 public class PhotosetsFragment extends BaseFragment
         implements IPhotosetsReadyListener,
@@ -56,34 +40,26 @@ public class PhotosetsFragment extends BaseFragment
     private static final String TAG = "Glimmr/PhotosetsFragment";
 
     private LoadPhotosetsTask mTask;
-    private List<Photoset> mPhotosets = new ArrayList<Photoset>();
+    private final List<Photoset> mPhotosets = new ArrayList<Photoset>();
 
     private View mLayoutNoConnection;
     private AdapterView mAdapterView;  /* Will either be a GridView or ListView
                                           depending on screen size */
     private SetListAdapter mAdapter;
 
-    public static PhotosetsFragment newInstance() {
-        PhotosetsFragment newFragment = new PhotosetsFragment();
-        return newFragment;
+    private User mUserToView;
+
+    public static PhotosetsFragment newInstance(User userToView) {
+        PhotosetsFragment f = new PhotosetsFragment();
+        f.mUserToView = userToView;
+        return f;
     }
 
     @Override
     protected void startTask() {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadPhotosetsTask(this, mActivity.getUser());
+        mTask = new LoadPhotosetsTask(this, mUserToView);
         mTask.execute(mOAuth);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
-        if (mTask != null) {
-            mTask.cancel(true);
-            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
-        }
     }
 
     @Override
@@ -119,7 +95,7 @@ public class PhotosetsFragment extends BaseFragment
                     public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
                         PhotosetViewerActivity.startPhotosetViewer(mActivity,
-                            mPhotosets.get(position));
+                            mPhotosets.get(position).getId());
                     }
                 });
         mAdapterView.setOnItemLongClickListener(

@@ -20,6 +20,7 @@ import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.R;
+import com.bourke.glimmr.tasks.LoadPhotosetPhotosTask;
 import com.bourke.glimmr.tasks.LoadPhotosetTask;
 
 import com.googlecode.flickrjandroid.people.User;
@@ -35,14 +36,12 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     private static final String TAG = "Glimmr/PhotosetGridFragment";
 
-    public static final String KEY_NEWEST_PHOTOSET_PHOTO_ID =
+    private static final String KEY_NEWEST_PHOTOSET_PHOTO_ID =
         "glimmr_newest_photoset_photo_id";
-    public static final String PHOTOSET_FILE =
+    private static final String PHOTOSET_FILE =
         "glimmr_photosetfragment_photoset.json";
 
     private Photoset mPhotoset;
-
-    protected LoadPhotosetTask mTask;
 
     public static PhotosetGridFragment newInstance(Photoset photoset) {
         PhotosetGridFragment newFragment = new PhotosetGridFragment();
@@ -103,8 +102,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
             loadPhotoset();
         }
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadPhotosetTask(this, mPhotoset, page);
-        mTask.execute(mOAuth);
+        new LoadPhotosetPhotosTask(this, mPhotoset, page).execute(mOAuth);
     }
 
     @Override
@@ -144,15 +142,14 @@ public class PhotosetGridFragment extends PhotoGridFragment
             Log.e(TAG, String.format("Error reading %s", PHOTOSET_FILE));
             return;
         }
-        mPhotoset = new Gson().fromJson(json.toString(), Photoset.class);
+        mPhotoset = new Gson().fromJson(json, Photoset.class);
     }
 
     @Override
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        String newestId = prefs.getString(KEY_NEWEST_PHOTOSET_PHOTO_ID, null);
-        return newestId;
+        return prefs.getString(KEY_NEWEST_PHOTOSET_PHOTO_ID, null);
     }
 
     @Override

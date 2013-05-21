@@ -51,8 +51,6 @@ public class AddToPhotosetDialogFragment extends BaseDialogFragment {
 
     private Photoset mPhotoset;
     private TaskQueue mQueue;
-    private TextView mTitleView;
-    private ProgressBar mProgressBar;
 
     public static AddToPhotosetDialogFragment newInstance(Photoset photoset) {
         AddToPhotosetDialogFragment newFragment =
@@ -77,18 +75,19 @@ public class AddToPhotosetDialogFragment extends BaseDialogFragment {
         mLayout = (LinearLayout) inflater.inflate(
                 R.layout.add_to_photoset_fragment, container, false);
 
-        mTitleView = (TextView) mLayout.findViewById(R.id.titleText);
-        mTitleView.setText(R.string.add_photos);
-        mTextUtils.setFont(mTitleView, TextUtils.FONT_ROBOTOBOLD);
-        mProgressBar =
-            (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
+        TextView titleTextView = (TextView)
+                mLayout.findViewById(R.id.titleText);
+        titleTextView.setText(R.string.add_photos);
+        mTextUtils.setFont(titleTextView, TextUtils.FONT_ROBOTOBOLD);
+        //ProgressBar progressBar = (ProgressBar)
+        //        mLayout.findViewById(R.id.progressIndicator);
 
         /* Nested fragments have to be added this way, not from xml */
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         final boolean retainInstance = false;
         final PhotoStreamGridFragment frag =
-            PhotoStreamGridFragment.newInstance(retainInstance,
-                    ListView.CHOICE_MODE_MULTIPLE);
+            PhotoStreamGridFragment.newInstance(mOAuth.getUser(),
+                    retainInstance, ListView.CHOICE_MODE_MULTIPLE);
         ft.replace(R.id.photoStreamFragment, frag);
         ft.commit();
 

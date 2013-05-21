@@ -1,4 +1,4 @@
-package com.bourke.glimmr.fragments.viewer;
+package com.bourke.glimmr.fragments.group;
 
 import android.content.Intent;
 
@@ -65,7 +65,6 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
     public static final String QUEUE_FILE = "group_task_queue.json";
 
     private Group mGroup;
-    private Throttle mThrottle;
     private TaskQueue mQueue;
     private ProgressBar mProgressBar;
     private TextView mTitleView;
@@ -133,8 +132,8 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         final boolean retainInstance = false;
         final PhotoStreamGridFragment frag =
-            PhotoStreamGridFragment.newInstance(retainInstance,
-                    ListView.CHOICE_MODE_MULTIPLE);
+            PhotoStreamGridFragment.newInstance(mOAuth.getUser(),
+                    retainInstance, ListView.CHOICE_MODE_MULTIPLE);
         ft.replace(R.id.photoStreamFragment, frag);
         ft.commit();
 
@@ -178,13 +177,13 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
         }
 
         /* Get group throttle info */
-        mThrottle = group.getThrottle();
-        if ("none".equals(mThrottle.getMode())) {
+        Throttle throttle = group.getThrottle();
+        if ("none".equals(throttle.getMode())) {
             mCount = ADD_AT_A_TIME;
             mRemaining = ADD_AT_A_TIME;
         } else {
-            mRemaining = mThrottle.getRemaining();
-            mCount = mThrottle.getCount();
+            mRemaining = throttle.getRemaining();
+            mCount = throttle.getCount();
         }
 
         if (mRemaining == 0) {
@@ -200,8 +199,8 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
 
         if (Constants.DEBUG) {
             Log.d(TAG, String.format("Remaining: %d, Mode: %s, Count: %d",
-                        mThrottle.getRemaining(), mThrottle.getMode(),
-                        mThrottle.getCount()));
+                    throttle.getRemaining(), throttle.getMode(),
+                    throttle.getCount()));
         }
     }
 }

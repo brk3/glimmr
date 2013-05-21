@@ -25,9 +25,9 @@ public class StackWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "Glimmr/StackWidgetProvider";
 
-    public static final String ACTION_START_VIEWER =
+    private static final String ACTION_START_VIEWER =
         "com.bourke.glimmr.appwidget.StackWidgetProvider.ACTION_START_VIEWER";
-    public static final String ACTION_REFRESH =
+    private static final String ACTION_REFRESH =
         "com.bourke.glimmr.appwidget.StackWidgetProvider.ACTION_REFRESH";
     public static final String VIEW_INDEX =
         "com.bourke.glimmr.appwidget.StackWidgetProvider.VIEW_INDEX";
@@ -39,9 +39,9 @@ public class StackWidgetProvider extends AppWidgetProvider {
         AppWidgetManager mgr = AppWidgetManager.getInstance(context);
 
         if (intent.getAction().equals(ACTION_START_VIEWER)) {
-            int appWidgetId = intent.getIntExtra(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
+            //int appWidgetId = intent.getIntExtra(
+            //        AppWidgetManager.EXTRA_APPWIDGET_ID,
+            //        AppWidgetManager.INVALID_APPWIDGET_ID);
             int viewIndex = intent.getIntExtra(VIEW_INDEX, 0);
             String photoListFile = intent.getStringExtra(
                     PhotoViewerActivity.KEY_PHOTO_LIST_FILE);
@@ -50,6 +50,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
             photoViewer.putExtra(
                     PhotoViewerActivity.KEY_PHOTOVIEWER_START_INDEX,
                     viewIndex);
+            photoViewer.setAction(PhotoViewerActivity.ACTION_VIEW_PHOTOLIST);
             photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,
                     photoListFile);
             photoViewer.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -76,18 +77,17 @@ public class StackWidgetProvider extends AppWidgetProvider {
             int[] appWidgetIds) {
         if (Constants.DEBUG) Log.d(TAG, "onUpdate: " + appWidgetIds.length);
 
-        for (int i = 0; i < appWidgetIds.length; ++i) {
-
+        for (int appWidgetId : appWidgetIds) {
             /* Intent for creating the collection's views */
             Intent intent = new Intent(context, StackWidgetService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    appWidgetIds[i]);
+                    appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             RemoteViews rv = new RemoteViews(context.getPackageName(),
                     R.layout.stackview_widget_layout);
             rv.setEmptyView(R.id.stack_view, R.id.empty_view);
 
-            rv.setRemoteAdapter(appWidgetIds[i], R.id.stack_view, intent);
+            rv.setRemoteAdapter(appWidgetId, R.id.stack_view, intent);
 
             /* Intent for clicking on an item */
             Intent photoViewerIntent = new Intent(context,
@@ -95,7 +95,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
             photoViewerIntent.setAction(
                     StackWidgetProvider.ACTION_START_VIEWER);
             photoViewerIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    appWidgetIds[i]);
+                    appWidgetId);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
                     context, 0, photoViewerIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
@@ -106,13 +106,13 @@ public class StackWidgetProvider extends AppWidgetProvider {
                     StackWidgetProvider.class);
             refreshIntent.setAction(ACTION_REFRESH);
             refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    appWidgetIds[i]);
+                    appWidgetId);
             PendingIntent pendingIntent2 = PendingIntent.getBroadcast(
                     context, 0, refreshIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
             rv.setOnClickPendingIntent(R.id.empty_view, pendingIntent2);
 
-            appWidgetManager.updateAppWidget(appWidgetIds[i], rv);
+            appWidgetManager.updateAppWidget(appWidgetId, rv);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }

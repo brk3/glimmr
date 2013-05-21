@@ -84,12 +84,15 @@ public final class LoginFragment extends BaseFragment
 
     @Override
     public void onRequestTokenReady(String authUri, Exception e) {
-        if (e != null && e.getMessage()
-                .equals("No authentication challenges found")) {
-            FragmentManager fm = mActivity.getSupportFragmentManager();
-            LoginErrorTipDialog d = new LoginErrorTipDialog();
-            d.show(fm, "LoginErrorTipDialog");
-            return;
+        if (e != null) {
+            /* Usually down to a bad clock / timezone on device */
+            if (e.getMessage().equals("No authentication challenges found") ||
+                    e.getMessage().equals("Received authentication " +
+                            "challenge is null")) {
+                FragmentManager fm = mActivity.getSupportFragmentManager();
+                LoginErrorTipDialog d = new LoginErrorTipDialog();
+                d.show(fm, "LoginErrorTipDialog");
+            }
         } else if (authUri != null && !authUri.startsWith("error")) {
             mActivity.startActivity(new Intent(
                         Intent.ACTION_VIEW, Uri.parse(authUri)));
@@ -104,10 +107,14 @@ public final class LoginFragment extends BaseFragment
         }
         Toast.makeText(mActivity, getString(R.string.logged_in),
                 Toast.LENGTH_SHORT).show();
-        mActivity.startActivity(new Intent(mActivity, MainActivity.class));
 
         /* Prevent the user pressing back to get to the unauthed activity */
+        Intent intent = new Intent(mActivity, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mActivity.finish();
+
+        mActivity.startActivity(intent);
     }
 
     private void persistAccessToken(OAuth oauth) {

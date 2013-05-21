@@ -3,97 +3,64 @@ package com.bourke.glimmr.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.net.Uri;
-
 import android.os.Bundle;
-
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
-
 import android.support.v4.view.ViewPager;
-
 import android.text.Html;
-
 import android.util.Log;
-
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
-
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.GlimmrPagerAdapter;
-import com.bourke.glimmr.common.MenuListView;
-import com.bourke.glimmr.common.OAuthUtils;
-import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.R;
+import com.bourke.glimmr.common.*;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
-import com.bourke.glimmr.fragments.home.ContactsGridFragment;
-import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
-import com.bourke.glimmr.fragments.home.GroupListFragment;
-import com.bourke.glimmr.fragments.home.PhotosetsFragment;
-import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmr.R;
+import com.bourke.glimmr.fragments.home.*;
 import com.bourke.glimmr.services.ActivityNotificationHandler;
 import com.bourke.glimmr.services.AppListener;
 import com.bourke.glimmr.services.AppService;
 import com.bourke.glimmr.tasks.LoadFlickrActivityTask;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
-
 import com.commonsware.cwac.wakeful.WakefulIntentService;
-
 import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-
 import com.sbstrm.appirater.Appirater;
-
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import net.simonvt.menudrawer.MenuDrawer;
+import org.ocpsoft.prettytime.PrettyTime;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import net.simonvt.menudrawer.MenuDrawer;
-
-import org.ocpsoft.prettytime.PrettyTime;
-
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "Glimmr/MainActivity";
 
-    public static final String KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED =
+    private static final String KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED =
         "glimmr_time_menudrawer_items_last_updated";
-    public static final String KEY_STATE_MENUDRAWER =
+    private static final String KEY_STATE_MENUDRAWER =
         "glimmr_menudrawer_state";
-    public static final String KEY_STATE_ACTIVE_POSITION =
+    private static final String KEY_STATE_ACTIVE_POSITION =
         "glimmr_menudrawer_active_position";
 
     private List<PageItem> mContent;
     private List<String> mPageTitles;
     private MenuDrawer mMenuDrawer;
-    private MenuAdapter mMenuAdapter;
-    private MenuListView mList;
-    private boolean mDisplayHomeAsUp = true;
-    private GlimmrPagerAdapter mPagerAdapter;
+    private final MenuAdapter mMenuAdapter = new MenuAdapter();
     private ViewPager mViewPager;
     private PageIndicator mIndicator;
     private int mActivePosition = -1;
@@ -108,7 +75,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         if (mOAuth == null) {
-            startActivity(new Intent(this, ExploreActivity.class));
+            startActivityForResult(new Intent(this, ExploreActivity.class), 0);
         } else {
             if (savedInstanceState != null) {
                 mActivePosition =
@@ -122,6 +89,14 @@ public class MainActivity extends BaseActivity {
             initViewPager();
             initNotificationAlarms();
             Appirater.appLaunched(this);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (resultCode == ExploreActivity.ACTIVITY_RESULT_EXIT) {
+            finish();
         }
     }
 
@@ -183,15 +158,10 @@ public class MainActivity extends BaseActivity {
         super.onRestoreInstanceState(inState);
         mActivityListVersion = inState.getLong(
                 KEY_TIME_MENUDRAWER_ITEMS_LAST_UPDATED, -1);
-        if (mMenuDrawer != null) {
-            mMenuDrawer.restoreState(inState.getParcelable(
-                        KEY_STATE_MENUDRAWER));
+        Parcelable drawerState = inState.getParcelable(KEY_STATE_MENUDRAWER);
+        if (mMenuDrawer != null && drawerState != null) {
+            mMenuDrawer.restoreState(drawerState);
         }
-    }
-
-    @Override
-    public User getUser() {
-        return mUser;
     }
 
     private void initPageItems() {
@@ -200,28 +170,22 @@ public class MainActivity extends BaseActivity {
                 getResources().getStringArray(R.array.pageTitles));
 
         mContent.add(new PageItem(getString(R.string.contacts),
-                R.drawable.ic_action_social_person_dark,
-                ContactsGridFragment.class));
+                R.drawable.ic_action_social_person_dark));
 
         mContent.add(new PageItem(getString(R.string.photos),
-                R.drawable.ic_content_picture_dark,
-                PhotoStreamGridFragment.class));
+                R.drawable.ic_content_picture_dark));
 
         mContent.add(new PageItem(getString(R.string.favorites),
-                R.drawable.ic_action_rating_important_dark,
-                FavoritesGridFragment.class));
+                R.drawable.ic_action_rating_important_dark));
 
         mContent.add(new PageItem(getString(R.string.sets),
-                R.drawable.collections_collection_dark,
-                PhotosetsFragment.class));
+                R.drawable.collections_collection_dark));
 
         mContent.add(new PageItem(getString(R.string.groups),
-                R.drawable.ic_action_social_group_dark,
-                GroupListFragment.class));
+                R.drawable.ic_action_social_group_dark));
 
         mContent.add(new PageItem(getString(R.string.explore),
-                R.drawable.ic_action_av_shuffle_dark,
-                RecentPublicPhotosFragment.class));
+                R.drawable.ic_action_av_shuffle_dark));
     }
 
     public void updateMenuListItems(boolean forceRefresh) {
@@ -339,18 +303,20 @@ public class MainActivity extends BaseActivity {
     private void initMenuDrawer() {
         mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_CONTENT);
         mMenuDrawer.setContentView(R.layout.main_activity);
-        mList = new MenuListView(this);
-        mMenuAdapter = new MenuAdapter();
-        mList.setDivider(null);
-        mList.setDividerHeight(0);
-        mList.setCacheColorHint(0);
-        mList.setBackgroundResource(R.drawable.navy_blue_tiled);
-        mList.setSelector(R.drawable.selectable_background_glimmrdark);
-        mList.setAdapter(mMenuAdapter);
-        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /* The drawable that replaces the up indicator in the action bar */
+        mMenuDrawer.setSlideDrawable(R.drawable.ic_drawer);
+        mMenuDrawer.setDrawerIndicatorEnabled(true);
+        MenuListView menuListView = new MenuListView(this);
+        menuListView.setDivider(null);
+        menuListView.setDividerHeight(0);
+        menuListView.setCacheColorHint(0);
+        menuListView.setBackgroundResource(R.drawable.navy_blue_tiled);
+        menuListView.setSelector(R.drawable.selectable_background_glimmrdark);
+        menuListView.setAdapter(mMenuAdapter);
+        menuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+                                    int position, long id) {
                 switch (mMenuAdapter.getItemViewType(position)) {
                     case MENU_DRAWER_ITEM:
                         mViewPager.setCurrentItem(position);
@@ -361,18 +327,18 @@ public class MainActivity extends BaseActivity {
                     case MENU_DRAWER_ACTIVITY_ITEM:
                         /* offset the position by number of content items + 1
                          * for the category item */
-                        startViewerForActivityItem(position-mContent.size()-1);
+                        startViewerForActivityItem(position - mContent.size() - 1);
                         break;
                 }
             }
         });
-        mList.setOnScrollChangedListener(
+        menuListView.setOnScrollChangedListener(
                 new MenuListView.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                mMenuDrawer.invalidate();
-            }
-        });
+                    @Override
+                    public void onScrollChanged() {
+                        mMenuDrawer.invalidate();
+                    }
+                });
 
         /* If first run, make the "up" button blink until clicked */
         final boolean isFirstRun = mPrefs.getBoolean(
@@ -382,7 +348,7 @@ public class MainActivity extends BaseActivity {
             mMenuDrawer.peekDrawer();
         }
 
-        mMenuDrawer.setMenuView(mList);
+        mMenuDrawer.setMenuView(menuListView);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
         mMenuDrawer.setOnDrawerStateChangeListener(
@@ -391,13 +357,14 @@ public class MainActivity extends BaseActivity {
                     public void onDrawerStateChange(int oldState,
                             int newState) {
                         if (newState == MenuDrawer.STATE_OPEN) {
-                            if (!mDisplayHomeAsUp) {
-                                mActionBar.setDisplayHomeAsUpEnabled(true);
-                            }
                             if (activityItemsNeedsUpdate()) {
                                 updateMenuListItems(false);
                             }
                         }
+                    }
+                    @Override
+                    public void onDrawerSlide(float openRatio,
+                            int offsetPixels) {
                     }
                 });
 
@@ -494,17 +461,16 @@ public class MainActivity extends BaseActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
         /* create adapter and bind to viewpager */
-        mPagerAdapter = new GlimmrPagerAdapter(
+        GlimmrPagerAdapter glimmrPagerAdapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager(), mViewPager, mActionBar,
                 mPageTitles.toArray(new String[mPageTitles.size()])) {
             @Override
             public SherlockFragment getItemImpl(int position) {
                 try {
-                    return (SherlockFragment)
-                        mContent.get(position).mFragmentClass.newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                    PageItem page = mContent.get(position);
+                    return GlimmrFragmentFactory.getInstance(MainActivity.this,
+                            page.mTitle, mUser);
+                } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                 }
                 return null;
@@ -525,20 +491,20 @@ public class MainActivity extends BaseActivity {
                 }
             }
         };
-        mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setAdapter(glimmrPagerAdapter);
 
         /* bind the listeners to either the indicator or the actionbar */
         mIndicator = (TitlePageIndicator) findViewById(R.id.indicator);
         if (mIndicator != null) {
-            mIndicator.setOnPageChangeListener(mPagerAdapter);
+            mIndicator.setOnPageChangeListener(glimmrPagerAdapter);
             mIndicator.setViewPager(mViewPager);
         } else {
-            mViewPager.setOnPageChangeListener(mPagerAdapter);
+            mViewPager.setOnPageChangeListener(glimmrPagerAdapter);
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
             for (PageItem page : mContent) {
                 ActionBar.Tab newTab =
                     mActionBar.newTab().setText(page.mTitle);
-                newTab.setTabListener(mPagerAdapter);
+                newTab.setTabListener(glimmrPagerAdapter);
                 mActionBar.addTab(newTab);
             }
         }
@@ -553,20 +519,18 @@ public class MainActivity extends BaseActivity {
     }
 
     private static final class PageItem {
-        public String mTitle;
-        public Integer mIconDrawable;
-        public Class mFragmentClass;
+        public final String mTitle;
+        public final Integer mIconDrawable;
 
-        PageItem(String title, int iconDrawable, Class fragmentClass) {
+        PageItem(String title, int iconDrawable) {
             mTitle = title;
             mIconDrawable = iconDrawable;
-            mFragmentClass = fragmentClass;
         }
     }
 
     private static final class MenuDrawerItem {
-        public String mTitle;
-        public int mIconRes;
+        public final String mTitle;
+        public final int mIconRes;
 
         MenuDrawerItem(String title, int iconRes) {
             mTitle = title;
@@ -575,7 +539,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private static final class MenuDrawerCategory {
-        public String mTitle;
+        public final String mTitle;
 
         MenuDrawerCategory(String title) {
             mTitle = title;
@@ -583,8 +547,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private static final class MenuDrawerActivityItem {
-        public String mTitle;
-        public int mIconRes;
+        public final String mTitle;
+        public final int mIconRes;
 
         MenuDrawerActivityItem(String title, int iconRes) {
             mTitle = title;
@@ -592,9 +556,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public static final int MENU_DRAWER_ITEM = 0;
-    public static final int MENU_DRAWER_CATEGORY_ITEM = 1;
-    public static final int MENU_DRAWER_ACTIVITY_ITEM = 2;
+    private static final int MENU_DRAWER_ITEM = 0;
+    private static final int MENU_DRAWER_CATEGORY_ITEM = 1;
+    private static final int MENU_DRAWER_ACTIVITY_ITEM = 2;
 
     private class MenuAdapter extends BaseAdapter {
         private List<Object> mItems;
@@ -707,6 +671,28 @@ public class MainActivity extends BaseActivity {
             }
 
             return v;
+        }
+    }
+
+    public static class GlimmrFragmentFactory {
+        public static SherlockFragment getInstance(Context context,
+                String name, User user) {
+            if (context.getString(R.string.contacts).equals(name))  {
+                return ContactsGridFragment.newInstance();
+            } else if (context.getString(R.string.photos).equals(name))  {
+                return PhotoStreamGridFragment.newInstance(user);
+            } else if (context.getString(R.string.favorites).equals(name))  {
+                return FavoritesGridFragment.newInstance(user);
+            } else if (context.getString(R.string.sets).equals(name))  {
+                return PhotosetsFragment.newInstance(user);
+            } else if (context.getString(R.string.groups).equals(name))  {
+                return GroupListFragment.newInstance();
+            } else if (context.getString(R.string.explore).equals(name))  {
+                return RecentPublicPhotosFragment.newInstance();
+            } else {
+               throw new IllegalArgumentException(
+                       "Unknown fragment type requested: " + name);
+            }
         }
     }
 }

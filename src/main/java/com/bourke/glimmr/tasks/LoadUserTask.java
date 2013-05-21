@@ -15,17 +15,16 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
 
     private static final String TAG = "Glimmr/LoadUserTask";
 
-    private IUserReadyListener mListener;
-    private String mUserId;
-    private Activity mActivity;
+    private final IUserReadyListener mListener;
+    private final String mUserId;
 
     public LoadUserTask(Activity a, IUserReadyListener listener,
             String userId) {
-        mActivity = a;
         mListener = listener;
         mUserId = userId;
     }
@@ -37,9 +36,11 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
 
     @Override
     protected User doInBackground(OAuth... params) {
-        OAuth oauth = params[0];
+        OAuth oauth = null;
+        if (params.length > 0) {
+            oauth = params[0];
+        }
         if (oauth != null) {
-            User user = oauth.getUser();
             OAuthToken token = oauth.getToken();
             try {
                 Flickr f = FlickrHelper.getInstance().getFlickrAuthed(

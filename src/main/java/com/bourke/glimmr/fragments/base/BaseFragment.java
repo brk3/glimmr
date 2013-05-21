@@ -81,7 +81,7 @@ public abstract class BaseFragment extends SherlockFragment {
             (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(mActivity.getComponentName()));
-        if (mActivity.getUser() == null) {
+        if (mOAuth == null || mOAuth.getUser() == null) {
             menu.findItem(R.id.menu_login).setVisible(true);
         } else {
             menu.findItem(R.id.menu_login).setVisible(false);

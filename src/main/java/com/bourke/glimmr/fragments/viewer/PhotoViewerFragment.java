@@ -1,41 +1,30 @@
 package com.bourke.glimmr.fragments.viewer;
 
 import android.annotation.SuppressLint;
-
 import android.content.Intent;
-import android.content.res.Configuration;
-
 import android.graphics.Bitmap;
-
 import android.media.MediaScannerConnection;
-
 import android.net.Uri;
-
 import android.os.Bundle;
 import android.os.Environment;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
-
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.BusProvider;
@@ -43,29 +32,18 @@ import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoSizesReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
 import com.bourke.glimmr.tasks.LoadPhotoSizesTask;
 import com.bourke.glimmr.tasks.SetFavoriteTask;
-
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.Size;
-
 import com.squareup.otto.Subscribe;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.List;
-
 import uk.co.senab.photoview.PhotoViewAttacher;
 import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
+
+import java.io.*;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener,
@@ -79,9 +57,7 @@ public final class PhotoViewerFragment extends BaseFragment
     private Photo mPhotoExtendedInfo;
     private MenuItem mFavoriteButton;
     private LoadPhotoInfoTask mTask;
-    private AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
-    private Configuration mConfiguration;
-    private ImageView mImageView;
+    private final AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
     private ImageView mVideoButton;
     private PhotoViewAttacher mAttacher;
     private TextView mTextViewTitle;
@@ -130,7 +106,6 @@ public final class PhotoViewerFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         if (Constants.DEBUG) Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        mConfiguration = mActivity.getResources().getConfiguration();
     }
 
     @Override
@@ -139,7 +114,7 @@ public final class PhotoViewerFragment extends BaseFragment
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
-        mImageView = (ImageView) mLayout.findViewById(R.id.image);
+        ImageView mImageView = (ImageView) mLayout.findViewById(R.id.image);
         mVideoButton = (ImageView) mLayout.findViewById(
                 R.id.play_video_overlay);
         mAttacher = new PhotoViewAttacher(mImageView);
@@ -216,8 +191,13 @@ public final class PhotoViewerFragment extends BaseFragment
                 onFavoriteButtonClick();
                 return true;
             case R.id.menu_view_profile:
-                ProfileActivity.startProfileViewer(
-                        mActivity, mBasePhoto.getOwner());
+                Intent profileViewer = new Intent(mActivity,
+                        ProfileActivity.class);
+                profileViewer.putExtra(ProfileActivity.KEY_PROFILE_ID,
+                        mBasePhoto.getOwner().getId());
+                profileViewer.setAction(
+                        ProfileActivity.ACTION_VIEW_USER_BY_ID);
+                startActivity(profileViewer);
                 return true;
             case R.id.menu_save_image:
                 saveImageToExternalStorage();
@@ -238,7 +218,7 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     public void onFavoriteButtonClick() {
-        if (mActivity.getUser() == null) {
+        if (mOAuth == null || mOAuth.getUser() == null) {
             Toast.makeText(mActivity, getString(R.string.login_required),
                     Toast.LENGTH_SHORT).show();
             return;
@@ -497,8 +477,8 @@ public final class PhotoViewerFragment extends BaseFragment
      * Event published when the main photo is clicked.
      */
     public static class PhotoViewerVisibilityChangeEvent<T> {
-        public boolean visible;
-        public T sender;
+        public final boolean visible;
+        public final T sender;
 
         public PhotoViewerVisibilityChangeEvent(final boolean visible,
                 final T sender) {

@@ -17,13 +17,14 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadCommentsTask
         extends AsyncTask<OAuth, Void, List<Comment>> {
 
     private static final String TAG = "Glimmr/LoadCommentsTask";
 
-    private ICommentsReadyListener mListener;
-    private Photo mPhoto;
+    private final ICommentsReadyListener mListener;
+    private final Photo mPhoto;
 
     public LoadCommentsTask(ICommentsReadyListener listener, Photo photo) {
         mListener = listener;

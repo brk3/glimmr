@@ -14,6 +14,7 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
 
+@SuppressWarnings("EmptyMethod")
 public class ContactsGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/ContactsGridFragment";
@@ -21,11 +22,8 @@ public class ContactsGridFragment extends PhotoGridFragment {
     public static final String KEY_NEWEST_CONTACT_PHOTO_ID =
         "glimmr_newest_contact_photo_id";
 
-    protected LoadContactsPhotosTask mTask;
-
     public static ContactsGridFragment newInstance() {
-        ContactsGridFragment newFragment = new ContactsGridFragment();
-        return newFragment;
+        return new ContactsGridFragment();
     }
 
     /**
@@ -35,7 +33,6 @@ public class ContactsGridFragment extends PhotoGridFragment {
      */
     @Override
     protected boolean cacheInBackground() {
-        Log.d(getLogTag(), "cacheInBackground");
         startTask(mPage++);
         return mMorePages;
     }
@@ -43,8 +40,7 @@ public class ContactsGridFragment extends PhotoGridFragment {
     private void startTask(int page) {
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadContactsPhotosTask(this, page);
-        mTask.execute(mOAuth);
+        new LoadContactsPhotosTask(this, page).execute(mOAuth);
     }
 
     @Override
@@ -56,8 +52,7 @@ public class ContactsGridFragment extends PhotoGridFragment {
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        String newestId = prefs.getString(KEY_NEWEST_CONTACT_PHOTO_ID, null);
-        return newestId;
+        return prefs.getString(KEY_NEWEST_CONTACT_PHOTO_ID, null);
     }
 
     @Override

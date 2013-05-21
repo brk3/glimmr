@@ -3,31 +3,21 @@ package com.bourke.glimmr.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.net.Uri;
-
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-
 import android.util.Log;
-
 import android.widget.Toast;
-
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
-
 import com.androidquery.AQuery;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
-import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmr.fragments.LoginFragment;
-import com.bourke.glimmr.R;
+import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmr.tasks.GetAccessTokenTask;
-
-import com.googlecode.flickrjandroid.people.User;
 
 /**
  * Hosts fragments that don't require log in.
@@ -35,15 +25,17 @@ import com.googlecode.flickrjandroid.people.User;
 public class ExploreActivity extends BaseActivity
         implements LoginFragment.IOnNotNowClicked {
 
-    public static final String TAG = "Glimmr/ExploreActivity";
+    private static final String TAG = "Glimmr/ExploreActivity";
 
-    public static final String KEY_LOGIN_LATER_SELECTED =
+    private static final String KEY_LOGIN_LATER_SELECTED =
         "glimmr_login_later_selected";
 
-    public static final int INTERESTING_PAGE = 0;
+    public static final int ACTIVITY_RESULT_EXIT = 0;
+
+    private static final int INTERESTING_PAGE = 0;
     //public static final int TAGS_PAGE = 1;
 
-    public static String[] CONTENT;
+    private static String[] CONTENT;
 
     private LoginFragment mLoginFragment;
 
@@ -69,6 +61,18 @@ public class ExploreActivity extends BaseActivity
     public void onResume() {
         super.onResume();
         refreshLoginFragment();
+    }
+
+    @Override
+    public void onBackPressed() {
+        /* If user presses back and the login fragment is showing, hide it.
+         * Otherwise signal to the parent activity to finish */
+        if (mLoginFragment.isVisible()) {
+            onNotNowClicked();
+        } else {
+            setResult(ACTIVITY_RESULT_EXIT);
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -189,10 +193,5 @@ public class ExploreActivity extends BaseActivity
         } else {
             setLoginFragmentVisibility(true);
         }
-    }
-
-    @Override
-    public User getUser() {
-        return mUser;
     }
 }

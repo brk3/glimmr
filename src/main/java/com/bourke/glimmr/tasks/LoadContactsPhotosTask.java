@@ -18,13 +18,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadContactsPhotosTask
         extends AsyncTask<OAuth, Void, List<Photo>> {
 
     private static final String TAG = "Glimmr/LoadContactsPhotosTask";
 
-    private IPhotoListReadyListener mListener;
-    private int mPage;
+    private final IPhotoListReadyListener mListener;
+    private final int mPage;
 
     public LoadContactsPhotosTask(IPhotoListReadyListener listener, int page) {
         mListener = listener;
@@ -41,8 +42,6 @@ public class LoadContactsPhotosTask
         OAuth oauth = params[0];
         if (oauth != null) {
             OAuthToken token = oauth.getToken();
-            User user = oauth.getUser();
-
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
             try {

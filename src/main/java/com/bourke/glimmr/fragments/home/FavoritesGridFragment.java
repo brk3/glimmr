@@ -2,27 +2,26 @@ package com.bourke.glimmr.fragments.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.util.Log;
-
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadFavoritesTask;
-
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 public class FavoritesGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/FavoritesGridFragment";
 
-    public static final String KEY_NEWEST_FAVORITES_PHOTO_ID =
+    private static final String KEY_NEWEST_FAVORITES_PHOTO_ID =
         "glimmr_newest_favorites_photo_id";
 
-    protected LoadFavoritesTask mTask;
+    private User mUserToView;
 
-    public static FavoritesGridFragment newInstance() {
-        FavoritesGridFragment newFragment = new FavoritesGridFragment();
-        return newFragment;
+    public static FavoritesGridFragment newInstance(User userToView) {
+        FavoritesGridFragment f = new FavoritesGridFragment();
+        f.mUserToView = userToView;
+        return f;
     }
 
     /**
@@ -38,16 +37,14 @@ public class FavoritesGridFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        mTask = new LoadFavoritesTask(this, mActivity.getUser(), page);
-        mTask.execute(mOAuth);
+        new LoadFavoritesTask(this, mUserToView, page).execute(mOAuth);
     }
 
     @Override
     public String getNewestPhotoId() {
         SharedPreferences prefs = mActivity.getSharedPreferences(Constants
                 .PREFS_NAME, Context.MODE_PRIVATE);
-        String newestId = prefs.getString(KEY_NEWEST_FAVORITES_PHOTO_ID, null);
-        return newestId;
+        return prefs.getString(KEY_NEWEST_FAVORITES_PHOTO_ID, null);
     }
 
     @Override

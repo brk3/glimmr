@@ -18,13 +18,14 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@SuppressWarnings("EmptyMethod")
 public class LoadExifInfoTask
         extends AsyncTask<OAuth, Void, Collection<Exif>> {
 
     private static final String TAG = "Glimmr/LoadExifInfoTask";
 
-    private IExifInfoReadyListener mListener;
-    private Photo mPhoto;
+    private final IExifInfoReadyListener mListener;
+    private final Photo mPhoto;
     private Exception mException = null;
 
     public LoadExifInfoTask(IExifInfoReadyListener listener, Photo photo) {
