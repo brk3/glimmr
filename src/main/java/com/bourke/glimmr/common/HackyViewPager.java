@@ -35,6 +35,10 @@ public class HackyViewPager extends ViewPager {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return false;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            /* https://github.com/chrisbanes/PhotoView/issues/36 */
+            e.printStackTrace();
+            return false;
         }
     }
 
