@@ -22,6 +22,7 @@ import com.bourke.glimmrpro.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmrpro.tasks.LoadFlickrActivityTask;
 import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
+import com.bourke.glimmrpro.services.GlimmrNotificationHandler;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -255,16 +256,9 @@ public class ActivityNotificationHandler
      * MainActivity when the notification is pressed.
      */
     private PendingIntent getPendingIntent(Photo photo) {
-        List<Photo> photos = new ArrayList<Photo>();
-        photos.add(photo);
-        GsonHelper gsonHelper = new GsonHelper(mContext);
-        gsonHelper.marshallObject(photos, PhotoViewerActivity.PHOTO_LIST_FILE);
-
         Intent photoViewer = new Intent(mContext, PhotoViewerActivity.class);
-        photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTOVIEWER_START_INDEX,
-                0);
-        photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,
-                PhotoViewerActivity.PHOTO_LIST_FILE);
+        photoViewer.setAction(PhotoViewerActivity.ACTION_VIEW_PHOTO_BY_ID);
+        photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_ID, photo.getId());
         photoViewer.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(mContext, 0, photoViewer, 0);
     }
