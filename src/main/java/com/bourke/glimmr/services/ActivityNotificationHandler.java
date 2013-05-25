@@ -3,51 +3,37 @@ package com.bourke.glimmr.services;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
 import android.preference.PreferenceManager;
-
 import android.support.v4.app.NotificationCompat;
-
 import android.util.Log;
-
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadFlickrActivityTask;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
-
 import com.commonsware.cwac.wakeful.WakefulIntentService;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.photos.Photo;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
-import java.lang.System;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static junit.framework.Assert.*;
 
 /**
  * This class refers to Flickr activity such as comments, faves, etc., not
@@ -269,16 +255,9 @@ public class ActivityNotificationHandler
      * MainActivity when the notification is pressed.
      */
     private PendingIntent getPendingIntent(Photo photo) {
-        List<Photo> photos = new ArrayList<Photo>();
-        photos.add(photo);
-        GsonHelper gsonHelper = new GsonHelper(mContext);
-        gsonHelper.marshallObject(photos, PhotoViewerActivity.PHOTO_LIST_FILE);
-
         Intent photoViewer = new Intent(mContext, PhotoViewerActivity.class);
-        photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTOVIEWER_START_INDEX,
-                0);
-        photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,
-                PhotoViewerActivity.PHOTO_LIST_FILE);
+        photoViewer.setAction(PhotoViewerActivity.ACTION_VIEW_PHOTO_BY_ID);
+        photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_ID, photo.getId());
         photoViewer.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(mContext, 0, photoViewer, 0);
     }
