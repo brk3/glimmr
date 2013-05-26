@@ -2,5 +2,8 @@
 <resources>
     <dimen name="gridview_item_size">200dp</dimen>
     <dimen name="gridview_item_text_size">@dimen/text_size_small</dimen>
+
+    <!-- Max width recommended by the android design guide -->
+    <dimen name="menudrawerWidth">320dp</dimen>
 </resources>
 
