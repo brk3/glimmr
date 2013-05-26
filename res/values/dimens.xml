@@ -15,7 +15,8 @@
     <dimen name="secondaryTextTopMargin">60sp</dimen>
     <dimen name="secondaryTextSize">22sp</dimen>
 
-    <dimen name="menudrawerWidth">220dp</dimen>
+    <!--As shown in the android design guide-->
+    <dimen name="menudrawerWidth">240dp</dimen>
 
     <!-- (number of cells * 74) - 2
         2x2 = 146x146
