@@ -142,14 +142,6 @@ public final class PhotoOverviewFragment extends BaseFragment
         mTask.execute(mOAuth);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mTask != null) {
-            mTask.cancel(true);
-        }
-    }
-
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 

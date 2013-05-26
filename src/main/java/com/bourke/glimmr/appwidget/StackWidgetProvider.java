@@ -41,7 +41,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
             Intent photoViewer = new Intent(context,
                     PhotoViewerActivity.class);
             photoViewer.putExtra(
-                    PhotoViewerActivity.KEY_PHOTOVIEWER_START_INDEX,
+                    PhotoViewerActivity.KEY_START_INDEX,
                     viewIndex);
             photoViewer.setAction(PhotoViewerActivity.ACTION_VIEW_PHOTOLIST);
             photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,

@@ -68,17 +68,17 @@ public class LinkInterceptorActivity extends SherlockActivity {
     /* Profile: http://www.flickr.com/people/{user-id}|{user-name}/ */
     private void parseProfile(Uri uri, List<String> params) {
         if (params.size() > 1) {
-            Intent profileViewer = new Intent(this, com.bourke.glimmrpro.activities.ProfileActivity.class);
+            Intent profileViewer = new Intent(this, ProfileViewerActivity.class);
             String s = params.get(1);
             if (isFlickrId(s)) {
                 profileViewer.putExtra(
-                        com.bourke.glimmrpro.activities.ProfileActivity.KEY_PROFILE_ID, s);
-                profileViewer.setAction(com.bourke.glimmrpro.activities.ProfileActivity
+                        ProfileViewerActivity.KEY_PROFILE_ID, s);
+                profileViewer.setAction(ProfileViewerActivity
                         .ACTION_VIEW_USER_BY_ID);
             } else {
                 profileViewer.putExtra(
-                        com.bourke.glimmrpro.activities.ProfileActivity.KEY_PROFILE_URL, uri.toString());
-                profileViewer.setAction(com.bourke.glimmrpro.activities.ProfileActivity
+                        ProfileViewerActivity.KEY_PROFILE_URL, uri.toString());
+                profileViewer.setAction(ProfileViewerActivity
                         .ACTION_VIEW_USER_BY_URL);
             }
             startActivity(profileViewer);

@@ -2,7 +2,6 @@ package com.bourke.glimmrpro.fragments.viewer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -12,17 +11,19 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.androidquery.AQuery;
-import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
+import com.bourke.glimmrpro.activities.ProfileViewerActivity;
+import com.bourke.glimmrpro.common.GsonHelper;
+import com.bourke.glimmrpro.tasks.LoadCommentsTask;
 import com.bourke.glimmrpro.R;
-import com.bourke.glimmrpro.activities.ProfileActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.ICommentAddedListener;
 import com.bourke.glimmrpro.event.Events.ICommentsReadyListener;
 import com.bourke.glimmrpro.event.Events.IUserReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
 import com.bourke.glimmrpro.tasks.AddCommentTask;
-import com.bourke.glimmrpro.tasks.LoadCommentsTask;
 import com.bourke.glimmrpro.tasks.LoadUserTask;
+import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
@@ -36,8 +37,10 @@ public final class CommentsFragment extends BaseDialogFragment
 
     private static final String TAG = "Glimmr/CommentsFragment";
 
+    private static final String KEY_PHOTO =
+            "com.bourke.glimmr.CommentsFragment.KEY_PHOTO";
+
     private LoadCommentsTask mTask;
-    private Photo mPhoto;
     private ArrayAdapter<Comment> mAdapter;
     private final Map<String, UserItem> mUsers = Collections.synchronizedMap(
             new HashMap<String, UserItem>());
@@ -45,6 +48,8 @@ public final class CommentsFragment extends BaseDialogFragment
     private PrettyTime mPrettyTime;
     private ProgressBar mProgressBar;
     private ListView mListView;
+
+    private Photo mPhoto;
 
     public static CommentsFragment newInstance(Photo p) {
         CommentsFragment f = new CommentsFragment();
@@ -57,6 +62,25 @@ public final class CommentsFragment extends BaseDialogFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, 0);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        new GsonHelper(mActivity).marshallObject(mPhoto, outState, KEY_PHOTO);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mPhoto == null) {
+            String json = savedInstanceState.getString(KEY_PHOTO);
+            if (json != null) {
+                mPhoto = new Gson().fromJson(json, Photo.class);
+            } else {
+                Log.e(TAG, "No stored photo found in savedInstanceState");
+            }
+        }
     }
 
     @Override
@@ -91,32 +115,10 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (Constants.DEBUG) Log.d(TAG, "onPause");
-
-        if (mTask != null) {
-            mTask.cancel(true);
-        }
-
-        /* Also stop any remaining LoadUserTasks */
-        for (AsyncTask loadUserTask : mLoadUserTasks) {
-            loadUserTask.cancel(true);
-        }
-    }
-
-    @Override
     protected void startTask() {
         super.startTask();
-        if (mPhoto != null) {
-            if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
-            mTask = new LoadCommentsTask(this, mPhoto);
-            mTask.execute(mOAuth);
-        } else {
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "startTask: mPhoto is null");
-            }
-        }
+        mTask = new LoadCommentsTask(this, mPhoto);
+        mTask.execute(mOAuth);
     }
 
     public void submitButtonClicked() {
@@ -239,12 +241,12 @@ public final class CommentsFragment extends BaseDialogFragment
                             @Override
                             public void onClick(View v) {
                                 Intent profileViewer = new Intent(mActivity,
-                                        ProfileActivity.class);
+                                        ProfileViewerActivity.class);
                                 profileViewer.putExtra(
-                                        ProfileActivity.KEY_PROFILE_ID,
+                                        ProfileViewerActivity.KEY_PROFILE_ID,
                                         author.user.getId());
                                 profileViewer.setAction(
-                                        ProfileActivity.ACTION_VIEW_USER_BY_ID);
+                                        ProfileViewerActivity.ACTION_VIEW_USER_BY_ID);
                                 startActivity(profileViewer);
                             }
                         });

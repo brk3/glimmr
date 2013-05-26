@@ -63,15 +63,6 @@ public final class ExifInfoFragment extends BaseFragment
         mTask.execute(mOAuth);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mTask != null) {
-            mTask.cancel(true);
-            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
-        }
-    }
-
     /**
      * Creates a TableRow with two columns containing TextViews, and adds it to
      * the main TableView.

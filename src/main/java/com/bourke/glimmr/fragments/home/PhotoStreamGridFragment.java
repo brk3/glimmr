@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.bourke.glimmrpro.common.GsonHelper;
+import com.bourke.glimmrpro.tasks.LoadPhotostreamTask;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
-import com.bourke.glimmrpro.tasks.LoadPhotostreamTask;
+import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
@@ -19,6 +21,8 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
 
     private static final String KEY_NEWEST_PHOTOSTREAM_PHOTO_ID =
         "glimmr_newest_photostream_photo_id";
+    private static final String KEY_USER =
+        "com.bourke.glimmr.PhotoStreamGridFragment.KEY_USER";
 
     private User mUserToView;
 
@@ -45,6 +49,26 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        new GsonHelper(mActivity).marshallObject(
+                mUserToView, outState, KEY_USER);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mUserToView == null) {
+            String json = savedInstanceState.getString(KEY_USER);
+            if (json != null) {
+                mUserToView = new Gson().fromJson(json, User.class);
+            } else {
+                Log.e(TAG, "No stored user found in savedInstanceState");
+            }
+        }
+    }
+
+    @Override
     protected boolean shouldRetainInstance() {
         return mRetainInstance;
     }
@@ -57,7 +81,6 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* Set to false to disable overlay */
         mShowDetailsOverlay = true;
     }
 

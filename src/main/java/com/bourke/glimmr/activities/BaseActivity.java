@@ -28,12 +28,12 @@ import com.actionbarsherlock.widget.SearchView;
 import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
+import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrAbCustomTitle;
 import com.bourke.glimmrpro.common.OAuthUtils;
 import com.bourke.glimmrpro.common.TextUtils;
-import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -55,7 +55,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     protected AQuery mAq;
     protected ActionBar mActionBar;
-
     protected TextUtils mTextUtils;
 
     @Override
@@ -131,12 +130,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (Constants.DEBUG) {
-            Log.d(getLogTag(), "onDestroy");
-        }
+        if (Constants.DEBUG) Log.d(getLogTag(), "onDestroy");
         if (isTaskRoot()) {
-            if (Constants.DEBUG)
-                Log.d(getLogTag(), "Trimming file cache");
+            if (Constants.DEBUG) Log.d(getLogTag(), "Trimming file cache");
             AQUtility.cleanCacheAsync(this, Constants.CACHE_TRIM_TRIGGER_SIZE,
                     Constants.CACHE_TRIM_TARGET_SIZE);
         }

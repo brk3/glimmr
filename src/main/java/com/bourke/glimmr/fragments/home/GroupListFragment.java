@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
-import com.bourke.glimmrpro.fragments.group.AddToGroupDialogFragment;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.activities.GroupViewerActivity;
@@ -24,6 +23,7 @@ import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.GroupItemLongClickDialogListener;
 import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.group.AddToGroupDialogFragment;
 import com.bourke.glimmrpro.tasks.LoadGroupsTask;
 import com.googlecode.flickrjandroid.groups.Group;
 

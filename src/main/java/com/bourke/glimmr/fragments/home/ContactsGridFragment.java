@@ -8,9 +8,6 @@ import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
 import com.bourke.glimmrpro.tasks.LoadContactsPhotosTask;
 import com.googlecode.flickrjandroid.photos.Photo;
 
-import java.util.List;
-
-@SuppressWarnings("EmptyMethod")
 public class ContactsGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/ContactsGridFragment";
@@ -37,11 +34,6 @@ public class ContactsGridFragment extends PhotoGridFragment {
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         new LoadContactsPhotosTask(this, page).execute(mOAuth);
-    }
-
-    @Override
-    public void onPhotosReady(List<Photo> photos) {
-        super.onPhotosReady(photos);
     }
 
     @Override
