@@ -1,33 +1,27 @@
 package com.bourke.glimmr.fragments.photoset;
 
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentTransaction;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import com.bourke.glimmr.R;
+import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TaskQueueDelegateFactory;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tape.AddToPhotosetTaskQueueService;
 import com.bourke.glimmr.tasks.AddItemToPhotosetTask;
-
-import com.googlecode.flickrjandroid.photosets.Photoset;
+import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.photos.Photo;
-
+import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.squareup.tape.TaskQueue;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -48,6 +42,8 @@ public class AddToPhotosetDialogFragment extends BaseDialogFragment {
     public static final String TAG = "Glimmr/AddToPhotosetDialogFragment";
 
     public static final String QUEUE_FILE = "photoset_task_queue.json";
+    public static final String KEY_PHOTOSET =
+            "com.bourke.glimmr.AddToPhotosetDialogFragment.KEY_PHOTOSET";
 
     private Photoset mPhotoset;
     private TaskQueue mQueue;
@@ -67,6 +63,26 @@ public class AddToPhotosetDialogFragment extends BaseDialogFragment {
         mQueue = new TaskQueue(factory.get(QUEUE_FILE,
                 AddItemToPhotosetTask.class));
         setStyle(STYLE_NO_TITLE, 0);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        new GsonHelper(mActivity).marshallObject(
+                mPhotoset, outState, KEY_PHOTOSET);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mPhotoset == null) {
+            String json = savedInstanceState.getString(KEY_PHOTOSET);
+            if (json != null) {
+                mPhotoset = new Gson().fromJson(json, Photoset.class);
+            } else {
+                Log.e(TAG, "No stored photoset found in savedInstanceState");
+            }
+        }
     }
 
     @Override

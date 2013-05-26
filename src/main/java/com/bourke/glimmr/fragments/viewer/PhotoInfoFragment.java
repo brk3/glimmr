@@ -1,28 +1,18 @@
 package com.bourke.glimmr.fragments.viewer;
 
 import android.os.Bundle;
-
 import android.support.v4.view.ViewPager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.LinearLayout;
-
 import com.actionbarsherlock.app.SherlockFragment;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
-import com.bourke.glimmr.fragments.viewer.ExifInfoFragment;
-import com.bourke.glimmr.R;
-
 import com.googlecode.flickrjandroid.photos.Photo;
-
 import com.viewpagerindicator.PageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
-import android.util.Log;
 
 public class PhotoInfoFragment extends BaseDialogFragment {
 

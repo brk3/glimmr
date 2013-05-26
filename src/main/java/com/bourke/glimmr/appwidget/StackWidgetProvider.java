@@ -1,24 +1,17 @@
 package com.bourke.glimmr.appwidget;
 
 import android.annotation.TargetApi;
-
 import android.app.PendingIntent;
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-
 import android.content.Context;
 import android.content.Intent;
-
 import android.net.Uri;
-
 import android.util.Log;
-
 import android.widget.RemoteViews;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.R;
 
 @TargetApi(11)
 public class StackWidgetProvider extends AppWidgetProvider {
@@ -48,7 +41,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
             Intent photoViewer = new Intent(context,
                     PhotoViewerActivity.class);
             photoViewer.putExtra(
-                    PhotoViewerActivity.KEY_PHOTOVIEWER_START_INDEX,
+                    PhotoViewerActivity.KEY_START_INDEX,
                     viewIndex);
             photoViewer.setAction(PhotoViewerActivity.ACTION_VIEW_PHOTOLIST);
             photoViewer.putExtra(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,

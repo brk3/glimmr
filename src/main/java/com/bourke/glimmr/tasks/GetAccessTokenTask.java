@@ -1,10 +1,8 @@
 package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
-
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
-
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthInterface;

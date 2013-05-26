@@ -21,13 +21,13 @@ import com.bourke.glimmr.tasks.LoadUserTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 
-public class ProfileActivity extends BottomOverlayActivity
+public class ProfileViewerActivity extends BottomOverlayActivity
         implements IUserReadyListener {
 
-    private static final String TAG = "Glimmr/ProfileActivity";
+    private static final String TAG = "Glimmr/ProfileViewerActivity";
 
-    private static final String PROFILEVIEWER_USER_FILE =
-            "glimmr_profilevieweractivity_user.json";
+    private static final String KEY_USER =
+            "com.bourke.glimmr.ProfileViewerActivity.KEY_USER";
 
     public static final String ACTION_VIEW_USER_BY_ID =
             "com.bourke.glimmr.ACTION_VIEW_USER_BY_ID";
@@ -57,8 +57,8 @@ public class ProfileActivity extends BottomOverlayActivity
                 @Override
                 public void onProfileIdReady(String profileId) {
                     if (profileId != null) {
-                        new LoadUserTask(ProfileActivity.this,
-                                ProfileActivity.this, profileId).execute();
+                        new LoadUserTask(ProfileViewerActivity.this,
+                                ProfileViewerActivity.this, profileId).execute();
                     } else {
                         Log.e(TAG, "Couldn't fetch profileId");
                     }
@@ -72,27 +72,23 @@ public class ProfileActivity extends BottomOverlayActivity
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
-        if (!new GsonHelper(this)
-                .marshallObject(mUser, PROFILEVIEWER_USER_FILE)) {
-            Log.e(TAG, "Error marshalling user, cannot start viewer");
-        }
+        new GsonHelper(this).marshallObject(mUser, bundle, KEY_USER);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
+        Gson gson = new Gson();
         if (mUser == null) {
-            String json = new GsonHelper(this)
-                    .loadJson(PROFILEVIEWER_USER_FILE);
-            if (json.length() == 0) {
-                Log.e(TAG, String.format("Error reading %s",
-                        PROFILEVIEWER_USER_FILE));
-                return;
+            String json = bundle.getString(KEY_USER);
+            if (json != null) {
+                mUser = gson.fromJson(json, User.class);
+            } else {
+                Log.e(TAG, "No user found in savedInstanceState");
             }
-            mUser = new Gson().fromJson(json, User.class);
-            initViewPager();
-            updateBottomOverlay();
         }
+        initViewPager();
+        updateBottomOverlay();
     }
 
     @Override

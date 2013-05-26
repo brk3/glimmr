@@ -8,12 +8,12 @@ mvn install:install-file \
     -Dversion=17 \
     -Dpackaging=jar
 
-# Android support lib r11
+# Android support lib v4
 mvn install:install-file \
-    -Dfile=$ANDROID_HOME/extras/android/support/v4/android-support-v4.jar \
+    -Dfile=libs/android-support-v4.jar \
     -DgroupId=com.google.android \
     -DartifactId=support-v4 \
-    -Dversion=r11 \
+    -Dversion=r13 \
     -Dpackaging=jar
 
 # jars

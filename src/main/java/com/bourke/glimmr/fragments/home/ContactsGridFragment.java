@@ -2,19 +2,12 @@ package com.bourke.glimmr.fragments.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.util.Log;
-
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadContactsPhotosTask;
-
 import com.googlecode.flickrjandroid.photos.Photo;
 
-import java.util.List;
-
-@SuppressWarnings("EmptyMethod")
 public class ContactsGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/ContactsGridFragment";
@@ -41,11 +34,6 @@ public class ContactsGridFragment extends PhotoGridFragment {
         super.startTask();
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         new LoadContactsPhotosTask(this, page).execute(mOAuth);
-    }
-
-    @Override
-    public void onPhotosReady(List<Photo> photos) {
-        super.onPhotosReady(photos);
     }
 
     @Override

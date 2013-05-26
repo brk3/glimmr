@@ -1,7 +1,7 @@
 package com.bourke.glimmr.fragments.search;
 
-import com.bourke.glimmr.tasks.SearchPhotosTask;
 import android.util.Log;
+import com.bourke.glimmr.tasks.SearchPhotosTask;
 
 public class PublicPhotoSearchGridFragment
         extends AbstractPhotoSearchGridFragment {

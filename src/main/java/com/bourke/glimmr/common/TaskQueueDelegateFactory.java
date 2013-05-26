@@ -1,11 +1,8 @@
 package com.bourke.glimmr.common;
 
 import android.content.Context;
-
 import com.bourke.glimmr.tape.GsonConverter;
-
 import com.google.gson.Gson;
-
 import com.squareup.tape.FileObjectQueue;
 import com.squareup.tape.FileObjectQueue.Converter;
 

@@ -1,31 +1,21 @@
 package com.bourke.glimmr.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
-
 import android.util.Log;
-
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
-import com.bourke.glimmr.common.OAuthUtils;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.services.AppListener;
 import com.bourke.glimmr.services.AppService;
-
 import com.commonsware.cwac.wakeful.WakefulIntentService;
-
-import com.googlecode.flickrjandroid.oauth.OAuth;
-import android.preference.EditTextPreference;
 
 public class PreferencesActivity extends SherlockPreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener{

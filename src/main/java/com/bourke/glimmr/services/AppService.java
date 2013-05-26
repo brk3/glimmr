@@ -1,17 +1,10 @@
 package com.bourke.glimmr.services;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-
 import android.util.Log;
-
-import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.Constants;
-
+import com.bourke.glimmr.common.OAuthUtils;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
-
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
 import java.util.ArrayList;

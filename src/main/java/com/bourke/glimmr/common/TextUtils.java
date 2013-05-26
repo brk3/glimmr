@@ -1,18 +1,13 @@
 package com.bourke.glimmr.common;
 
 import android.content.res.AssetManager;
-
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.Typeface;
-
 import android.text.Spannable;
+import android.text.TextPaint;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.TypefaceSpan;
-import android.text.TextPaint;
-
 import android.util.Log;
-
 import android.widget.TextView;
 
 public class TextUtils {
