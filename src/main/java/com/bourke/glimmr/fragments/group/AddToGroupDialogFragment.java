@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.bourke.glimmrpro.common.GsonHelper;
+import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.TaskQueueDelegateFactory;
@@ -20,9 +22,9 @@ import com.bourke.glimmrpro.event.Events.IGroupInfoReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment.PhotoGridItemClickedEvent;
 import com.bourke.glimmrpro.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
 import com.bourke.glimmrpro.tasks.AddItemToGroupTask;
 import com.bourke.glimmrpro.tasks.LoadGroupInfoTask;
+import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.Throttle;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -48,6 +50,9 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
         implements IGroupInfoReadyListener {
 
     public static final String TAG = "Glimmr/AddToGroupDialogFragment";
+
+    public static final String KEY_GROUP =
+            "com.bourke.glimmr.AddToGroupDialogFragment.KEY_GROUP";
 
     /* Can't see in api docs what the limit is when there's no throttle.  The
      * popular 'Black & White' group states 6, so go with that for now */
@@ -78,6 +83,25 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
                     AddItemToGroupTask.class));
         BusProvider.getInstance().register(this);
         setStyle(STYLE_NO_TITLE, 0);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        new GsonHelper(mActivity).marshallObject(mGroup, outState, KEY_GROUP);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mGroup == null) {
+            String json = savedInstanceState.getString(KEY_GROUP);
+            if (json != null) {
+                mGroup = new Gson().fromJson(json, Group.class);
+            } else {
+                Log.e(TAG, "No stored group found in savedInstanceState");
+            }
+        }
     }
 
     @Override

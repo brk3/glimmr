@@ -30,8 +30,8 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     private static final String KEY_NEWEST_PHOTOSET_PHOTO_ID =
         "glimmr_newest_photoset_photo_id";
-    private static final String PHOTOSET_FILE =
-        "glimmr_photosetfragment_photoset.json";
+    public static final String KEY_PHOTOSET =
+            "com.bourke.glimmr.PhotosetGridFragment.KEY_PHOTOSET";
 
     private Photoset mPhotoset;
 
@@ -90,17 +90,28 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        if (mPhotoset == null) {
-            loadPhotoset();
-        }
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         new LoadPhotosetPhotosTask(this, mPhotoset, page).execute(mOAuth);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        new GsonHelper(mActivity).marshallObject(mPhotoset, PHOTOSET_FILE);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        new GsonHelper(mActivity).marshallObject(
+                mPhotoset, outState, KEY_PHOTOSET);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mPhotoset == null) {
+            String json = savedInstanceState.getString(KEY_PHOTOSET);
+            if (json != null) {
+                mPhotoset = new Gson().fromJson(json, Photoset.class);
+            } else {
+                Log.e(TAG, "No stored photoset found in savedInstanceState");
+            }
+        }
     }
 
     @Override
@@ -121,20 +132,6 @@ public class PhotosetGridFragment extends PhotoGridFragment
                 mMorePages = false;
             }
         }
-    }
-
-    /**
-     * Load the last viewed set from storage for when the fragment gets
-     * destroyed.
-     */
-    public void loadPhotoset() {
-        GsonHelper gsonHelper = new GsonHelper(mActivity);
-        String json = gsonHelper.loadJson(PHOTOSET_FILE);
-        if (json.length() == 0) {
-            Log.e(TAG, String.format("Error reading %s", PHOTOSET_FILE));
-            return;
-        }
-        mPhotoset = new Gson().fromJson(json, Photoset.class);
     }
 
     @Override

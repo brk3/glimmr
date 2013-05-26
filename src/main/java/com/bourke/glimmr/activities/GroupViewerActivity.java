@@ -18,18 +18,14 @@ import com.bourke.glimmrpro.tasks.LoadGroupIdTask;
 import com.bourke.glimmrpro.tasks.LoadGroupInfoTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.groups.Group;
-import com.googlecode.flickrjandroid.people.User;
 
 public class GroupViewerActivity extends com.bourke.glimmrpro.activities.BottomOverlayActivity
         implements Events.IGroupInfoReadyListener {
 
     private static final String TAG = "Glimmr/GroupViewerActivity";
 
-    /* Persist group and user when activity stops */
-    private static final String GROUPVIEWER_GROUP_FILE =
-            "glimmr_groupvieweractivity_group.json";
-    private static final String GROUPVIEWER_USER_FILE =
-            "glimmr_groupvieweractivity_user.json";
+    private static final String KEY_GROUP =
+            "com.bourke.glimmr.GroupViewerActivity.KEY_GROUP";
 
     /* Intent actions */
     public static final String ACTION_VIEW_GROUP_BY_ID =
@@ -75,37 +71,22 @@ public class GroupViewerActivity extends com.bourke.glimmrpro.activities.BottomO
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         GsonHelper gson = new GsonHelper(this);
-        if (!gson.marshallObject(mGroup, GROUPVIEWER_GROUP_FILE)) {
-            Log.e(TAG, "onSaveInstanceState: Error marshalling group");
-        }
-        if (!gson.marshallObject(mUser, GROUPVIEWER_USER_FILE)) {
-            Log.e(TAG, "onSaveInstanceSTate: Error marshalling user");
-        }
+        gson.marshallObject(mGroup, bundle, KEY_GROUP);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle bundle) {
-        super.onRestoreInstanceState(bundle);
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
         if (mGroup == null) {
-            GsonHelper gsonHelper = new GsonHelper(this);
-            Gson gson = new Gson();
-            String json = gsonHelper.loadJson(GROUPVIEWER_GROUP_FILE);
-            if (json.length() == 0) {
-                Log.e(TAG, String.format("Error reading %s",
-                        GROUPVIEWER_GROUP_FILE));
-                return;
+            String json = savedInstanceState.getString(KEY_GROUP);
+            if (json != null) {
+                mGroup = new Gson().fromJson(json, Group.class);
+            } else {
+                Log.e(TAG, "No stored group found in savedInstanceState");
             }
-            mGroup = gson.fromJson(json, Group.class);
-            json = gsonHelper.loadJson(GROUPVIEWER_USER_FILE);
-            if (json.length() == 0) {
-                Log.e(TAG, String.format("Error reading %s",
-                        GROUPVIEWER_USER_FILE));
-                return;
-            }
-            mUser = gson.fromJson(json, User.class);
-            initViewPager();
-            updateBottomOverlay();
         }
+        initViewPager();
+        updateBottomOverlay();
     }
 
     @Override

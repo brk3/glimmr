@@ -22,7 +22,6 @@ import com.bourke.glimmrpro.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmrpro.tasks.LoadFlickrActivityTask;
 import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
-import com.bourke.glimmrpro.services.GlimmrNotificationHandler;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

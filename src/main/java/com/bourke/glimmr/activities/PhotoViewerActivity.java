@@ -48,32 +48,33 @@ public class PhotoViewerActivity extends BaseActivity
 
     private static final String TAG = "Glimmr/PhotoViewerActivity";
 
-    public static final String KEY_PHOTOVIEWER_START_INDEX =
-        "glimmr_photovieweractivity_start_index";
-    private static final String KEY_PHOTOVIEWER_CURRENT_INDEX =
-        "glimmr_photovieweractivity_current_index";
-    private static final String KEY_PHOTOVIEWER_COMMENTS_SHOWING =
-        "glimmr_photovieweractivity_comments_showing";
-    private static final String KEY_PHOTOVIEWER_INFO_SHOWING =
-        "glimmr_photovieweractivity_info_showing";
-    private static final String KEY_PHOTOVIEWER_ACTIONBAR_SHOW =
-        "glimmr_photovieweractivity_actionbar_show";
-    private static final String KEY_PHOTOVIEWER_SLIDESHOW_RUNNING =
-        "glimmr_photovieweractivity_slideshow_running";
-    public static final String KEY_PHOTO_LIST_FILE =
-        "com.bourke.glimmrpro.PHOTO_LIST_FILE";
-    public static final String PHOTO_LIST_FILE =
-        "glimmr_photovieweractivity_photolist.json";
+    public static final String KEY_START_INDEX =
+        "com.bourke.glimmr.PhotoViewerActivity.KEY_START_INDEX";
+    private static final String KEY_CURRENT_INDEX =
+        "com.bourke.glimmr.PhotoViewerActivity.KEY_CURRENT_INDEX";
+    private static final String KEY_COMMENTS_SHOWING =
+        "com.bourke.glimmr.PhotoViewerActivity.KEY_COMMENTS_SHOWING";
+    private static final String KEY_INFO_SHOWING =
+        "com.bourke.glimmr.PhotoViewerActivity.KEY_INFO_SHOWING";
+    private static final String KEY_ACTIONBAR_SHOW =
+        "com.bourke.glimmr.PhotoViewerActivity.KEY_ACTIONBAR_SHOW";
+    private static final String KEY_SLIDESHOW_RUNNING =
+        "com.bourke.glimmr.PhotoViewerActivity.KEY_SLIDESHOW_RUNNING";
     public static final String KEY_PHOTO_ID =
-        "com.bourke.glimmr.KEY_PHOTO_ID";
+        "com.bourke.glimmr.PhotoViewerActivity.KEY_PHOTO_ID";
     public static final String KEY_INTENT_CONSUMED =
-        "com.bourke.glimmr.KEY_INTENT_CONSUMED";
+        "com.bourke.glimmr.PhotoViewerActivity.KEY_INTENT_CONSUMED";
+
+    public static final String KEY_PHOTO_LIST_FILE =
+        "com.bourke.glimmr.PhotoViewerActivity.KEY_PHOTO_LIST_FILE";
+    public static final String PHOTO_LIST_FILE =
+        "PhotoViewerActivity_photolist.json";
 
     /* intent actions */
     public static final String ACTION_VIEW_PHOTO_BY_ID =
-            "com.bourke.glimmr.ACTION_VIEW_PHOTO_BY_ID";
+        "com.bourke.glimmr.ACTION_VIEW_PHOTO_BY_ID";
     public static final String ACTION_VIEW_PHOTOLIST =
-            "com.bourke.glimmr.ACTION_VIEW_PHOTOLIST";
+        "com.bourke.glimmr.ACTION_VIEW_PHOTOLIST";
 
     private List<Photo> mPhotos = new ArrayList<Photo>();
     private PhotoViewerPagerAdapter mAdapter;
@@ -99,7 +100,7 @@ public class PhotoViewerActivity extends BaseActivity
             Intent photoViewer =
                     new Intent(context, PhotoViewerActivity.class);
             photoViewer.setAction(ACTION_VIEW_PHOTOLIST);
-            photoViewer.putExtra(KEY_PHOTOVIEWER_START_INDEX, index);
+            photoViewer.putExtra(KEY_START_INDEX, index);
             photoViewer.putExtra(KEY_PHOTO_LIST_FILE, PHOTO_LIST_FILE);
             context.startActivity(photoViewer);
         } else {
@@ -126,7 +127,7 @@ public class PhotoViewerActivity extends BaseActivity
             return;
         }
         final int startIndex =
-                intent.getIntExtra(KEY_PHOTOVIEWER_START_INDEX, 0);
+                intent.getIntExtra(KEY_START_INDEX, 0);
         if (intent.getAction().equals(ACTION_VIEW_PHOTO_BY_ID)) {
             if (Constants.DEBUG) {
                 Log.d(TAG, "Received ACTION_VIEW_PHOTO_BY_ID intent");
@@ -239,15 +240,15 @@ public class PhotoViewerActivity extends BaseActivity
         // commitAllowingStateLoss doesn't help... Hence have to store pieces
         // of state manually that would otherwise be handled automatically.
         //super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putBoolean(KEY_PHOTOVIEWER_ACTIONBAR_SHOW,
+        savedInstanceState.putBoolean(KEY_ACTIONBAR_SHOW,
                 mActionBar.isShowing());
-        savedInstanceState.putInt(KEY_PHOTOVIEWER_CURRENT_INDEX,
+        savedInstanceState.putInt(KEY_CURRENT_INDEX,
                 mPager.getCurrentItem());
-        savedInstanceState.putBoolean(KEY_PHOTOVIEWER_COMMENTS_SHOWING,
+        savedInstanceState.putBoolean(KEY_COMMENTS_SHOWING,
                 mCommentsFragmentShowing);
-        savedInstanceState.putBoolean(KEY_PHOTOVIEWER_INFO_SHOWING,
+        savedInstanceState.putBoolean(KEY_INFO_SHOWING,
                 mPhotoInfoFragmentShowing);
-        savedInstanceState.putBoolean(KEY_PHOTOVIEWER_SLIDESHOW_RUNNING,
+        savedInstanceState.putBoolean(KEY_SLIDESHOW_RUNNING,
                 (mTimer != null));
         if (mPhotos != null) {
             if (!new GsonHelper(this)
@@ -272,7 +273,7 @@ public class PhotoViewerActivity extends BaseActivity
             }
         }
         boolean overlayOn = savedInstanceState.getBoolean(
-                KEY_PHOTOVIEWER_ACTIONBAR_SHOW, true);
+                KEY_ACTIONBAR_SHOW, true);
         if (overlayOn) {
             mActionBar.show();
             getWindow().addFlags(
@@ -287,12 +288,12 @@ public class PhotoViewerActivity extends BaseActivity
                     WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         }
         int pagerIndex = savedInstanceState.getInt(
-                KEY_PHOTOVIEWER_CURRENT_INDEX, 0);
+                KEY_CURRENT_INDEX, 0);
         initViewPager(pagerIndex, false);
         mCommentsFragmentShowing = savedInstanceState.getBoolean(
-                KEY_PHOTOVIEWER_COMMENTS_SHOWING, false);
+                KEY_COMMENTS_SHOWING, false);
         mPhotoInfoFragmentShowing = savedInstanceState.getBoolean(
-                KEY_PHOTOVIEWER_INFO_SHOWING, false);
+                KEY_INFO_SHOWING, false);
         boolean animateTransition = true;
         Photo photo = mPhotos.get(pagerIndex);
         if (mCommentsFragmentShowing) {
@@ -301,7 +302,7 @@ public class PhotoViewerActivity extends BaseActivity
             setPhotoInfoFragmentVisibility(photo, true, animateTransition);
         }
         if (savedInstanceState.getBoolean(
-                    KEY_PHOTOVIEWER_SLIDESHOW_RUNNING, false)) {
+                KEY_SLIDESHOW_RUNNING, false)) {
             startSlideshow();
         }
     }
