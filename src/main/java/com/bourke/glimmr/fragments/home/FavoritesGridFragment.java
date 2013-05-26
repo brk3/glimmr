@@ -2,10 +2,13 @@ package com.bourke.glimmr.fragments.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadFavoritesTask;
+import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
@@ -15,6 +18,8 @@ public class FavoritesGridFragment extends PhotoGridFragment {
 
     private static final String KEY_NEWEST_FAVORITES_PHOTO_ID =
         "glimmr_newest_favorites_photo_id";
+    private static final String KEY_USER =
+            "com.bourke.glimmr.FavoritesGridFragment.KEY_USER";
 
     private User mUserToView;
 
@@ -22,6 +27,26 @@ public class FavoritesGridFragment extends PhotoGridFragment {
         FavoritesGridFragment f = new FavoritesGridFragment();
         f.mUserToView = userToView;
         return f;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        new GsonHelper(mActivity).marshallObject(
+                mUserToView, outState, KEY_USER);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mUserToView == null) {
+            String json = savedInstanceState.getString(KEY_USER);
+            if (json != null) {
+                mUserToView = new Gson().fromJson(json, User.class);
+            } else {
+                Log.e(TAG, "No stored user found in savedInstanceState");
+            }
+        }
     }
 
     /**

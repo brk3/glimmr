@@ -1,18 +1,18 @@
 package com.bourke.glimmr.event;
 
-import com.googlecode.flickrjandroid.tags.Tag;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
-import com.googlecode.flickrjandroid.photos.comments.Comment;
-import com.googlecode.flickrjandroid.photosets.Photosets;
-import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.googlecode.flickrjandroid.photos.Size;
+import com.googlecode.flickrjandroid.photos.comments.Comment;
+import com.googlecode.flickrjandroid.photosets.Photoset;
+import com.googlecode.flickrjandroid.photosets.Photosets;
+import com.googlecode.flickrjandroid.tags.Tag;
 
 import java.util.List;
-import com.googlecode.flickrjandroid.photos.Size;
 
 public class Events {
 

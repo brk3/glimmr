@@ -1,7 +1,7 @@
 package com.bourke.glimmr.common;
 
 import android.content.Context;
-
+import android.os.Bundle;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -29,6 +29,13 @@ public class GsonHelper {
             e.printStackTrace();
             return false;
         }
+        return true;
+    }
+
+    public boolean marshallObject(Object o, Bundle bundle, String key) {
+        Gson gson = new Gson();
+        String json = gson.toJson(o);
+        bundle.putString(key, json);
         return true;
     }
 

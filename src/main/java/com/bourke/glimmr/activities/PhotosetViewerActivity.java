@@ -25,12 +25,12 @@ public class PhotosetViewerActivity extends BottomOverlayActivity
 
     private static final String TAG = "Glimmr/PhotosetViewerActivity";
 
-    private static final String PHOTOSETVIEWER_SET_FILE =
-            "glimmr_photosetvieweractivity_set.json";
-    private static final String PHOTOSETVIEWER_USER_FILE =
-            "glimmr_photosetvieweractivity_user.json";
+    private static final String KEY_PHOTOSET =
+            "com.bourke.glimmr.PhotosetViewerActivity.KEY_PHOTOSET";
+    private static final String KEY_USER =
+            "com.bourke.glimmr.PhotosetViewerActivity.KEY_USER";
     private static final String KEY_PHOTOSET_ID =
-            "com.bourke.glimmr.KEY_PHOTOSET_ID";
+            "com.bourke.glimmr.PhotosetViewerActivity.KEY_PHOTOSET_ID";
 
     private static final String ACTION_VIEW_SET_BY_ID =
             "com.bourke.glimmr.ACTION_VIEW_SET_BY_ID";
@@ -61,39 +61,33 @@ public class PhotosetViewerActivity extends BottomOverlayActivity
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         GsonHelper gson = new GsonHelper(this);
-        if (!gson.marshallObject(mPhotoset, PHOTOSETVIEWER_SET_FILE)) {
-            Log.e(TAG, "onSaveInstanceState: Error marshalling photoset");
-        }
-        if (!gson.marshallObject(mUser, PHOTOSETVIEWER_USER_FILE)) {
-            Log.e(TAG, "onSaveInstanceSTate: Error marshalling user");
-        }
+        gson.marshallObject(mPhotoset, bundle, KEY_PHOTOSET);
+        gson.marshallObject(mPhotoset, bundle, KEY_USER);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
+        Gson gson = new Gson();
         if (mPhotoset == null) {
-            GsonHelper gsonHelper = new GsonHelper(this);
-            Gson gson = new Gson();
-            String json = gsonHelper.loadJson(PHOTOSETVIEWER_SET_FILE);
-            if (json.length() == 0) {
-                Log.e(TAG, String.format("Error reading %s",
-                        PHOTOSETVIEWER_SET_FILE));
-                return;
+            String json = bundle.getString(KEY_PHOTOSET);
+            if (json != null) {
+                mPhotoset = gson.fromJson(json, Photoset.class);
+            } else {
+                Log.e(TAG, "No photoset found in savedInstanceState");
             }
-            mPhotoset = gson.fromJson(json, Photoset.class);
-
-            json = gsonHelper.loadJson(PHOTOSETVIEWER_USER_FILE);
-            if (json.length() == 0) {
-                Log.e(TAG, String.format("Error reading %s",
-                        PHOTOSETVIEWER_USER_FILE));
-                return;
-            }
-            mUser = new Gson().fromJson(json, User.class);
-            mPhotoset.setOwner(mUser);
-            initViewPager();
-            updateBottomOverlay();
         }
+        if (mUser == null) {
+            String json  = bundle.getString(KEY_USER);
+            if (json != null) {
+                mUser = new Gson().fromJson(json, User.class);
+            } else {
+                Log.e(TAG, "No user found in savedInstanceState");
+            }
+        }
+        mPhotoset.setOwner(mUser);
+        initViewPager();
+        updateBottomOverlay();
     }
 
     @Override

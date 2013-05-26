@@ -2,41 +2,31 @@ package com.bourke.glimmr.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.net.Uri;
-
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentManager;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.app.SherlockDialogFragment;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.MainActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
 import com.bourke.glimmr.event.Events.IRequestTokenReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.GetRequestToken;
-
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;

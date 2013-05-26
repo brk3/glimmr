@@ -1,29 +1,20 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import com.bourke.glimmr.fragments.base.BaseFragment;
 import android.os.Bundle;
-
 import android.text.TextUtils;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import com.androidquery.AQuery;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
-import com.bourke.glimmr.fragments.base.BaseDialogFragment;
-import com.bourke.glimmr.R;
+import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.tasks.LoadExifInfoTask;
-
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -70,15 +61,6 @@ public final class ExifInfoFragment extends BaseFragment
         if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
         mTask = new LoadExifInfoTask(this, mPhoto);
         mTask.execute(mOAuth);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mTask != null) {
-            mTask.cancel(true);
-            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
-        }
     }
 
     /**

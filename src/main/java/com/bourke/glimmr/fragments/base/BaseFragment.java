@@ -1,30 +1,22 @@
 package com.bourke.glimmr.fragments.base;
 
 import android.app.SearchManager;
-
 import android.content.Context;
-
 import android.os.Bundle;
-
 import android.util.Log;
-
 import android.view.ViewGroup;
-
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
-
 import com.androidquery.AQuery;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
-import com.bourke.glimmr.R;
-
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
 public abstract class BaseFragment extends SherlockFragment {

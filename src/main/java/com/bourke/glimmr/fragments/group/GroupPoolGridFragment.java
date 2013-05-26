@@ -1,27 +1,21 @@
 package com.bourke.glimmr.fragments.group;
 
-import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-
+import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
-
-import com.bourke.glimmr.common.Constants;
+import com.actionbarsherlock.view.MenuItem;
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.LoadGroupPoolTask;
-
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.photos.Photo;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.view.MenuItem;
 
 public class GroupPoolGridFragment extends PhotoGridFragment {
 
@@ -83,41 +77,28 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        if (mGroup == null) {
-            loadGroup();
-        }
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         new LoadGroupPoolTask(this, mGroup, page).execute(mOAuth);
     }
 
-    /**
-     * Load the last viewed group from storage for when the fragment gets
-     * destroyed.
-     */
-    public void loadGroup() {
-        SharedPreferences sp = mActivity.getSharedPreferences(
-                Constants.PREFS_NAME, Context.MODE_PRIVATE);
-        String groupId = sp.getString(
-                KEY_GROUP_FRAGMENT_GROUP_ID, null);
-        if (groupId != null) {
-            mGroup = new Group();
-            mGroup.setId(groupId);
-            if (Constants.DEBUG) Log.d(getLogTag(), "Restored mGroup");
-        } else {
-            Log.e(getLogTag(), "Could not restore mGroup");
-        }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY_GROUP_FRAGMENT_GROUP_ID, mGroup.getId());
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (mGroup != null) {
-            SharedPreferences sp = mActivity.getSharedPreferences(
-                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString(KEY_GROUP_FRAGMENT_GROUP_ID,
-                    mGroup.getId());
-            editor.commit();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mGroup == null) {
+            String groupId = savedInstanceState.getString(
+                    KEY_GROUP_FRAGMENT_GROUP_ID);
+            if (groupId != null) {
+                mGroup = new Group();
+                mGroup.setId(groupId);
+            } else {
+                Log.e(TAG, "No stored group id in savedInstanceState");
+            }
         }
     }
 

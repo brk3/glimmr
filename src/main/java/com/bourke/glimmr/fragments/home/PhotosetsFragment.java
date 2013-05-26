@@ -19,12 +19,14 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
 import com.bourke.glimmr.event.Events.PhotosetItemLongClickDialogListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.fragments.photoset.AddToPhotosetDialogFragment;
 import com.bourke.glimmr.tasks.LoadPhotosetsTask;
+import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photosets.Photosets;
@@ -38,6 +40,9 @@ public class PhotosetsFragment extends BaseFragment
                    PhotosetItemLongClickDialogListener {
 
     private static final String TAG = "Glimmr/PhotosetsFragment";
+
+    private static final String KEY_USER =
+            "com.bourke.glimmr.PhotosetsFragment.KEY_USER";
 
     private LoadPhotosetsTask mTask;
     private final List<Photoset> mPhotosets = new ArrayList<Photoset>();
@@ -84,6 +89,26 @@ public class PhotosetsFragment extends BaseFragment
         initAdapterView();
 
         return mLayout;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        new GsonHelper(mActivity).marshallObject(
+                mUserToView, outState, KEY_USER);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mUserToView == null) {
+            String json = savedInstanceState.getString(KEY_USER);
+            if (json != null) {
+                mUserToView = new Gson().fromJson(json, User.class);
+            } else {
+                Log.e(TAG, "No stored user found in savedInstanceState");
+            }
+        }
     }
 
     private void initAdapterView() {

@@ -1,19 +1,15 @@
 package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
-
 import android.util.Log;
-
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
-
-import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
-import java.util.List;
 import java.util.List;
 
 @SuppressWarnings("EmptyMethod")
