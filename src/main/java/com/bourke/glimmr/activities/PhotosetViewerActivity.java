@@ -151,6 +151,7 @@ public class PhotosetViewerActivity extends BottomOverlayActivity
         if (Constants.DEBUG) Log.d(TAG, "onUserReady");
         if (user != null) {
             mUser = user;
+            mPhotoset.setOwner(mUser);
             updateBottomOverlay();
         } else {
             Log.e(TAG, "onUserReady, null result received");
