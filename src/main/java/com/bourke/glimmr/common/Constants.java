@@ -6,7 +6,7 @@ import java.util.Set;
 public class Constants {
 
     /* Important: set to false when doing release builds */
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     public static final String ERR_CODE_FLICKR_UNAVAILABLE = "105";
 
@@ -64,6 +64,7 @@ public class Constants {
     /* Notification ids */
     public static final int NOTIFICATION_NEW_CONTACTS_PHOTOS = 0;
     public static final int NOTIFICATION_NEW_ACTIVITY = 1;
+    public static final int NOTIFICATION_PHOTOS_UPLOADING = 2;
 
     public static final String PRO_MARKET_LINK =
         "market://details?id=com.bourke.glimmrpro";

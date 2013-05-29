@@ -32,6 +32,8 @@ import com.bourke.glimmr.common.GlimmrAbCustomTitle;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
+import com.bourke.glimmr.tape.AddToPhotosetTaskQueueService;
+import com.bourke.glimmr.tape.UploadPhotoTaskQueueService;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -95,14 +97,20 @@ public abstract class BaseActivity extends FragmentActivity {
                         Constants.MEM_CACHE_PX_SIZE);
             }
 
-            /* Start the Group service for any pending tasks */
-            if ( ! AddToGroupTaskQueueService.IS_RUNNING &&
-                    OAuthUtils.isLoggedIn(this)) {
-                if (Constants.DEBUG) {
-                    Log.d(TAG, "Starting AddToGroupTaskQueueService");
+            /* Start each service for any pending tasks */
+            if (OAuthUtils.isLoggedIn(this)) {
+                if (!AddToGroupTaskQueueService.IS_RUNNING) {
+                    if (Constants.DEBUG) Log.d(TAG, "Starting AddToGroupTaskQueueService");
+                    startService(new Intent(this, AddToGroupTaskQueueService.class));
                 }
-                startService(new Intent(this,
-                            AddToGroupTaskQueueService.class));
+                if (!AddToPhotosetTaskQueueService.IS_RUNNING) {
+                    if (Constants.DEBUG) Log.d(TAG, "Starting AddToPhotosetTaskQueueService");
+                    startService(new Intent(this, AddToPhotosetTaskQueueService.class));
+                }
+                if (!UploadPhotoTaskQueueService.IS_RUNNING) {
+                    if (Constants.DEBUG) Log.d(TAG, "Starting UploadPhotoTaskQueueService");
+                    startService(new Intent(this, UploadPhotoTaskQueueService.class));
+                }
             }
         }
     }
@@ -170,6 +178,12 @@ public abstract class BaseActivity extends FragmentActivity {
                 Intent preferencesActivity = new Intent(getBaseContext(),
                         SettingsActivity.class);
                 startActivity(preferencesActivity);
+                return true;
+
+            case R.id.menu_upload:
+                Intent localPhotosActivity = new Intent(getBaseContext(),
+                        LocalPhotosActivity.class);
+                startActivity(localPhotosActivity);
                 return true;
 
             case R.id.menu_about:

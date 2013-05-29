@@ -107,4 +107,22 @@
     <string name="welcome">Welcome</string>
     <string name="you">You</string>
     <string name="flickr_unavailable">Flickr is down right now, please try again later!</string>
+    <string name="upload_photos">Upload Photos</string>
+    <string name="add_description_hint">Tap to add a description</string>
+    <string name="photos_uploaded">Photos Uploaded</string>
+    <string name="tap_for_photostream">Tap to go to photostream</string>
+    <string name="uploading_photos">Uploading %d photos to Flickr</string>
+    <string name="upload_problem">Problem uploading photos</string>
+    <string name="ill_try_again_later">Glimmr will try again later</string>
+    <string name="retry">Retry</string>
+    <string name="upload_tip">Tip: Swipe photo left and right to add info</string>
+    <string name="advanced">Advanced</string>
+    <string name="basic_info">Basic Info</string>
+    <string name="location">Location</string>
+    <string name="add_remove_tags_hint">Tap to add/remove tags (comma separated)</string>
+    <string name="upload_photos_tip">Tip: tap and hold photos to select for upload</string>
+    <string name="add_tags_tip">Tip: separate each tag with a comma</string>
+    <string name="add_to_sets">Add To Sets</string>
+    <string name="set_location">Set Location</string>
+    <string name="set_location_tip">Tip: Touch and hold map to set location</string>
 </resources>

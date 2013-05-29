@@ -16,6 +16,14 @@ mvn install:install-file \
     -Dversion=r13 \
     -Dpackaging=jar
 
+# https://github.com/keyboardsurfer/Crouton/issues/108
+mvn install:install-file \
+    -Dfile=libs/android-support-v4.jar \
+    -DgroupId=com.google.android \
+    -DartifactId=support-v4 \
+    -Dversion=r11 \
+    -Dpackaging=jar
+
 # jars
 mvn install:install-file \
     -Dfile=libs/CWAC-AdapterWrapper.jar \

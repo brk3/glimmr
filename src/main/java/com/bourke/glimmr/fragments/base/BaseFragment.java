@@ -19,7 +19,7 @@ import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
-import eu.inmite.android.lib.dialogs.SimpleDialogFragmentBuilder;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 public abstract class BaseFragment extends Fragment implements ISimpleDialogListener {
 
@@ -50,6 +50,7 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
         mActivity = (BaseActivity) getActivity();
         mActionBar = mActivity.getActionBar();
         mTextUtils = new TextUtils(mActivity.getAssets());
+        mAq = new AQuery(mActivity);
 
         setRetainInstance(shouldRetainInstance());
         setHasOptionsMenu(true);
@@ -94,15 +95,15 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
                 refresh();
                 return true;
             case R.id.menu_logout:
-                new SimpleDialogFragmentBuilder(mActivity)
+                SimpleDialogFragment.createBuilder(mActivity, mActivity.getSupportFragmentManager())
                         .setTitle("Logout")
                         .setMessage("Are you sure?")
                         .setPositiveButtonText(android.R.string.yes)
                         .setNegativeButtonText(android.R.string.cancel)
                         .setCancelable(true)
-                        .setTargetFragment(this)
+                        .setTargetFragment(this, DIALOG_LOGOUT_CONFIRMATION)
                         .setRequestCode(DIALOG_LOGOUT_CONFIRMATION)
-                        .buildAndShow();
+                        .show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -26,7 +26,7 @@ import com.bourke.glimmr.tasks.GetRequestToken;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
-import eu.inmite.android.lib.dialogs.SimpleDialogFragmentBuilder;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 /**
  * Presents a welcome to user and a button to login.
@@ -79,12 +79,12 @@ public final class LoginFragment extends BaseFragment
             if (e.getMessage().equals("No authentication challenges found") ||
                     e.getMessage().equals("Received authentication " +
                             "challenge is null")) {
-                new SimpleDialogFragmentBuilder(mActivity)
+                SimpleDialogFragment.createBuilder(mActivity, mActivity.getSupportFragmentManager())
                         .setTitle(R.string.login_problem)
                         .setMessage(R.string.timezone_message)
                         .setPositiveButtonText(android.R.string.ok)
                         .setCancelable(true)
-                        .buildAndShow();
+                        .show();
             }
         } else if (authUri != null && !authUri.startsWith("error")) {
             mActivity.startActivity(new Intent(

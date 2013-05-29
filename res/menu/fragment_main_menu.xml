@@ -7,7 +7,13 @@
           android:visible="false"
           android:title="@string/login" />
 
-    <item android:id="@+id/menu_search"
+    <item android:id="@+id/menu_upload"
+          android:icon="@drawable/ic_action_upload_dark"
+          android:title="Upload"
+          android:showAsAction="never" />
+
+    <item
+          android:id="@+id/menu_search"
           android:actionViewClass="android.widget.SearchView"
           android:icon="@drawable/ic_action_search_dark"
           android:showAsAction="ifRoom|collapseActionView"

@@ -140,7 +140,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         return ret;
     }
 
-    private void initGridView() {
+    protected void initGridView() {
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
         mGridView = (GridView) mLayout.findViewById(R.id.gridview);
@@ -397,12 +397,12 @@ public abstract class PhotoGridFragment extends BaseFragment
         }
     }
 
-    static class ViewHolder {
-        LinearLayout imageOverlay;
-        ImageView image;
-        ImageView imageNewRibbon;
-        TextView ownerText;
-        TextView viewsText;
+    public static class ViewHolder {
+        public LinearLayout imageOverlay;
+        public ImageView image;
+        public ImageView imageNewRibbon;
+        public TextView ownerText;
+        public TextView viewsText;
     }
 
     static class PhotoItemLongClickDialog extends DialogFragment {

@@ -20,12 +20,13 @@ public abstract class AbstractTaskQueueService extends Service
 
     private static final String TAG = "Glimmr/AbstractTaskQueueService";
 
-    private static final int MAX_RETRIES = 5;
+    protected static final int MAX_RETRIES = 5;
 
     protected TaskQueue mQueue;
+    protected int mNumRetries = 0;
     private boolean mRunning;
-    private int mNumRetries = 0;
 
+    /* used to notify user if the service did any work before finishing */
     protected abstract void initTaskQueue();
 
     @Override
@@ -45,6 +46,7 @@ public abstract class AbstractTaskQueueService extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         executeNext();
+        /* the service should run until explicitly stopped */
         return START_STICKY;
     }
 
@@ -60,8 +62,8 @@ public abstract class AbstractTaskQueueService extends Service
             mRunning = true;
             task.execute(this);
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Queue empty, service stopping");
             /* No more tasks are present. Stop. */
+            if (Constants.DEBUG) Log.d(TAG, "Queue empty, service stopping");
             stopSelf();
         }
     }
@@ -89,6 +91,14 @@ public abstract class AbstractTaskQueueService extends Service
             if (!retry) {
                 Log.e(TAG, "Task marked unrecoverable! Removing from queue");
                 mQueue.remove();
+            } else {
+                int ms_wait = mNumRetries * 1000;
+                Log.w(TAG, "Retrying in " + ms_wait + " ms.");
+                try {
+                    Thread.sleep(ms_wait);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             executeNext();
         }

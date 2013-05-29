@@ -88,7 +88,7 @@
         <dependency>
             <groupId>net.simonvt.menudrawer</groupId>
             <artifactId>menudrawer</artifactId>
-            <version>3.0.2</version>
+            <version>3.0.0</version>
             <type>apklib</type>
         </dependency>
 
@@ -150,7 +150,14 @@
         <dependency>
             <groupId>eu.inmite.android.lib</groupId>
             <artifactId>android-styled-dialogs</artifactId>
-            <version>0.5.7</version>
+            <version>1.0</version>
+            <type>apklib</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>google-play-services</artifactId>
+            <version>r7</version>
             <type>apklib</type>
         </dependency>
 

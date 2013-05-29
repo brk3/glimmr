@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_set_location"
+          android:title="@string/set_location"
+          android:icon="@drawable/navigation_accept_dark"
+          android:showAsAction="ifRoom|withText" />
+</menu>
