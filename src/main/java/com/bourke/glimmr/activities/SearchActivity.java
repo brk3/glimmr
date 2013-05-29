@@ -1,24 +1,18 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.common.OAuthUtils;
 import android.app.SearchManager;
-
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.support.v4.view.ViewPager;
-
 import android.util.Log;
-
 import com.actionbarsherlock.app.SherlockFragment;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
+import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.fragments.search.AbstractPhotoSearchGridFragment;
-import com.bourke.glimmr.fragments.search.PublicPhotoSearchGridFragment;
 import com.bourke.glimmr.fragments.search.PhotostreamSearchGridFragment;
-import com.bourke.glimmr.R;
+import com.bourke.glimmr.fragments.search.PublicPhotoSearchGridFragment;
 
 public class SearchActivity extends BottomOverlayActivity {
 

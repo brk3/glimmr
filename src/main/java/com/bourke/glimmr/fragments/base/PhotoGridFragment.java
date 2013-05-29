@@ -19,7 +19,7 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
-import com.bourke.glimmr.activities.ProfileActivity;
+import com.bourke.glimmr.activities.ProfileViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.BusProvider;
@@ -50,7 +50,6 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected List<Photo> mNewPhotos = new ArrayList<Photo>();
     protected int mPage = 1;
     protected boolean mMorePages = true;
-    protected boolean mShowProfileOverlay = false;
     protected boolean mShowDetailsOverlay = true;
     protected AsyncTask mTask;
 
@@ -75,16 +74,6 @@ public abstract class PhotoGridFragment extends BaseFragment
             (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
         initGridView();
         return mLayout;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
-        if (mTask != null) {
-            mTask.cancel(true);
-            if (Constants.DEBUG) Log.d(TAG, "onPause: cancelling task");
-        }
     }
 
     @Override
@@ -215,10 +204,10 @@ public abstract class PhotoGridFragment extends BaseFragment
     public void onLongClickDialogSelection(Photo photo, int which) {
         if (photo != null) {
             Intent profileViewer = new Intent(mActivity,
-                    ProfileActivity.class);
-            profileViewer.putExtra(ProfileActivity.KEY_PROFILE_ID,
+                    ProfileViewerActivity.class);
+            profileViewer.putExtra(ProfileViewerActivity.KEY_PROFILE_ID,
                     photo.getOwner().getId());
-            profileViewer.setAction(ProfileActivity.ACTION_VIEW_USER_BY_ID);
+            profileViewer.setAction(ProfileViewerActivity.ACTION_VIEW_USER_BY_ID);
             startActivity(profileViewer);
         } else {
             Log.e(getLogTag(), "showGridItemContextMenu: photo is null");
@@ -369,11 +358,11 @@ public abstract class PhotoGridFragment extends BaseFragment
                         @Override
                         public void onClick(View v) {
                             Intent profileViewer = new Intent(mActivity,
-                                    ProfileActivity.class);
+                                    ProfileViewerActivity.class);
                             profileViewer.putExtra(
-                                    ProfileActivity.KEY_PROFILE_ID,
+                                    ProfileViewerActivity.KEY_PROFILE_ID,
                                     photo.getOwner().getId());
-                            profileViewer.setAction(ProfileActivity.ACTION_VIEW_USER_BY_ID);
+                            profileViewer.setAction(ProfileViewerActivity.ACTION_VIEW_USER_BY_ID);
                             startActivity(profileViewer);
                         }
                     });

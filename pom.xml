@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bourke</groupId>
     <artifactId>glimmr</artifactId>
-    <version>2.13-SNAPSHOT</version>
+    <version>2.14-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>glimmr</name>
 
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>support-v4</artifactId>
-            <version>r11</version>
+            <version>r13</version>
         </dependency>
 
         <dependency>

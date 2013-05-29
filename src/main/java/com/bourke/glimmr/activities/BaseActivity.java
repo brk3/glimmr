@@ -3,52 +3,40 @@ package com.bourke.glimmr.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.SharedPreferences;
-
 import android.net.Uri;
-
 import android.os.Bundle;
-
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-
 import android.text.SpannableString;
 import android.text.util.Linkify;
-
 import android.util.Log;
-
 import android.widget.TextView;
-
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.SearchView;
-
 import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
-
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import android.preference.PreferenceManager;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
 
@@ -67,7 +55,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     protected AQuery mAq;
     protected ActionBar mActionBar;
-
     protected TextUtils mTextUtils;
 
     @Override
@@ -143,12 +130,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (Constants.DEBUG) {
-            Log.d(getLogTag(), "onDestroy");
-        }
+        if (Constants.DEBUG) Log.d(getLogTag(), "onDestroy");
         if (isTaskRoot()) {
-            if (Constants.DEBUG)
-                Log.d(getLogTag(), "Trimming file cache");
+            if (Constants.DEBUG) Log.d(getLogTag(), "Trimming file cache");
             AQUtility.cleanCacheAsync(this, Constants.CACHE_TRIM_TRIGGER_SIZE,
                    Constants.CACHE_TRIM_TARGET_SIZE);
         }

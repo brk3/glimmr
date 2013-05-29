@@ -1,23 +1,19 @@
 package com.bourke.glimmr.fragments.group;
 
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentTransaction;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TaskQueueDelegateFactory;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.BusProvider;
@@ -25,18 +21,15 @@ import com.bourke.glimmr.event.Events.IGroupInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment.PhotoGridItemClickedEvent;
 import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
 import com.bourke.glimmr.tasks.AddItemToGroupTask;
 import com.bourke.glimmr.tasks.LoadGroupInfoTask;
-
+import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.Throttle;
 import com.googlecode.flickrjandroid.photos.Photo;
-
 import com.squareup.otto.Subscribe;
 import com.squareup.tape.TaskQueue;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -57,6 +50,9 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
         implements IGroupInfoReadyListener {
 
     public static final String TAG = "Glimmr/AddToGroupDialogFragment";
+
+    public static final String KEY_GROUP =
+            "com.bourke.glimmr.AddToGroupDialogFragment.KEY_GROUP";
 
     /* Can't see in api docs what the limit is when there's no throttle.  The
      * popular 'Black & White' group states 6, so go with that for now */
@@ -87,6 +83,25 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
                     AddItemToGroupTask.class));
         BusProvider.getInstance().register(this);
         setStyle(STYLE_NO_TITLE, 0);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        new GsonHelper(mActivity).marshallObject(mGroup, outState, KEY_GROUP);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mGroup == null) {
+            String json = savedInstanceState.getString(KEY_GROUP);
+            if (json != null) {
+                mGroup = new Gson().fromJson(json, Group.class);
+            } else {
+                Log.e(TAG, "No stored group found in savedInstanceState");
+            }
+        }
     }
 
     @Override

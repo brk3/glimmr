@@ -25,7 +25,7 @@ import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.activities.ProfileActivity;
+import com.bourke.glimmr.activities.ProfileViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
@@ -89,11 +89,7 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public void onPause() {
         super.onPause();
-        if (Constants.DEBUG) Log.d(TAG, "onPause");
         BusProvider.getInstance().unregister(this);
-        if (mTask != null) {
-            mTask.cancel(true);
-        }
     }
 
     @Override
@@ -192,11 +188,11 @@ public final class PhotoViewerFragment extends BaseFragment
                 return true;
             case R.id.menu_view_profile:
                 Intent profileViewer = new Intent(mActivity,
-                        ProfileActivity.class);
-                profileViewer.putExtra(ProfileActivity.KEY_PROFILE_ID,
+                        ProfileViewerActivity.class);
+                profileViewer.putExtra(ProfileViewerActivity.KEY_PROFILE_ID,
                         mBasePhoto.getOwner().getId());
                 profileViewer.setAction(
-                        ProfileActivity.ACTION_VIEW_USER_BY_ID);
+                        ProfileViewerActivity.ACTION_VIEW_USER_BY_ID);
                 startActivity(profileViewer);
                 return true;
             case R.id.menu_save_image:

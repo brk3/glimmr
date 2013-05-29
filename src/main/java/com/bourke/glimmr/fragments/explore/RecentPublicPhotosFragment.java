@@ -1,10 +1,8 @@
 package com.bourke.glimmr.fragments.explore;
 
 import android.os.Bundle;
-
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadPublicPhotosTask;
-
 import com.googlecode.flickrjandroid.photos.Photo;
 
 public class RecentPublicPhotosFragment extends PhotoGridFragment {

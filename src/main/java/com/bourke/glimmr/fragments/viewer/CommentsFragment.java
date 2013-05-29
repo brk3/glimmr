@@ -2,7 +2,6 @@ package com.bourke.glimmr.fragments.viewer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -13,8 +12,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.activities.ProfileActivity;
+import com.bourke.glimmr.activities.ProfileViewerActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.ICommentAddedListener;
 import com.bourke.glimmr.event.Events.ICommentsReadyListener;
@@ -23,6 +23,7 @@ import com.bourke.glimmr.fragments.base.BaseDialogFragment;
 import com.bourke.glimmr.tasks.AddCommentTask;
 import com.bourke.glimmr.tasks.LoadCommentsTask;
 import com.bourke.glimmr.tasks.LoadUserTask;
+import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
@@ -36,8 +37,10 @@ public final class CommentsFragment extends BaseDialogFragment
 
     private static final String TAG = "Glimmr/CommentsFragment";
 
+    private static final String KEY_PHOTO =
+            "com.bourke.glimmr.CommentsFragment.KEY_PHOTO";
+
     private LoadCommentsTask mTask;
-    private Photo mPhoto;
     private ArrayAdapter<Comment> mAdapter;
     private final Map<String, UserItem> mUsers = Collections.synchronizedMap(
             new HashMap<String, UserItem>());
@@ -45,6 +48,8 @@ public final class CommentsFragment extends BaseDialogFragment
     private PrettyTime mPrettyTime;
     private ProgressBar mProgressBar;
     private ListView mListView;
+
+    private Photo mPhoto;
 
     public static CommentsFragment newInstance(Photo p) {
         CommentsFragment f = new CommentsFragment();
@@ -57,6 +62,25 @@ public final class CommentsFragment extends BaseDialogFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, 0);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        new GsonHelper(mActivity).marshallObject(mPhoto, outState, KEY_PHOTO);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && mPhoto == null) {
+            String json = savedInstanceState.getString(KEY_PHOTO);
+            if (json != null) {
+                mPhoto = new Gson().fromJson(json, Photo.class);
+            } else {
+                Log.e(TAG, "No stored photo found in savedInstanceState");
+            }
+        }
     }
 
     @Override
@@ -91,32 +115,10 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (Constants.DEBUG) Log.d(TAG, "onPause");
-
-        if (mTask != null) {
-            mTask.cancel(true);
-        }
-
-        /* Also stop any remaining LoadUserTasks */
-        for (AsyncTask loadUserTask : mLoadUserTasks) {
-            loadUserTask.cancel(true);
-        }
-    }
-
-    @Override
     protected void startTask() {
         super.startTask();
-        if (mPhoto != null) {
-            if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
-            mTask = new LoadCommentsTask(this, mPhoto);
-            mTask.execute(mOAuth);
-        } else {
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "startTask: mPhoto is null");
-            }
-        }
+        mTask = new LoadCommentsTask(this, mPhoto);
+        mTask.execute(mOAuth);
     }
 
     public void submitButtonClicked() {
@@ -239,12 +241,12 @@ public final class CommentsFragment extends BaseDialogFragment
                             @Override
                             public void onClick(View v) {
                                 Intent profileViewer = new Intent(mActivity,
-                                        ProfileActivity.class);
+                                        ProfileViewerActivity.class);
                                 profileViewer.putExtra(
-                                        ProfileActivity.KEY_PROFILE_ID,
+                                        ProfileViewerActivity.KEY_PROFILE_ID,
                                         author.user.getId());
                                 profileViewer.setAction(
-                                        ProfileActivity.ACTION_VIEW_USER_BY_ID);
+                                        ProfileViewerActivity.ACTION_VIEW_USER_BY_ID);
                                 startActivity(profileViewer);
                             }
                         });

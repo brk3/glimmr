@@ -1,28 +1,18 @@
 package com.bourke.glimmr.fragments.search;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.RelativeLayout;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
-import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.R;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.fragments.search.AbstractPhotoSearchGridFragment;
-import com.bourke.glimmr.R;
-import com.bourke.glimmr.R;
 import com.bourke.glimmr.tasks.SearchPhotosTask;
-
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
@@ -31,6 +21,9 @@ public abstract class AbstractPhotoSearchGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
 
     private static final String TAG = "Glimmr/AbstractPhotoSearchGridFragment";
+
+    private static final String KEY_SEARCH_QUERY =
+            "com.bourke.glimmr.PhotosetViewerActivity.KEY_SEARCH_QUERY";
 
     public static final int SORT_TYPE_RELAVANCE = 0;
     public static final int SORT_TYPE_RECENT = 1;
@@ -49,22 +42,22 @@ public abstract class AbstractPhotoSearchGridFragment extends PhotoGridFragment
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        SharedPreferences prefs = mActivity.getSharedPreferences(
-                Constants.PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("mSearchQuery", mSearchQuery);
-        editor.commit();
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putString(KEY_SEARCH_QUERY, mSearchQuery);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if ("".equals(mSearchQuery)) {
-            SharedPreferences prefs = mActivity.getSharedPreferences(
-                    Constants.PREFS_NAME, Context.MODE_PRIVATE);
-            mSearchQuery = prefs.getString("mSearchQuery", "");
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null && "".equals(mSearchQuery)) {
+            String searchQuery = savedInstanceState.getString(
+                    KEY_SEARCH_QUERY);
+            if (searchQuery != null) {
+                mSearchQuery = searchQuery;
+            } else {
+                Log.e(TAG, "No searchquery found in savedInstanceState");
+            }
         }
     }
 

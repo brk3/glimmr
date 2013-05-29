@@ -2,23 +2,18 @@ package com.bourke.glimmr.tasks;
 
 import android.os.Handler;
 import android.os.Looper;
-
 import android.util.Log;
-
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.ITaskQueueServiceListener;
-
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
-
 import com.squareup.tape.Task;
+import org.json.JSONException;
 
 import java.io.IOException;
-
-import org.json.JSONException;
 
 public class AddItemToPhotosetTask
         implements Task<ITaskQueueServiceListener> {

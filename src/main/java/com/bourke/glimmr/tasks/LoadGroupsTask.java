@@ -1,25 +1,20 @@
 package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
-
 import android.util.Log;
-
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IGroupListReadyListener;
-
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
-import com.googlecode.flickrjandroid.people.User;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
 
 @SuppressWarnings("EmptyMethod")
 public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {

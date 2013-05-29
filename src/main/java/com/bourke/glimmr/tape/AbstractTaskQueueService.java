@@ -7,29 +7,13 @@
 package com.bourke.glimmr.tape;
 
 import android.app.Service;
-import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
-
 import android.content.Intent;
-
 import android.os.IBinder;
-
 import android.util.Log;
-
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.event.Events.ITaskQueueServiceListener;
-import com.bourke.glimmr.tape.AbstractTaskQueueService;
-import com.bourke.glimmr.tape.GsonConverter;
-import com.bourke.glimmr.tasks.AddItemToGroupTask;
-
-import com.google.gson.Gson;
-
-import com.squareup.tape.FileObjectQueue;
-import com.squareup.tape.FileObjectQueue.Converter;
 import com.squareup.tape.Task;
 import com.squareup.tape.TaskQueue;
-
-import java.io.File;
-import java.io.IOException;
 
 public abstract class AbstractTaskQueueService extends Service
         implements ITaskQueueServiceListener {
