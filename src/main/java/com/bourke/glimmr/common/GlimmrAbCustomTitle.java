@@ -1,10 +1,10 @@
 package com.bourke.glimmr.common;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import com.actionbarsherlock.app.ActionBar;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 

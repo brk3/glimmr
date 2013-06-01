@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.base;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,13 +8,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
@@ -92,7 +91,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onPhotosReady(List<Photo> photos) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosReady");
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (photos == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
             mGridView.setVisibility(View.GONE);
@@ -123,7 +122,6 @@ public abstract class PhotoGridFragment extends BaseFragment
         return mGridChoiceMode;
     }
 
-    @SuppressLint("NewApi")
     public List<Photo> getSelectedPhotos() {
         List<Photo> ret = new ArrayList<Photo>();
         if (mGridView.getChoiceMode() != ListView.CHOICE_MODE_MULTIPLE) {
@@ -140,7 +138,6 @@ public abstract class PhotoGridFragment extends BaseFragment
         return ret;
     }
 
-    @SuppressLint("NewApi")
     private void initGridView() {
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
@@ -185,7 +182,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                     return false;
                 }
                 if (position < mPhotos.size()) {
-                    SherlockDialogFragment d =
+                    DialogFragment d =
                         PhotoItemLongClickDialog.newInstance(mActivity,
                             PhotoGridFragment.this, mPhotos.get(position));
                     d.show(mActivity.getSupportFragmentManager(),
@@ -298,7 +295,6 @@ public abstract class PhotoGridFragment extends BaseFragment
                     items);
         }
 
-        @SuppressLint("NewApi")
         @Override
         public View getView(final int position, View convertView,
                 ViewGroup parent) {
@@ -408,7 +404,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         TextView viewsText;
     }
 
-    static class PhotoItemLongClickDialog extends SherlockDialogFragment {
+    static class PhotoItemLongClickDialog extends DialogFragment {
         private PhotoItemLongClickDialogListener mListener;
         private Context mContext;
         private Photo mPhoto;

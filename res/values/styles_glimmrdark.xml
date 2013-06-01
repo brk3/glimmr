@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- File created by the Android Action Bar Style Generator
 
+     Copyright (C) 2011 The Android Open Source Project
      Copyright (C) 2012 readyState Software Ltd
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,21 +19,16 @@
 
 <resources>
 
-    <style name="Theme.glimmrdark" parent="@style/Theme.Sherlock">
-        <item name="actionBarItemBackground">@drawable/selectable_background_glimmrdark</item>
-        <item name="popupMenuStyle">@style/glimmrdark_PopupMenu</item>
-        <item name="dropDownListViewStyle">@style/glimmrdark_DropDownListView</item>
-        <item name="actionBarTabStyle">@style/glimmrdark_ActionBarTabStyle</item>
-        <item name="actionDropDownStyle">@style/glimmrdark_DropDownNav</item>
-        <item name="actionBarStyle">@style/glimmrdark_solid_ActionBar</item>
-
+    <style name="Theme.Glimmrdark" parent="@android:style/Theme.Holo">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_glimmrdark</item>
-        <item name="android:popupMenuStyle">@style/glimmrdark_PopupMenu</item>
-        <item name="android:dropDownListViewStyle">@style/glimmrdark_DropDownListView</item>
-        <item name="android:actionBarTabStyle">@style/glimmrdark_ActionBarTabStyle</item>
-        <item name="android:actionDropDownStyle">@style/glimmrdark_DropDownNav</item>
-        <item name="android:actionBarStyle">@style/glimmrdark_solid_ActionBar</item>
-        <item name="android:panelBackground">@drawable/menu_hardkey_panel_glimmrdark</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Glimmrdark</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Glimmrdark</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Glimmrdark</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Glimmrdark</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Transparent.Glimmrdark</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_glimmrdark</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_glimmrdark</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Glimmrdark</item>
 
         <!-- Style the TabPageIndicator -->
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
@@ -43,73 +39,48 @@
         <item name="menuDrawerStyle">@style/MenuDrawerStyle</item>
     </style>
 
-    <style name="glimmrdark_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">
-        <item name="background">@drawable/ab_solid_glimmrdark</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_glimmrdark</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_glimmrdark</item>
-        <item name="progressBarStyle">@style/glimmrdark_ProgressBar</item>
-
+    <style name="ActionBar.Solid.Glimmrdark" parent="@android:style/Widget.Holo.ActionBar.Solid">
         <item name="android:background">@drawable/ab_solid_glimmrdark</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_glimmrdark</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_glimmrdark</item>
-        <item name="android:progressBarStyle">@style/glimmrdark_ProgressBar</item>
-
-        <item name="android:indeterminateProgressStyle">@style/glimmr_IndeterminateProgress</item>
-        <item name="indeterminateProgressStyle">@style/glimmr_IndeterminateProgress</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Glimmrdark</item>
     </style>
 
-    <style name="glimmrdark_transparent_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
-        <item name="background">@drawable/ab_transparent_glimmrdark</item>
-        <item name="progressBarStyle">@style/glimmrdark_ProgressBar</item>
-
+    <style name="ActionBar.Transparent.Glimmrdark" parent="@android:style/Widget.Holo.ActionBar">
         <item name="android:background">@drawable/ab_transparent_glimmrdark</item>
-        <item name="android:progressBarStyle">@style/glimmrdark_ProgressBar</item>
-
-        <item name="android:indeterminateProgressStyle">@style/glimmr_IndeterminateProgress</item>
-        <item name="indeterminateProgressStyle">@style/glimmr_IndeterminateProgress</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Glimmrdark</item>
     </style>
 
-    <style name="glimmrdark_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">
+    <style name="PopupMenu.Glimmrdark" parent="@android:style/Widget.Holo.ListPopupWindow">
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_glimmrdark</item>
     </style>
 
-    <style name="glimmrdark_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
+    <style name="DropDownListView.Glimmrdark" parent="@android:style/Widget.Holo.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_glimmrdark</item>
     </style>
 
-    <style name="glimmrdark_ActionBarTabStyle" parent="@style/Widget.Sherlock.ActionBar.TabView">
-        <item name="background">@drawable/tab_indicator_ab_glimmrdark</item>
-
+    <style name="ActionBarTabStyle.Glimmrdark" parent="@android:style/Widget.Holo.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_glimmrdark</item>
     </style>
 
-    <style name="glimmrdark_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
-        <item name="background">@drawable/spinner_background_ab_glimmrdark</item>
-
+    <style name="DropDownNav.Glimmrdark" parent="@android:style/Widget.Holo.Spinner">
         <item name="android:background">@drawable/spinner_background_ab_glimmrdark</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_glimmrdark</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_glimmrdark</item>
     </style>
 
-    <style name="glimmrdark_ProgressBar" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
+    <style name="ProgressBar.Glimmrdark" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_glimmrdark</item>
     </style>
 
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.glimmrdark.widget" parent="@style/Theme.Sherlock">
-        <item name="popupMenuStyle">@style/glimmrdark_PopupMenu</item>
-        <item name="dropDownListViewStyle">@style/glimmrdark_DropDownListView</item>
+    <style name="ActionButton.CloseMode.Glimmrdark" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_glimmrdark</item>
+    </style>
 
-        <item name="android:popupMenuStyle">@style/glimmrdark_PopupMenu</item>
-        <item name="android:dropDownListViewStyle">@style/glimmrdark_DropDownListView</item>
-    </style>
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="glimmrdark_DropDownItem" parent="@style/Widget.Sherlock.Light.DropDownItem.Spinner">
-        <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
-    </style>
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="glimmrdark_SpinnerItem" parent="@style/Widget.Sherlock.TextView.SpinnerItem">
-        <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
+    <style name="Theme.Glimmrdark.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Glimmrdark</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Glimmrdark</item>
     </style>
 
     <!-- Begin stuff not generated by the actionbar style generator -->

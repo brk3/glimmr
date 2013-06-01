@@ -101,7 +101,7 @@ public final class ExifInfoFragment extends BaseFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         /* Something went wrong, show message and return */
         if (exc != null) {

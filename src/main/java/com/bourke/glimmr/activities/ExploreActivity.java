@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
@@ -96,7 +96,7 @@ public class ExploreActivity extends BaseActivity
         GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
             @Override
-            public SherlockFragment getItemImpl(int position) {
+            public Fragment getItemImpl(int position) {
                 switch (position) {
                     case INTERESTING_PAGE:
                         return RecentPublicPhotosFragment.newInstance();

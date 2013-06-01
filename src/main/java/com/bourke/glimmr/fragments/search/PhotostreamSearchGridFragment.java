@@ -30,7 +30,7 @@ public class PhotostreamSearchGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         mTask = new SearchPhotosTask(this, mSearchQuery, mSortType, page,
                 mUserToView.getId());
         mTask.execute(mOAuth);

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +19,6 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.MainActivity;
 import com.bourke.glimmr.common.Constants;
@@ -190,7 +190,7 @@ public final class LoginFragment extends BaseFragment
         public void onNotNowClicked();
     }
 
-    class LoginErrorTipDialog extends SherlockDialogFragment {
+    class LoginErrorTipDialog extends DialogFragment {
         public LoginErrorTipDialog() {
         }
 

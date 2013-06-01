@@ -3,13 +3,13 @@ package com.bourke.glimmr.fragments.photoset;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
@@ -62,7 +62,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
                 }
                 ft.addToBackStack(null);
 
-                SherlockDialogFragment newFragment =
+                DialogFragment newFragment =
                     AddToPhotosetDialogFragment.newInstance(mPhotoset);
                 newFragment.show(ft, AddToPhotosetDialogFragment.TAG);
 
@@ -90,7 +90,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     private void startTask(int page) {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         new LoadPhotosetPhotosTask(this, mPhotoset, page).execute(mOAuth);
     }
 
@@ -117,7 +117,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
     @Override
     public void onPhotosReady(List<Photo> photos) {
         super.onPhotosReady(photos);
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (mPhotoset != null) {
             User owner = mPhotoset.getOwner();
             if (owner != null) {

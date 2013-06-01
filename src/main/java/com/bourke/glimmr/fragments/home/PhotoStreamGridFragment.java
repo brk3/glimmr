@@ -97,7 +97,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         mTask = new LoadPhotostreamTask(this, mUserToView, page)
                 .execute(mOAuth);
     }

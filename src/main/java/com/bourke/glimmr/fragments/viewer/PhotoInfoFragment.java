@@ -1,12 +1,12 @@
 package com.bourke.glimmr.fragments.viewer;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
@@ -52,9 +52,9 @@ public class PhotoInfoFragment extends BaseDialogFragment {
         /* http://stackoverflow.com/a/13684139/663370 */
         GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
                 getChildFragmentManager(), viewPager,
-                mActivity.getSupportActionBar(), CONTENT) {
+                mActivity.getActionBar(), CONTENT) {
             @Override
-            public SherlockFragment getItemImpl(int position) {
+            public Fragment getItemImpl(int position) {
                 switch (position) {
                     case OVERVIEW_PAGE:
                         return PhotoOverviewFragment.newInstance(

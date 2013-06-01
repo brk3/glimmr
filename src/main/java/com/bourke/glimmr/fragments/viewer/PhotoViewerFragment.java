@@ -8,18 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
+import android.view.*;
+import android.widget.*;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
@@ -277,7 +267,7 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         /* Start a task to fetch more detailed info about the photo if we don't
          * already have it (required for favorite status) */
         if (mPhotoExtendedInfo == null) {
@@ -304,7 +294,7 @@ public final class PhotoViewerFragment extends BaseFragment
                 mVideoButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mActivity.setSupportProgressBarIndeterminateVisibility(
+                        mActivity.setProgressBarIndeterminateVisibility(
                             Boolean.TRUE);
                         new LoadPhotoSizesTask(PhotoViewerFragment.this,
                             mBasePhoto.getId()).execute();
@@ -316,7 +306,7 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @Override
     public void onPhotoSizesReady(List<Size> sizes) {
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (sizes != null && sizes.size() > 0) {
             for (Size s : sizes) {
                 if (s.getLabel() == Size.MOBILE_MP4) {

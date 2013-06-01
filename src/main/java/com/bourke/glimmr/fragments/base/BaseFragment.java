@@ -1,16 +1,16 @@
 package com.bourke.glimmr.fragments.base;
 
+import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
+import android.widget.SearchView;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
@@ -19,7 +19,7 @@ import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
-public abstract class BaseFragment extends SherlockFragment {
+public abstract class BaseFragment extends Fragment {
 
     private static final String TAG = "Glimmr/BaseFragment";
 
@@ -43,8 +43,8 @@ public abstract class BaseFragment extends SherlockFragment {
         super.onCreate(savedInstanceState);
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
 
-        mActivity = (BaseActivity) getSherlockActivity();
-        mActionBar = mActivity.getSupportActionBar();
+        mActivity = (BaseActivity) getActivity();
+        mActionBar = mActivity.getActionBar();
         mTextUtils = new TextUtils(mActivity.getAssets());
 
         setRetainInstance(shouldRetainInstance());
@@ -57,8 +57,8 @@ public abstract class BaseFragment extends SherlockFragment {
         if (Constants.DEBUG) Log.d(getLogTag(), "onResume");
 
         /* Update our reference to the activity as it may have changed */
-        mActivity = (BaseActivity) getSherlockActivity();
-        mActionBar = mActivity.getSupportActionBar();
+        mActivity = (BaseActivity) getActivity();
+        mActionBar = mActivity.getActionBar();
 
         startTask();
     }
@@ -93,7 +93,7 @@ public abstract class BaseFragment extends SherlockFragment {
 
     protected void startTask() {
         if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         if (mOAuth == null || mOAuth.getUser() == null) {
             mOAuth = OAuthUtils.loadAccessToken(mActivity);
         }

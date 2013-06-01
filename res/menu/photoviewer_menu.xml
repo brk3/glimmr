@@ -10,8 +10,7 @@
     <item android:id="@+id/menu_share"
           android:title="@string/menu_share"
           android:showAsAction="never"
-          android:actionProviderClass=
-            "com.actionbarsherlock.widget.ShareActionProvider" />
+          android:actionProviderClass="android.widget.ShareActionProvider" />
 
     <item android:id="@+id/menu_view_profile"
           android:title="@string/view_profile"

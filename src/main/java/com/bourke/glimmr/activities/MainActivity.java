@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,15 +8,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.*;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
@@ -213,11 +213,11 @@ public class MainActivity extends BaseActivity {
             mMenuAdapter.setItems(menuItems);
             mMenuAdapter.notifyDataSetChanged();
         } else {
-            setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+            setProgressBarIndeterminateVisibility(Boolean.TRUE);
             new LoadFlickrActivityTask(new IActivityItemsReadyListener() {
                 @Override
                 public void onItemListReady(List<Item> items) {
-                    setSupportProgressBarIndeterminateVisibility(
+                    setProgressBarIndeterminateVisibility(
                         Boolean.FALSE);
                     if (items != null) {
                         ActivityNotificationHandler.storeItemList(
@@ -372,7 +372,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void startViewerForActivityItem(int itemPos) {
-        setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        setProgressBarIndeterminateVisibility(Boolean.TRUE);
 
         List<Item> items = ActivityNotificationHandler
             .loadItemList(MainActivity.this);
@@ -387,7 +387,7 @@ public class MainActivity extends BaseActivity {
                 }
                 List<Photo> photos = new ArrayList<Photo>();
                 photos.add(photo);
-                setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+                setProgressBarIndeterminateVisibility(Boolean.FALSE);
                 PhotoViewerActivity.startPhotoViewer(
                     MainActivity.this, photos, 0);
             }
@@ -465,7 +465,7 @@ public class MainActivity extends BaseActivity {
                 getSupportFragmentManager(), mViewPager, mActionBar,
                 mPageTitles.toArray(new String[mPageTitles.size()])) {
             @Override
-            public SherlockFragment getItemImpl(int position) {
+            public Fragment getItemImpl(int position) {
                 try {
                     PageItem page = mContent.get(position);
                     return GlimmrFragmentFactory.getInstance(MainActivity.this,
@@ -675,7 +675,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public static class GlimmrFragmentFactory {
-        public static SherlockFragment getInstance(Context context,
+        public static Fragment getInstance(Context context,
                 String name, User user) {
             if (context.getString(R.string.contacts).equals(name))  {
                 return ContactsGridFragment.newInstance();

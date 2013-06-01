@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
@@ -13,18 +14,17 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
+import android.widget.SearchView;
 import android.widget.TextView;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-import com.actionbarsherlock.widget.SearchView;
 import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
@@ -38,7 +38,7 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public abstract class BaseActivity extends SherlockFragmentActivity {
+public abstract class BaseActivity extends FragmentActivity {
 
     private static final String TAG = "Glimmr/BaseActivity";
 
@@ -73,7 +73,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         /* Set custom title on action bar (it will be null for dialog
          * activities */
-        mActionBar = getSupportActionBar();
+        mActionBar = getActionBar();
         if (mActionBar != null) {
             if (!getResources().getBoolean(R.bool.sw600dp)) {
                 new GlimmrAbCustomTitle(this).init(mActionBar);
@@ -81,7 +81,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 mActionBar.setTitle("");
             }
         }
-        setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         /* Load default preferences */
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -141,7 +141,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         SearchManager searchManager =
             (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
@@ -170,7 +170,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
             case R.id.menu_preferences:
                 Intent preferencesActivity = new Intent(getBaseContext(),
-                        PreferencesActivity.class);
+                        SettingsActivity.class);
                 startActivity(preferencesActivity);
                 return true;
 
