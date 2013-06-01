@@ -79,13 +79,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.rokoder</groupId>
-            <artifactId>gridviewcompat</artifactId>
-            <version>75fd1df</version>
-            <type>apklib</type>
-        </dependency>
-
-        <dependency>
             <groupId>com.sbstrm</groupId>
             <artifactId>appirater</artifactId>
             <version>ca52540</version>
@@ -154,7 +147,7 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>3.6.0</version>
                 <configuration>
                     <androidManifestFile>
                         ${project.basedir}/AndroidManifest.xml

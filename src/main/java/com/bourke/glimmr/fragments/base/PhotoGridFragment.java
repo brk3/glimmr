@@ -26,7 +26,6 @@ import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.PhotoItemLongClickDialogListener;
 import com.commonsware.cwac.endless.EndlessAdapter;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.rokoder.android.lib.support.v4.widget.GridViewCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
-    protected GridViewCompat mGridView;
+    protected GridView mGridView;
     protected EndlessGridAdapter mAdapter;
 
     protected final List<Photo> mPhotos = new ArrayList<Photo>();
@@ -82,8 +81,7 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
         }
         if (!mPhotos.isEmpty()) {
-            GridViewCompat gridView = (GridViewCompat)
-                mLayout.findViewById(R.id.gridview);
+            GridView gridView = (GridView) mLayout.findViewById(R.id.gridview);
             gridView.setVisibility(View.VISIBLE);
         }
     }
@@ -141,12 +139,12 @@ public abstract class PhotoGridFragment extends BaseFragment
     private void initGridView() {
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
-        mGridView = (GridViewCompat) mLayout.findViewById(R.id.gridview);
+        mGridView = (GridView) mLayout.findViewById(R.id.gridview);
         mGridView.setAdapter(mAdapter);
         mGridView.setChoiceMode(getGridChoiceMode());
 
         mGridView.setOnItemClickListener(
-                new GridViewCompat.OnItemClickListener() {
+                new GridView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
@@ -163,13 +161,12 @@ public abstract class PhotoGridFragment extends BaseFragment
                     PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
                         position);
                 }
-                /* We need to invalidate all views on 4.x (GridViewCompat) */
                 mGridView.invalidateViews();
             }
         });
 
         mGridView.setOnItemLongClickListener(
-                new GridViewCompat.OnItemLongClickListener() {
+                new GridView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View v,
                     int position, long id) {

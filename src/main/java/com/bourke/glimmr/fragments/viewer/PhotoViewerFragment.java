@@ -387,15 +387,10 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @SuppressLint("NewApi")
     public void setOverlayVisibility(final boolean on) {
-        boolean honeycombOrGreater =
-            (android.os.Build.VERSION.SDK_INT >=
-             android.os.Build.VERSION_CODES.HONEYCOMB);
         if (on) {
             mTextViewTitle.setVisibility(View.VISIBLE);
             mTextViewAuthor.setVisibility(View.VISIBLE);
-            if (honeycombOrGreater) {
-                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            }
+            mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             mActivity.getWindow().addFlags(
                     WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
             mActivity.getWindow().clearFlags(
@@ -408,9 +403,7 @@ public final class PhotoViewerFragment extends BaseFragment
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
             mActivity.getWindow().clearFlags(
                     WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            if (honeycombOrGreater) {
-                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-            }
+            mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
             mActionBar.hide();
         }
     }
