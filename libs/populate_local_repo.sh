@@ -39,17 +39,7 @@ mvn install:install-file \
     -Dpackaging=jar
 
 # apklib
-mvn install:install-file \
-    -Dfile=libs/AndroidGridViewCompatLib-75fd1df.apklib \
-    -DgroupId=com.rokoder \
-    -DartifactId=gridviewcompat \
-    -Dversion=75fd1df \
-    -Dpackaging=apklib
-
-mvn install:install-file \
-    -Dfile=libs/appirater-android_ca52540.apklib \
-    -DgroupId=com.sbstrm \
-    -DartifactId=appirater \
-    -Dversion=ca52540 \
-    -Dpackaging=apklib
-
+git clone https://github.com/sbstrm/appirater-android.git \
+    /tmp/appirater-android
+cd /tmp/appirater-android/
+mvn clean install

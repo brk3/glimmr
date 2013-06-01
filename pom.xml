@@ -81,7 +81,7 @@
         <dependency>
             <groupId>com.sbstrm</groupId>
             <artifactId>appirater</artifactId>
-            <version>ca52540</version>
+            <version>1.0</version>
             <type>apklib</type>
         </dependency>
 
