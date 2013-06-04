@@ -93,7 +93,6 @@ public abstract class BaseFragment extends Fragment {
 
     protected void startTask() {
         if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
-        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         if (mOAuth == null || mOAuth.getUser() == null) {
             mOAuth = OAuthUtils.loadAccessToken(mActivity);
         }

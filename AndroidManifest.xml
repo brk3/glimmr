@@ -74,7 +74,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:enabled="@bool/hasHoneycomb" android:name=".appwidget.StackWidgetProvider">
+        <receiver android:name=".appwidget.StackWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
