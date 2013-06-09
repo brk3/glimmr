@@ -160,6 +160,7 @@ public class PhotoViewerActivity extends BaseActivity
         mPager.setOnPageChangeListener(mAdapter);
         mPager.setCurrentItem(startIndex);
         mPager.setOffscreenPageLimit(2);
+        mPager.setPageTransformer(true, new CardTransformer(0.7f));
     }
 
     @Override
@@ -574,6 +575,29 @@ public class PhotoViewerActivity extends BaseActivity
 
         public void setAuthorText(String author) {
             mPhotoAuthor.setText(author);
+        }
+    }
+
+    public class CardTransformer implements ViewPager.PageTransformer {
+
+        private final float scalingStart;
+
+        public CardTransformer(float scalingStart) {
+            super();
+            this.scalingStart = 1 - scalingStart;
+        }
+
+        @Override
+        public void transformPage(View page, float position) {
+            if (position >= 0) {
+                final int w = page.getWidth();
+                float scaleFactor = 1 - scalingStart * position;
+
+                page.setAlpha(1 - position);
+                page.setScaleX(scaleFactor);
+                page.setScaleY(scaleFactor);
+                page.setTranslationX(w * (1 - position) - w);
+            }
         }
     }
 }
