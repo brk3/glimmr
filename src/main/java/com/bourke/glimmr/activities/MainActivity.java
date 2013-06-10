@@ -38,6 +38,7 @@ import com.viewpagerindicator.TitlePageIndicator;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.Position;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.io.File;
@@ -301,7 +302,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initMenuDrawer() {
-        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_CONTENT);
+        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY,
+                Position.LEFT);
         mMenuDrawer.setContentView(R.layout.main_activity);
         /* The drawable that replaces the up indicator in the action bar */
         mMenuDrawer.setSlideDrawable(R.drawable.ic_drawer);
