@@ -18,8 +18,10 @@ import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.googlecode.flickrjandroid.oauth.OAuth;
+import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragmentBuilder;
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements ISimpleDialogListener {
 
     private static final String TAG = "Glimmr/BaseFragment";
 
@@ -37,6 +39,8 @@ public abstract class BaseFragment extends Fragment {
     protected AQuery mAq;
     protected ViewGroup mLayout;
     protected TextUtils mTextUtils;
+
+    private static final int DIALOG_LOGOUT_CONFIRMATION = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,8 +79,10 @@ public abstract class BaseFragment extends Fragment {
                 searchManager.getSearchableInfo(mActivity.getComponentName()));
         if (mOAuth == null || mOAuth.getUser() == null) {
             menu.findItem(R.id.menu_login).setVisible(true);
+            menu.findItem(R.id.menu_logout).setVisible(false);
         } else {
             menu.findItem(R.id.menu_login).setVisible(false);
+            menu.findItem(R.id.menu_logout).setVisible(true);
         }
     }
 
@@ -87,8 +93,30 @@ public abstract class BaseFragment extends Fragment {
             case R.id.menu_refresh:
                 refresh();
                 return true;
+            case R.id.menu_logout:
+                SimpleDialogFragmentBuilder builder = new SimpleDialogFragmentBuilder(mActivity);
+                builder.setTitle("Logout")
+                        .setMessage("Are you sure?")
+                        .setPositiveButtonText(android.R.string.yes)
+                        .setNegativeButtonText(android.R.string.cancel)
+                        .setCancelable(true)
+                        .setTargetFragment(this)
+                        .setRequestCode(DIALOG_LOGOUT_CONFIRMATION)
+                        .buildAndShow();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int requestCode) {
+        if (requestCode == DIALOG_LOGOUT_CONFIRMATION) {
+            OAuthUtils.logout(mActivity);
+        }
+    }
+
+    @Override
+    public void onNegativeButtonClicked(int requestCode) {
     }
 
     protected void startTask() {

@@ -140,6 +140,14 @@
             <version>1.8.1</version>
             <groupId>de.keyboardsurfer.android.widget</groupId>
         </dependency>
+
+        <dependency>
+            <groupId>eu.inmite.android.lib</groupId>
+            <artifactId>android-styled-dialogs</artifactId>
+            <version>0.5.7</version>
+            <type>apklib</type>
+        </dependency>
+
     </dependencies>
 
     <build>

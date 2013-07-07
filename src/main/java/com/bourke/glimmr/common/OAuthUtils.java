@@ -1,11 +1,15 @@
 package com.bourke.glimmr.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import com.bourke.glimmr.R;
+import com.bourke.glimmr.activities.ExploreActivity;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 public class OAuthUtils {
 
@@ -42,13 +46,28 @@ public class OAuthUtils {
             user.setId(userId);
             oauth.setUser(user);
         } else {
-            if (Constants.DEBUG) {
-                Log.w(TAG, "No saved oauth token found");
-            }
+            Log.w(TAG, "No saved oauth token found");
             return null;
         }
         return oauth;
     }
 
+    /**
+     * Clear all user data from SharedPreferences and return to ExploreActivity.
+     * @param context
+     */
+    public static void logout(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(
+                Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(Constants.KEY_OAUTH_TOKEN);
+        editor.remove(Constants.KEY_TOKEN_SECRET);
+        editor.remove(Constants.KEY_ACCOUNT_USER_NAME);
+        editor.remove(Constants.KEY_ACCOUNT_USER_ID);
+        editor.commit();
 
+        Intent exploreActivity = new Intent(context, ExploreActivity.class);
+        exploreActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(exploreActivity);
+    }
 }

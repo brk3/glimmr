@@ -94,8 +94,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == ExploreActivity.ACTIVITY_RESULT_EXIT) {
             finish();
         }

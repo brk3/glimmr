@@ -35,6 +35,7 @@
     <string name="login">Login</string>
     <string name="login_required">You need to be logged in to do that!</string>
     <string name="login_to_flickr">LOGIN TO FLICKR</string>
+    <string name="logout">Logout</string>
     <string name="menu_favorite">Mark as Favorite</string>
     <string name="menu_preferences">Preferences</string>
     <string name="menu_refresh">Refresh</string>
