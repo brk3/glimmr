@@ -94,8 +94,8 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
                 refresh();
                 return true;
             case R.id.menu_logout:
-                SimpleDialogFragmentBuilder builder = new SimpleDialogFragmentBuilder(mActivity);
-                builder.setTitle("Logout")
+                new SimpleDialogFragmentBuilder(mActivity)
+                        .setTitle("Logout")
                         .setMessage("Are you sure?")
                         .setPositiveButtonText(android.R.string.yes)
                         .setNegativeButtonText(android.R.string.cancel)

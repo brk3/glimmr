@@ -63,9 +63,6 @@ public class Constants {
     public static final int NOTIFICATION_NEW_CONTACTS_PHOTOS = 0;
     public static final int NOTIFICATION_NEW_ACTIVITY = 1;
 
-    /* DialogBuilder dialog ids */
-    public static final int DIALOG_ABOUT = 0;
-
     public static final String PRO_MARKET_LINK =
         "market://details?id=com.bourke.glimmrpro";
 }

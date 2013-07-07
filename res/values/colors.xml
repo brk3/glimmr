@@ -27,5 +27,5 @@
     <color name="dialog_button_normal">@android:color/transparent</color>
     <color name="dialog_button_pressed">#99ff0084</color> <!-- 60 % opacity -->
     <color name="dialog_button_focused">#4Cff0084</color> <!-- 30 % opacity -->
-    <color name="dialog_button_separator">#12ff0084</color> <!-- 7% opacity -->
+    <color name="dialog_button_separator">#12ffffff</color> <!-- 7% opacity -->
 </resources>

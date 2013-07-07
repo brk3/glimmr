@@ -1,11 +1,8 @@
 package com.bourke.glimmr.activities;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -22,6 +19,7 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -175,59 +173,10 @@ public abstract class BaseActivity extends FragmentActivity {
                 return true;
 
             case R.id.menu_about:
-                showDialog(Constants.DIALOG_ABOUT);
+                new AboutDialogFragment().show(getSupportFragmentManager(), "AboutDialogFragment");
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public Dialog onCreateDialog(int id) {
-        switch (id) {
-            case Constants.DIALOG_ABOUT:
-                return showAboutDialog();
-        }
-        return null;
-    }
-
-    private Dialog showAboutDialog() {
-        PackageInfo pInfo;
-        String versionInfo = "Unknown";
-        try {
-            pInfo = getPackageManager().getPackageInfo(
-                    getPackageName(), PackageManager.GET_META_DATA);
-            versionInfo = pInfo.versionName;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        String aboutTitle = String.format("About %s",
-                getString(R.string.app_name));
-        String versionString = String.format("Version: %s", versionInfo);
-
-        final TextView message = new TextView(this);
-        message.setPadding(5, 5, 5, 5);
-        SpannableString aboutText = new SpannableString(
-                getString(R.string.about_text));
-        message.setText(versionString + "\n\n" + aboutText);
-        message.setTextSize(16);
-        Linkify.addLinks(message, Linkify.ALL);
-
-        return new AlertDialog.Builder(this).
-            setTitle(aboutTitle).
-            setCancelable(true).
-            setIcon(R.drawable.app_icon).
-            setNegativeButton(getString(R.string.pro_donate),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                        dialog.dismiss();
-                    }
-                })
-            .setPositiveButton(getString(android.R.string.ok), null).
-            setView(message).create();
     }
 
     @Override
@@ -245,5 +194,65 @@ public abstract class BaseActivity extends FragmentActivity {
 
     protected String getLogTag() {
         return TAG;
+    }
+
+    class AboutDialogFragment extends eu.inmite.android.lib.dialogs.BaseDialogFragment {
+
+        private PackageInfo mPackageInfo;
+
+        public AboutDialogFragment() {
+            try {
+                mPackageInfo = getPackageManager().getPackageInfo(
+                        getPackageName(), PackageManager.GET_META_DATA);
+            } catch (NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private String getAppVersion() {
+            String version = "None";
+            if (mPackageInfo != null) {
+               version = mPackageInfo.versionName;
+            }
+            return version;
+        }
+
+        @Override
+        protected Builder build(Builder builder) {
+            /* set dialog title */
+            String title = String.format("About %s", getString(R.string.app_name));
+            builder.setTitle(title);
+
+            /* set dialog main message */
+            final TextView message = new TextView(BaseActivity.this);
+            SpannableString aboutText = new SpannableString(getString(R.string.about_text));
+            String versionString = String.format("Version: %s", getAppVersion());
+            message.setText(versionString + "\n\n" + aboutText);
+            message.setTextSize(16);
+            Linkify.addLinks(message, Linkify.ALL);
+            builder.setView(message, 5, 5, 5, 5);
+
+            /* set buttons (only add the "go pro" button to free version) */
+            if (mPackageInfo != null && !mPackageInfo.packageName.contains("glimmrpro")) {
+                builder.setNegativeButton(getString(R.string.pro_donate),
+                        new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                        dismiss();
+                    }
+                });
+            }
+            builder.setPositiveButton(getString(android.R.string.ok), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+
+            return builder;
+        }
     }
 }

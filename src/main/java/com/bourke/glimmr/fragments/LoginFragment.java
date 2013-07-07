@@ -1,15 +1,10 @@
 package com.bourke.glimmr.fragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,6 +25,7 @@ import com.bourke.glimmr.tasks.GetRequestToken;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragmentBuilder;
 
 /**
  * Presents a welcome to user and a button to login.
@@ -79,9 +75,12 @@ public final class LoginFragment extends BaseFragment
             if (e.getMessage().equals("No authentication challenges found") ||
                     e.getMessage().equals("Received authentication " +
                             "challenge is null")) {
-                FragmentManager fm = mActivity.getSupportFragmentManager();
-                LoginErrorTipDialog d = new LoginErrorTipDialog();
-                d.show(fm, "LoginErrorTipDialog");
+                new SimpleDialogFragmentBuilder(mActivity)
+                        .setTitle(R.string.login_problem)
+                        .setMessage(R.string.timezone_message)
+                        .setPositiveButtonText(android.R.string.ok)
+                        .setCancelable(true)
+                        .buildAndShow();
             }
         } else if (authUri != null && !authUri.startsWith("error")) {
             mActivity.startActivity(new Intent(
@@ -188,25 +187,5 @@ public final class LoginFragment extends BaseFragment
 
     public interface IOnNotNowClicked {
         public void onNotNowClicked();
-    }
-
-    class LoginErrorTipDialog extends DialogFragment {
-        public LoginErrorTipDialog() {
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-            builder.setTitle(R.string.login_problem)
-                .setMessage(R.string.timezone_message)
-                .setIcon(R.drawable.alerts_and_states_error_dark)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dismiss();
-                    }
-                });
-            return builder.create();
-        }
     }
 }
