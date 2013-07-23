@@ -69,7 +69,7 @@ public class ContactsPhotosNotificationHandler
      *    duplicate notifications.
      */
     @Override
-    public void onPhotosReady(List<Photo> photos) {
+    public void onPhotosReady(List<Photo> photos, Exception e) {
         if (Constants.DEBUG) Log.d(TAG, "onPhotosReady");
         if (photos != null) {
             List<Photo> newPhotos = checkForNewPhotos(photos);

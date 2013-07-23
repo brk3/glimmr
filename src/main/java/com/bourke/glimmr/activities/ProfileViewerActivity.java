@@ -9,6 +9,7 @@ import android.view.View;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.event.Events;
@@ -55,7 +56,11 @@ public class ProfileViewerActivity extends BottomOverlayActivity
             final String profileUrl = intent.getStringExtra(KEY_PROFILE_URL);
             new LoadProfileIdTask(new Events.IProfileIdReadyListener() {
                 @Override
-                public void onProfileIdReady(String profileId) {
+                public void onProfileIdReady(String profileId, Exception e) {
+                    if (FlickrHelper.getInstance().handleFlickrUnavailable(
+                            ProfileViewerActivity.this, e)) {
+                        return;
+                    }
                     if (profileId != null) {
                         new LoadUserTask(ProfileViewerActivity.this,
                                 ProfileViewerActivity.this, profileId).execute();
@@ -136,8 +141,11 @@ public class ProfileViewerActivity extends BottomOverlayActivity
     }
 
     @Override
-    public void onUserReady(User user) {
+    public void onUserReady(User user, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onUserReady");
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
+            return;
+        }
         if (user != null) {
             mUser = user;
             initViewPager();

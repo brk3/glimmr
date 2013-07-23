@@ -18,6 +18,7 @@ public class LoadPhotoSizesTask
 
     private final IPhotoSizesReadyListener mListener;
     private final String mId;
+    private Exception mException;
 
     public LoadPhotoSizesTask(IPhotoSizesReadyListener listener, String id) {
         mListener = listener;
@@ -36,6 +37,7 @@ public class LoadPhotoSizesTask
                 .getSizes(mId);
         } catch (Exception e) {
             e.printStackTrace();
+            mException = e;
         }
         return null;
     }
@@ -48,6 +50,6 @@ public class LoadPhotoSizesTask
         } else {
             Log.e(TAG, "Error fetching photo sizes, result is null");
         }
-        mListener.onPhotoSizesReady(ret);
+        mListener.onPhotoSizesReady(ret, mException);
     }
 }

@@ -12,10 +12,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.GsonHelper;
-import com.bourke.glimmr.common.TaskQueueDelegateFactory;
-import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.common.*;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IGroupInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
@@ -178,10 +175,13 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onGroupInfoReady(Group group) {
+    public void onGroupInfoReady(Group group, Exception e) {
         if (Constants.DEBUG) Log.d(TAG, "onGroupInfoReady");
-
         mProgressBar.setVisibility(View.GONE);
+
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
 
         /* If trouble getting group info we can't proceed */
         if (group == null) {

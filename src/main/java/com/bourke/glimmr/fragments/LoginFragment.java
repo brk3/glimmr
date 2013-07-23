@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.MainActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.IAccessTokenReadyListener;
 import com.bourke.glimmr.event.Events.IRequestTokenReadyListener;
@@ -70,6 +71,9 @@ public final class LoginFragment extends BaseFragment
 
     @Override
     public void onRequestTokenReady(String authUri, Exception e) {
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         if (e != null) {
             /* Usually down to a bad clock / timezone on device */
             if (e.getMessage().equals("No authentication challenges found") ||

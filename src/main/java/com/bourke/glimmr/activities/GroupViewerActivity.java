@@ -9,6 +9,7 @@ import android.view.View;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.event.Events;
@@ -53,7 +54,11 @@ public class GroupViewerActivity extends BottomOverlayActivity
             String groupUrl = intent.getStringExtra(KEY_GROUP_URL);
             new LoadGroupIdTask(new Events.IGroupIdReadyListener() {
                 @Override
-                public void onGroupIdReady(String groupId) {
+                public void onGroupIdReady(String groupId, Exception e) {
+                    if (FlickrHelper.getInstance().handleFlickrUnavailable(
+                            GroupViewerActivity.this, e)) {
+                        return;
+                    }
                     if (groupId != null) {
                         new LoadGroupInfoTask(groupId,
                                 GroupViewerActivity.this).execute(mOAuth);
@@ -125,8 +130,11 @@ public class GroupViewerActivity extends BottomOverlayActivity
     }
 
     @Override
-    public void onGroupInfoReady(Group group) {
+    public void onGroupInfoReady(Group group, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onGroupInfoReady");
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
+            return;
+        }
         if (group != null) {
             mGroup = group;
             initViewPager();

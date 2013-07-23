@@ -74,7 +74,7 @@ public class ActivityNotificationHandler
     }
 
     @Override
-    public void onItemListReady(List<Item> items) {
+    public void onItemListReady(List<Item> items, Exception e) {
         if (items != null && !items.isEmpty()) {
             if (Constants.DEBUG) {
                 Log.d(TAG, "onItemListReady: items.size: " + items.size());
@@ -164,7 +164,7 @@ public class ActivityNotificationHandler
         /* fetch the photo the item refers to */
         new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
             @Override
-            public void onPhotoInfoReady(final Photo photo) {
+            public void onPhotoInfoReady(final Photo photo, Exception e) {
                 /* fetch the photo bitmap to be shown in the notication */
                 String url = photo.getMediumUrl();
                 new AQuery(mContext).ajax(url, Bitmap.class,

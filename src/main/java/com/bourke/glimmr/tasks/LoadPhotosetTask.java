@@ -3,12 +3,8 @@ package com.bourke.glimmr.tasks;
 import android.os.AsyncTask;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events;
-import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.photosets.Photoset;
-import org.json.JSONException;
-
-import java.io.IOException;
 
 public class LoadPhotosetTask extends AsyncTask<OAuth, Void, Photoset> {
 
@@ -16,6 +12,7 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, Photoset> {
 
     private final Events.IPhotosetReadyListener mListener;
     private final String mId;
+    private Exception mException;
 
     public LoadPhotosetTask(Events.IPhotosetReadyListener listener,
                             String id) {
@@ -28,18 +25,15 @@ public class LoadPhotosetTask extends AsyncTask<OAuth, Void, Photoset> {
         try {
             return FlickrHelper.getInstance().getPhotosetsInterface()
                     .getInfo(mId);
-        } catch (FlickrException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            mException = e;
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(Photoset result) {
-        mListener.onPhotosetReady(result);
+        mListener.onPhotosetReady(result, mException);
     }
 }

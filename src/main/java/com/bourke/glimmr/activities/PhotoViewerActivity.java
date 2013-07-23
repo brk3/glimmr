@@ -16,10 +16,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.TextView;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.Constants;
-import com.bourke.glimmr.common.GsonHelper;
-import com.bourke.glimmr.common.HackyViewPager;
-import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.common.*;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.viewer.CommentsFragment;
@@ -467,8 +464,11 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     @Override
-    public void onPhotoInfoReady(Photo photo) {
+    public void onPhotoInfoReady(Photo photo, Exception e) {
         if (Constants.DEBUG) Log.d(TAG, "onPhotoInfoReady");
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
+            return;
+        }
         if (photo != null) {
             mPhotos.add(photo);
             initViewPager(0, false);

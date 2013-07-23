@@ -18,6 +18,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
 
     private final IUserReadyListener mListener;
     private final String mUserId;
+    private Exception mException;
 
     public LoadUserTask(Activity a, IUserReadyListener listener,
             String userId) {
@@ -44,6 +45,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
                 return f.getPeopleInterface().getInfo(mUserId);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
@@ -52,6 +54,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
                     .getInfo(mUserId);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         }
         return null;
@@ -64,7 +67,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
                 Log.e(TAG, "Error fetching user info, result is null");
             }
         }
-        mListener.onUserReady(result);
+        mListener.onUserReady(result, mException);
     }
 
     @Override

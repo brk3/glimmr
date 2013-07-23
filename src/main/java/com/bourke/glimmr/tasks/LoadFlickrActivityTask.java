@@ -19,6 +19,7 @@ public class LoadFlickrActivityTask
     private static final String TAG = "Glimmr/LoadFlickrActivityTask";
 
     private final IActivityItemsReadyListener mListener;
+    private Exception mException;
 
     public LoadFlickrActivityTask(IActivityItemsReadyListener listener) {
         mListener = listener;
@@ -43,6 +44,7 @@ public class LoadFlickrActivityTask
                         Constants.FETCH_PER_PAGE, page, timeFrame);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             Log.e(TAG, "LoadFlickrActivityTask requires authentication");
@@ -55,7 +57,7 @@ public class LoadFlickrActivityTask
         if (result == null) {
             Log.e(TAG, "Error fetching activity items, result is null");
         }
-        mListener.onItemListReady(result);
+        mListener.onItemListReady(result, mException);
     }
 
     @Override

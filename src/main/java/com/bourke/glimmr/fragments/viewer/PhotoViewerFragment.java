@@ -17,6 +17,7 @@ import com.androidquery.util.AQUtility;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
@@ -230,10 +231,10 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @Override
     public void onFavoriteComplete(Exception e) {
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         if (e != null) {
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "Error setting favorite on photo");
-            }
             return;
         } else {
             if (Constants.DEBUG) {
@@ -275,13 +276,16 @@ public final class PhotoViewerFragment extends BaseFragment
                     mBasePhoto.getSecret());
             mTask.execute(mOAuth);
         } else {
-            onPhotoInfoReady(mPhotoExtendedInfo);
+            onPhotoInfoReady(mPhotoExtendedInfo, null);
         }
     }
 
     @Override
-    public void onPhotoInfoReady(Photo photo) {
+    public void onPhotoInfoReady(Photo photo, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotoInfoReady");
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         mPhotoExtendedInfo = photo;
         if (mPhotoExtendedInfo != null) {
             /* update favorite button */
@@ -305,8 +309,11 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     @Override
-    public void onPhotoSizesReady(List<Size> sizes) {
-        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
+    public void onPhotoSizesReady(List<Size> sizes, Exception e) {
+        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         if (sizes != null && sizes.size() > 0) {
             for (Size s : sizes) {
                 if (s.getLabel() == Size.MOBILE_MP4) {

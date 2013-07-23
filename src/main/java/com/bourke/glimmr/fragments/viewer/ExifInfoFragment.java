@@ -12,6 +12,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.tasks.LoadExifInfoTask;
@@ -102,6 +103,10 @@ public final class ExifInfoFragment extends BaseFragment
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
         mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, exc)) {
+            return;
+        }
 
         /* Something went wrong, show message and return */
         if (exc != null) {

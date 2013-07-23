@@ -12,6 +12,7 @@ public class LoadGroupIdTask extends AsyncTask<Void, Void, String> {
 
     private final Events.IGroupIdReadyListener mListener;
     private final String mUrl;
+    private Exception mException;
 
     public LoadGroupIdTask(Events.IGroupIdReadyListener listener, String url) {
         mListener = listener;
@@ -26,12 +27,13 @@ public class LoadGroupIdTask extends AsyncTask<Void, Void, String> {
                     .lookupGroup(mUrl).getId();
         } catch (Exception e) {
             e.printStackTrace();
+            mException = e;
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(final String result) {
-        mListener.onGroupIdReady(result);
+        mListener.onGroupIdReady(result, mException);
     }
 }

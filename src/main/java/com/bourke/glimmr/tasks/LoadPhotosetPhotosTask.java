@@ -22,6 +22,7 @@ public class LoadPhotosetPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> 
     private final IPhotoListReadyListener mListener;
     private final Photoset mPhotoset;
     private final int mPage;
+    private Exception mException;
 
     public LoadPhotosetPhotosTask(IPhotoListReadyListener listener,
                                   Photoset photoset, int page) {
@@ -50,6 +51,7 @@ public class LoadPhotosetPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> 
                         Constants.FETCH_PER_PAGE, mPage).getPhotoList();
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
@@ -61,6 +63,7 @@ public class LoadPhotosetPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> 
                             Constants.FETCH_PER_PAGE, mPage).getPhotoList();
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         }
         return null;
@@ -74,7 +77,7 @@ public class LoadPhotosetPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> 
             }
             result = Collections.EMPTY_LIST;
         }
-        mListener.onPhotosReady(result);
+        mListener.onPhotosReady(result, mException);
     }
 
     @Override
