@@ -27,6 +27,7 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
     private final String mSearchTerm;
     private final int mSortType;
     private String mUserId;
+    private Exception mException;
 
     public SearchPhotosTask(IPhotoListReadyListener listener,
             String searchTerm, int sortType, int page) {
@@ -85,6 +86,7 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
                         sp, Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
@@ -94,6 +96,7 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
                     .search(sp, Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         }
         return null;
@@ -105,7 +108,7 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
             Log.e(TAG, "Error fetching photolist, result is null");
             result = Collections.EMPTY_LIST;
         }
-        mListener.onPhotosReady(result);
+        mListener.onPhotosReady(result, mException);
     }
 
     @Override

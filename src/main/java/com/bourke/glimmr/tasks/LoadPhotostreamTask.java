@@ -21,6 +21,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, List<Photo>> {
     private final IPhotoListReadyListener mListener;
     private final User mUser;
     private final int mPage;
+    private Exception mException;
 
     public LoadPhotostreamTask(IPhotoListReadyListener listener,
             User user, int page) {
@@ -48,6 +49,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, List<Photo>> {
                         Constants.EXTRAS, Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             Log.e(TAG, "LoadPhotostreamTask requires authentication");
@@ -61,7 +63,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, List<Photo>> {
             if (Constants.DEBUG)
                 Log.e(TAG, "Error fetching photolist, result is null");
         }
-        mListener.onPhotosReady(result);
+        mListener.onPhotosReady(result, mException);
     }
 
     @Override

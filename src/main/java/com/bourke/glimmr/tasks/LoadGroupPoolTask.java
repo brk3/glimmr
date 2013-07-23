@@ -21,6 +21,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
     private final IPhotoListReadyListener mListener;
     private final Group mGroup;
     private final int mPage;
+    private Exception mException;
 
     public LoadGroupPoolTask(IPhotoListReadyListener listener, Group group,
             int page) {
@@ -47,6 +48,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
                         Constants.EXTRAS, Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
@@ -57,6 +59,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
                             Constants.FETCH_PER_PAGE, mPage);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         }
         return null;
@@ -67,6 +70,6 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
         if (result == null) {
             Log.e(TAG, "error fetching photolist, result is null");
         }
-        mListener.onPhotosReady(result);
+        mListener.onPhotosReady(result, mException);
     }
 }

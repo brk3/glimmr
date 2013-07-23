@@ -17,6 +17,7 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
     private final IPhotoInfoReadyListener mListener;
     private final String mId;
     private final String mSecret;
+    private Exception mException;
 
     public LoadPhotoInfoTask(IPhotoInfoReadyListener listener, String id,
             String secret) {
@@ -48,6 +49,7 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
                 return f.getPhotosInterface().getPhoto(mId);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
@@ -60,6 +62,7 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
                         .getPhoto(mId);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         }
         return null;
@@ -67,6 +70,6 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
 
     @Override
     protected void onPostExecute(final Photo result) {
-        mListener.onPhotoInfoReady(result);
+        mListener.onPhotoInfoReady(result, mException);
     }
 }

@@ -22,6 +22,7 @@ public class LoadCommentsTask
 
     private final ICommentsReadyListener mListener;
     private final Photo mPhoto;
+    private Exception mException;
 
     public LoadCommentsTask(ICommentsReadyListener listener, Photo photo) {
         mListener = listener;
@@ -48,6 +49,7 @@ public class LoadCommentsTask
                         minCommentDate, maxCommentDate);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
@@ -58,6 +60,7 @@ public class LoadCommentsTask
                     .getList(mPhoto.getId(), minCommentDate, maxCommentDate);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         }
         return null;
@@ -69,7 +72,7 @@ public class LoadCommentsTask
             if (Constants.DEBUG)
                 Log.e(TAG, "Error fetching comments, result is null");
         }
-        mListener.onCommentsReady(result);
+        mListener.onCommentsReady(result, mException);
     }
 
     @Override

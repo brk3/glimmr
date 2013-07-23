@@ -22,6 +22,7 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
     private final IPhotoListReadyListener mListener;
     private final User mUser;
     private final int mPage;
+    private Exception mException;
 
     public LoadFavoritesTask(IPhotoListReadyListener listener, User user,
             int page) {
@@ -52,6 +53,7 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
                     Constants.FETCH_PER_PAGE, mPage, Constants.EXTRAS);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             Log.e(TAG, "LoadFavoritesTask requires authentication");
@@ -65,7 +67,7 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
             if (Constants.DEBUG)
                 Log.e(TAG, "Error fetching photolist, result is null");
         }
-        mListener.onPhotosReady(result);
+        mListener.onPhotosReady(result, mException);
     }
 
     @Override

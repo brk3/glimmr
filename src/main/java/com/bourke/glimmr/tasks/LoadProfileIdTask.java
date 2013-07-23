@@ -12,6 +12,7 @@ public class LoadProfileIdTask extends AsyncTask<Void, Void, String> {
 
     private final Events.IProfileIdReadyListener mListener;
     private final String mUrl;
+    private Exception mException;
 
     public LoadProfileIdTask(Events.IProfileIdReadyListener listener,
             String url) {
@@ -27,12 +28,13 @@ public class LoadProfileIdTask extends AsyncTask<Void, Void, String> {
                     .lookupUser(mUrl).getId();
         } catch (Exception e) {
             e.printStackTrace();
+            mException = e;
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(final String result) {
-        mListener.onProfileIdReady(result);
+        mListener.onProfileIdReady(result, mException);
     }
 }

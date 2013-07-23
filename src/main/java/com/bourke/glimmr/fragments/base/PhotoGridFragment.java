@@ -21,6 +21,7 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
@@ -90,9 +91,12 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     @Override
-    public void onPhotosReady(List<Photo> photos) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosReady");
+    public void onPhotosReady(List<Photo> photos, Exception e) {
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         if (photos == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
             mGridView.setVisibility(View.GONE);

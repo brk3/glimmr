@@ -16,6 +16,7 @@ public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
 
     private final IGroupInfoReadyListener mListener;
     private final String mGroupId;
+    private Exception mException;
 
     public LoadGroupInfoTask(String groupId,
             IGroupInfoReadyListener listener) {
@@ -36,6 +37,7 @@ public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
                 return f.getGroupsInterface().getInfo(mGroupId);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
@@ -44,6 +46,7 @@ public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
                     .getInfo(mGroupId);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         }
         return null;
@@ -51,6 +54,6 @@ public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
 
     @Override
     protected void onPostExecute(final Group result) {
-        mListener.onGroupInfoReady(result);
+        mListener.onGroupInfoReady(result, mException);
     }
 }

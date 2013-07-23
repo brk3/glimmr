@@ -19,6 +19,7 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.IPhotosetsReadyListener;
@@ -151,19 +152,20 @@ public class PhotosetsFragment extends BaseFragment
     }
 
     @Override
-    public void onPhotosetsReady(Photosets photoSets) {
+    public void onPhotosetsReady(Photosets photoSets, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
-        if (photoSets == null) {
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e) ||
+                photoSets == null) {
             mLayoutNoConnection.setVisibility(View.VISIBLE);
             mAdapterView.setVisibility(View.GONE);
-        } else {
-            mAdapterView.setVisibility(View.VISIBLE);
-            mLayoutNoConnection.setVisibility(View.GONE);
-            mPhotosets.clear();
-            mPhotosets.addAll(photoSets.getPhotosets());
-            mAdapter.notifyDataSetChanged();
+            return;
         }
+        mAdapterView.setVisibility(View.VISIBLE);
+        mLayoutNoConnection.setVisibility(View.GONE);
+        mPhotosets.clear();
+        mPhotosets.addAll(photoSets.getPhotosets());
+        mAdapter.notifyDataSetChanged();
     }
 
     /**

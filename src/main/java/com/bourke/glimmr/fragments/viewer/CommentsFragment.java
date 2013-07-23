@@ -14,6 +14,7 @@ import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.ICommentAddedListener;
@@ -155,7 +156,10 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onUserReady(User user) {
+    public void onUserReady(User user, Exception e) {
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         if (user != null) {
             mUsers.put(user.getId(), new UserItem(user, false));
             mAdapter.notifyDataSetChanged();
@@ -163,7 +167,7 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onCommentAdded(String commentId) {
+    public void onCommentAdded(String commentId, Exception e) {
         if (Constants.DEBUG) {
             Log.d(getLogTag(), "Sucessfully added comment with id: " +
                     commentId);
@@ -172,9 +176,12 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onCommentsReady(List<Comment> comments) {
+    public void onCommentsReady(List<Comment> comments, Exception e) {
         mProgressBar.setVisibility(View.GONE);
 
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         if (comments == null) {
             Log.e(TAG, "onCommentsReady: comments are null");
             return;

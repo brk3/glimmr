@@ -19,6 +19,7 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.GroupViewerActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.GroupItemLongClickDialogListener;
 import com.bourke.glimmr.event.Events.IGroupListReadyListener;
@@ -108,18 +109,19 @@ public class GroupListFragment extends BaseFragment
     }
 
     @Override
-    public void onGroupListReady(List<Group> groups) {
+    public void onGroupListReady(List<Group> groups, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onGroupListReady");
-        if (groups == null) {
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e) ||
+                groups == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
             mListView.setVisibility(View.GONE);
-        } else {
-            mListView.setVisibility(View.VISIBLE);
-            mNoConnectionLayout.setVisibility(View.GONE);
-            mGroups.clear();
-            mGroups.addAll(groups);
-            mAdapter.notifyDataSetChanged();
+            return;
         }
+        mListView.setVisibility(View.VISIBLE);
+        mNoConnectionLayout.setVisibility(View.GONE);
+        mGroups.clear();
+        mGroups.addAll(groups);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
