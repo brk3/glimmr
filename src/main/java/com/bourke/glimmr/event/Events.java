@@ -21,7 +21,7 @@ public class Events {
     }
 
     public interface ICommentsReadyListener {
-        void onCommentsReady(List<Comment> exifItems);
+        void onCommentsReady(List<Comment> exifItems, Exception e);
     }
 
     public interface IExifInfoReadyListener {
@@ -29,15 +29,15 @@ public class Events {
     }
 
     public interface IGroupListReadyListener {
-        void onGroupListReady(List<Group> groups);
+        void onGroupListReady(List<Group> groups, Exception e);
     }
 
     public interface IPhotoListReadyListener {
-        void onPhotosReady(List<Photo> photos);
+        void onPhotosReady(List<Photo> photos, Exception e);
     }
 
     public interface IPhotosetsReadyListener {
-        void onPhotosetsReady(Photosets photosets);
+        void onPhotosetsReady(Photosets photosets, Exception e);
     }
 
     public interface IRequestTokenReadyListener {
@@ -45,7 +45,7 @@ public class Events {
     }
 
     public interface IUserReadyListener {
-        void onUserReady(User user);
+        void onUserReady(User user, Exception e);
     }
 
     public interface IFavoriteReadyListener {
@@ -53,15 +53,15 @@ public class Events {
     }
 
     public interface IPhotoInfoReadyListener {
-        void onPhotoInfoReady(Photo photo);
+        void onPhotoInfoReady(Photo photo, Exception e);
     }
 
     public interface IGroupInfoReadyListener {
-        public void onGroupInfoReady(Group group);
+        public void onGroupInfoReady(Group group, Exception e);
     }
 
     public interface ICommentAddedListener {
-        void onCommentAdded(String commentId);
+        void onCommentAdded(String commentId, Exception e);
     }
 
     public interface PhotoItemLongClickDialogListener {
@@ -69,7 +69,7 @@ public class Events {
     }
 
     public interface IActivityItemsReadyListener {
-        public void onItemListReady(List<Item> items);
+        public void onItemListReady(List<Item> items, Exception e);
     }
 
     public interface TagClickDialogListener {
@@ -97,18 +97,18 @@ public class Events {
     }
 
     public interface IPhotoSizesReadyListener {
-        public void onPhotoSizesReady(List<Size> sizes);
+        public void onPhotoSizesReady(List<Size> sizes, Exception e);
     }
 
     public interface IPhotosetReadyListener {
-        public void onPhotosetReady(Photoset photoset);
+        public void onPhotosetReady(Photoset photoset, Exception e);
     }
 
     public interface IGroupIdReadyListener {
-        public void onGroupIdReady(String groupId);
+        public void onGroupIdReady(String groupId, Exception e);
     }
 
     public interface IProfileIdReadyListener {
-        public void onProfileIdReady(String profileId);
+        public void onProfileIdReady(String profileId, Exception e);
     }
 }

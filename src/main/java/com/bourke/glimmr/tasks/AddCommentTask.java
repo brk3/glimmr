@@ -18,6 +18,7 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
     private final ICommentAddedListener mListener;
     private final Photo mPhoto;
     private final String mCommentText;
+    private Exception mException;
 
     public AddCommentTask(ICommentAddedListener listener,
             Photo photo, String commentText) {
@@ -43,6 +44,7 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
                         mCommentText);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             Log.e(TAG, "AddCommentTask requires authentication");
@@ -57,7 +59,7 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
                 Log.e(TAG, "Error adding comment, result is null");
             }
         }
-        mListener.onCommentAdded(result);
+        mListener.onCommentAdded(result, mException);
     }
 
     @Override

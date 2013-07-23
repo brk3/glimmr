@@ -16,11 +16,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.common.*;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.common.HackyViewPager;
@@ -38,7 +40,11 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import com.squareup.otto.Subscribe;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Activity for viewing fullscreen photos in a ViewPager.
@@ -471,8 +477,11 @@ public class PhotoViewerActivity extends BaseActivity
     }
 
     @Override
-    public void onPhotoInfoReady(Photo photo) {
+    public void onPhotoInfoReady(Photo photo, Exception e) {
         if (Constants.DEBUG) Log.d(TAG, "onPhotoInfoReady");
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
+            return;
+        }
         if (photo != null) {
             mPhotos.add(photo);
             initViewPager(0, false);

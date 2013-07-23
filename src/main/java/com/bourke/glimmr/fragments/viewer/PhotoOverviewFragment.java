@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,14 @@ import com.bourke.glimmrpro.event.Events.TagClickDialogListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import com.bourke.glimmrpro.tasks.LoadExifInfoTask;
 import com.googlecode.flickrjandroid.FlickrException;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.activities.SearchActivity;
+import com.bourke.glimmrpro.common.FlickrHelper;
+import com.bourke.glimmrpro.common.TextUtils;
+import com.bourke.glimmrpro.event.Events.IExifInfoReadyListener;
+import com.bourke.glimmrpro.event.Events.TagClickDialogListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.tasks.LoadExifInfoTask;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.tags.Tag;
@@ -145,9 +152,8 @@ public final class PhotoOverviewFragment extends BaseFragment
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
-        if (exc != null && exc instanceof FlickrException) {
-            String errCode = ((FlickrException) exc).getErrorCode();
-            Log.e(getLogTag(), "errCode: " + errCode);
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, exc)) {
+            return;
         }
 
         for (Exif e : exifInfo) {

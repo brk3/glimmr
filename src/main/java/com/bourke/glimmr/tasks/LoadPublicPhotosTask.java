@@ -17,6 +17,7 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
 
     private final IPhotoListReadyListener mListener;
     private final int mPage;
+    private Exception mException;
 
     public LoadPublicPhotosTask(IPhotoListReadyListener listener, int page) {
         mListener = listener;
@@ -40,6 +41,7 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
                         mPage);
         } catch (Exception e) {
             e.printStackTrace();
+            mException = e;
         }
 
         return null;
@@ -50,7 +52,7 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
         if (result == null) {
             Log.e(TAG, "Error fetching photolist, result is null");
         }
-        mListener.onPhotosReady(result);
+        mListener.onPhotosReady(result, mException);
     }
 
     @Override

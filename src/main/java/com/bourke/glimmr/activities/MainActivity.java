@@ -217,7 +217,7 @@ public class MainActivity extends BaseActivity {
             setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
             new LoadFlickrActivityTask(new IActivityItemsReadyListener() {
                 @Override
-                public void onItemListReady(List<Item> items) {
+                public void onItemListReady(List<Item> items, Exception e) {
                     setSupportProgressBarIndeterminateVisibility(
                         Boolean.FALSE);
                     if (items != null) {
@@ -380,7 +380,11 @@ public class MainActivity extends BaseActivity {
         Item item = items.get(itemPos);
         new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
             @Override
-            public void onPhotoInfoReady(final Photo photo) {
+            public void onPhotoInfoReady(final Photo photo, Exception e) {
+                setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+                if (FlickrHelper.getInstance().handleFlickrUnavailable(MainActivity.this, e)) {
+                    return;
+                }
                 if (photo == null) {
                     Log.e(TAG, "onPhotoInfoReady: photo is null, " +
                         "can't start viewer");
@@ -388,7 +392,6 @@ public class MainActivity extends BaseActivity {
                 }
                 List<Photo> photos = new ArrayList<Photo>();
                 photos.add(photo);
-                setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
                 PhotoViewerActivity.startPhotoViewer(
                     MainActivity.this, photos, 0);
             }

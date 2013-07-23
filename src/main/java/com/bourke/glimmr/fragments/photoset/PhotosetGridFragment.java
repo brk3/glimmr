@@ -115,8 +115,8 @@ public class PhotosetGridFragment extends PhotoGridFragment
     }
 
     @Override
-    public void onPhotosReady(List<Photo> photos) {
-        super.onPhotosReady(photos);
+    public void onPhotosReady(List<Photo> photos, Exception e) {
+        super.onPhotosReady(photos, e);
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (mPhotoset != null) {
             User owner = mPhotoset.getOwner();

@@ -20,6 +20,7 @@ public class LoadContactsPhotosTask
 
     private final IPhotoListReadyListener mListener;
     private final int mPage;
+    private Exception mException;
 
     public LoadContactsPhotosTask(IPhotoListReadyListener listener, int page) {
         mListener = listener;
@@ -48,6 +49,7 @@ public class LoadContactsPhotosTask
                         Constants.FETCH_PER_PAGE);
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             Log.e(TAG, "LoadContactsPhotosTask requires authentication");
@@ -60,7 +62,7 @@ public class LoadContactsPhotosTask
         if (result == null) {
             Log.e(TAG, "Error fetching contacts photos, result is null");
         }
-        mListener.onPhotosReady(result);
+        mListener.onPhotosReady(result, mException);
     }
 
     @Override

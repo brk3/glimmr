@@ -23,6 +23,19 @@ import com.bourke.glimmrpro.event.Events.IUserReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
 import com.bourke.glimmrpro.tasks.AddCommentTask;
 import com.bourke.glimmrpro.tasks.LoadUserTask;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.activities.ProfileViewerActivity;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
+import com.bourke.glimmrpro.common.GsonHelper;
+import com.bourke.glimmrpro.common.TextUtils;
+import com.bourke.glimmrpro.event.Events.ICommentAddedListener;
+import com.bourke.glimmrpro.event.Events.ICommentsReadyListener;
+import com.bourke.glimmrpro.event.Events.IUserReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
+import com.bourke.glimmrpro.tasks.AddCommentTask;
+import com.bourke.glimmrpro.tasks.LoadCommentsTask;
+import com.bourke.glimmrpro.tasks.LoadUserTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -155,7 +168,10 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onUserReady(User user) {
+    public void onUserReady(User user, Exception e) {
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         if (user != null) {
             mUsers.put(user.getId(), new UserItem(user, false));
             mAdapter.notifyDataSetChanged();
@@ -163,7 +179,7 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onCommentAdded(String commentId) {
+    public void onCommentAdded(String commentId, Exception e) {
         if (Constants.DEBUG) {
             Log.d(getLogTag(), "Sucessfully added comment with id: " +
                     commentId);
@@ -172,9 +188,12 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onCommentsReady(List<Comment> comments) {
+    public void onCommentsReady(List<Comment> comments, Exception e) {
         mProgressBar.setVisibility(View.GONE);
 
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         if (comments == null) {
             Log.e(TAG, "onCommentsReady: comments are null");
             return;

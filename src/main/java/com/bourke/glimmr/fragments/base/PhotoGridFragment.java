@@ -16,13 +16,21 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
-import com.bourke.glimmrpro.activities.ProfileViewerActivity;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.PhotoViewerActivity;
+import com.bourke.glimmrpro.activities.ProfileViewerActivity;
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.BusProvider;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
@@ -92,9 +100,12 @@ public abstract class PhotoGridFragment extends com.bourke.glimmrpro.fragments.b
     }
 
     @Override
-    public void onPhotosReady(List<Photo> photos) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosReady");
+    public void onPhotosReady(List<Photo> photos, Exception e) {
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
         if (photos == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
             mGridView.setVisibility(View.GONE);

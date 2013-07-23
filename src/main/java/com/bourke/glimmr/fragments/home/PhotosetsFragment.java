@@ -26,6 +26,18 @@ import com.bourke.glimmrpro.event.Events.PhotosetItemLongClickDialogListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import com.bourke.glimmrpro.fragments.photoset.AddToPhotosetDialogFragment;
 import com.bourke.glimmrpro.tasks.LoadPhotosetsTask;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.activities.BaseActivity;
+import com.bourke.glimmrpro.activities.PhotosetViewerActivity;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
+import com.bourke.glimmrpro.common.GsonHelper;
+import com.bourke.glimmrpro.common.TextUtils;
+import com.bourke.glimmrpro.event.Events.IPhotosetsReadyListener;
+import com.bourke.glimmrpro.event.Events.PhotosetItemLongClickDialogListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.photoset.AddToPhotosetDialogFragment;
+import com.bourke.glimmrpro.tasks.LoadPhotosetsTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
@@ -151,19 +163,20 @@ public class PhotosetsFragment extends BaseFragment
     }
 
     @Override
-    public void onPhotosetsReady(Photosets photoSets) {
+    public void onPhotosetsReady(Photosets photoSets, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
-        if (photoSets == null) {
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e) ||
+                photoSets == null) {
             mLayoutNoConnection.setVisibility(View.VISIBLE);
             mAdapterView.setVisibility(View.GONE);
-        } else {
-            mAdapterView.setVisibility(View.VISIBLE);
-            mLayoutNoConnection.setVisibility(View.GONE);
-            mPhotosets.clear();
-            mPhotosets.addAll(photoSets.getPhotosets());
-            mAdapter.notifyDataSetChanged();
+            return;
         }
+        mAdapterView.setVisibility(View.VISIBLE);
+        mLayoutNoConnection.setVisibility(View.GONE);
+        mPhotosets.clear();
+        mPhotosets.addAll(photoSets.getPhotosets());
+        mAdapter.notifyDataSetChanged();
     }
 
     /**

@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+
 import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.event.Events;
@@ -53,7 +55,11 @@ public class GroupViewerActivity extends com.bourke.glimmrpro.activities.BottomO
             String groupUrl = intent.getStringExtra(KEY_GROUP_URL);
             new LoadGroupIdTask(new Events.IGroupIdReadyListener() {
                 @Override
-                public void onGroupIdReady(String groupId) {
+                public void onGroupIdReady(String groupId, Exception e) {
+                    if (FlickrHelper.getInstance().handleFlickrUnavailable(
+                            GroupViewerActivity.this, e)) {
+                        return;
+                    }
                     if (groupId != null) {
                         new LoadGroupInfoTask(groupId,
                                 GroupViewerActivity.this).execute(mOAuth);
@@ -125,8 +131,11 @@ public class GroupViewerActivity extends com.bourke.glimmrpro.activities.BottomO
     }
 
     @Override
-    public void onGroupInfoReady(Group group) {
+    public void onGroupInfoReady(Group group, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onGroupInfoReady");
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
+            return;
+        }
         if (group != null) {
             mGroup = group;
             initViewPager();

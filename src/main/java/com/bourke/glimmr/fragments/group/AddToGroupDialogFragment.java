@@ -24,6 +24,16 @@ import com.bourke.glimmrpro.fragments.base.PhotoGridFragment.PhotoGridItemClicke
 import com.bourke.glimmrpro.fragments.home.PhotoStreamGridFragment;
 import com.bourke.glimmrpro.tasks.AddItemToGroupTask;
 import com.bourke.glimmrpro.tasks.LoadGroupInfoTask;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.common.*;
+import com.bourke.glimmrpro.event.BusProvider;
+import com.bourke.glimmrpro.event.Events.IGroupInfoReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
+import com.bourke.glimmrpro.fragments.base.PhotoGridFragment.PhotoGridItemClickedEvent;
+import com.bourke.glimmrpro.fragments.home.PhotoStreamGridFragment;
+import com.bourke.glimmrpro.tape.AddToGroupTaskQueueService;
+import com.bourke.glimmrpro.tasks.AddItemToGroupTask;
+import com.bourke.glimmrpro.tasks.LoadGroupInfoTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.groups.Throttle;
@@ -178,10 +188,13 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onGroupInfoReady(Group group) {
+    public void onGroupInfoReady(Group group, Exception e) {
         if (Constants.DEBUG) Log.d(TAG, "onGroupInfoReady");
-
         mProgressBar.setVisibility(View.GONE);
+
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
+            return;
+        }
 
         /* If trouble getting group info we can't proceed */
         if (group == null) {

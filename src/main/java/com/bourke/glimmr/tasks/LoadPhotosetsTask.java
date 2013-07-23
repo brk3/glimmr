@@ -17,6 +17,7 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
 
     private final IPhotosetsReadyListener mListener;
     private final User mUser;
+    private Exception mException;
 
     public LoadPhotosetsTask(IPhotosetsReadyListener listener, User user) {
         mListener = listener;
@@ -44,6 +45,7 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
                 return f.getPhotosetsInterface().getList(mUser.getId());
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
@@ -52,6 +54,7 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
                     .getPhotosetsInterface().getList(mUser.getId());
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         }
         return null;
@@ -63,6 +66,6 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
             if (Constants.DEBUG)
                 Log.e(TAG, "Error fetching photosets, result is null");
         }
-        mListener.onPhotosetsReady(result);
+        mListener.onPhotosetsReady(result, mException);
     }
 }

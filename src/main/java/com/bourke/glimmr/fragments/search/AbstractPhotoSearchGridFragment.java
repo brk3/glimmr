@@ -98,8 +98,8 @@ public abstract class AbstractPhotoSearchGridFragment extends PhotoGridFragment
     }
 
     @Override
-    public void onPhotosReady(List<Photo> photos) {
-        super.onPhotosReady(photos);
+    public void onPhotosReady(List<Photo> photos, Exception e) {
+        super.onPhotosReady(photos, e);
         if (photos != null && photos.isEmpty()) {
             /* If first page (2 as mPage will have already been incremented),
              * and results are empty, show no search results layout */

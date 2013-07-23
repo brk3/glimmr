@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+
 import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.event.Events;
@@ -55,7 +57,11 @@ public class ProfileViewerActivity extends BottomOverlayActivity
             final String profileUrl = intent.getStringExtra(KEY_PROFILE_URL);
             new LoadProfileIdTask(new Events.IProfileIdReadyListener() {
                 @Override
-                public void onProfileIdReady(String profileId) {
+                public void onProfileIdReady(String profileId, Exception e) {
+                    if (FlickrHelper.getInstance().handleFlickrUnavailable(
+                            ProfileViewerActivity.this, e)) {
+                        return;
+                    }
                     if (profileId != null) {
                         new LoadUserTask(ProfileViewerActivity.this,
                                 ProfileViewerActivity.this, profileId).execute();
@@ -136,8 +142,11 @@ public class ProfileViewerActivity extends BottomOverlayActivity
     }
 
     @Override
-    public void onUserReady(User user) {
+    public void onUserReady(User user, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onUserReady");
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
+            return;
+        }
         if (user != null) {
             mUser = user;
             initViewPager();

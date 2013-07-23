@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+
 import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.common.GlimmrPagerAdapter;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.event.Events;
@@ -127,8 +129,11 @@ public class PhotosetViewerActivity extends BottomOverlayActivity
     }
 
     @Override
-    public void onPhotosetReady(Photoset photoset) {
+    public void onPhotosetReady(Photoset photoset, Exception e) {
         if (Constants.DEBUG) Log.d(TAG, "onPhotosetReady");
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
+            return;
+        }
         if (photoset != null) {
             mPhotoset = photoset;
             initViewPager();
@@ -141,8 +146,11 @@ public class PhotosetViewerActivity extends BottomOverlayActivity
     }
 
     @Override
-    public void onUserReady(User user) {
+    public void onUserReady(User user, Exception e) {
         if (Constants.DEBUG) Log.d(TAG, "onUserReady");
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
+            return;
+        }
         if (user != null) {
             mUser = user;
             mPhotoset.setOwner(mUser);

@@ -8,6 +8,8 @@ public class Constants {
     /* Important: set to false when doing release builds */
     public static final boolean DEBUG = false;
 
+    public static final String ERR_CODE_FLICKR_UNAVAILABLE = "105";
+
     /* Global app prefs */
     public static final String PREFS_NAME = "glimmr_prefs";
 

@@ -25,6 +25,17 @@ import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import com.bourke.glimmrpro.fragments.group.AddToGroupDialogFragment;
 import com.bourke.glimmrpro.tasks.LoadGroupsTask;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.activities.BaseActivity;
+import com.bourke.glimmrpro.activities.GroupViewerActivity;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
+import com.bourke.glimmrpro.common.TextUtils;
+import com.bourke.glimmrpro.event.Events.GroupItemLongClickDialogListener;
+import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.group.AddToGroupDialogFragment;
+import com.bourke.glimmrpro.tasks.LoadGroupsTask;
 import com.googlecode.flickrjandroid.groups.Group;
 
 import java.util.ArrayList;
@@ -108,18 +119,19 @@ public class GroupListFragment extends BaseFragment
     }
 
     @Override
-    public void onGroupListReady(List<Group> groups) {
+    public void onGroupListReady(List<Group> groups, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onGroupListReady");
-        if (groups == null) {
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e) ||
+                groups == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);
             mListView.setVisibility(View.GONE);
-        } else {
-            mListView.setVisibility(View.VISIBLE);
-            mNoConnectionLayout.setVisibility(View.GONE);
-            mGroups.clear();
-            mGroups.addAll(groups);
-            mAdapter.notifyDataSetChanged();
+            return;
         }
+        mListView.setVisibility(View.VISIBLE);
+        mNoConnectionLayout.setVisibility(View.GONE);
+        mGroups.clear();
+        mGroups.addAll(groups);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

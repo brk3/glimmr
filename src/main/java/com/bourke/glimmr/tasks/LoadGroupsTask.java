@@ -6,12 +6,10 @@ import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.Events.IGroupListReadyListener;
 import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +20,7 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
     private static final String TAG = "Glimmr/LoadGroupsTask";
 
     private final IGroupListReadyListener mListener;
+    private Exception mException;
 
     public LoadGroupsTask(IGroupListReadyListener listener) {
         mListener = listener;
@@ -41,12 +40,9 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
                     token.getOauthToken(), token.getOauthTokenSecret());
             try {
                 return f.getPoolsInterface().getGroups();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (FlickrException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
+                mException = e;
             }
         } else {
             Log.e(TAG, "LoadGroupsTask requires authentication");
@@ -62,7 +58,7 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
         } else {
             ret.addAll(result);
         }
-        mListener.onGroupListReady(ret);
+        mListener.onGroupListReady(ret, mException);
     }
 
     @Override

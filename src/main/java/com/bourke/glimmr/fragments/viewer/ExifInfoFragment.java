@@ -15,6 +15,12 @@ import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.event.Events.IExifInfoReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import com.bourke.glimmrpro.tasks.LoadExifInfoTask;
+import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.common.Constants;
+import com.bourke.glimmrpro.common.FlickrHelper;
+import com.bourke.glimmrpro.event.Events.IExifInfoReadyListener;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.tasks.LoadExifInfoTask;
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -102,6 +108,10 @@ public final class ExifInfoFragment extends BaseFragment
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
         mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, exc)) {
+            return;
+        }
 
         /* Something went wrong, show message and return */
         if (exc != null) {

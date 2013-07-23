@@ -1,6 +1,11 @@
 package com.bourke.glimmrpro.common;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+import com.bourke.glimmrpro.R;
 import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.REST;
 import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.contacts.ContactsInterface;
@@ -19,6 +24,8 @@ import com.googlecode.flickrjandroid.urls.UrlsInterface;
 import javax.xml.parsers.ParserConfigurationException;
 
 public final class FlickrHelper {
+
+    private static final String TAG = "FlickrHelper";
 
     private static FlickrHelper instance = null;
 
@@ -138,5 +145,24 @@ public final class FlickrHelper {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Check if exception e is the cause of Flickr being down and show some toast.
+     * @param context
+     * @return true if flickr is down
+     */
+    public boolean handleFlickrUnavailable(Context context, Exception e) {
+        if (e != null && e instanceof FlickrException) {
+            if (((FlickrException) e).getErrorCode().equals(
+                    Constants.ERR_CODE_FLICKR_UNAVAILABLE)) {
+                e.printStackTrace();
+                Log.w(TAG, "Flickr seems down at the moment");
+                Toast.makeText(context, context.getString(R.string.flickr_unavailable),
+                        Toast.LENGTH_LONG).show();
+                return true;
+            }
+        }
+        return false;
     }
 }
