@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="29" android:versionName="2.14-SNAPSHOT" package="com.bourke.glimmr">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="30" android:versionName="2.15-SNAPSHOT" package="com.bourke.glimmr">
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
 
