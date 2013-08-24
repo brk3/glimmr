@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.bourke.glimmr.R;
+import com.bourke.glimmr.common.BitmapUtils;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.UsageTips;
@@ -205,14 +207,17 @@ public class LocationEditorActivity extends BaseActivity implements
         mLocation = new GeoData((float)longitude, (float)latitude, Flickr.ACCURACY_STREET);
         LatLng latLng = new LatLng(latitude, longitude);
         String title = mLocalPhoto.getMetadata().getTitle();
-        Bitmap icon = null;
-        mAq.image(icon).image(mLocalPhoto.getUri(), true, true, 150, 0);
+        final int THUMBNAIL_SIZE = 100;
+        Bitmap icon = ThumbnailUtils.extractThumbnail(
+                BitmapUtils.decodeSampledBitmap(
+                        mLocalPhoto.getUri(), THUMBNAIL_SIZE, THUMBNAIL_SIZE),
+                THUMBNAIL_SIZE, THUMBNAIL_SIZE);
 
         mMapMarker = new MarkerOptions();
         mMapMarker
                 .position(latLng)
                 .title(title)
-                .icon(BitmapDescriptorFactory.fromPath(mLocalPhoto.getUri()))
+                .icon(BitmapDescriptorFactory.fromBitmap(icon))
                 .draggable(true);
         mMap.addMarker(mMapMarker);
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -249,6 +254,10 @@ public class LocationEditorActivity extends BaseActivity implements
         Intent result = new Intent();
         Bundle resultData = new Bundle();
         new GsonHelper(this).marshallObject(mLocation, resultData, KEY_LOCATION);
+        if (Constants.DEBUG) {
+            Log.d(TAG, String.format("setting result location of %s,%s",
+                    mLocation.getLatitude(), mLocation.getLongitude()));
+        }
         result.putExtras(resultData);
         setResult(PhotoUploadFragment.ACTIVITY_RESULT_ADD_LOCATION, result);
     }

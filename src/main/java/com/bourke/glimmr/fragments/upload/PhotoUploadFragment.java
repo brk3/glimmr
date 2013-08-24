@@ -5,13 +5,16 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.LocationEditorActivity;
+import com.bourke.glimmr.common.BitmapUtils;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TextUtils;
@@ -200,6 +203,10 @@ public class PhotoUploadFragment extends BaseFragment {
             Bundle extras = data.getExtras();
             GeoData geoData = new Gson().fromJson(extras.getString(
                     LocationEditorActivity.KEY_LOCATION, ""), GeoData.class);
+            if (Constants.DEBUG) {
+                Log.d(TAG, String.format("Received location: %s,%s",
+                        geoData.getLatitude(), geoData.getLongitude()));
+            }
             addMapMarkerAndZoom(geoData.getLatitude(), geoData.getLongitude());
         }
     }
@@ -207,9 +214,14 @@ public class PhotoUploadFragment extends BaseFragment {
     private void addMapMarkerAndZoom(double latitude, double longitude) {
         LatLng latLng = new LatLng(latitude, longitude);
         MarkerOptions markerOptions = new MarkerOptions();
+        final int THUMBNAIL_SIZE = 100;
+        Bitmap icon = ThumbnailUtils.extractThumbnail(
+                BitmapUtils.decodeSampledBitmap(
+                        mPhoto.getUri(), THUMBNAIL_SIZE, THUMBNAIL_SIZE),
+                THUMBNAIL_SIZE, THUMBNAIL_SIZE);
         markerOptions
                 .position(latLng)
-                .icon(BitmapDescriptorFactory.fromFile(mPhoto.getUri()));
+                .icon(BitmapDescriptorFactory.fromBitmap(icon));
         mMap.addMarker(markerOptions);
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latLng)
