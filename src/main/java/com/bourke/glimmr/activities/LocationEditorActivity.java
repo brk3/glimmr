@@ -28,17 +28,15 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.*;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.photos.GeoData;
 
 public class LocationEditorActivity extends BaseActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+        GooglePlayServicesClient.OnConnectionFailedListener,
+        GoogleMap.OnMarkerDragListener {
 
     private static final String TAG = "Glimmr/LocationEditorActivity";
 
@@ -123,7 +121,7 @@ public class LocationEditorActivity extends BaseActivity implements
         mMap = mapFragment.getMap();
         if (mMap != null) {
             mMap.setMyLocationEnabled(true);
-
+            mMap.setOnMarkerDragListener(this);
             mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                 @Override
                 public void onMapLongClick(LatLng latLng) {
@@ -296,7 +294,25 @@ public class LocationEditorActivity extends BaseActivity implements
          }
      }
 
-   static class ErrorDialogFragment extends DialogFragment {
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        LatLng latLng = marker.getPosition();
+        mLocation = new GeoData((float)latLng.longitude, (float)latLng.latitude,
+                Flickr.ACCURACY_STREET);
+        if (Constants.DEBUG) {
+            Log.d(TAG, "Updated mLocation to " + latLng.latitude + "," + latLng.longitude);
+        }
+    }
+
+    static class ErrorDialogFragment extends DialogFragment {
         private Dialog mDialog;
 
         public ErrorDialogFragment() {

@@ -165,7 +165,7 @@ public class PhotoUploadFragment extends BaseFragment {
             ExifInterface exifInterface = new ExifInterface(photo.getUri());
             final String latitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
             final String longitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
-            if (latitude != null && latitude != null) {
+            if (latitude != null && longitude != null) {
                 return new GeoData(dmsToDegrees(longitude), dmsToDegrees(latitude),
                         Flickr.ACCURACY_STREET);
             }
@@ -207,11 +207,15 @@ public class PhotoUploadFragment extends BaseFragment {
                 Log.d(TAG, String.format("Received location: %s,%s",
                         geoData.getLatitude(), geoData.getLongitude()));
             }
+            mMap.clear();
             addMapMarkerAndZoom(geoData.getLatitude(), geoData.getLongitude());
         }
     }
 
     private void addMapMarkerAndZoom(double latitude, double longitude) {
+        if (Constants.DEBUG) {
+            Log.d(TAG, String.format("addMapMarkerAndZoom: " + latitude + "," + longitude));
+        }
         LatLng latLng = new LatLng(latitude, longitude);
         MarkerOptions markerOptions = new MarkerOptions();
         final int THUMBNAIL_SIZE = 100;
