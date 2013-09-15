@@ -78,12 +78,12 @@
             <version>50dc5a6f</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.sbstrm</groupId>
-            <artifactId>appirater</artifactId>
-            <version>1.0</version>
-            <type>apklib</type>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.sbstrm</groupId>-->
+            <!--<artifactId>appirater</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<type>apklib</type>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>net.simonvt.menudrawer</groupId>
@@ -150,7 +150,7 @@
         <dependency>
             <groupId>eu.inmite.android.lib</groupId>
             <artifactId>android-styled-dialogs</artifactId>
-            <version>1.0</version>
+            <version>1.0.1</version>
             <type>apklib</type>
         </dependency>
 

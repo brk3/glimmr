@@ -31,7 +31,7 @@ import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.sbstrm.appirater.Appirater;
+//import com.sbstrm.appirater.Appirater;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import net.simonvt.menudrawer.MenuDrawer;
@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity {
             initViewPager();
             initNotificationAlarms();
             handleIntent();
-            Appirater.appLaunched(this);
+//            Appirater.appLaunched(this);
         }
     }
 
