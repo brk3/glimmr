@@ -100,9 +100,15 @@
         </dependency>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-android</artifactId>
+            <version>1.6.1-RC1</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.googlecode.flickrj-android</groupId>
             <artifactId>flickrj-android</artifactId>
-            <version>2.0.8-386cc8</version>
+            <version>2.0.8</version>
         </dependency>
 
         <dependency>

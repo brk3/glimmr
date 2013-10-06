@@ -81,7 +81,7 @@
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/app_widget_info"/>
         </receiver>
-             
+
         <service android:exported="false" android:name=".appwidget.StackWidgetService" android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
