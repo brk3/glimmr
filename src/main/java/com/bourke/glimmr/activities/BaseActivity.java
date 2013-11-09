@@ -180,11 +180,12 @@ public abstract class BaseActivity extends FragmentActivity {
                 startActivity(preferencesActivity);
                 return true;
 
-            case R.id.menu_upload:
-                Intent localPhotosActivity = new Intent(getBaseContext(),
-                        LocalPhotosActivity.class);
-                startActivity(localPhotosActivity);
-                return true;
+// XXXUPLOAD: disabled until feature complete
+//            case R.id.menu_upload:
+//                Intent localPhotosActivity = new Intent(getBaseContext(),
+//                        LocalPhotosActivity.class);
+//                startActivity(localPhotosActivity);
+//                return true;
 
             case R.id.menu_about:
                 new AboutDialogFragment().show(getSupportFragmentManager(), "AboutDialogFragment");
