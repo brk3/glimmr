@@ -222,7 +222,7 @@ public class MainActivity extends BaseActivity {
             new LoadFlickrActivityTask(new IActivityItemsReadyListener() {
                 @Override
                 public void onItemListReady(List<Item> items, Exception e) {
-                    setSupportProgressBarIndeterminateVisibility(
+                    setProgressBarIndeterminateVisibility(
                         Boolean.FALSE);
                     if (items != null) {
                         ActivityNotificationHandler.storeItemList(
@@ -386,7 +386,7 @@ public class MainActivity extends BaseActivity {
         new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
             @Override
             public void onPhotoInfoReady(final Photo photo, Exception e) {
-                setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+                setProgressBarIndeterminateVisibility(Boolean.FALSE);
                 if (FlickrHelper.getInstance().handleFlickrUnavailable(MainActivity.this, e)) {
                     return;
                 }

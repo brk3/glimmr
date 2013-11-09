@@ -42,7 +42,7 @@
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <!--<version>${platform.version}</version>-->
-            <version>17</version>
+            <version>19</version>
             <scope>provided</scope>
         </dependency>
 
@@ -157,7 +157,7 @@
         <dependency>
             <groupId>com.google.android.gms</groupId>
             <artifactId>google-play-services</artifactId>
-            <version>r7</version>
+            <version>13</version>
             <type>apklib</type>
         </dependency>
 
@@ -168,7 +168,7 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.8.0</version>
                 <configuration>
                     <androidManifestFile>
                         ${project.basedir}/AndroidManifest.xml
@@ -181,7 +181,7 @@
                         ${project.basedir}/src/main/native
                     </nativeLibrariesDirectory>
                     <sdk>
-                        <platform>17</platform>
+                        <platform>19</platform>
                     </sdk>
                     <undeployBeforeDeploy>false</undeployBeforeDeploy>
                     <lint>
@@ -265,7 +265,7 @@
                         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                         <artifactId>android-maven-plugin</artifactId>
                         <inherited>true</inherited>
-                        <version>3.6.0</version>
+                        <version>3.8.0</version>
                         <configuration>
                             <sign>
                                 <debug>false</debug>

@@ -126,7 +126,7 @@ public class PhotoUploadFragment extends BaseFragment {
                     mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
                     new LoadPhotosetsTask(new Events.IPhotosetsReadyListener() {
                         @Override
-                        public void onPhotosetsReady(Photosets photosets) {
+                        public void onPhotosetsReady(Photosets photosets, Exception e) {
                             mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
                             if (photosets != null) {
                                 mPhotosets = photosets;

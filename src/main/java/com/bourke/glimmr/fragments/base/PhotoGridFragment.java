@@ -89,7 +89,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     @Override
     public void onPhotosReady(List<Photo> photos, Exception e) {
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
             return;

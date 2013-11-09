@@ -154,7 +154,7 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     public void onPhotosetsReady(Photosets photoSets, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e) ||
                 photoSets == null) {
             mLayoutNoConnection.setVisibility(View.VISIBLE);

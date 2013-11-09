@@ -310,7 +310,7 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @Override
     public void onPhotoSizesReady(List<Size> sizes, Exception e) {
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
             return;
         }

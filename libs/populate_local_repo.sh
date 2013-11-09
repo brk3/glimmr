@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Android API 17
+# Android API 19
 mvn install:install-file \
-    -Dfile=$ANDROID_HOME/platforms/android-17/android.jar \
+    -Dfile=$ANDROID_HOME/platforms/android-19/android.jar \
     -DgroupId=com.google.android \
     -DartifactId=android \
-    -Dversion=17 \
+    -Dversion=19 \
     -Dpackaging=jar
 
 # Android support lib v4
@@ -46,8 +46,8 @@ mvn install:install-file \
     -Dversion=50dc5a6f \
     -Dpackaging=jar
 
-# apklib
-git clone https://github.com/sbstrm/appirater-android.git \
-    /tmp/appirater-android
-cd /tmp/appirater-android/
-mvn clean install
+# Google Play Services
+cd $ANDROID_HOME/extras/google/google_play_services/libproject/google-play-services_lib
+curl https://raw.github.com/brk3/gms-mvn-install/patch-1/gms-mvn-install.sh > gms-mvn-install.sh
+bash ./gms-mvn-install.sh 13
+cd -
