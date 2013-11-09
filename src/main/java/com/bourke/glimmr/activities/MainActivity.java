@@ -299,7 +299,9 @@ public class MainActivity extends BaseActivity {
                         itemString.append("<br><br>");
                     }
                 }
-                ret.add(new MenuDrawerActivityItem(itemString.toString(), -1));
+                if ( ! itemString.toString().isEmpty()) {
+                    ret.add(new MenuDrawerActivityItem(itemString.toString(), -1));
+                }
             }
         }
         return ret;
