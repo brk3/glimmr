@@ -6,7 +6,7 @@
         android:layout_height="fill_parent">
 
     <fragment
-            android:name="com.bourke.glimmr.fragments.upload.LocalPhotosGridFragment"
+            android:name="com.bourke.glimmrpro.fragments.upload.LocalPhotosGridFragment"
             android:id="@+id/localPhotosGridFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
