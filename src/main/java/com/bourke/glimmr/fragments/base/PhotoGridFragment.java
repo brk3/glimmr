@@ -291,9 +291,13 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     class GridAdapter extends ArrayAdapter<Photo> {
 
+        private boolean mHighQualityThumbnails;
+
         public GridAdapter(List<Photo> items) {
             super(mActivity, R.layout.gridview_item, android.R.id.text1,
                     items);
+            mHighQualityThumbnails = mDefaultSharedPrefs.getBoolean(
+                Constants.KEY_HIGH_QUALITY_THUMBNAILS, false);
         }
 
         @Override
@@ -339,7 +343,12 @@ public abstract class PhotoGridFragment extends BaseFragment
                         TextUtils.FONT_ROBOTOBOLD);
 
                 /* Fetch the main photo */
-                mAq.id(holder.image).image(photo.getLargeSquareUrl(),
+                String thumbnailUrl = photo.getLargeSquareUrl();
+                if (mHighQualityThumbnails) {
+                    thumbnailUrl = photo.getMediumUrl();
+                }
+
+                mAq.id(holder.image).image(thumbnailUrl,
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);
 

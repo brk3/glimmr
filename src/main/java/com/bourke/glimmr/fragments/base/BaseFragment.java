@@ -3,7 +3,9 @@ package com.bourke.glimmr.fragments.base;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
@@ -11,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
@@ -18,6 +21,7 @@ import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.googlecode.flickrjandroid.oauth.OAuth;
+
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
@@ -39,6 +43,7 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
     protected AQuery mAq;
     protected ViewGroup mLayout;
     protected TextUtils mTextUtils;
+    protected SharedPreferences mDefaultSharedPrefs;
 
     private static final int DIALOG_LOGOUT_CONFIRMATION = 0;
 
@@ -51,6 +56,7 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
         mActionBar = mActivity.getActionBar();
         mTextUtils = new TextUtils(mActivity.getAssets());
         mAq = new AQuery(mActivity);
+        mDefaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
 
         setRetainInstance(shouldRetainInstance());
         setHasOptionsMenu(true);

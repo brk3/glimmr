@@ -47,7 +47,8 @@ mvn install:install-file \
     -Dpackaging=jar
 
 # Google Play Services
-cd $ANDROID_HOME/extras/google/google_play_services/libproject/google-play-services_lib
-curl https://raw.github.com/brk3/gms-mvn-install/patch-1/gms-mvn-install.sh > gms-mvn-install.sh
+GPS=$ANDROID_HOME/extras/google/google_play_services/libproject/google-play-services_lib
+curl https://raw.github.com/brk3/gms-mvn-install/patch-1/gms-mvn-install.sh > $GPS/gms-mvn-install.sh
+cd $GPS
 bash ./gms-mvn-install.sh 13
 cd -

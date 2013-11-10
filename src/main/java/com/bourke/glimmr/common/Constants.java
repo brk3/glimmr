@@ -6,7 +6,9 @@ import java.util.Set;
 public class Constants {
 
     /* Important: set to false when doing release builds */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
+
+    public static final boolean PRO_VERSION = false;
 
     public static final String ERR_CODE_FLICKR_UNAVAILABLE = "105";
 
@@ -57,6 +59,9 @@ public class Constants {
         = "enableUsageTips";
     public static final String KEY_SLIDESHOW_INTERVAL
         = "slideshowInterval";
+    public static final String KEY_HIGH_QUALITY_THUMBNAILS
+        = "highQualityThumbnails";
+
 
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;

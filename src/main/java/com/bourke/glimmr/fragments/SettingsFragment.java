@@ -2,8 +2,15 @@ package com.bourke.glimmr.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.*;
+import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.androidquery.callback.BitmapAjaxCallback;
+import com.androidquery.util.AQUtility;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
@@ -20,6 +27,7 @@ public class SettingsFragment extends PreferenceFragment
     private ListPreference mIntervalsListPreference;
     private ListPreference mInitialTabListPreference;
     private EditTextPreference mSlideshowIntervalPreference;
+    private CheckBoxPreference mHighQualityThumbsCbPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +46,12 @@ public class SettingsFragment extends PreferenceFragment
         mSlideshowIntervalPreference = (EditTextPreference)
             getPreferenceScreen().findPreference(
                     Constants.KEY_SLIDESHOW_INTERVAL);
+        mHighQualityThumbsCbPreference = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(Constants.KEY_HIGH_QUALITY_THUMBNAILS);
+
+        if (Constants.PRO_VERSION) {
+            mHighQualityThumbsCbPreference.setEnabled(true);
+        }
     }
 
     @Override
@@ -91,6 +105,9 @@ public class SettingsFragment extends PreferenceFragment
             updateInitialTabSummary();
         } else if (Constants.KEY_SLIDESHOW_INTERVAL.equals(key)) {
             updateSlideshowIntervalSummary();
+        } else if (Constants.KEY_HIGH_QUALITY_THUMBNAILS.equals(key)) {
+            BitmapAjaxCallback.clearCache();
+            AQUtility.getCacheDir(getActivity()).delete();
         }
     }
 
