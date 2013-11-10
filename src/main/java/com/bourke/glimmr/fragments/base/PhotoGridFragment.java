@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.base;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,13 +8,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
@@ -28,7 +27,6 @@ import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.PhotoItemLongClickDialogListener;
 import com.commonsware.cwac.endless.EndlessAdapter;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.rokoder.android.lib.support.v4.widget.GridViewCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +42,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
-    protected GridViewCompat mGridView;
+    protected GridView mGridView;
     protected EndlessGridAdapter mAdapter;
 
     protected final List<Photo> mPhotos = new ArrayList<Photo>();
@@ -84,15 +82,14 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
         }
         if (!mPhotos.isEmpty()) {
-            GridViewCompat gridView = (GridViewCompat)
-                mLayout.findViewById(R.id.gridview);
+            GridView gridView = (GridView) mLayout.findViewById(R.id.gridview);
             gridView.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onPhotosReady(List<Photo> photos, Exception e) {
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
             return;
@@ -127,7 +124,6 @@ public abstract class PhotoGridFragment extends BaseFragment
         return mGridChoiceMode;
     }
 
-    @SuppressLint("NewApi")
     public List<Photo> getSelectedPhotos() {
         List<Photo> ret = new ArrayList<Photo>();
         if (mGridView.getChoiceMode() != ListView.CHOICE_MODE_MULTIPLE) {
@@ -144,16 +140,15 @@ public abstract class PhotoGridFragment extends BaseFragment
         return ret;
     }
 
-    @SuppressLint("NewApi")
-    private void initGridView() {
+    protected void initGridView() {
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
-        mGridView = (GridViewCompat) mLayout.findViewById(R.id.gridview);
+        mGridView = (GridView) mLayout.findViewById(R.id.gridview);
         mGridView.setAdapter(mAdapter);
         mGridView.setChoiceMode(getGridChoiceMode());
 
         mGridView.setOnItemClickListener(
-                new GridViewCompat.OnItemClickListener() {
+                new GridView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
@@ -170,13 +165,12 @@ public abstract class PhotoGridFragment extends BaseFragment
                     PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
                         position);
                 }
-                /* We need to invalidate all views on 4.x (GridViewCompat) */
                 mGridView.invalidateViews();
             }
         });
 
         mGridView.setOnItemLongClickListener(
-                new GridViewCompat.OnItemLongClickListener() {
+                new GridView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View v,
                     int position, long id) {
@@ -189,7 +183,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                     return false;
                 }
                 if (position < mPhotos.size()) {
-                    SherlockDialogFragment d =
+                    DialogFragment d =
                         PhotoItemLongClickDialog.newInstance(mActivity,
                             PhotoGridFragment.this, mPhotos.get(position));
                     d.show(mActivity.getSupportFragmentManager(),
@@ -297,12 +291,15 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     class GridAdapter extends ArrayAdapter<Photo> {
 
+        private boolean mHighQualityThumbnails;
+
         public GridAdapter(List<Photo> items) {
             super(mActivity, R.layout.gridview_item, android.R.id.text1,
                     items);
+            mHighQualityThumbnails = mDefaultSharedPrefs.getBoolean(
+                Constants.KEY_HIGH_QUALITY_THUMBNAILS, false);
         }
 
-        @SuppressLint("NewApi")
         @Override
         public View getView(final int position, View convertView,
                 ViewGroup parent) {
@@ -346,7 +343,12 @@ public abstract class PhotoGridFragment extends BaseFragment
                         TextUtils.FONT_ROBOTOBOLD);
 
                 /* Fetch the main photo */
-                mAq.id(holder.image).image(photo.getLargeSquareUrl(),
+                String thumbnailUrl = photo.getLargeSquareUrl();
+                if (mHighQualityThumbnails) {
+                    thumbnailUrl = photo.getMediumUrl();
+                }
+
+                mAq.id(holder.image).image(thumbnailUrl,
                         Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
                         0, 0, null, AQuery.FADE_IN_NETWORK);
 
@@ -404,15 +406,15 @@ public abstract class PhotoGridFragment extends BaseFragment
         }
     }
 
-    static class ViewHolder {
-        LinearLayout imageOverlay;
-        ImageView image;
-        ImageView imageNewRibbon;
-        TextView ownerText;
-        TextView viewsText;
+    public static class ViewHolder {
+        public LinearLayout imageOverlay;
+        public ImageView image;
+        public ImageView imageNewRibbon;
+        public TextView ownerText;
+        public TextView viewsText;
     }
 
-    static class PhotoItemLongClickDialog extends SherlockDialogFragment {
+    static class PhotoItemLongClickDialog extends DialogFragment {
         private PhotoItemLongClickDialogListener mListener;
         private Context mContext;
         private Photo mPhoto;

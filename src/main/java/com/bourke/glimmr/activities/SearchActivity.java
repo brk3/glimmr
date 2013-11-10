@@ -3,9 +3,9 @@ package com.bourke.glimmr.activities;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
@@ -49,7 +49,7 @@ public class SearchActivity extends BottomOverlayActivity {
         mAdapter = new GlimmrPagerAdapter(getSupportFragmentManager(),
                 mViewPager, mActionBar, CONTENT) {
             @Override
-            public SherlockFragment getItemImpl(int position) {
+            public Fragment getItemImpl(int position) {
                 switch (position) {
                     case RESULT_PUBLIC_PHOTOS_PAGE:
                         return PublicPhotoSearchGridFragment.newInstance(

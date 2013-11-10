@@ -31,7 +31,7 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         new LoadPublicPhotosTask(this, page).execute();
     }
 

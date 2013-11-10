@@ -32,7 +32,7 @@ public class ContactsGridFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         new LoadContactsPhotosTask(this, page).execute(mOAuth);
     }
 

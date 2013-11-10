@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:orientation="vertical"
+                  android:padding="12dip">
+
+        <TextView
+                style="@style/GlimmrPageTitle"
+                android:id="@+id/textViewBasicSection"
+                android:text="@string/basic_info" />
+
+        <TextView
+                style="@style/GlimmrFormLabel"
+                android:id="@+id/textViewTitle"
+                android:text="Title" />
+        <EditText
+                android:id="@+id/editTextTitle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:layout_marginBottom="16dp"
+                android:singleLine="true"
+                android:maxLength="256"/>
+
+        <TextView
+                style="@style/GlimmrFormLabel"
+                android:id="@+id/textViewDescription"
+                android:text="Description" />
+        <EditText
+                android:id="@+id/editTextDescription"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/add_description_hint"
+                android:maxLength="256" />
+
+        <TextView
+                style="@style/GlimmrPageTitle"
+                android:id="@+id/textViewAdvancedSection"
+                android:text="@string/advanced" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal" android:paddingTop="8dip" >
+            <TextView
+                    style="@style/GlimmrFormLabel"
+                    android:id="@+id/textViewPublic"
+                    android:text="Public"
+                    android:paddingRight="8dip"/>
+            <Switch
+                    android:id="@+id/switchIsPublic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:checked="true"
+                    android:textOn="On"
+                    android:textOff="Off" />
+        </LinearLayout>
+
+        <TextView
+                style="@style/GlimmrFormLabel"
+                android:id="@+id/textViewTagsTitle"
+                android:text="@string/tags" />
+        <EditText
+                android:id="@+id/editTextTags"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:layout_marginBottom="16dp"
+                android:singleLine="true"
+                android:hint="@string/add_remove_tags_hint"
+                android:maxLength="256"/>
+
+        <TextView
+                style="@style/GlimmrFormLabel"
+                android:id="@+id/textViewSets"
+                android:text="@string/sets" />
+        <TextView
+                android:id="@+id/textViewSets"
+                android:clickable="true"
+                android:paddingLeft="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        <TextView
+                style="@style/GlimmrFormLabel"
+                android:id="@+id/textViewLocation"
+                android:text="@string/location" />
+        <fragment
+                android:id="@+id/mapPreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="com.google.android.gms.maps.SupportMapFragment" />
+    </LinearLayout>
+</ScrollView>

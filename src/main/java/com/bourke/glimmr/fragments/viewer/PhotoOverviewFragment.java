@@ -7,13 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.SearchActivity;
 import com.bourke.glimmr.common.FlickrHelper;
@@ -142,7 +142,7 @@ public final class PhotoOverviewFragment extends BaseFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, exc)) {
             return;
@@ -200,7 +200,7 @@ public final class PhotoOverviewFragment extends BaseFragment
         return TAG;
     }
 
-    class TagClickDialog extends SherlockDialogFragment {
+    class TagClickDialog extends DialogFragment {
         private final TagClickDialogListener mListener;
         private final Context mContext;
         private final Tag[] mTags;

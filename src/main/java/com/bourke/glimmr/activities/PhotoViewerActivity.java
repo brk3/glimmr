@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,14 +13,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.TextView;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.*;
 import com.bourke.glimmr.event.BusProvider;
@@ -162,6 +157,7 @@ public class PhotoViewerActivity extends BaseActivity
         mPager.setOnPageChangeListener(mAdapter);
         mPager.setCurrentItem(startIndex);
         mPager.setOffscreenPageLimit(2);
+        mPager.setPageTransformer(true, new CardTransformer(0.7f));
     }
 
     @Override
@@ -410,7 +406,7 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.photoviewer_activity_menu,
+        getMenuInflater().inflate(R.menu.photoviewer_activity_menu,
                 menu);
         return true;
     }
@@ -579,6 +575,29 @@ public class PhotoViewerActivity extends BaseActivity
 
         public void setAuthorText(String author) {
             mPhotoAuthor.setText(author);
+        }
+    }
+
+    public class CardTransformer implements ViewPager.PageTransformer {
+
+        private final float scalingStart;
+
+        public CardTransformer(float scalingStart) {
+            super();
+            this.scalingStart = 1 - scalingStart;
+        }
+
+        @Override
+        public void transformPage(View page, float position) {
+            if (position >= 0) {
+                final int w = page.getWidth();
+                float scaleFactor = 1 - scalingStart * position;
+
+                page.setAlpha(1 - position);
+                page.setScaleX(scaleFactor);
+                page.setScaleY(scaleFactor);
+                page.setTranslationX(w * (1 - position) - w);
+            }
         }
     }
 }

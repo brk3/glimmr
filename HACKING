@@ -5,15 +5,14 @@ Release Checklist
 Release Workflow
 ================
 ```
-    git checkout glimmr-l
-    git cherry-pick master..dev
+    bash scripts/update_pro_branch.sh
     mvn release:clean release:prepare release:perform
-    # <Manually bump versionCode and versionName in AndroidManifest.xml>
+    # Now manually bump versionCode and versionName in AndroidManifest.xml
     # (maven bumps them as part of release but doesn't retain the changes)
 
     git checkout dev
     mvn release:clean release:prepare release:perform
-    # <Manually bump versionCode and versionName in AndroidManifest.xml>
+    # Now manually bump versionCode and versionName in AndroidManifest.xml
     # (maven bumps them as part of release but doesn't retain the changes)
 
     git checkout master

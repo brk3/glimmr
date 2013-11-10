@@ -1,9 +1,9 @@
 package com.bourke.glimmr.fragments.base;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.ViewGroup;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.Constants;
@@ -11,7 +11,7 @@ import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
-public abstract class BaseDialogFragment extends SherlockDialogFragment {
+public abstract class BaseDialogFragment extends DialogFragment {
 
     private static final String TAG = "Glimmr/BaseDialogFragment";
 
@@ -31,7 +31,7 @@ public abstract class BaseDialogFragment extends SherlockDialogFragment {
         super.onCreate(savedInstanceState);
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
 
-        mActivity = (BaseActivity) getSherlockActivity();
+        mActivity = (BaseActivity) getActivity();
         mTextUtils = new TextUtils(mActivity.getAssets());
         mOAuth = OAuthUtils.loadAccessToken(mActivity);
         setRetainInstance(true);
@@ -44,7 +44,7 @@ public abstract class BaseDialogFragment extends SherlockDialogFragment {
             mOAuth = OAuthUtils.loadAccessToken(mActivity);
         }
         /* Update our reference to the activity as it may have changed */
-        mActivity = (BaseActivity) getSherlockActivity();
+        mActivity = (BaseActivity) getActivity();
         startTask();
     }
 

@@ -102,7 +102,11 @@ public final class ExifInfoFragment extends BaseFragment
     }
 
     public void onExifInfoReady(List<Exif> exifInfo, Exception exc) {
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, exc)) {
+            return;
+        }
 
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, exc)) {
             return;

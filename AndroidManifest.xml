@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="31" android:versionName="2.16-SNAPSHOT" package="com.bourke.glimmr">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="32" android:versionName="2.17-SNAPSHOT" package="com.bourke.glimmr">
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19"/>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -9,10 +9,19 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <!--XXXUPLOAD: Disabled until feature complete-->
+    <!--<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
-    <application android:allowBackup="true" android:hardwareAccelerated="true" android:icon="@drawable/app_icon" android:label="@string/app_name" android:theme="@style/Theme.glimmrdark">
+    <!-- required for google maps api v2 -->
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
 
-        <activity android:label="@string/app_name" android:name=".activities.MainActivity">
+    <application android:allowBackup="true" android:hardwareAccelerated="true" android:icon="@drawable/app_icon" android:label="@string/app_name" android:theme="@style/Theme.Glimmrdark">
+
+        <!-- Activities -->
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -20,7 +29,7 @@
             <meta-data android:name="android.app.default_searchable" android:value=".activities.SearchActivity"/>
         </activity>
 
-        <activity android:label="@string/app_name" android:launchMode="singleTop" android:name=".activities.ExploreActivity">
+        <activity android:launchMode="singleTop" android:name=".activities.ExploreActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -30,16 +39,16 @@
             <meta-data android:name="android.app.default_searchable" android:value=".activities.SearchActivity"/>
         </activity>
 
-        <activity android:label="@string/app_name" android:name=".activities.ProfileViewerActivity">
+        <activity android:name=".activities.ProfileViewerActivity">
             <meta-data android:name="android.app.default_searchable" android:value=".activities.SearchActivity"/>
         </activity>
 
-        <activity android:label="@string/app_name" android:name=".activities.PhotoViewerActivity" android:uiOptions="splitActionBarWhenNarrow">
+        <activity android:name=".activities.PhotoViewerActivity" android:uiOptions="splitActionBarWhenNarrow">
 
             <meta-data android:name="android.app.default_searchable" android:value=".activities.SearchActivity"/>
         </activity>
 
-        <activity android:label="@string/app_name" android:name=".activities.LinkInterceptorActivity" android:noHistory="true">
+        <activity android:name=".activities.LinkInterceptorActivity" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -51,17 +60,17 @@
             </intent-filter>
         </activity>
 
-        <activity android:label="@string/app_name" android:name=".activities.GroupViewerActivity">
+        <activity android:name=".activities.GroupViewerActivity">
             <meta-data android:name="android.app.default_searchable" android:value=".activities.SearchActivity"/>
         </activity>
 
-        <activity android:label="@string/app_name" android:name=".activities.PhotosetViewerActivity">
+        <activity android:name=".activities.PhotosetViewerActivity">
             <meta-data android:name="android.app.default_searchable" android:value=".activities.SearchActivity"/>
         </activity>
 
-        <activity android:label="@string/set_preferences" android:name=".activities.PreferencesActivity"/>
+        <activity android:name=".activities.SettingsActivity"/>
 
-        <activity android:label="@string/app_name" android:name=".activities.SearchActivity">
+        <activity android:name=".activities.SearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
@@ -74,14 +83,19 @@
             </intent-filter>
         </activity>
 
-        <receiver android:enabled="@bool/hasHoneycomb" android:name=".appwidget.StackWidgetProvider">
+        <activity android:name=".activities.PhotoUploadActivity" />
+
+        <activity android:name=".activities.LocalPhotosActivity"/>
+
+        <activity android:name=".activities.LocationEditorActivity"/>
+
+        <!-- BroadcastReceivers -->
+        <receiver android:name=".appwidget.StackWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/app_widget_info"/>
         </receiver>
-
-        <service android:exported="false" android:name=".appwidget.StackWidgetService" android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
             <intent-filter>
@@ -91,11 +105,20 @@
             <meta-data android:name="com.commonsware.cwac.wakeful" android:resource="@xml/wakeful"/>
         </receiver>
 
+        <!-- Services -->
+        <service android:exported="false" android:name=".appwidget.StackWidgetService" android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
         <service android:name=".services.AppService"/>
 
         <service android:name=".tape.AddToGroupTaskQueueService"/>
 
         <service android:name=".tape.AddToPhotosetTaskQueueService"/>
+
+        <service android:name=".tape.UploadPhotoTaskQueueService"/>
+
+        <meta-data
+                android:name="com.google.android.maps.v2.API_KEY"
+                android:value="AIzaSyCPLKrrIfyzuyirQXQE_guL8fBvJ4V2rsk" />
     </application>
 
 </manifest>

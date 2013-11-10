@@ -47,7 +47,7 @@
             android:key="enableContactsNotifications"
             android:title="@string/cb_enable_contacts_notifications_title"
             android:dependency="enableNotifications"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:summary="@string/cb_enable_contacts_notifications_summary" />
 
         <CheckBoxPreference

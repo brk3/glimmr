@@ -1,16 +1,19 @@
 package com.bourke.glimmr.fragments.base;
 
+import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
+import android.widget.SearchView;
+
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
@@ -19,7 +22,10 @@ import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 
-public abstract class BaseFragment extends SherlockFragment {
+import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
+
+public abstract class BaseFragment extends Fragment implements ISimpleDialogListener {
 
     private static final String TAG = "Glimmr/BaseFragment";
 
@@ -37,15 +43,20 @@ public abstract class BaseFragment extends SherlockFragment {
     protected AQuery mAq;
     protected ViewGroup mLayout;
     protected TextUtils mTextUtils;
+    protected SharedPreferences mDefaultSharedPrefs;
+
+    private static final int DIALOG_LOGOUT_CONFIRMATION = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
 
-        mActivity = (BaseActivity) getSherlockActivity();
-        mActionBar = mActivity.getSupportActionBar();
+        mActivity = (BaseActivity) getActivity();
+        mActionBar = mActivity.getActionBar();
         mTextUtils = new TextUtils(mActivity.getAssets());
+        mAq = new AQuery(mActivity);
+        mDefaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
 
         setRetainInstance(shouldRetainInstance());
         setHasOptionsMenu(true);
@@ -57,8 +68,8 @@ public abstract class BaseFragment extends SherlockFragment {
         if (Constants.DEBUG) Log.d(getLogTag(), "onResume");
 
         /* Update our reference to the activity as it may have changed */
-        mActivity = (BaseActivity) getSherlockActivity();
-        mActionBar = mActivity.getSupportActionBar();
+        mActivity = (BaseActivity) getActivity();
+        mActionBar = mActivity.getActionBar();
 
         startTask();
     }
@@ -75,8 +86,10 @@ public abstract class BaseFragment extends SherlockFragment {
                 searchManager.getSearchableInfo(mActivity.getComponentName()));
         if (mOAuth == null || mOAuth.getUser() == null) {
             menu.findItem(R.id.menu_login).setVisible(true);
+            menu.findItem(R.id.menu_logout).setVisible(false);
         } else {
             menu.findItem(R.id.menu_login).setVisible(false);
+            menu.findItem(R.id.menu_logout).setVisible(true);
         }
     }
 
@@ -87,13 +100,34 @@ public abstract class BaseFragment extends SherlockFragment {
             case R.id.menu_refresh:
                 refresh();
                 return true;
+            case R.id.menu_logout:
+                SimpleDialogFragment.createBuilder(mActivity, mActivity.getSupportFragmentManager())
+                        .setTitle("Logout")
+                        .setMessage("Are you sure?")
+                        .setPositiveButtonText(android.R.string.yes)
+                        .setNegativeButtonText(android.R.string.cancel)
+                        .setCancelable(true)
+                        .setTargetFragment(this, DIALOG_LOGOUT_CONFIRMATION)
+                        .setRequestCode(DIALOG_LOGOUT_CONFIRMATION)
+                        .show();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onPositiveButtonClicked(int requestCode) {
+        if (requestCode == DIALOG_LOGOUT_CONFIRMATION) {
+            OAuthUtils.logout(mActivity);
+        }
+    }
+
+    @Override
+    public void onNegativeButtonClicked(int requestCode) {
+    }
+
     protected void startTask() {
         if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         if (mOAuth == null || mOAuth.getUser() == null) {
             mOAuth = OAuthUtils.loadAccessToken(mActivity);
         }

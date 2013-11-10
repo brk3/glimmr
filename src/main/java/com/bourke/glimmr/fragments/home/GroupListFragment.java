@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -13,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
@@ -82,7 +82,7 @@ public class GroupListFragment extends BaseFragment
                     public boolean onItemLongClick(AdapterView <?> parent, View v,
                                                    int position, long id) {
                         if (position < mGroups.size()) {
-                            SherlockDialogFragment d =
+                            DialogFragment d =
                                     GroupItemLongClickDialog.newInstance(mActivity,
                                             GroupListFragment.this, mGroups.get(position));
                             d.show(mActivity.getSupportFragmentManager(),
@@ -139,7 +139,7 @@ public class GroupListFragment extends BaseFragment
             }
             ft.addToBackStack(null);
 
-            SherlockDialogFragment newFragment =
+            DialogFragment newFragment =
                 AddToGroupDialogFragment.newInstance(group);
             newFragment.show(ft, AddToGroupDialogFragment.TAG);
         } else {
@@ -208,7 +208,7 @@ public class GroupListFragment extends BaseFragment
         ImageView imageViewGroupIcon;
     }
 
-    static class GroupItemLongClickDialog extends SherlockDialogFragment {
+    static class GroupItemLongClickDialog extends DialogFragment {
         private GroupItemLongClickDialogListener mListener;
         private Context mContext;
         private Group mGroup;

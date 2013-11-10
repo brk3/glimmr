@@ -3,13 +3,13 @@ package com.bourke.glimmr.fragments.group;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
@@ -55,7 +55,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
                 }
                 ft.addToBackStack(null);
 
-                SherlockDialogFragment newFragment =
+                DialogFragment newFragment =
                     AddToGroupDialogFragment.newInstance(mGroup);
                 newFragment.show(ft, AddToGroupDialogFragment.TAG);
 
@@ -77,7 +77,7 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
 
     private void startTask(int page) {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         new LoadGroupPoolTask(this, mGroup, page).execute(mOAuth);
     }
 

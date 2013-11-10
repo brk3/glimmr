@@ -1,10 +1,8 @@
 package com.bourke.glimmr.activities;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -13,18 +11,18 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.SearchView;
 import android.widget.TextView;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-import com.actionbarsherlock.widget.SearchView;
 import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
@@ -34,11 +32,13 @@ import com.bourke.glimmr.common.GlimmrAbCustomTitle;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
+import com.bourke.glimmr.tape.AddToPhotosetTaskQueueService;
+import com.bourke.glimmr.tape.UploadPhotoTaskQueueService;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public abstract class BaseActivity extends SherlockFragmentActivity {
+public abstract class BaseActivity extends FragmentActivity {
 
     private static final String TAG = "Glimmr/BaseActivity";
 
@@ -73,7 +73,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         /* Set custom title on action bar (it will be null for dialog
          * activities */
-        mActionBar = getSupportActionBar();
+        mActionBar = getActionBar();
         if (mActionBar != null) {
             if (!getResources().getBoolean(R.bool.sw600dp)) {
                 new GlimmrAbCustomTitle(this).init(mActionBar);
@@ -81,7 +81,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 mActionBar.setTitle("");
             }
         }
-        setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         /* Load default preferences */
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -97,14 +97,20 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                         Constants.MEM_CACHE_PX_SIZE);
             }
 
-            /* Start the Group service for any pending tasks */
-            if ( ! AddToGroupTaskQueueService.IS_RUNNING &&
-                    OAuthUtils.isLoggedIn(this)) {
-                if (Constants.DEBUG) {
-                    Log.d(TAG, "Starting AddToGroupTaskQueueService");
+            /* Start each service for any pending tasks */
+            if (OAuthUtils.isLoggedIn(this)) {
+                if (!AddToGroupTaskQueueService.IS_RUNNING) {
+                    if (Constants.DEBUG) Log.d(TAG, "Starting AddToGroupTaskQueueService");
+                    startService(new Intent(this, AddToGroupTaskQueueService.class));
                 }
-                startService(new Intent(this,
-                            AddToGroupTaskQueueService.class));
+                if (!AddToPhotosetTaskQueueService.IS_RUNNING) {
+                    if (Constants.DEBUG) Log.d(TAG, "Starting AddToPhotosetTaskQueueService");
+                    startService(new Intent(this, AddToPhotosetTaskQueueService.class));
+                }
+                if (!UploadPhotoTaskQueueService.IS_RUNNING) {
+                    if (Constants.DEBUG) Log.d(TAG, "Starting UploadPhotoTaskQueueService");
+                    startService(new Intent(this, UploadPhotoTaskQueueService.class));
+                }
             }
         }
     }
@@ -141,7 +147,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         SearchManager searchManager =
             (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
@@ -170,64 +176,22 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
             case R.id.menu_preferences:
                 Intent preferencesActivity = new Intent(getBaseContext(),
-                        PreferencesActivity.class);
+                        SettingsActivity.class);
                 startActivity(preferencesActivity);
                 return true;
 
+// XXXUPLOAD: disabled until feature complete
+//            case R.id.menu_upload:
+//                Intent localPhotosActivity = new Intent(getBaseContext(),
+//                        LocalPhotosActivity.class);
+//                startActivity(localPhotosActivity);
+//                return true;
+
             case R.id.menu_about:
-                showDialog(Constants.DIALOG_ABOUT);
+                new AboutDialogFragment().show(getSupportFragmentManager(), "AboutDialogFragment");
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public Dialog onCreateDialog(int id) {
-        switch (id) {
-            case Constants.DIALOG_ABOUT:
-                return showAboutDialog();
-        }
-        return null;
-    }
-
-    private Dialog showAboutDialog() {
-        PackageInfo pInfo;
-        String versionInfo = "Unknown";
-        try {
-            pInfo = getPackageManager().getPackageInfo(
-                    getPackageName(), PackageManager.GET_META_DATA);
-            versionInfo = pInfo.versionName;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        String aboutTitle = String.format("About %s",
-                getString(R.string.app_name));
-        String versionString = String.format("Version: %s", versionInfo);
-
-        final TextView message = new TextView(this);
-        message.setPadding(5, 5, 5, 5);
-        SpannableString aboutText = new SpannableString(
-                getString(R.string.about_text));
-        message.setText(versionString + "\n\n" + aboutText);
-        message.setTextSize(16);
-        Linkify.addLinks(message, Linkify.ALL);
-
-        return new AlertDialog.Builder(this).
-            setTitle(aboutTitle).
-            setCancelable(true).
-            setIcon(R.drawable.app_icon).
-            setNegativeButton(getString(R.string.pro_donate),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                        dialog.dismiss();
-                    }
-                })
-            .setPositiveButton(getString(android.R.string.ok), null).
-            setView(message).create();
     }
 
     @Override
@@ -245,5 +209,65 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     protected String getLogTag() {
         return TAG;
+    }
+
+    class AboutDialogFragment extends eu.inmite.android.lib.dialogs.BaseDialogFragment {
+
+        private PackageInfo mPackageInfo;
+
+        public AboutDialogFragment() {
+            try {
+                mPackageInfo = getPackageManager().getPackageInfo(
+                        getPackageName(), PackageManager.GET_META_DATA);
+            } catch (NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private String getAppVersion() {
+            String version = "None";
+            if (mPackageInfo != null) {
+               version = mPackageInfo.versionName;
+            }
+            return version;
+        }
+
+        @Override
+        protected Builder build(Builder builder) {
+            /* set dialog title */
+            String title = String.format("About %s", getString(R.string.app_name));
+            builder.setTitle(title);
+
+            /* set dialog main message */
+            final TextView message = new TextView(BaseActivity.this);
+            SpannableString aboutText = new SpannableString(getString(R.string.about_text));
+            String versionString = String.format("Version: %s", getAppVersion());
+            message.setText(versionString + "\n\n" + aboutText);
+            message.setTextSize(16);
+            Linkify.addLinks(message, Linkify.ALL);
+            builder.setView(message, 5, 5, 5, 5);
+
+            /* set buttons (only add the "go pro" button to free version) */
+            if (mPackageInfo != null && !mPackageInfo.packageName.contains("glimmrpro")) {
+                builder.setNegativeButton(getString(R.string.pro_donate),
+                        new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                        dismiss();
+                    }
+                });
+            }
+            builder.setPositiveButton(getString(android.R.string.ok), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+
+            return builder;
+        }
     }
 }

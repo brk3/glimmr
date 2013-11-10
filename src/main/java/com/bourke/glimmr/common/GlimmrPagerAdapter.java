@@ -1,12 +1,12 @@
 package com.bourke.glimmr.common;
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragment;
 
 import java.util.Locale;
 
@@ -23,7 +23,7 @@ public abstract class GlimmrPagerAdapter extends FragmentPagerAdapter
     private final ViewPager mViewPager;
     private final ActionBar mActionBar;
 
-    public abstract SherlockFragment getItemImpl(int position);
+    public abstract Fragment getItemImpl(int position);
 
     public GlimmrPagerAdapter(FragmentManager fm, final ViewPager viewPager,
             final ActionBar actionbar, final String[] content) {
@@ -34,7 +34,7 @@ public abstract class GlimmrPagerAdapter extends FragmentPagerAdapter
     }
 
     @Override
-    public SherlockFragment getItem(int position) {
+    public Fragment getItem(int position) {
         return getItemImpl(position);
     }
 

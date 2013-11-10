@@ -2,10 +2,10 @@ package com.bourke.glimmr.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
@@ -110,7 +110,7 @@ public class ProfileViewerActivity extends BottomOverlayActivity
         mAdapter = new GlimmrPagerAdapter(getSupportFragmentManager(),
                 mViewPager, mActionBar, CONTENT) {
             @Override
-            public SherlockFragment getItemImpl(int position) {
+            public Fragment getItemImpl(int position) {
                 switch (position) {
                     case PHOTO_STREAM_PAGE:
                         return PhotoStreamGridFragment.newInstance(mUser);

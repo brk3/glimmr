@@ -1,21 +1,20 @@
 package com.bourke.glimmr.activities;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.*;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
@@ -32,12 +31,11 @@ import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-import com.sbstrm.appirater.Appirater;
+//import com.sbstrm.appirater.Appirater;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.Position;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.io.File;
@@ -56,6 +54,8 @@ public class MainActivity extends BaseActivity {
         "glimmr_menudrawer_state";
     private static final String KEY_STATE_ACTIVE_POSITION =
         "glimmr_menudrawer_active_position";
+    public static final String KEY_PAGER_START_INDEX =
+            "com.bourke.glimmr.MainActivity.KEY_PAGER_START_INDEX";
 
     private List<PageItem> mContent;
     private List<String> mPageTitles;
@@ -66,9 +66,6 @@ public class MainActivity extends BaseActivity {
     private int mActivePosition = -1;
     private long mActivityListVersion = -1;
     private SharedPreferences mPrefs;
-
-    /* Used to only show tips once per session */
-    private List<Integer> mShownUsageTips;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,18 +80,27 @@ public class MainActivity extends BaseActivity {
             }
             mPrefs = getSharedPreferences(Constants.PREFS_NAME,
                     Context.MODE_PRIVATE);
-            mShownUsageTips = new ArrayList<Integer>();
             initPageItems();
             initMenuDrawer();
             initViewPager();
             initNotificationAlarms();
-            Appirater.appLaunched(this);
+            handleIntent();
+//            Appirater.appLaunched(this);
+        }
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            final int pagerStartIndex = intent.getIntExtra(KEY_PAGER_START_INDEX, -1);
+            if (pagerStartIndex > -1) {
+                mViewPager.setCurrentItem(pagerStartIndex);
+            }
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == ExploreActivity.ACTIVITY_RESULT_EXIT) {
             finish();
         }
@@ -111,7 +117,6 @@ public class MainActivity extends BaseActivity {
         if (mOAuth != null) {
             mUser = mOAuth.getUser();
         }
-        mShownUsageTips = new ArrayList<Integer>();
     }
 
     @Override
@@ -213,11 +218,11 @@ public class MainActivity extends BaseActivity {
             mMenuAdapter.setItems(menuItems);
             mMenuAdapter.notifyDataSetChanged();
         } else {
-            setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+            setProgressBarIndeterminateVisibility(Boolean.TRUE);
             new LoadFlickrActivityTask(new IActivityItemsReadyListener() {
                 @Override
                 public void onItemListReady(List<Item> items, Exception e) {
-                    setSupportProgressBarIndeterminateVisibility(
+                    setProgressBarIndeterminateVisibility(
                         Boolean.FALSE);
                     if (items != null) {
                         ActivityNotificationHandler.storeItemList(
@@ -294,14 +299,17 @@ public class MainActivity extends BaseActivity {
                         itemString.append("<br><br>");
                     }
                 }
-                ret.add(new MenuDrawerActivityItem(itemString.toString(), -1));
+                if ( ! itemString.toString().isEmpty()) {
+                    ret.add(new MenuDrawerActivityItem(itemString.toString(), -1));
+                }
             }
         }
         return ret;
     }
 
     private void initMenuDrawer() {
-        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_CONTENT);
+        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY,
+                Position.LEFT);
         mMenuDrawer.setContentView(R.layout.main_activity);
         /* The drawable that replaces the up indicator in the action bar */
         mMenuDrawer.setSlideDrawable(R.drawable.ic_drawer);
@@ -372,7 +380,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void startViewerForActivityItem(int itemPos) {
-        setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+        setProgressBarIndeterminateVisibility(Boolean.TRUE);
 
         List<Item> items = ActivityNotificationHandler
             .loadItemList(MainActivity.this);
@@ -380,7 +388,7 @@ public class MainActivity extends BaseActivity {
         new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
             @Override
             public void onPhotoInfoReady(final Photo photo, Exception e) {
-                setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+                setProgressBarIndeterminateVisibility(Boolean.FALSE);
                 if (FlickrHelper.getInstance().handleFlickrUnavailable(MainActivity.this, e)) {
                     return;
                 }
@@ -391,6 +399,7 @@ public class MainActivity extends BaseActivity {
                 }
                 List<Photo> photos = new ArrayList<Photo>();
                 photos.add(photo);
+                setProgressBarIndeterminateVisibility(Boolean.FALSE);
                 PhotoViewerActivity.startPhotoViewer(
                     MainActivity.this, photos, 0);
             }
@@ -412,51 +421,13 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Shows a usage tip associated with pageTitle via crouton.
-     *
-     * Tips will only be shown once per session and not if disabled in user
-     * preferences.
-     */
     private void showUsageTip(final String pageTitle) {
-        SharedPreferences defaultSharedPrefs =
-            PreferenceManager.getDefaultSharedPreferences(this);
-        boolean enableNotifications = defaultSharedPrefs.getBoolean(
-                Constants.KEY_ENABLE_USAGE_TIPS, false);
-        if (!enableNotifications) {
-            if (Constants.DEBUG) {
-                Log.d(TAG, "Usage tips disabled in preferences");
-            }
-            return;
-        }
-        Crouton.cancelAllCroutons();
-        if (pageTitle.equalsIgnoreCase(getString(R.string.explore)) &&
-                    !mShownUsageTips.contains(R.string.explore)) {
-            Crouton.makeText(this, R.string.tip_view_profile, Style.INFO)
-                .show();
-            mShownUsageTips.add(R.string.explore);
-        } else if (pageTitle.equalsIgnoreCase(getString(R.string.groups)) &&
-                    !mShownUsageTips.contains(R.string.groups)) {
-            Crouton.makeText(this, R.string.tip_add_to_group, Style.INFO)
-                .show();
-            mShownUsageTips.add(R.string.groups);
-        } else if (pageTitle.equalsIgnoreCase(getString(R.string.sets)) &&
-                    !mShownUsageTips.contains(R.string.sets)) {
-            Crouton.makeText(this, R.string.tip_add_to_set, Style.INFO)
-                .show();
-            mShownUsageTips.add(R.string.sets);
-        } else if (pageTitle.equalsIgnoreCase(getString(R.string.favorites)) &&
-                    !mShownUsageTips.contains(R.string.favorites)) {
-            Crouton.makeText(this, R.string.tip_glimmr_pro, Style.INFO)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        MainActivity.this.startActivity(intent);
-                    }
-                }).show();
-            mShownUsageTips.add(R.string.favorites);
+        if (pageTitle.equalsIgnoreCase(getString(R.string.explore))) {
+            UsageTips.getInstance().show(this, getString(R.string.tip_view_profile), false);
+        } else if (pageTitle.equalsIgnoreCase(getString(R.string.groups))) {
+            UsageTips.getInstance().show(this, getString(R.string.tip_add_to_group), false);
+        } else if (pageTitle.equalsIgnoreCase(getString(R.string.sets))) {
+            UsageTips.getInstance().show(this, getString(R.string.tip_add_to_set), false);
         }
     }
 
@@ -468,7 +439,7 @@ public class MainActivity extends BaseActivity {
                 getSupportFragmentManager(), mViewPager, mActionBar,
                 mPageTitles.toArray(new String[mPageTitles.size()])) {
             @Override
-            public SherlockFragment getItemImpl(int position) {
+            public Fragment getItemImpl(int position) {
                 try {
                     PageItem page = mContent.get(position);
                     return GlimmrFragmentFactory.getInstance(MainActivity.this,
@@ -678,7 +649,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public static class GlimmrFragmentFactory {
-        public static SherlockFragment getInstance(Context context,
+        public static Fragment getInstance(Context context,
                 String name, User user) {
             if (context.getString(R.string.contacts).equals(name))  {
                 return ContactsGridFragment.newInstance();

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -13,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
@@ -130,7 +130,7 @@ public class PhotosetsFragment extends BaseFragment
                     public boolean onItemLongClick(AdapterView<?> parent,
                             View v, int position, long id) {
                         if (position < mPhotosets.size()) {
-                            SherlockDialogFragment d =
+                            DialogFragment d =
                                 PhotosetItemLongClickDialog.newInstance(
                                     mActivity, PhotosetsFragment.this,
                                     mPhotosets.get(position));
@@ -154,7 +154,7 @@ public class PhotosetsFragment extends BaseFragment
     @Override
     public void onPhotosetsReady(Photosets photoSets, Exception e) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e) ||
                 photoSets == null) {
             mLayoutNoConnection.setVisibility(View.VISIBLE);
@@ -193,7 +193,7 @@ public class PhotosetsFragment extends BaseFragment
             }
             ft.addToBackStack(null);
 
-            SherlockDialogFragment newFragment =
+            DialogFragment newFragment =
                 AddToPhotosetDialogFragment.newInstance(photoset);
             newFragment.show(ft, AddToPhotosetDialogFragment.TAG);
         } else {
@@ -273,7 +273,7 @@ public class PhotosetsFragment extends BaseFragment
         }
     }
 
-    static class PhotosetItemLongClickDialog extends SherlockDialogFragment {
+    static class PhotosetItemLongClickDialog extends DialogFragment {
         private PhotosetItemLongClickDialogListener mListener;
         private Context mContext;
         private Photoset mPhotoset;

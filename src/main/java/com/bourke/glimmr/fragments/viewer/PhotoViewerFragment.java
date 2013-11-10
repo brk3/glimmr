@@ -1,6 +1,7 @@
 package com.bourke.glimmr.fragments.viewer;
 
 import android.annotation.SuppressLint;
+import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
@@ -9,17 +10,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
+
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
@@ -39,12 +41,19 @@ import com.bourke.glimmr.tasks.SetFavoriteTask;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.Size;
 import com.squareup.otto.Subscribe;
-import uk.co.senab.photoview.PhotoViewAttacher;
-import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
+import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 
 public final class PhotoViewerFragment extends BaseFragment
         implements IPhotoInfoReadyListener, IFavoriteReadyListener,
@@ -57,6 +66,7 @@ public final class PhotoViewerFragment extends BaseFragment
     private Photo mBasePhoto;
     private Photo mPhotoExtendedInfo;
     private MenuItem mFavoriteButton;
+    private MenuItem mWallpaperButton;
     private LoadPhotoInfoTask mTask;
     private final AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
     private ImageView mVideoButton;
@@ -140,13 +150,17 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreateOptionsMenu");
+
         inflater.inflate(R.menu.photoviewer_menu, menu);
         mFavoriteButton = menu.findItem(R.id.menu_favorite);
+        mWallpaperButton = menu.findItem(R.id.menu_set_wallpaper);
+
         /* The task could return before this has inflated, so make sure it's up
          * to date */
         if (mPhotoExtendedInfo != null) {
             updateFavoriteButtonIcon(mPhotoExtendedInfo.isFavorite());
         }
+
         /* Set file with share history to the provider and set the share
          * intent. */
         MenuItem shareActionItem = menu.findItem(R.id.menu_share);
@@ -155,6 +169,11 @@ public final class PhotoViewerFragment extends BaseFragment
         shareActionProvider.setShareHistoryFileName(
                 ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
         shareActionProvider.setShareIntent(createShareIntent());
+
+        /* configure the wallpaper button */
+        if (Constants.PRO_VERSION) {
+            mWallpaperButton.setVisible(true);
+        }
     }
 
     /**
@@ -199,10 +218,40 @@ public final class PhotoViewerFragment extends BaseFragment
             case R.id.menu_save_image:
                 saveImageToExternalStorage();
                 return true;
+            case R.id.menu_set_wallpaper:
+                onWallpaperButtonClick();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void onWallpaperButtonClick() {
+        if (mBasePhoto != null) {
+            File imageFile = mAq.getCachedFile(mBasePhoto.getLargeUrl());
+            if (imageFile != null) {
+                InputStream is;
+                try {
+                    is = new FileInputStream(imageFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                WallpaperManager wallpaperManager =
+                        WallpaperManager.getInstance(mActivity);
+                try {
+                    wallpaperManager.setStream(is);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                Toast.makeText(mActivity,
+                        mActivity.getString(R.string.setting_wallpaper),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     private void saveImageToExternalStorage() {
         String url = getLargestUrlAvailable(mBasePhoto);
@@ -278,7 +327,7 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         /* Start a task to fetch more detailed info about the photo if we don't
          * already have it (required for favorite status) */
         if (mPhotoExtendedInfo == null) {
@@ -308,7 +357,7 @@ public final class PhotoViewerFragment extends BaseFragment
                 mVideoButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mActivity.setSupportProgressBarIndeterminateVisibility(
+                        mActivity.setProgressBarIndeterminateVisibility(
                             Boolean.TRUE);
                         new LoadPhotoSizesTask(PhotoViewerFragment.this,
                             mBasePhoto.getId()).execute();
@@ -320,7 +369,7 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @Override
     public void onPhotoSizesReady(List<Size> sizes, Exception e) {
-        mActivity.setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
             return;
         }
@@ -404,15 +453,10 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @SuppressLint("NewApi")
     public void setOverlayVisibility(final boolean on) {
-        boolean honeycombOrGreater =
-            (android.os.Build.VERSION.SDK_INT >=
-             android.os.Build.VERSION_CODES.HONEYCOMB);
         if (on) {
             mTextViewTitle.setVisibility(View.VISIBLE);
             mTextViewAuthor.setVisibility(View.VISIBLE);
-            if (honeycombOrGreater) {
-                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            }
+            mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             mActivity.getWindow().addFlags(
                     WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
             mActivity.getWindow().clearFlags(
@@ -425,9 +469,7 @@ public final class PhotoViewerFragment extends BaseFragment
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
             mActivity.getWindow().clearFlags(
                     WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            if (honeycombOrGreater) {
-                mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-            }
+            mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
             mActionBar.hide();
         }
     }

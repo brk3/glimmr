@@ -7,12 +7,18 @@
           android:visible="false"
           android:title="@string/login" />
 
+    <!--XXXUPLOAD: Disabled until feature complete-->
+    <!--<item android:id="@+id/menu_upload"-->
+          <!--android:icon="@drawable/ic_action_upload_dark"-->
+          <!--android:title="Upload"-->
+          <!--android:showAsAction="never" />-->
+
     <item
-        android:id="@+id/menu_search"
-        android:actionViewClass="com.actionbarsherlock.widget.SearchView"
-        android:icon="@drawable/ic_action_search_dark"
-        android:showAsAction="ifRoom|collapseActionView"
-        android:title="@string/menu_search"/>
+          android:id="@+id/menu_search"
+          android:actionViewClass="android.widget.SearchView"
+          android:icon="@drawable/ic_action_search_dark"
+          android:showAsAction="ifRoom|collapseActionView"
+          android:title="@string/menu_search"/>
 
     <item android:id="@+id/menu_refresh"
           android:title="@string/menu_refresh"
@@ -28,4 +34,10 @@
           android:icon="@drawable/ic_action_about_dark"
           android:showAsAction="never"
           android:title="@string/about" />
+
+    <item android:id="@+id/menu_logout"
+          android:icon="@drawable/device_access_accounts_dark"
+          android:showAsAction="never"
+          android:visible="false"
+          android:title="@string/logout" />
 </menu>

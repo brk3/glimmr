@@ -10,8 +10,7 @@
     <item android:id="@+id/menu_share"
           android:title="@string/menu_share"
           android:showAsAction="never"
-          android:actionProviderClass=
-            "com.actionbarsherlock.widget.ShareActionProvider" />
+          android:actionProviderClass="android.widget.ShareActionProvider" />
 
     <item android:id="@+id/menu_view_profile"
           android:title="@string/view_profile"
@@ -22,4 +21,10 @@
           android:title="@string/save_image"
           android:icon="@drawable/content_save_dark"
           android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/menu_set_wallpaper"
+        android:title="@string/set_wallpaper"
+        android:icon="@drawable/ic_content_picture_dark"
+        android:showAsAction="ifRoom|withText"
+        android:visible="false" />
 </menu>

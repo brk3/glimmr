@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bourke</groupId>
     <artifactId>glimmr</artifactId>
-    <version>2.16-SNAPSHOT</version>
+    <version>2.17-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>glimmr</name>
 
@@ -42,7 +42,7 @@
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <!--<version>${platform.version}</version>-->
-            <version>17</version>
+            <version>19</version>
             <scope>provided</scope>
         </dependency>
 
@@ -78,25 +78,24 @@
             <version>50dc5a6f</version>
         </dependency>
 
+        <!--<dependency>-->
+            <!--<groupId>com.sbstrm</groupId>-->
+            <!--<artifactId>appirater</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<type>apklib</type>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>com.rokoder</groupId>
-            <artifactId>gridviewcompat</artifactId>
-            <version>75fd1df</version>
+            <groupId>net.simonvt.menudrawer</groupId>
+            <artifactId>menudrawer</artifactId>
+            <version>3.0.0</version>
             <type>apklib</type>
         </dependency>
 
         <dependency>
-            <groupId>com.sbstrm</groupId>
-            <artifactId>appirater</artifactId>
-            <version>ca52540</version>
-            <type>apklib</type>
-        </dependency>
-
-        <dependency>
-            <groupId>net.simonvt</groupId>
-            <artifactId>android-menudrawer</artifactId>
-            <version>2.0.3</version>
-            <type>apklib</type>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-android</artifactId>
+            <version>1.6.1-RC1</version>
         </dependency>
 
         <dependency>
@@ -143,13 +142,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.actionbarsherlock</groupId>
-            <artifactId>actionbarsherlock</artifactId>
-            <version>4.3.1</version>
-            <type>apklib</type>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.2.2</version>
@@ -160,6 +152,21 @@
             <version>1.8.1</version>
             <groupId>de.keyboardsurfer.android.widget</groupId>
         </dependency>
+
+        <dependency>
+            <groupId>eu.inmite.android.lib</groupId>
+            <artifactId>android-styled-dialogs</artifactId>
+            <version>1.0.1</version>
+            <type>apklib</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>google-play-services</artifactId>
+            <version>13</version>
+            <type>apklib</type>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -167,7 +174,7 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.8.0</version>
                 <configuration>
                     <androidManifestFile>
                         ${project.basedir}/AndroidManifest.xml
@@ -180,7 +187,7 @@
                         ${project.basedir}/src/main/native
                     </nativeLibrariesDirectory>
                     <sdk>
-                        <platform>17</platform>
+                        <platform>19</platform>
                     </sdk>
                     <undeployBeforeDeploy>false</undeployBeforeDeploy>
                     <lint>
@@ -264,7 +271,7 @@
                         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                         <artifactId>android-maven-plugin</artifactId>
                         <inherited>true</inherited>
-                        <version>3.6.0</version>
+                        <version>3.8.0</version>
                         <configuration>
                             <sign>
                                 <debug>false</debug>

@@ -18,4 +18,14 @@
     <drawable name="ab_bg_black">#aa000000</drawable>
     <drawable name="flickr_pink">@color/flickr_pink</drawable>
     <drawable name="flickr_blue">@color/flickr_blue</drawable>
+
+    <!-- https://github.com/inmite/android-styled-dialogs#how-to-style-all-dialogs -->
+    <color name="dialog_message_text">#FFFFFF</color>
+    <color name="dialog_title_text">@color/flickr_pink</color>
+    <color name="dialog_title_separator">@color/flickr_pink</color>
+    <color name="dialog_button_text">#FFFFFF</color>
+    <color name="dialog_button_normal">@android:color/transparent</color>
+    <color name="dialog_button_pressed">#99ff0084</color> <!-- 60 % opacity -->
+    <color name="dialog_button_focused">#4Cff0084</color> <!-- 30 % opacity -->
+    <color name="dialog_button_separator">#12ffffff</color> <!-- 7% opacity -->
 </resources>
