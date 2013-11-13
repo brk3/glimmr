@@ -10,15 +10,15 @@ mvn install:install-file \
 
 # Android support lib v4
 mvn install:install-file \
-    -Dfile=libs/android-support-v4.jar \
+    -Dfile=libs/android-support-v4-r19.jar \
     -DgroupId=com.google.android \
     -DartifactId=support-v4 \
-    -Dversion=r13 \
+    -Dversion=r19 \
     -Dpackaging=jar
 
 # https://github.com/keyboardsurfer/Crouton/issues/108
 mvn install:install-file \
-    -Dfile=libs/android-support-v4.jar \
+    -Dfile=libs/android-support-v4-r19.jar \
     -DgroupId=com.google.android \
     -DartifactId=support-v4 \
     -Dversion=r11 \
@@ -48,7 +48,7 @@ mvn install:install-file \
 
 # Google Play Services
 GPS=$ANDROID_HOME/extras/google/google_play_services/libproject/google-play-services_lib
-curl https://raw.github.com/brk3/gms-mvn-install/patch-1/gms-mvn-install.sh > $GPS/gms-mvn-install.sh
+curl https://raw.github.com/JakeWharton/gms-mvn-install/master/gms-mvn-install.sh > $GPS/gms-mvn-install.sh
 cd $GPS
 bash ./gms-mvn-install.sh 13
 cd -
