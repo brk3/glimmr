@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>support-v4</artifactId>
-            <version>r13</version>
+            <version>r19</version>
         </dependency>
 
         <dependency>
@@ -77,13 +77,6 @@
             <artifactId>wakeful</artifactId>
             <version>50dc5a6f</version>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>com.sbstrm</groupId>-->
-            <!--<artifactId>appirater</artifactId>-->
-            <!--<version>1.0</version>-->
-            <!--<type>apklib</type>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>net.simonvt.menudrawer</groupId>
@@ -125,7 +118,7 @@
         <dependency>
             <groupId>com.github.chrisbanes.photoview</groupId>
             <artifactId>library</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.2</version>
         </dependency>
 
         <dependency>
