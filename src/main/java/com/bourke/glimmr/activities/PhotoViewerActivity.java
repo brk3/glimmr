@@ -70,7 +70,7 @@ public class PhotoViewerActivity extends BaseActivity
 
     private List<Photo> mPhotos = new ArrayList<Photo>();
     private PhotoViewerPagerAdapter mAdapter;
-    private HackyViewPager mPager;
+    private ViewPager mPager;
     private int mCurrentAdapterIndex = 0;
     private CommentsFragment mCommentsFragment;
     private PhotoInfoFragment mPhotoInfoFragment;
@@ -152,7 +152,7 @@ public class PhotoViewerActivity extends BaseActivity
         mAdapter = new PhotoViewerPagerAdapter(getSupportFragmentManager(),
                 fetchExtraInfo);
         mAdapter.onPageSelected(startIndex);
-        mPager = (HackyViewPager) findViewById(R.id.pager);
+        mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         mPager.setOnPageChangeListener(mAdapter);
         mPager.setCurrentItem(startIndex);
