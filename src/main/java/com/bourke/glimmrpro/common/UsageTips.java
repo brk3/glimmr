@@ -1,0 +1,48 @@
+package com.bourke.glimmrpro.common;
+
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class UsageTips {
+
+    public static final String TAG = "Glimmr/UsageTips";
+
+    private static final UsageTips SINGLETON = new UsageTips();
+    private UsageTips() {
+    }
+
+    private static Set<String> mShownTips = new HashSet<String>();
+
+    public static UsageTips getInstance() {
+        return SINGLETON;
+    }
+
+    /**
+     * Show a usage tip via an INFO style crouton.  Tips are shown once per session unless the
+     * force param is true.
+     * @param activity
+     * @param tip
+     * @param force
+     */
+    public static void show(Activity activity, String tip, boolean force) {
+        SharedPreferences defaultSharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences(activity);
+        boolean enable = defaultSharedPrefs.getBoolean(Constants.KEY_ENABLE_USAGE_TIPS, false);
+        if (!enable) {
+            if (Constants.DEBUG) Log.d(TAG, "Usage tips disabled in preferences");
+            return;
+        }
+        if (!force && !mShownTips.contains(tip)) {
+            Crouton.cancelAllCroutons();
+            Crouton.makeText(activity, tip, Style.INFO).show();
+            mShownTips.add(tip);
+        }
+    }
+}
