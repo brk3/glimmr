@@ -33,7 +33,7 @@
     <string name="login_later">You can login anytime from the menu!</string>
     <string name="login_problem">Could not log in</string>
     <string name="login">Login</string>
-    <string name="login_required">You need to be logged in to do that!</string>
+    <string name="login_required">You need to login to do that!</string>
     <string name="login_to_flickr">LOGIN TO FLICKR</string>
     <string name="logout">Logout</string>
     <string name="menu_favorite">Mark as Favorite</string>
