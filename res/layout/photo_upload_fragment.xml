@@ -82,12 +82,17 @@
                 style="@style/GlimmrFormLabel"
                 android:id="@+id/textViewSets"
                 android:text="@string/sets" />
-        <TextView
-                android:id="@+id/textViewSets"
-                android:clickable="true"
-                android:paddingLeft="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+        <EditText
+                android:id="@+id/editTextSets"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:layout_marginBottom="16dp"
+                android:editable="false"
+                android:focusableInTouchMode="false"
+                android:singleLine="true"
+                android:hint="@string/add_remove_sets_hint"
+                android:maxLength="256"/>
 
         <TextView
                 style="@style/GlimmrFormLabel"

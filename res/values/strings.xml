@@ -120,6 +120,7 @@
     <string name="basic_info">Basic Info</string>
     <string name="location">Location</string>
     <string name="add_remove_tags_hint">Tap to add/remove tags (comma separated)</string>
+    <string name="add_remove_sets_hint">Tap to add/remove sets</string>
     <string name="upload_photos_tip">Tip: tap and hold photos to select for upload</string>
     <string name="add_tags_tip">Tip: separate each tag with a comma</string>
     <string name="add_to_sets">Add To Sets</string>

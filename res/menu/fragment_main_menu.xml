@@ -8,10 +8,11 @@
           android:title="@string/login" />
 
     <!--XXXUPLOAD: Disabled until feature complete-->
-    <!--<item android:id="@+id/menu_upload"-->
-          <!--android:icon="@drawable/ic_action_upload_dark"-->
-          <!--android:title="Upload"-->
-          <!--android:showAsAction="never" />-->
+    <item android:id="@+id/menu_upload"
+          android:icon="@drawable/ic_action_upload_dark"
+          android:title="Upload"
+          android:showAsAction="never" />
+    <!--XXX-->
 
     <item
           android:id="@+id/menu_search"

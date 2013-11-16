@@ -10,8 +10,17 @@ import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.*;
-import android.widget.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.Switch;
+import android.widget.TextView;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.LocationEditorActivity;
 import com.bourke.glimmr.common.BitmapUtils;
@@ -35,7 +44,12 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photosets.Photosets;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class PhotoUploadFragment extends BaseFragment {
 
@@ -50,6 +64,7 @@ public class PhotoUploadFragment extends BaseFragment {
     private EditText mEditTextDescription;
     private Switch mSwitchIsPublic;
     private EditText mEditTextTags;
+    private EditText mEditTextSets;
     private Photosets mPhotosets;
     private GoogleMap mMap;
 
@@ -115,8 +130,8 @@ public class PhotoUploadFragment extends BaseFragment {
             }
         });
 
-        TextView textViewSets = (TextView) mLayout.findViewById(R.id.textViewSets);
-        textViewSets.setOnClickListener(new View.OnClickListener() {
+        mEditTextSets = (EditText) mLayout.findViewById(R.id.editTextSets);
+        mEditTextSets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mPhotosets != null) {
@@ -288,11 +303,8 @@ public class PhotoUploadFragment extends BaseFragment {
         StringBuilder tagDisplay = new StringBuilder();
         for (int i=0; i < tags.size(); i++) {
             tagDisplay.append(tags.get(i));
-            if (i < tags.size()-1) {
-                tagDisplay.append(",");
-            }
         }
-        return tagDisplay.toString();
+        return tagDisplay.substring(0, tagDisplay.length()-2);
     }
 
     @Override
@@ -349,14 +361,18 @@ public class PhotoUploadFragment extends BaseFragment {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             List<Photoset> selectedPhotosets = new ArrayList();
+                            StringBuilder setNames = new StringBuilder();
                             for (Integer i : mSelectedItems) {
                                 if (Constants.DEBUG) Log.d(TAG, mEntries[i]);
-                                selectedPhotosets.add(mAllAvailablePhotosets.get(mEntries[i]));
+                                Photoset photoset = mAllAvailablePhotosets.get(mEntries[i]);
+                                setNames.append(photoset.getTitle());
+                                setNames.append(", ");
+                                selectedPhotosets.add(photoset);
                             }
                             Photosets photosets = new Photosets();
                             photosets.setPhotosets(selectedPhotosets);
                             mPhoto.setPhotosets(photosets);
-                            // TODO: update UI
+                            mEditTextSets.setText(setNames.substring(0, setNames.length()-2));
                         }
                     })
                     .setNegativeButton(android.R.string.cancel,
