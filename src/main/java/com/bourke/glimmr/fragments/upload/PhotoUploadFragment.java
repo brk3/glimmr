@@ -4,10 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.ExifInterface;
-import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,28 +18,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.activities.LocationEditorActivity;
-import com.bourke.glimmr.common.BitmapUtils;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events;
 import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.tasks.LoadPhotosetsTask;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
-import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.photos.GeoData;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photosets.Photosets;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -57,8 +41,6 @@ public class PhotoUploadFragment extends BaseFragment {
 
     public static final String KEY_PHOTO = "com.bourke.glimmr.PhotoUploadFragment.KEY_PHOTO";
 
-    public static final int ACTIVITY_RESULT_ADD_LOCATION = 0;
-
     private LocalPhotosGridFragment.LocalPhoto mPhoto;
     private EditText mEditTextTitle;
     private EditText mEditTextDescription;
@@ -66,7 +48,6 @@ public class PhotoUploadFragment extends BaseFragment {
     private EditText mEditTextTags;
     private EditText mEditTextSets;
     private Photosets mPhotosets;
-    private GoogleMap mMap;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -156,97 +137,7 @@ public class PhotoUploadFragment extends BaseFragment {
             }
         });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) mActivity.getSupportFragmentManager().
-                findFragmentById(R.id.mapPreview);
-        mMap = mapFragment.getMap();
-        if (mMap != null) {
-            /* start the location editor on click */
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    LocationEditorActivity.startForResult(mActivity, PhotoUploadFragment.this,
-                            mPhoto, ACTIVITY_RESULT_ADD_LOCATION);
-                }
-            });
-        } else {
-            Log.w(TAG, "getMap() returned null, maps service unavailable");
-        }
-
         return mLayout;
-    }
-
-    private final GeoData locationFromExif(LocalPhotosGridFragment.LocalPhoto photo) {
-        try {
-            ExifInterface exifInterface = new ExifInterface(photo.getUri());
-            final String latitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
-            final String longitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
-            if (latitude != null && longitude != null) {
-                return new GeoData(dmsToDegrees(longitude), dmsToDegrees(latitude),
-                        Flickr.ACCURACY_STREET);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /* http://android-er.blogspot.ie/2010/01/convert-exif-gps-info-to-degree-format.html */
-    private Float dmsToDegrees(String dms) {
-        String[] DMS = dms.split(",", 3);
-
-        String[] stringD = DMS[0].split("/", 2);
-        Double D0 = new Double(stringD[0]);
-        Double D1 = new Double(stringD[1]);
-        Double FloatD = D0/D1;
-
-        String[] stringM = DMS[1].split("/", 2);
-        Double M0 = new Double(stringM[0]);
-        Double M1 = new Double(stringM[1]);
-        Double FloatM = M0/M1;
-
-        String[] stringS = DMS[2].split("/", 2);
-        Double S0 = new Double(stringS[0]);
-        Double S1 = new Double(stringS[1]);
-        Double FloatS = S0/S1;
-
-        return new Float(FloatD + (FloatM/60) + (FloatS/3600));
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ACTIVITY_RESULT_ADD_LOCATION) {
-            Bundle extras = data.getExtras();
-            GeoData geoData = new Gson().fromJson(extras.getString(
-                    LocationEditorActivity.KEY_LOCATION, ""), GeoData.class);
-            if (Constants.DEBUG) {
-                Log.d(TAG, String.format("Received location: %s,%s",
-                        geoData.getLatitude(), geoData.getLongitude()));
-            }
-            mMap.clear();
-            addMapMarkerAndZoom(geoData.getLatitude(), geoData.getLongitude());
-        }
-    }
-
-    private void addMapMarkerAndZoom(double latitude, double longitude) {
-        if (Constants.DEBUG) {
-            Log.d(TAG, String.format("addMapMarkerAndZoom: " + latitude + "," + longitude));
-        }
-        LatLng latLng = new LatLng(latitude, longitude);
-        MarkerOptions markerOptions = new MarkerOptions();
-        final int THUMBNAIL_SIZE = 100;
-        Bitmap icon = ThumbnailUtils.extractThumbnail(
-                BitmapUtils.decodeSampledBitmap(
-                        mPhoto.getUri(), THUMBNAIL_SIZE, THUMBNAIL_SIZE),
-                THUMBNAIL_SIZE, THUMBNAIL_SIZE);
-        markerOptions
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(icon));
-        mMap.addMarker(markerOptions);
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(latLng)
-                .zoom(15)
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     private Map<String, Photoset> photosetsToMap(Photosets photosets) {
@@ -286,16 +177,6 @@ public class PhotoUploadFragment extends BaseFragment {
             mEditTextTags.setText(tagsToString(tags));
         } else {
             mEditTextTags.setText("");
-        }
-
-        /* set location from local metadata if available */
-        GeoData location = locationFromExif(mPhoto);
-        if (location != null) {
-            if (Constants.DEBUG) Log.d(TAG, "found location in local photo");
-            mPhoto.setGeoData(location);
-            addMapMarkerAndZoom(location.getLatitude(), location.getLongitude());
-        } else if (Constants.DEBUG) {
-            Log.d(TAG, "NO location found in local photo");
         }
     }
 
