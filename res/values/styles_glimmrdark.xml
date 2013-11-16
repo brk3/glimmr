@@ -35,8 +35,12 @@
 
         <!-- Style the TitlePageIndicator -->
         <item name="vpiTitlePageIndicatorStyle">@style/glimmr_TitlePageIndicator</item>
+
         <!-- Style the MenuDrawer -->
         <item name="menuDrawerStyle">@style/MenuDrawerStyle</item>
+
+        <!-- Style the dialogs -->
+        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
     </style>
 
     <style name="ActionBar.Solid.Glimmrdark" parent="@android:style/Widget.Holo.ActionBar.Solid">
@@ -204,5 +208,19 @@
         <item name="android:paddingLeft">?android:attr/listPreferredItemPaddingLeft</item>
         <item name="android:textSize">36sp</item>
         <item name="android:textColor">@color/flickr_pink</item>
+    </style>
+
+    <!-- https://github.com/inmite/android-styled-dialogs -->
+    <style name="DialogStyleDark.Custom">
+        <!-- anything can be left out: -->
+        <item name="titleTextColor">@color/dialog_title_text</item>
+        <item name="titleSeparatorColor">@color/dialog_title_separator</item>
+        <item name="messageTextColor">@color/dialog_message_text</item>
+        <item name="buttonTextColor">@color/dialog_button_text</item>
+        <item name="buttonSeparatorColor">@color/dialog_button_separator</item>
+        <item name="buttonBackgroundColorNormal">@color/dialog_button_normal</item>
+        <item name="buttonBackgroundColorPressed">@color/dialog_button_pressed</item>
+        <item name="buttonBackgroundColorFocused">@color/dialog_button_focused</item>
+        <!--<item name="dialogBackground">@drawable/dialog_background</item>-->
     </style>
 </resources>
