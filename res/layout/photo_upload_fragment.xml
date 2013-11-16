@@ -43,7 +43,7 @@
         <TextView
                 style="@style/GlimmrPageTitle"
                 android:id="@+id/textViewAdvancedSection"
-                android:text="@string/advanced" />
+                android:text="@string/more" />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                       android:layout_width="fill_parent"
@@ -76,22 +76,6 @@
                 android:layout_marginBottom="16dp"
                 android:singleLine="true"
                 android:hint="@string/add_remove_tags_hint"
-                android:maxLength="256"/>
-
-        <TextView
-                style="@style/GlimmrFormLabel"
-                android:id="@+id/textViewSets"
-                android:text="@string/sets" />
-        <EditText
-                android:id="@+id/editTextSets"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:layout_marginBottom="16dp"
-                android:editable="false"
-                android:focusableInTouchMode="false"
-                android:singleLine="true"
-                android:hint="@string/add_remove_sets_hint"
                 android:maxLength="256"/>
     </LinearLayout>
 </ScrollView>

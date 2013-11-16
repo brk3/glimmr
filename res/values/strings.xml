@@ -116,7 +116,7 @@
     <string name="ill_try_again_later">Glimmr will try again later</string>
     <string name="retry">Retry</string>
     <string name="upload_tip">Tip: Swipe photo left and right to add info</string>
-    <string name="advanced">Advanced</string>
+    <string name="more">More</string>
     <string name="basic_info">Basic Info</string>
     <string name="location">Location</string>
     <string name="add_remove_tags_hint">Tap to add/remove tags (comma separated)</string>

@@ -17,6 +17,7 @@ import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoUploadActivity;
 import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.UsageTips;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.googlecode.flickrjandroid.photos.GeoData;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
  * Uses CursorLoaders to iterate the MediaStore and construct a MatrixCursor containing a thumbnail
  * path and a path to the full sized image.
  *
- * There should be more effecient ways of doing this, i.e. I think the adapter should be able to
+ * There should be more efficient ways of doing this, i.e. I think the adapter should be able to
  * load data as it's needed rather than having to grab it all first.
  *
  * Based on code from:
@@ -69,6 +70,13 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
                 new String[]{}, new int[]{ R.id.image });
         mGridView.setAdapter(mAdapter);
         mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                UsageTips.getInstance().show(mActivity,
+                        getString(R.string.upload_photos_tip), false);
+            }
+        });
         mMatrixCursor = new MatrixCursor(new String[]{ "_id", "thumb_data", "image_data",
                 "image_title" });
         mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);

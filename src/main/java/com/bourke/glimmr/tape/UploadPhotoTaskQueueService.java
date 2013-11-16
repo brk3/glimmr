@@ -5,9 +5,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.MainActivity;
-import com.bourke.glimmr.activities.PhotoUploadActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TaskQueueDelegateFactory;
 import com.bourke.glimmr.tasks.UploadPhotoTask;
@@ -31,7 +31,7 @@ public class UploadPhotoTaskQueueService extends AbstractTaskQueueService {
     protected void initTaskQueue() {
         TaskQueueDelegateFactory<UploadPhotoTask> factory =
                 new TaskQueueDelegateFactory<UploadPhotoTask>(this);
-        mQueue = new TaskQueue(factory.get(PhotoUploadActivity.QUEUE_FILE, UploadPhotoTask.class));
+        mQueue = new TaskQueue(factory.get(Constants.UPLOAD_QUEUE, UploadPhotoTask.class));
     }
 
     @Override
