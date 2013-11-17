@@ -31,6 +31,7 @@ import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.fragments.dialogs.BuyProDialog;
 import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
 import com.bourke.glimmr.tape.AddToPhotosetTaskQueueService;
 import com.bourke.glimmr.tape.UploadPhotoTaskQueueService;
@@ -168,9 +169,13 @@ public abstract class BaseActivity extends FragmentActivity {
                 return true;
 
             case R.id.menu_upload:
-                Intent localPhotosActivity = new Intent(getBaseContext(),
-                        LocalPhotosActivity.class);
-                startActivity(localPhotosActivity);
+                if (Constants.PRO_VERSION) {
+                    Intent localPhotosActivity = new Intent(getBaseContext(),
+                            LocalPhotosActivity.class);
+                    startActivity(localPhotosActivity);
+                } else {
+                    new BuyProDialog().show(this);
+                }
                 return true;
 
             case R.id.menu_about:
@@ -249,6 +254,7 @@ public abstract class BaseActivity extends FragmentActivity {
             String versionString = String.format("Version: %s", getAppVersion());
             message.setText(versionString + "\n\n" + aboutText);
             message.setTextSize(16);
+            message.setPadding(10, 10, 10, 10);
             Linkify.addLinks(message, Linkify.ALL);
             builder.setView(message, 5, 5, 5, 5);
 
