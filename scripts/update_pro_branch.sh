@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/sh -e
 
 PKG='com\.bourke\.glimmr'
 PRO_PKG='com\.bourke\.glimmrpro'
@@ -8,12 +8,11 @@ STAGING_BRANCH="release/glimmr-l_$(date +%s)"
 PRO_BRANCH="glimmr-l"
 
 echo "Creating release for '$VERSION'"
-echo
 
-git checkout --quiet dev
+git checkout -q dev
 
 echo "Creating release branch $STAGING_BRANCH"
-git checkout -b $STAGING_BRANCH
+git checkout -q -b $STAGING_BRANCH
 
 echo "Updating all instances of '$PKG' with '$PRO_PKG'"
 grep -Iril "$PKG" src res AndroidManifest.xml |\
@@ -39,9 +38,17 @@ sed -i '' 's/<artifactId>glimmr/<artifactId>glimmrpro/g' pom.xml
 echo "Committing changes"
 git commit -q -am "Prepare pro release from g$(git rev-parse --short dev)"
 
+# http://stackoverflow.com/a/4969679/663370
 echo "Merging to $PRO_BRANCH with 'ours' strategy"
 git checkout -q $PRO_BRANCH
-git merge -q --no-edit -s recursive -X theirs $STAGING_BRANCH
+git merge -q --no-edit -s ours $STAGING_BRANCH
+git branch -q branchTEMP
+git reset -q --hard $STAGING_BRANCH
+git reset -q --soft branchTEMP
+git commit -q --amend --no-edit
+git branch -q -D branchTEMP
 
 echo "Cleaning up"
-git branch -D $STAGING_BRANCH
+git branch -q -D $STAGING_BRANCH
+
+echo "OK"

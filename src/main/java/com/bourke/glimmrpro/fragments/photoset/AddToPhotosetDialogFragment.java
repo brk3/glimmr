@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.bourke.glimmrpro.R;
+import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.common.TaskQueueDelegateFactory;
 import com.bourke.glimmrpro.common.TextUtils;
@@ -22,10 +24,11 @@ import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.squareup.tape.TaskQueue;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 import java.util.List;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 // TODO
 // * Persist selections on rotate
@@ -41,7 +44,6 @@ public class AddToPhotosetDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = "Glimmr/AddToPhotosetDialogFragment";
 
-    public static final String QUEUE_FILE = "photoset_task_queue.json";
     public static final String KEY_PHOTOSET =
             "com.bourke.glimmrpro.AddToPhotosetDialogFragment.KEY_PHOTOSET";
 
@@ -60,8 +62,7 @@ public class AddToPhotosetDialogFragment extends BaseDialogFragment {
         super.onCreate(savedInstanceState);
         TaskQueueDelegateFactory<AddItemToPhotosetTask> factory =
             new TaskQueueDelegateFactory<AddItemToPhotosetTask>(mActivity);
-        mQueue = new TaskQueue(factory.get(QUEUE_FILE,
-                AddItemToPhotosetTask.class));
+        mQueue = new TaskQueue(factory.get(Constants.PHOTOSET_QUEUE, AddItemToPhotosetTask.class));
         setStyle(STYLE_NO_TITLE, 0);
     }
 

@@ -8,18 +8,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.androidquery.AQuery;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.common.TaskQueueDelegateFactory;
 import com.bourke.glimmrpro.common.UsageTips;
+import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import com.bourke.glimmrpro.fragments.upload.LocalPhotosGridFragment;
 import com.bourke.glimmrpro.fragments.upload.PhotoUploadFragment;
-import com.bourke.glimmrpro.fragments.base.BaseFragment;
 import com.bourke.glimmrpro.tape.UploadPhotoTaskQueueService;
 import com.bourke.glimmrpro.tasks.UploadPhotoTask;
 import com.google.gson.Gson;
@@ -44,12 +51,10 @@ public class PhotoUploadActivity extends BaseActivity {
     private static final String KEY_PHOTO_LIST =
             "com.bourke.glimmrpro.PhotoUploadActivity.KEY_PHOTO_LIST";
 
-    public static final String QUEUE_FILE = "upload_task_queue.json";
-
     private List<LocalPhotosGridFragment.LocalPhoto> mUploadImages;
     private ImagePagerAdapter mAdapter;
     private ViewPager mPager;
-    private TaskQueue mQueue;
+    private TaskQueue mUploadQueue;
     private PhotoUploadFragment mPhotoUploadFragment;
 
     /**
@@ -77,7 +82,7 @@ public class PhotoUploadActivity extends BaseActivity {
 
         TaskQueueDelegateFactory<UploadPhotoTask> factory =
                 new TaskQueueDelegateFactory<UploadPhotoTask>(this);
-        mQueue = new TaskQueue(factory.get(QUEUE_FILE, UploadPhotoTask.class));
+        mUploadQueue = new TaskQueue(factory.get(Constants.UPLOAD_QUEUE, UploadPhotoTask.class));
 
         /* hide the keyboard */
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -119,8 +124,7 @@ public class PhotoUploadActivity extends BaseActivity {
 
                 /* now add each photo to upload queue, and start the tape service */
                 for (LocalPhotosGridFragment.LocalPhoto photo : mUploadImages) {
-                    mQueue.add(new UploadPhotoTask(mOAuth, photo));
-                    // TODO: if sets also start set queue
+                    mUploadQueue.add(new UploadPhotoTask(mOAuth, photo));
                 }
 
                 startService(new Intent(this, UploadPhotoTaskQueueService.class));

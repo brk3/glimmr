@@ -1,7 +1,7 @@
 package com.bourke.glimmrpro.tape;
 
+import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.TaskQueueDelegateFactory;
-import com.bourke.glimmrpro.fragments.photoset.AddToPhotosetDialogFragment;
 import com.bourke.glimmrpro.tasks.AddItemToPhotosetTask;
 import com.squareup.tape.TaskQueue;
 
@@ -27,8 +27,6 @@ public class AddToPhotosetTaskQueueService extends AbstractTaskQueueService {
     protected void initTaskQueue() {
         TaskQueueDelegateFactory<AddItemToPhotosetTask> factory =
             new TaskQueueDelegateFactory<AddItemToPhotosetTask>(this);
-        mQueue = new TaskQueue(factory.get(
-                    AddToPhotosetDialogFragment.QUEUE_FILE,
-                    AddItemToPhotosetTask.class));
+        mQueue = new TaskQueue(factory.get(Constants.PHOTOSET_QUEUE, AddItemToPhotosetTask.class));
     }
 }

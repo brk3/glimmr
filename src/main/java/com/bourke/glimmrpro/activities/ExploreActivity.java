@@ -86,6 +86,9 @@ public class ExploreActivity extends BaseActivity
                 editor.putBoolean(KEY_LOGIN_LATER_SELECTED, false);
                 editor.commit();
                 return true;
+            case R.id.menu_upload:
+                Toast.makeText(this, getString(R.string.login_required), Toast.LENGTH_SHORT).show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
