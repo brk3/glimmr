@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -23,6 +22,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.SearchView;
 import android.widget.TextView;
+
 import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
@@ -31,11 +31,13 @@ import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.fragments.dialogs.BuyProDialog;
 import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
 import com.bourke.glimmr.tape.AddToPhotosetTaskQueueService;
 import com.bourke.glimmr.tape.UploadPhotoTaskQueueService;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
+
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public abstract class BaseActivity extends FragmentActivity {
@@ -97,21 +99,7 @@ public abstract class BaseActivity extends FragmentActivity {
                         Constants.MEM_CACHE_PX_SIZE);
             }
 
-            /* Start each service for any pending tasks */
-            if (OAuthUtils.isLoggedIn(this)) {
-                if (!AddToGroupTaskQueueService.IS_RUNNING) {
-                    if (Constants.DEBUG) Log.d(TAG, "Starting AddToGroupTaskQueueService");
-                    startService(new Intent(this, AddToGroupTaskQueueService.class));
-                }
-                if (!AddToPhotosetTaskQueueService.IS_RUNNING) {
-                    if (Constants.DEBUG) Log.d(TAG, "Starting AddToPhotosetTaskQueueService");
-                    startService(new Intent(this, AddToPhotosetTaskQueueService.class));
-                }
-                if (!UploadPhotoTaskQueueService.IS_RUNNING) {
-                    if (Constants.DEBUG) Log.d(TAG, "Starting UploadPhotoTaskQueueService");
-                    startService(new Intent(this, UploadPhotoTaskQueueService.class));
-                }
-            }
+            startTapeQueues();
         }
     }
 
@@ -180,16 +168,20 @@ public abstract class BaseActivity extends FragmentActivity {
                 startActivity(preferencesActivity);
                 return true;
 
-// XXXUPLOAD: disabled until feature complete
-//            case R.id.menu_upload:
-//                Intent localPhotosActivity = new Intent(getBaseContext(),
-//                        LocalPhotosActivity.class);
-//                startActivity(localPhotosActivity);
-//                return true;
+            case R.id.menu_upload:
+                if (Constants.PRO_VERSION) {
+                    Intent localPhotosActivity = new Intent(getBaseContext(),
+                            LocalPhotosActivity.class);
+                    startActivity(localPhotosActivity);
+                } else {
+                    new BuyProDialog().show(this);
+                }
+                return true;
 
             case R.id.menu_about:
                 new AboutDialogFragment().show(getSupportFragmentManager(), "AboutDialogFragment");
                 return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -207,6 +199,24 @@ public abstract class BaseActivity extends FragmentActivity {
         setIntent(intent);
     }
 
+    /** Start each service for any pending tasks */
+    private void startTapeQueues() {
+        if (OAuthUtils.isLoggedIn(this)) {
+            if (!AddToGroupTaskQueueService.IS_RUNNING) {
+                if (Constants.DEBUG) Log.d(TAG, "Starting AddToGroupTaskQueueService");
+                startService(new Intent(this, AddToGroupTaskQueueService.class));
+            }
+            if (!AddToPhotosetTaskQueueService.IS_RUNNING) {
+                if (Constants.DEBUG) Log.d(TAG, "Starting AddToPhotosetTaskQueueService");
+                startService(new Intent(this, AddToPhotosetTaskQueueService.class));
+            }
+            if (!UploadPhotoTaskQueueService.IS_RUNNING) {
+                if (Constants.DEBUG) Log.d(TAG, "Starting UploadPhotoTaskQueueService");
+                startService(new Intent(this, UploadPhotoTaskQueueService.class));
+            }
+        }
+    }
+
     protected String getLogTag() {
         return TAG;
     }
@@ -219,7 +229,7 @@ public abstract class BaseActivity extends FragmentActivity {
             try {
                 mPackageInfo = getPackageManager().getPackageInfo(
                         getPackageName(), PackageManager.GET_META_DATA);
-            } catch (NameNotFoundException e) {
+            } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -227,7 +237,7 @@ public abstract class BaseActivity extends FragmentActivity {
         private String getAppVersion() {
             String version = "None";
             if (mPackageInfo != null) {
-               version = mPackageInfo.versionName;
+                version = mPackageInfo.versionName;
             }
             return version;
         }
@@ -239,11 +249,12 @@ public abstract class BaseActivity extends FragmentActivity {
             builder.setTitle(title);
 
             /* set dialog main message */
-            final TextView message = new TextView(BaseActivity.this);
+            final TextView message = new TextView(getActivity());
             SpannableString aboutText = new SpannableString(getString(R.string.about_text));
             String versionString = String.format("Version: %s", getAppVersion());
             message.setText(versionString + "\n\n" + aboutText);
             message.setTextSize(16);
+            message.setPadding(10, 10, 10, 10);
             Linkify.addLinks(message, Linkify.ALL);
             builder.setView(message, 5, 5, 5, 5);
 
@@ -251,14 +262,14 @@ public abstract class BaseActivity extends FragmentActivity {
             if (mPackageInfo != null && !mPackageInfo.packageName.contains("glimmrpro")) {
                 builder.setNegativeButton(getString(R.string.pro_donate),
                         new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                        dismiss();
-                    }
-                });
+                            @Override
+                            public void onClick(View view) {
+                                Uri uri = Uri.parse(Constants.PRO_MARKET_LINK);
+                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                startActivity(intent);
+                                dismiss();
+                            }
+                        });
             }
             builder.setPositiveButton(getString(android.R.string.ok), new View.OnClickListener() {
                 @Override
@@ -270,4 +281,5 @@ public abstract class BaseActivity extends FragmentActivity {
             return builder;
         }
     }
+
 }

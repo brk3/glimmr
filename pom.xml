@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bourke</groupId>
     <artifactId>glimmr</artifactId>
-    <version>2.18-SNAPSHOT</version>
+    <version>2.19-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>glimmr</name>
 
@@ -153,13 +153,6 @@
             <type>apklib</type>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.android.gms</groupId>
-            <artifactId>google-play-services</artifactId>
-            <version>13</version>
-            <type>apklib</type>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -223,6 +216,15 @@
 
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                        <artifactId>android-maven-plugin</artifactId>
+                        <version>3.8.0</version>
+                        <configuration>
+                            <release>true</release>
+                        </configuration>
+                    </plugin>
+
                     <!-- maven-jarsigner-plugin used for signing the apk -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

@@ -43,7 +43,7 @@
         <TextView
                 style="@style/GlimmrPageTitle"
                 android:id="@+id/textViewAdvancedSection"
-                android:text="@string/advanced" />
+                android:text="@string/more" />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                       android:layout_width="fill_parent"
@@ -77,26 +77,5 @@
                 android:singleLine="true"
                 android:hint="@string/add_remove_tags_hint"
                 android:maxLength="256"/>
-
-        <TextView
-                style="@style/GlimmrFormLabel"
-                android:id="@+id/textViewSets"
-                android:text="@string/sets" />
-        <TextView
-                android:id="@+id/textViewSets"
-                android:clickable="true"
-                android:paddingLeft="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        <TextView
-                style="@style/GlimmrFormLabel"
-                android:id="@+id/textViewLocation"
-                android:text="@string/location" />
-        <fragment
-                android:id="@+id/mapPreview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                class="com.google.android.gms.maps.SupportMapFragment" />
     </LinearLayout>
 </ScrollView>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="32" android:versionName="2.17-SNAPSHOT" package="com.bourke.glimmr">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="36" android:versionName="2.18-SNAPSHOT" package="com.bourke.glimmr">
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19"/>
 
@@ -10,13 +10,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
-    <!--XXXUPLOAD: Disabled until feature complete-->
-    <!--<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
-
-    <!-- required for google maps api v2 -->
-    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
 
     <application android:allowBackup="true" android:hardwareAccelerated="true" android:icon="@drawable/app_icon" android:label="@string/app_name" android:theme="@style/Theme.Glimmrdark">
 
@@ -87,8 +80,6 @@
 
         <activity android:name=".activities.LocalPhotosActivity"/>
 
-        <activity android:name=".activities.LocationEditorActivity"/>
-
         <!-- BroadcastReceivers -->
         <receiver android:name=".appwidget.StackWidgetProvider">
             <intent-filter>
@@ -115,10 +106,6 @@
         <service android:name=".tape.AddToPhotosetTaskQueueService"/>
 
         <service android:name=".tape.UploadPhotoTaskQueueService"/>
-
-        <meta-data
-                android:name="com.google.android.maps.v2.API_KEY"
-                android:value="AIzaSyCPLKrrIfyzuyirQXQE_guL8fBvJ4V2rsk" />
     </application>
 
 </manifest>

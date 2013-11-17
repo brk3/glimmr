@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            android:id="@+id/profileImageView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="30dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/profile_small" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/hi"
+            android:id="@+id/buyProPart1"
+            android:textSize="55sp"
+            android:layout_alignBottom="@+id/profileImageView"
+            android:layout_alignLeft="@+id/textView2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/buy_pro_2"
+            android:id="@+id/textView2"
+            android:layout_below="@+id/profileImageView"
+            android:layout_alignRight="@+id/profileImageView" />
+
+    </RelativeLayout>
+</ScrollView>

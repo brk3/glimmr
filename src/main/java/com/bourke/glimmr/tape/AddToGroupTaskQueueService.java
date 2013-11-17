@@ -1,7 +1,7 @@
 package com.bourke.glimmr.tape;
 
+import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TaskQueueDelegateFactory;
-import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
 import com.bourke.glimmr.tasks.AddItemToGroupTask;
 import com.squareup.tape.TaskQueue;
 
@@ -28,7 +28,6 @@ public class AddToGroupTaskQueueService extends AbstractTaskQueueService {
     protected void initTaskQueue() {
         TaskQueueDelegateFactory<AddItemToGroupTask> factory =
             new TaskQueueDelegateFactory<AddItemToGroupTask>(this);
-        mQueue = new TaskQueue(factory.get(AddToGroupDialogFragment.QUEUE_FILE,
-                AddItemToGroupTask.class));
+        mQueue = new TaskQueue(factory.get(Constants.GROUP_QUEUE, AddItemToGroupTask.class));
     }
 }

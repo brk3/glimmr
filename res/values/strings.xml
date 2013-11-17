@@ -4,7 +4,7 @@
     <string name="add">Add</string>
     <string name="add_photos">Add photos</string>
     <string name="about">About</string>
-    <string name="about_text">Thanks for supporting Glimmr!\n\nFollow Me: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nTranslators:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
+    <string name="about_text">Thanks for using Glimmr!\n\nFollow Me: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nTranslators:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
     <string name="added_a_comment">added a comment</string>
     <string name="aperture">APERTURE</string>
     <string name="app_name">Glimmr</string>
@@ -33,7 +33,7 @@
     <string name="login_later">You can login anytime from the menu!</string>
     <string name="login_problem">Could not log in</string>
     <string name="login">Login</string>
-    <string name="login_required">You need to be logged in to do that!</string>
+    <string name="login_required">You need to login to do that!</string>
     <string name="login_to_flickr">LOGIN TO FLICKR</string>
     <string name="logout">Logout</string>
     <string name="menu_favorite">Mark as Favorite</string>
@@ -116,13 +116,16 @@
     <string name="ill_try_again_later">Glimmr will try again later</string>
     <string name="retry">Retry</string>
     <string name="upload_tip">Tip: Swipe photo left and right to add info</string>
-    <string name="advanced">Advanced</string>
+    <string name="more">More</string>
     <string name="basic_info">Basic Info</string>
     <string name="location">Location</string>
     <string name="add_remove_tags_hint">Tap to add/remove tags (comma separated)</string>
+    <string name="add_remove_sets_hint">Tap to add/remove sets</string>
     <string name="upload_photos_tip">Tip: tap and hold photos to select for upload</string>
     <string name="add_tags_tip">Tip: separate each tag with a comma</string>
     <string name="add_to_sets">Add To Sets</string>
     <string name="set_location">Set Location</string>
     <string name="set_location_tip">Tip: Touch and hold map to set location</string>
+    <string name="buy_pro_2">I\'m Paul, the creator of Glimmr.\n\nRight now this feature is reserved for pro users, as a means of me making a few bucks off my hobby.\n\nHelp support me in making the best Flickr app possible, and in return, you\'ll get:\n\n ★ Ability to upload photos through Glimmr\n ★ Higher quality thumbnails\n ★ Email support from myself\n \n Thank you.</string>
+    <string name="hi">Hi!</string>
 </resources>

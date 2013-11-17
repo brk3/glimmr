@@ -62,7 +62,6 @@ public class Constants {
     public static final String KEY_HIGH_QUALITY_THUMBNAILS
         = "highQualityThumbnails";
 
-
     /* Number of items to fetch per page for calls that support pagination */
     public static final int FETCH_PER_PAGE = 20;
 
@@ -70,6 +69,11 @@ public class Constants {
     public static final int NOTIFICATION_NEW_CONTACTS_PHOTOS = 0;
     public static final int NOTIFICATION_NEW_ACTIVITY = 1;
     public static final int NOTIFICATION_PHOTOS_UPLOADING = 2;
+
+    /* Tape managed task queues */
+    public static final String PHOTOSET_QUEUE = "photoset_task_queue.json";
+    public static final String GROUP_QUEUE = "photoset_task_queue.json";
+    public static final String UPLOAD_QUEUE = "photoset_task_queue.json";
 
     public static final String PRO_MARKET_LINK =
         "market://details?id=com.bourke.glimmrpro";

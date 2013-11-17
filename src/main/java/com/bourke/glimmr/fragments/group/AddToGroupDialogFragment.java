@@ -11,8 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.*;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.GsonHelper;
+import com.bourke.glimmr.common.TaskQueueDelegateFactory;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IGroupInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseDialogFragment;
@@ -27,10 +32,11 @@ import com.googlecode.flickrjandroid.groups.Throttle;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.squareup.otto.Subscribe;
 import com.squareup.tape.TaskQueue;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 import java.util.List;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 // TODO
 // * Handle failing to create TaskQueue
@@ -55,8 +61,6 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
      * popular 'Black & White' group states 6, so go with that for now */
     private static final int ADD_AT_A_TIME = 6;
 
-    public static final String QUEUE_FILE = "group_task_queue.json";
-
     private Group mGroup;
     private TaskQueue mQueue;
     private ProgressBar mProgressBar;
@@ -76,8 +80,7 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
         super.onCreate(savedInstanceState);
         TaskQueueDelegateFactory<AddItemToGroupTask> factory =
             new TaskQueueDelegateFactory<AddItemToGroupTask>(mActivity);
-        mQueue = new TaskQueue(factory.get(QUEUE_FILE,
-                    AddItemToGroupTask.class));
+        mQueue = new TaskQueue(factory.get(Constants.GROUP_QUEUE, AddItemToGroupTask.class));
         BusProvider.getInstance().register(this);
         setStyle(STYLE_NO_TITLE, 0);
     }
