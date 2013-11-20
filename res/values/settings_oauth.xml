@@ -3,5 +3,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
-    <string name="callback_scheme">glimmr-oauth-callback</string>
+    <string name="callback_scheme">glimmrpro-oauth-callback</string>
 </resources>
