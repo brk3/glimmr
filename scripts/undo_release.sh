@@ -18,8 +18,6 @@ git reset --hard origin/glimmr-l
 git tag -d glimmrpro-$VERSION glimmr-$VERSION
 git push origin :refs/tags/glimmrpro-$VERSION :refs/tags/glimmr-$VERSION
 
-rm -rf ~/Dropbox/android/glimmr/releases/com/bourke/glimmr/$VERSION/
-rm -rf ~/Dropbox/android/glimmr/releases/com/bourke/glimmrpro/$VERSION/
+git push origin dev glimmr-l -f
 
-echo "Done - check all looks ok and run:"
-echo "git push origin dev glimmr-l -f"
+echo "OK"

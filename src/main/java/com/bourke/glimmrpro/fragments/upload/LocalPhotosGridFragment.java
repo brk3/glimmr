@@ -1,19 +1,29 @@
 package com.bourke.glimmrpro.fragments.upload;
 
-import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
-import android.database.MatrixCursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.*;
-import android.widget.*;
-import com.androidquery.AQuery;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.PhotoUploadActivity;
 import com.bourke.glimmrpro.common.Constants;
@@ -30,33 +40,21 @@ import java.util.ArrayList;
  * A PhotoGridFragment that displays photos found on the device.  Selected photos are then passed to
  * PhotoUploadActivity where info for each can be edited etc. before upload.
  *
- * Uses CursorLoaders to iterate the MediaStore and construct a MatrixCursor containing a thumbnail
- * path and a path to the full sized image.
- *
- * There should be more efficient ways of doing this, i.e. I think the adapter should be able to
- * load data as it's needed rather than having to grab it all first.
- *
  * Based on code from:
- * http://android-er.blogspot.ie/2012/10/list-images-with-thumbnails.html
+ * http://android-er.blogspot.ie/2012/11/list-mediastoreimagesthumbnails-in.html
  */
 public class LocalPhotosGridFragment extends PhotoGridFragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, AbsListView.MultiChoiceModeListener {
+        implements AbsListView.MultiChoiceModeListener{
 
     private static final String TAG = "Glimmr/LocalPhotosGridFragment";
 
-    private final int THUMBNAIL_LOADER_ID  = 0;
-    private final int IMAGE_LOADER_ID  = 1;
+    private static final Uri SOURCE_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+    private static final String SOURCE_TITLE = MediaStore.Images.Media.TITLE;
+    private static final String SOURCE_DATA = MediaStore.Images.Media.DATA;
 
-    private final int COL_THUMB_DATA = 1;
-    private final int COL_IMAGE_DATA = 2;
-    private final int COL_IMAGE_TITLE = 3;
-
-    private MatrixCursor mMatrixCursor;
-    private Cursor mThumbCursor;
-    private Cursor mImageCursor;
-
-    private String mThumbImageId;
-    private String mThumbImageData;
+    private static final Uri THUMB_URI = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
+    private static final String THUMB_DATA = MediaStore.Images.Thumbnails.DATA;
+    private static final String THUMB_IMAGE_ID = MediaStore.Images.Thumbnails.IMAGE_ID;
 
     private MediaStoreImagesAdapter mAdapter;
 
@@ -66,111 +64,42 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
         mGridView.setVisibility(View.VISIBLE);
         mGridView.setMultiChoiceModeListener(this);
         mShowDetailsOverlay = false;
-        mAdapter = new MediaStoreImagesAdapter(getActivity(), R.layout.gridview_item, null,
-                new String[]{}, new int[]{ R.id.image });
+        String[] from = {MediaStore.MediaColumns.TITLE};
+        int[] to = {android.R.id.text1};
+
+        CursorLoader cursorLoader = new CursorLoader(
+                getActivity(),
+                SOURCE_URI,
+                null,
+                null,
+                null,
+                MediaStore.Audio.Media.TITLE);
+
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        mAdapter = new MediaStoreImagesAdapter(
+                getActivity(),
+                R.layout.gridview_item,
+                cursor,
+                from,
+                to);
+
         mGridView.setAdapter(mAdapter);
         mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            final String usageTip = getString(R.string.upload_photos_tip);
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                UsageTips.getInstance().show(mActivity,
-                        getString(R.string.upload_photos_tip), false);
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                UsageTips.getInstance().show(mActivity, usageTip, true);
             }
         });
-        mMatrixCursor = new MatrixCursor(new String[]{ "_id", "thumb_data", "image_data",
-                "image_title" });
-        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
-        getActivity().getLoaderManager().initLoader(THUMBNAIL_LOADER_ID, null, this);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int loader_id, Bundle arg1) {
-        CursorLoader cLoader;
-        Uri uri;
-
-        if (loader_id == THUMBNAIL_LOADER_ID) {
-            uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
-            cLoader = new CursorLoader(mActivity, uri, null, null, null, null);
-        } else {
-            /** Query Image Content provider with thumbnail image id */
-            String image_id = arg1.getString("image_id");
-            StringBuilder query = new StringBuilder().append(MediaStore.Images.Media._ID)
-                    .append("=").append(image_id);
-            uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            cLoader = new CursorLoader(mActivity, uri, null, query.toString(), null, null);
-        }
-        return cLoader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        if (cursorLoader.getId() == THUMBNAIL_LOADER_ID) {
-            mThumbCursor = cursor;
-
-            /** If we're on the first thumbnail */
-            if (mThumbCursor.moveToFirst()) {
-                mThumbImageId = mThumbCursor.getString(mThumbCursor.getColumnIndex(
-                        MediaStore.Images.Thumbnails._ID));
-                mThumbImageData = mThumbCursor.getString(mThumbCursor.getColumnIndex(
-                                MediaStore.Images.Thumbnails.DATA));
-
-                /** Pass the thumb image id to the image data loader */
-                String image_id = mThumbCursor.getString(mThumbCursor.getColumnIndex(
-                                MediaStore.Images.Thumbnails.IMAGE_ID));
-                Bundle data = new Bundle();
-                data.putString("image_id", image_id);
-
-                mActivity.getLoaderManager().initLoader(IMAGE_LOADER_ID, data, this);
-            }
-        } else if (cursorLoader.getId() == IMAGE_LOADER_ID) {
-            mImageCursor = cursor;
-
-            if (mImageCursor.moveToFirst()) {
-                final String imageDataUri = mImageCursor.getString(mImageCursor.getColumnIndex(
-                        MediaStore.Images.ImageColumns.DATA));
-                final String imageTitle = mImageCursor.getString(mImageCursor.getColumnIndex(
-                        MediaStore.Images.ImageColumns.TITLE));
-
-                /** Add new row to the matrixcursor object */
-                mMatrixCursor.addRow(new Object[]{mThumbImageId, mThumbImageData, imageDataUri,
-                        imageTitle});
-
-                /** Take the next thumbnail */
-                if (mThumbCursor.moveToNext()) {
-                    mThumbImageId = mThumbCursor.getString(
-                            mThumbCursor.getColumnIndex(MediaStore.Images.Thumbnails._ID));
-                    mThumbImageData = mThumbCursor.getString(
-                            mThumbCursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
-
-                    String image_id = mThumbCursor.getString(mThumbCursor.getColumnIndex(
-                            MediaStore.Images.Thumbnails.IMAGE_ID));
-                    Bundle data = new Bundle();
-                    data.putString("image_id", image_id);
-
-                    /** Restart the image loader to get the next image details */
-                    mActivity.getLoaderManager().restartLoader(IMAGE_LOADER_ID, data, this);
-                } else {
-                    /** Done - update adapter */
-                    if(mThumbCursor.isAfterLast()) {
-                        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
-                        mAdapter.swapCursor(mMatrixCursor);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        mAdapter.swapCursor(null);
     }
 
     /**
      * When items are selected/de-selected.
      */
     @Override
-    public void onItemCheckedStateChanged(ActionMode mode, int position,
-            long id, boolean checked) {
+    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
         mGridView.invalidateViews();
     }
 
@@ -209,14 +138,17 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
     public void onDestroyActionMode(ActionMode mode) {
         final ArrayList<LocalPhoto> selectedImages = new ArrayList<LocalPhoto>();
         final SparseBooleanArray checkArray = mGridView.getCheckedItemPositions();
+        Cursor cursor = mAdapter.getCursor();
+
         for (int i=0; i < mGridView.getCount(); i++) {
             if (checkArray.get(i)) {
                 LocalPhoto photo = new LocalPhoto();
                 UploadMetaData metadata = new UploadMetaData();
 
-                mMatrixCursor.moveToPosition(i);
-                photo.setUri(mMatrixCursor.getString(COL_IMAGE_DATA));
-                metadata.setTitle(mMatrixCursor.getString(COL_IMAGE_TITLE));
+                cursor.moveToPosition(i);
+
+                photo.setUri(cursor.getString(cursor.getColumnIndex(SOURCE_DATA)));
+                metadata.setTitle(cursor.getString(cursor.getColumnIndex(SOURCE_TITLE)));
                 photo.setMetadata(metadata);
 
                 selectedImages.add(photo);
@@ -296,9 +228,12 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
 
     public class MediaStoreImagesAdapter extends SimpleCursorAdapter {
 
+        private Cursor mCursor;
+
         public MediaStoreImagesAdapter(Context context, int layout, Cursor c,
                 String[] from, int[] to) {
-            super(context, layout, c, from, to, 0);
+            super(context, layout, c, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+            mCursor = c;
         }
 
         @Override
@@ -321,11 +256,27 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
 
             holder.imageOverlay.setVisibility(View.INVISIBLE);
 
-            getCursor().moveToPosition(position);
-            String thumbPath = getCursor().getString(COL_THUMB_DATA);
-            mAq.id(holder.image).image(thumbPath,
-                    Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
-                    0, 0, null, AQuery.FADE_IN_NETWORK);
+            mCursor.moveToPosition(position);
+
+            int myID = mCursor.getInt(mCursor.getColumnIndex(MediaStore.Images.Media._ID));
+
+            String[] thumbColumns = {THUMB_DATA, THUMB_IMAGE_ID};
+            CursorLoader thumbCursorLoader = new CursorLoader(
+                    getActivity(),
+                    THUMB_URI,
+                    thumbColumns,
+                    THUMB_IMAGE_ID + "=" + myID,
+                    null,
+                    null);
+            Cursor thumbCursor = thumbCursorLoader.loadInBackground();
+
+            Bitmap myBitmap = null;
+            if(thumbCursor.moveToFirst()){
+                int thCulumnIndex = thumbCursor.getColumnIndex(THUMB_DATA);
+                String thumbPath = thumbCursor.getString(thCulumnIndex);
+                myBitmap = BitmapFactory.decodeFile(thumbPath);
+                holder.image.setImageBitmap(myBitmap);
+            }
 
             /* Set tint on selected items */
             SparseBooleanArray checkArray = mGridView.getCheckedItemPositions();
