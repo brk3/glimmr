@@ -46,15 +46,18 @@ public class ProfileViewerActivity extends BottomOverlayActivity
     public static final int CONTACTS_PAGE = 3;
 
     private User mUser;
+    private LoadUserTask mUserTask;
+    private LoadProfileIdTask mProfileIdTask;
 
     @Override
     protected void handleIntent(Intent intent) {
         if (intent.getAction().equals(ACTION_VIEW_USER_BY_ID)) {
             String userId = intent.getStringExtra(KEY_PROFILE_ID);
-            new LoadUserTask(this, this, userId).execute(mOAuth);
+            mUserTask = new LoadUserTask(this, this, userId);
+            mUserTask.execute(mOAuth);
         } else if (intent.getAction().equals(ACTION_VIEW_USER_BY_URL)) {
             final String profileUrl = intent.getStringExtra(KEY_PROFILE_URL);
-            new LoadProfileIdTask(new Events.IProfileIdReadyListener() {
+            mProfileIdTask = new LoadProfileIdTask(new Events.IProfileIdReadyListener() {
                 @Override
                 public void onProfileIdReady(String profileId, Exception e) {
                     if (FlickrHelper.getInstance().handleFlickrUnavailable(
@@ -68,10 +71,22 @@ public class ProfileViewerActivity extends BottomOverlayActivity
                         Log.e(TAG, "Couldn't fetch profileId");
                     }
                 }
-            }, profileUrl).execute();
+            }, profileUrl);
+            mProfileIdTask.execute();
         } else {
             Log.e(TAG, "Unknown intent action: " + intent.getAction());
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mUserTask != null) {
+            mUserTask.cancel(true);
+        }
+        if (mProfileIdTask != null) {
+            mProfileIdTask.cancel(true);
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -88,12 +103,12 @@ public class ProfileViewerActivity extends BottomOverlayActivity
             String json = bundle.getString(KEY_USER);
             if (json != null) {
                 mUser = gson.fromJson(json, User.class);
+                initViewPager();
+                updateBottomOverlay();
             } else {
                 Log.e(TAG, "No user found in savedInstanceState");
             }
         }
-        initViewPager();
-        updateBottomOverlay();
     }
 
     @Override
