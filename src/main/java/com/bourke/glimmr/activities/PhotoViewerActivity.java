@@ -235,8 +235,10 @@ public class PhotoViewerActivity extends BaseActivity
         //super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putBoolean(KEY_ACTIONBAR_SHOW,
                 mActionBar.isShowing());
-        savedInstanceState.putInt(KEY_CURRENT_INDEX,
-                mPager.getCurrentItem());
+        /* mPager may be null if activity is closed before initViewPager */
+        if (mPager != null) {
+            savedInstanceState.putInt(KEY_CURRENT_INDEX, mPager.getCurrentItem());
+        }
         savedInstanceState.putBoolean(KEY_COMMENTS_SHOWING,
                 mCommentsFragmentShowing);
         savedInstanceState.putBoolean(KEY_INFO_SHOWING,
