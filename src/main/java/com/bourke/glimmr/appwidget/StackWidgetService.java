@@ -1,6 +1,5 @@
 package com.bourke.glimmr.appwidget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.bourke.glimmr.R;
@@ -34,9 +34,7 @@ public class StackWidgetService extends RemoteViewsService {
     }
 }
 
-@TargetApi(11)
-class StackRemoteViewsFactory
-        implements RemoteViewsService.RemoteViewsFactory {
+class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = "Glimmr/StackWidgetService";
 
@@ -84,6 +82,10 @@ class StackRemoteViewsFactory
     public RemoteViews getViewAt(int position) {
         final RemoteViews rv = new RemoteViews(mContext.getPackageName(),
                 R.layout.stackview_widget_item);
+
+        if (mPhotos.size() == 0) {
+            updatePhotos();
+        }
 
         /* Fetch the photo synchronously */
         final Photo photo = mPhotos.get(position);
@@ -146,31 +148,7 @@ class StackRemoteViewsFactory
     @Override
     public void onDataSetChanged() {
         if (Constants.DEBUG) Log.d(TAG, "onDataSetChanged");
-        try {
-            switch (mWidgetType) {
-                default:
-                case StackViewWidgetConfigure.WIDGET_TYPE_EXPORE:
-                    mPhotos = getExplorePhotos();
-                    break;
-
-                case StackViewWidgetConfigure.WIDGET_TYPE_FAVORITES:
-                    mPhotos = getFavoritePhotos();
-                    break;
-
-                case StackViewWidgetConfigure.WIDGET_TYPE_PHOTOS:
-                    mPhotos = getUserPhotos();
-                    break;
-
-                case StackViewWidgetConfigure.WIDGET_TYPE_CONTACTS:
-                    mPhotos = getContactsPhotos();
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        new GsonHelper(mContext).marshallObject(mPhotos,
-                PhotoViewerActivity.PHOTO_LIST_FILE);
+        updatePhotos();
     }
 
     /**
@@ -199,6 +177,34 @@ class StackRemoteViewsFactory
 
     @Override
     public void onDestroy() {
+    }
+
+    private void updatePhotos() {
+        try {
+            switch (mWidgetType) {
+                default:
+                case StackViewWidgetConfigure.WIDGET_TYPE_EXPORE:
+                    mPhotos = getExplorePhotos();
+                    break;
+
+                case StackViewWidgetConfigure.WIDGET_TYPE_FAVORITES:
+                    mPhotos = getFavoritePhotos();
+                    break;
+
+                case StackViewWidgetConfigure.WIDGET_TYPE_PHOTOS:
+                    mPhotos = getUserPhotos();
+                    break;
+
+                case StackViewWidgetConfigure.WIDGET_TYPE_CONTACTS:
+                    mPhotos = getContactsPhotos();
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        new GsonHelper(mContext).marshallObject(mPhotos,
+                PhotoViewerActivity.PHOTO_LIST_FILE);
     }
 
     private List<Photo> getExplorePhotos() throws Exception {
