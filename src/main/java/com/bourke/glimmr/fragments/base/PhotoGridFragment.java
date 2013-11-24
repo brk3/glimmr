@@ -43,10 +43,10 @@ public abstract class PhotoGridFragment extends BaseFragment
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
     protected GridView mGridView;
-    protected EndlessGridAdapter mAdapter;
+    private EndlessGridAdapter mAdapter;
 
     protected final List<Photo> mPhotos = new ArrayList<Photo>();
-    protected List<Photo> mNewPhotos = new ArrayList<Photo>();
+    private List<Photo> mNewPhotos = new ArrayList<Photo>();
     protected int mPage = 1;
     protected boolean mMorePages = true;
     protected boolean mShowDetailsOverlay = true;
@@ -291,7 +291,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     class GridAdapter extends ArrayAdapter<Photo> {
 
-        private boolean mHighQualityThumbnails;
+        private final boolean mHighQualityThumbnails;
 
         public GridAdapter(List<Photo> items) {
             super(mActivity, R.layout.gridview_item, android.R.id.text1,

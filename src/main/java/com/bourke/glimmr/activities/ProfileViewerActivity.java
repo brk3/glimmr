@@ -40,10 +40,10 @@ public class ProfileViewerActivity extends BottomOverlayActivity
     public static final String KEY_PROFILE_URL =
             "com.bourke.glimmr.KEY_PROFILE_URL";
 
-    public static final int PHOTO_STREAM_PAGE = 0;
-    public static final int FAVORITES_STREAM_PAGE = 1;
-    public static final int SETS_PAGE = 2;
-    public static final int CONTACTS_PAGE = 3;
+    private static final int PHOTO_STREAM_PAGE = 0;
+    private static final int FAVORITES_STREAM_PAGE = 1;
+    private static final int SETS_PAGE = 2;
+    private static final int CONTACTS_PAGE = 3;
 
     private User mUser;
     private LoadUserTask mUserTask;

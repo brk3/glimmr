@@ -36,6 +36,7 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
         /* A specific date to return interesting photos for. */
         Date day = null;
         try {
+            //noinspection ConstantConditions
             return FlickrHelper.getInstance().getInterestingInterface()
                 .getList(day, Constants.EXTRAS, Constants.FETCH_PER_PAGE,
                         mPage);

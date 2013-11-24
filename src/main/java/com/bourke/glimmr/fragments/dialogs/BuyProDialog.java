@@ -16,7 +16,7 @@ import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 public class BuyProDialog extends SimpleDialogFragment {
 
-    public static String TAG = "Glimmr/BuyProDialog";
+    private static final String TAG = "Glimmr/BuyProDialog";
 
     private TextUtils mTextUtils;
 

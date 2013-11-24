@@ -30,7 +30,7 @@ public class PhotosetGridFragment extends PhotoGridFragment
 
     private static final String KEY_NEWEST_PHOTOSET_PHOTO_ID =
         "glimmr_newest_photoset_photo_id";
-    public static final String KEY_PHOTOSET =
+    private static final String KEY_PHOTOSET =
             "com.bourke.glimmr.PhotosetGridFragment.KEY_PHOTOSET";
 
     private Photoset mPhotoset;

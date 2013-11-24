@@ -174,7 +174,7 @@ public abstract class BaseActivity extends FragmentActivity {
                             LocalPhotosActivity.class);
                     startActivity(localPhotosActivity);
                 } else {
-                    new BuyProDialog().show(this);
+                    BuyProDialog.show(this);
                 }
                 return true;
 

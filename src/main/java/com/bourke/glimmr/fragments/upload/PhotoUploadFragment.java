@@ -26,7 +26,7 @@ public class PhotoUploadFragment extends BaseFragment {
 
     public static final String TAG = "Glimmr/PhotoUploadFragment";
 
-    public static final String KEY_PHOTO = "com.bourke.glimmr.PhotoUploadFragment.KEY_PHOTO";
+    private static final String KEY_PHOTO = "com.bourke.glimmr.PhotoUploadFragment.KEY_PHOTO";
 
     private LocalPhotosGridFragment.LocalPhoto mPhoto;
     private EditText mEditTextTitle;
@@ -131,8 +131,8 @@ public class PhotoUploadFragment extends BaseFragment {
 
     private String tagsToString(List<String> tags) {
         StringBuilder tagDisplay = new StringBuilder();
-        for (int i=0; i < tags.size(); i++) {
-            tagDisplay.append(tags.get(i));
+        for (String tag : tags) {
+            tagDisplay.append(tag);
         }
         if (tagDisplay.length() > 0) {
             return tagDisplay.substring(0, tagDisplay.length()-2);

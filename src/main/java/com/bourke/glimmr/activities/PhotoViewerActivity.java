@@ -54,7 +54,7 @@ public class PhotoViewerActivity extends BaseActivity
         "com.bourke.glimmr.PhotoViewerActivity.KEY_SLIDESHOW_RUNNING";
     public static final String KEY_PHOTO_ID =
         "com.bourke.glimmr.PhotoViewerActivity.KEY_PHOTO_ID";
-    public static final String KEY_INTENT_CONSUMED =
+    private static final String KEY_INTENT_CONSUMED =
         "com.bourke.glimmr.PhotoViewerActivity.KEY_INTENT_CONSUMED";
 
     public static final String KEY_PHOTO_LIST_FILE =

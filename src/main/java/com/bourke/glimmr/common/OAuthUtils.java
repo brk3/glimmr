@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-import com.bourke.glimmr.R;
+
 import com.bourke.glimmr.activities.ExploreActivity;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
-import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 public class OAuthUtils {
 

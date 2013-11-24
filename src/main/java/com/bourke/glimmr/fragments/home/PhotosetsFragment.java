@@ -84,7 +84,7 @@ public class PhotosetsFragment extends BaseFragment
         }
 
         mLayoutNoConnection =
-            (LinearLayout) mLayout.findViewById(R.id.no_connection_layout);
+                mLayout.findViewById(R.id.no_connection_layout);
         mAq = new AQuery(mActivity, mLayout);
 
         initAdapterView();

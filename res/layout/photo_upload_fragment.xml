@@ -6,7 +6,7 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
+                  android:layout_height="wrap_content"
                   android:orientation="vertical"
                   android:padding="12dip">
 
@@ -18,9 +18,10 @@
         <TextView
                 style="@style/GlimmrFormLabel"
                 android:id="@+id/textViewTitle"
-                android:text="Title" />
+                android:text="@string/title" />
         <EditText
                 android:id="@+id/editTextTitle"
+                android:hint="@string/add_title_hint"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
@@ -31,7 +32,7 @@
         <TextView
                 style="@style/GlimmrFormLabel"
                 android:id="@+id/textViewDescription"
-                android:text="Description" />
+                android:text="@string/description" />
         <EditText
                 android:id="@+id/editTextDescription"
                 android:layout_width="fill_parent"
@@ -52,7 +53,7 @@
             <TextView
                     style="@style/GlimmrFormLabel"
                     android:id="@+id/textViewPublic"
-                    android:text="Public"
+                    android:text="@string/public_photos"
                     android:paddingRight="8dip"/>
             <Switch
                     android:id="@+id/switchIsPublic"

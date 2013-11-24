@@ -2,6 +2,7 @@ package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.ICommentsReadyListener;
@@ -11,7 +12,6 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
 
-import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("EmptyMethod")
@@ -43,10 +43,7 @@ public class LoadCommentsTask
             try {
                 Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                         token.getOauthToken(), token.getOauthTokenSecret());
-                Date minCommentDate = null;
-                Date maxCommentDate = null;
-                return f.getCommentsInterface().getList(mPhoto.getId(),
-                        minCommentDate, maxCommentDate);
+                return f.getCommentsInterface().getList(mPhoto.getId(), null, null);
             } catch (Exception e) {
                 e.printStackTrace();
                 mException = e;
@@ -54,10 +51,8 @@ public class LoadCommentsTask
         } else {
             if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
             try {
-                Date minCommentDate = null;
-                Date maxCommentDate = null;
                 return FlickrHelper.getInstance().getCommentsInterface()
-                    .getList(mPhoto.getId(), minCommentDate, maxCommentDate);
+                        .getList(mPhoto.getId(), null, null);
             } catch (Exception e) {
                 e.printStackTrace();
                 mException = e;

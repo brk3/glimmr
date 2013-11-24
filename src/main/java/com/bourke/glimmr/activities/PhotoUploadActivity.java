@@ -139,7 +139,7 @@ public class PhotoUploadActivity extends BaseActivity {
     public class ImagePagerAdapter extends FragmentPagerAdapter
             implements ViewPager.OnPageChangeListener {
 
-        private List<LocalPhotosGridFragment.LocalPhoto> mPhotos;
+        private final List<LocalPhotosGridFragment.LocalPhoto> mPhotos;
 
         public ImagePagerAdapter(FragmentManager fm,
                 List<LocalPhotosGridFragment.LocalPhoto> imageUris) {
