@@ -254,9 +254,10 @@ public abstract class BaseActivity extends FragmentActivity {
             String versionString = String.format("Version: %s", getAppVersion());
             message.setText(versionString + "\n\n" + aboutText);
             message.setTextSize(16);
-            message.setPadding(10, 10, 10, 10);
             Linkify.addLinks(message, Linkify.ALL);
-            builder.setView(message, 5, 5, 5, 5);
+            int padding = (int) getActivity().getResources()
+                    .getDimension(R.dimen.dialog_message_padding);
+            builder.setView(message, padding, padding, padding, padding);
 
             /* set buttons (only add the "go pro" button to free version) */
             if (mPackageInfo != null && !mPackageInfo.packageName.contains("glimmrpro")) {

@@ -130,4 +130,6 @@
     <string name="hi">Hi!</string>
     <string name="upload">Upload</string>
     <string name="add_title_hint">Tap to add a title</string>
+    <string name="login_error">We\'re having trouble logging you in at the moment.\n\nPlease try again later, if you still can\'t login, drop me a mail at pauldbourke@gmail.com</string>
+    <string name="hmm">Hmm</string>
 </resources>
