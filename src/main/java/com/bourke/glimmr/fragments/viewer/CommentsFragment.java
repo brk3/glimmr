@@ -9,8 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
-import com.androidquery.AQuery;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
 import com.bourke.glimmr.common.Constants;
@@ -28,9 +35,16 @@ import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
+import com.squareup.picasso.Picasso;
+
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public final class CommentsFragment extends BaseDialogFragment
         implements ICommentsReadyListener, ICommentAddedListener,
@@ -89,7 +103,6 @@ public final class CommentsFragment extends BaseDialogFragment
             Bundle savedInstanceState) {
         mLayout = (LinearLayout) inflater.inflate(
                 R.layout.comments_fragment, container, false);
-        mAq = new AQuery(mActivity, mLayout);
 
         ImageButton submitButton = (ImageButton)
                 mLayout.findViewById(R.id.submitButton);
@@ -238,11 +251,8 @@ public final class CommentsFragment extends BaseDialogFragment
                     mLoadUserTasks.add(loadUserTask);
                 } else {
                     if (!author.isLoading) {
-                        mAq.id(holder.imageViewUserIcon).image(
-                                author.user.getBuddyIconUrl(),
-                                Constants.USE_MEMORY_CACHE,
-                                Constants.USE_FILE_CACHE, 0, 0, null,
-                                AQuery.FADE_IN_NETWORK);
+                        Picasso.with(mActivity).load(author.user.getBuddyIconUrl())
+                                .into(holder.imageViewUserIcon);
                         holder.imageViewUserIcon.setOnClickListener(
                                 new View.OnClickListener() {
                             @Override

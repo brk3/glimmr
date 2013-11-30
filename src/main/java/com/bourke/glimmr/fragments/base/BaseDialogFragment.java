@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.ViewGroup;
-import com.androidquery.AQuery;
+
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
@@ -22,7 +22,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
      */
     protected OAuth mOAuth;
 
-    protected AQuery mAq;
     protected ViewGroup mLayout;
     protected TextUtils mTextUtils;
 

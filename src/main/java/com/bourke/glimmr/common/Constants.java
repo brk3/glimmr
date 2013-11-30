@@ -15,17 +15,7 @@ public class Constants {
     /* Global app prefs */
     public static final String PREFS_NAME = "glimmr_prefs";
 
-    /* File and mem cache tuning params */
-    public static final boolean USE_FILE_CACHE = true;
-    public static final boolean USE_MEMORY_CACHE = true;
-    public static final int CACHE_TRIM_TRIGGER_SIZE = 8000000;  // 8MB
-    public static final int CACHE_TRIM_TARGET_SIZE = 5000000;  // 5MB
-    public static final int IMAGE_CACHE_LIMIT = 100;  // Images
-    public static final int MEM_CACHE_PX_SIZE = 3000000;  // 3M pixels
-
     /* General use SharedPreferences keys */
-    public static final String KEY_USER_NAME = "glimmr_user_name";
-    public static final String KEY_USER_ID = "glimmr_user_id";
     public static final String KEY_IS_FIRST_RUN = "glimmr_is_first_run";
     public static final String KEY_OAUTH_TOKEN = "glimmr_oauthtoken";
     public static final String KEY_TOKEN_SECRET = "glimmr_tokensecret";

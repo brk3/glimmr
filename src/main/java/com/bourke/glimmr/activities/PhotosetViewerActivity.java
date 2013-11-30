@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import com.androidquery.AQuery;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
@@ -20,6 +20,7 @@ import com.bourke.glimmr.tasks.LoadUserTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
+import com.squareup.picasso.Picasso;
 
 public class PhotosetViewerActivity extends BottomOverlayActivity
         implements Events.IPhotosetReadyListener, Events.IUserReadyListener {
@@ -121,10 +122,8 @@ public class PhotosetViewerActivity extends BottomOverlayActivity
                 mPhotoset.getTitle(), getString(R.string.by),
                 mUser.getUsername());
         mBottomOverlayPrimaryText.setText(overlayText);
-        mAq.id(R.id.overlayImage).image(
-                mPhotoset.getPrimaryPhoto().getSmallSquareUrl(),
-                Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
-                0, 0, null, AQuery.FADE_IN_NETWORK);
+        Picasso.with(this).load(mPhotoset.getPrimaryPhoto().getSmallSquareUrl())
+                .into(mOverlayImage);
     }
 
     @Override

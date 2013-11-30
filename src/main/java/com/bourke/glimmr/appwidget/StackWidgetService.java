@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxCallback;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.common.Constants;
@@ -22,7 +20,9 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -89,11 +89,12 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         /* Fetch the photo synchronously */
         final Photo photo = mPhotos.get(position);
-        AjaxCallback<Bitmap> cb = new AjaxCallback<Bitmap>();
-        cb.type(Bitmap.class).memCache(true).fileCache(true)
-            .url(photo.getSmallUrl());
-        new AQuery(mContext).sync(cb);
-        Bitmap bitmap = cb.getResult();
+        Bitmap bitmap = null;
+        try {
+            bitmap = Picasso.with(mContext).load(photo.getSmallUrl()).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         rv.setImageViewBitmap(R.id.image_item, bitmap);
 
         /* Set the overlay views and owner info */

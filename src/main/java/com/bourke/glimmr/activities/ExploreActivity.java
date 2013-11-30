@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
-import com.androidquery.AQuery;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
@@ -47,7 +47,6 @@ public class ExploreActivity extends BaseActivity
         CONTENT = new String[] { "Last 7 Days" };
 
         setContentView(R.layout.explore_activity);
-        mAq = new AQuery(this);
         mLoginFragment = (LoginFragment) getSupportFragmentManager()
             .findFragmentById(R.id.loginFragment);
         mLoginFragment.setNotNowListener(this);

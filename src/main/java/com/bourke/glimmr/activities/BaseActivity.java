@@ -23,9 +23,6 @@ import android.view.Window;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.BitmapAjaxCallback;
-import com.androidquery.util.AQUtility;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;
@@ -55,7 +52,6 @@ public abstract class BaseActivity extends FragmentActivity {
      */
     protected User mUser;
 
-    protected AQuery mAq;
     protected ActionBar mActionBar;
     protected TextUtils mTextUtils;
 
@@ -89,16 +85,6 @@ public abstract class BaseActivity extends FragmentActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         if (isTaskRoot()) {
-            /* Tune the aquery cache */
-            BitmapAjaxCallback.setCacheLimit(Constants.IMAGE_CACHE_LIMIT);
-            BitmapAjaxCallback.setMaxPixelLimit(Constants.MEM_CACHE_PX_SIZE);
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "IMAGE_CACHE_LIMIT: " +
-                        Constants.IMAGE_CACHE_LIMIT);
-                Log.d(getLogTag(), "MEM_CACHE_PX_SIZE: " +
-                        Constants.MEM_CACHE_PX_SIZE);
-            }
-
             startTapeQueues();
         }
     }
@@ -125,11 +111,6 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (Constants.DEBUG) Log.d(getLogTag(), "onDestroy");
-        if (isTaskRoot()) {
-            if (Constants.DEBUG) Log.d(getLogTag(), "Trimming file cache");
-            AQUtility.cleanCacheAsync(this, Constants.CACHE_TRIM_TRIGGER_SIZE,
-                   Constants.CACHE_TRIM_TARGET_SIZE);
-        }
         Crouton.cancelAllCroutons();
     }
 
@@ -184,14 +165,6 @@ public abstract class BaseActivity extends FragmentActivity {
 
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onLowMemory() {
-        if (Constants.DEBUG) {
-            Log.d(getLogTag(), "onLowMemory: clearing mem cache");
-        }
-        BitmapAjaxCallback.clearCache();
     }
 
     @Override

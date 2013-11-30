@@ -18,7 +18,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.androidquery.AQuery;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
@@ -31,6 +30,7 @@ import com.bourke.glimmr.tape.UploadPhotoTaskQueueService;
 import com.bourke.glimmr.tasks.UploadPhotoTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 import com.squareup.tape.TaskQueue;
 
 import java.lang.reflect.Type;
@@ -78,7 +78,6 @@ public class PhotoUploadActivity extends BaseActivity {
         mPhotoUploadFragment = (PhotoUploadFragment)
                 getSupportFragmentManager().findFragmentById(R.id.photoUploadFragment);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mAq = new AQuery(this);
 
         TaskQueueDelegateFactory<UploadPhotoTask> factory =
                 new TaskQueueDelegateFactory<UploadPhotoTask>(this);
@@ -192,8 +191,8 @@ public class PhotoUploadActivity extends BaseActivity {
                             LinearLayout.LayoutParams.MATCH_PARENT);
             image.setLayoutParams(layoutParams);
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            mAq.id(image).image(mImageUri, Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
-                    0, 0, null, AQuery.FADE_IN_NETWORK);
+
+            Picasso.with(getActivity()).load(mImageUri).into(image);
 
             LinearLayout layout = new LinearLayout(getActivity());
             layout.addView(image);

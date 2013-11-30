@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import com.androidquery.AQuery;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
@@ -21,6 +21,7 @@ import com.bourke.glimmr.tasks.LoadProfileIdTask;
 import com.bourke.glimmr.tasks.LoadUserTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
+import com.squareup.picasso.Picasso;
 
 public class ProfileViewerActivity extends BottomOverlayActivity
         implements IUserReadyListener {
@@ -149,9 +150,7 @@ public class ProfileViewerActivity extends BottomOverlayActivity
     @Override
     protected void updateBottomOverlay() {
         mBottomOverlayView.setVisibility(View.VISIBLE);
-        mAq.id(R.id.overlayImage).image(mUser.getBuddyIconUrl(),
-                Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
-                null, AQuery.FADE_IN_NETWORK);
+        Picasso.with(this).load(mUser.getBuddyIconUrl()).into(mOverlayImage);
         mBottomOverlayPrimaryText.setText(mUser.getUsername());
     }
 
