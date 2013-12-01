@@ -40,12 +40,9 @@ public class LoadContactsPhotosTask
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
             try {
-                boolean justFriends = false;
-                boolean singlePhoto = false;
-                boolean includeSelf = false;
                 return f.getPhotosInterface().getContactsPhotos(
                         Constants.FETCH_PER_PAGE, Constants.EXTRAS,
-                        justFriends, singlePhoto, includeSelf, mPage,
+                        false, false, false, mPage,
                         Constants.FETCH_PER_PAGE);
             } catch (Exception e) {
                 e.printStackTrace();

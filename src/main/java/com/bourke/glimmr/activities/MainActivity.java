@@ -598,7 +598,7 @@ public class MainActivity extends BaseActivity {
 
             if (item instanceof MenuDrawerActivityItem) {
                 if (v == null) {
-                    v = (LinearLayout) getLayoutInflater().inflate(
+                    v = getLayoutInflater().inflate(
                             R.layout.menu_row_activity_item, parent, false);
                 }
                 TextView tv = (TextView) v.findViewById(R.id.text);
@@ -619,7 +619,7 @@ public class MainActivity extends BaseActivity {
 
             } else if (item instanceof MenuDrawerCategory) {
                 if (v == null) {
-                    v = (LinearLayout) getLayoutInflater().inflate(
+                    v = getLayoutInflater().inflate(
                             R.layout.menu_row_category, parent, false);
                 }
                 TextView tv = (TextView) v.findViewById(R.id.text);

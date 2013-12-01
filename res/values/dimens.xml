@@ -8,6 +8,8 @@
     <dimen name="gridview_item_size">150dp</dimen>
     <dimen name="gridview_item_text_size">@dimen/text_size_micro</dimen>
 
+    <dimen name="dialog_message_padding">10dip</dimen>
+
     <dimen name="loginPrimaryTextSize">60sp</dimen>
     <dimen name="loginButtonTextSize">22sp</dimen>
     <dimen name="loginButtonTopMargin">50sp</dimen>

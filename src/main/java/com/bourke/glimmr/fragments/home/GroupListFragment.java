@@ -13,8 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import com.androidquery.AQuery;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.GroupViewerActivity;
@@ -27,6 +32,7 @@ import com.bourke.glimmr.fragments.base.BaseFragment;
 import com.bourke.glimmr.fragments.group.AddToGroupDialogFragment;
 import com.bourke.glimmr.tasks.LoadGroupsTask;
 import com.googlecode.flickrjandroid.groups.Group;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +57,6 @@ public class GroupListFragment extends BaseFragment
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.group_list_fragment, container, false);
-        mAq = new AQuery(mActivity, mLayout);
         mNoConnectionLayout =
             (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
         mListView = (AdapterView) mLayout.findViewById(R.id.list);
@@ -168,7 +173,6 @@ public class GroupListFragment extends BaseFragment
             super(activity, textViewResourceId, objects);
         }
 
-        // TODO: add aquery delay loading for fling scrolling
         @Override
         public View getView(final int position, View convertView,
                 ViewGroup parent) {
@@ -194,9 +198,8 @@ public class GroupListFragment extends BaseFragment
             mTextUtils.setFont(holder.textViewGroupName,
                     TextUtils.FONT_ROBOTOBOLD);
 
-            holder.textViewNumImages.setText(""+group.getPhotoCount());
-            mAq.id(holder.imageViewGroupIcon).image(group.getBuddyIconUrl(),
-                    true, true, 0, 0, null, AQuery.FADE_IN_NETWORK);
+            holder.textViewNumImages.setText("" + group.getPhotoCount());
+            Picasso.with(mActivity).load(group.getBuddyIconUrl()).into(holder.imageViewGroupIcon);
 
             return convertView;
         }

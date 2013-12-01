@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import com.androidquery.AQuery;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
@@ -21,6 +21,7 @@ import com.bourke.glimmr.tasks.LoadProfileIdTask;
 import com.bourke.glimmr.tasks.LoadUserTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
+import com.squareup.picasso.Picasso;
 
 public class ProfileViewerActivity extends BottomOverlayActivity
         implements IUserReadyListener {
@@ -40,21 +41,24 @@ public class ProfileViewerActivity extends BottomOverlayActivity
     public static final String KEY_PROFILE_URL =
             "com.bourke.glimmr.KEY_PROFILE_URL";
 
-    public static final int PHOTO_STREAM_PAGE = 0;
-    public static final int FAVORITES_STREAM_PAGE = 1;
-    public static final int SETS_PAGE = 2;
-    public static final int CONTACTS_PAGE = 3;
+    private static final int PHOTO_STREAM_PAGE = 0;
+    private static final int FAVORITES_STREAM_PAGE = 1;
+    private static final int SETS_PAGE = 2;
+    private static final int CONTACTS_PAGE = 3;
 
     private User mUser;
+    private LoadUserTask mUserTask;
+    private LoadProfileIdTask mProfileIdTask;
 
     @Override
     protected void handleIntent(Intent intent) {
         if (intent.getAction().equals(ACTION_VIEW_USER_BY_ID)) {
             String userId = intent.getStringExtra(KEY_PROFILE_ID);
-            new LoadUserTask(this, this, userId).execute(mOAuth);
+            mUserTask = new LoadUserTask(this, this, userId);
+            mUserTask.execute(mOAuth);
         } else if (intent.getAction().equals(ACTION_VIEW_USER_BY_URL)) {
             final String profileUrl = intent.getStringExtra(KEY_PROFILE_URL);
-            new LoadProfileIdTask(new Events.IProfileIdReadyListener() {
+            mProfileIdTask = new LoadProfileIdTask(new Events.IProfileIdReadyListener() {
                 @Override
                 public void onProfileIdReady(String profileId, Exception e) {
                     if (FlickrHelper.getInstance().handleFlickrUnavailable(
@@ -68,10 +72,22 @@ public class ProfileViewerActivity extends BottomOverlayActivity
                         Log.e(TAG, "Couldn't fetch profileId");
                     }
                 }
-            }, profileUrl).execute();
+            }, profileUrl);
+            mProfileIdTask.execute();
         } else {
             Log.e(TAG, "Unknown intent action: " + intent.getAction());
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mUserTask != null) {
+            mUserTask.cancel(true);
+        }
+        if (mProfileIdTask != null) {
+            mProfileIdTask.cancel(true);
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -88,12 +104,12 @@ public class ProfileViewerActivity extends BottomOverlayActivity
             String json = bundle.getString(KEY_USER);
             if (json != null) {
                 mUser = gson.fromJson(json, User.class);
+                initViewPager();
+                updateBottomOverlay();
             } else {
                 Log.e(TAG, "No user found in savedInstanceState");
             }
         }
-        initViewPager();
-        updateBottomOverlay();
     }
 
     @Override
@@ -134,9 +150,7 @@ public class ProfileViewerActivity extends BottomOverlayActivity
     @Override
     protected void updateBottomOverlay() {
         mBottomOverlayView.setVisibility(View.VISIBLE);
-        mAq.id(R.id.overlayImage).image(mUser.getBuddyIconUrl(),
-                Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,  0, 0,
-                null, AQuery.FADE_IN_NETWORK);
+        Picasso.with(this).load(mUser.getBuddyIconUrl()).into(mOverlayImage);
         mBottomOverlayPrimaryText.setText(mUser.getUsername());
     }
 

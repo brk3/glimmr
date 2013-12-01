@@ -2,6 +2,7 @@ package com.bourke.glimmr.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
@@ -11,7 +12,6 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
-import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("EmptyMethod")
@@ -43,13 +43,11 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            Date minFavDate = null;
-            Date maxFavDate = null;
             if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
 
             try {
                 return f.getFavoritesInterface().getList(
-                    mUser.getId(), minFavDate, maxFavDate,
+                    mUser.getId(), null, null,
                     Constants.FETCH_PER_PAGE, mPage, Constants.EXTRAS);
             } catch (Exception e) {
                 e.printStackTrace();

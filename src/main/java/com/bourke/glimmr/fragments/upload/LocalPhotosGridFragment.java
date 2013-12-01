@@ -228,7 +228,7 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
 
     public class MediaStoreImagesAdapter extends SimpleCursorAdapter {
 
-        private Cursor mCursor;
+        private final Cursor mCursor;
 
         public MediaStoreImagesAdapter(Context context, int layout, Cursor c,
                 String[] from, int[] to) {

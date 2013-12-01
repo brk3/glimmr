@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.MainActivity;
@@ -45,7 +46,7 @@ public class UploadPhotoTaskQueueService extends AbstractTaskQueueService {
 
     private void showStartedNotification() {
         String title = getString(R.string.uploading_photos, mQueue.size());
-        Notification.Builder notification = new Notification.Builder(this)
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
                 .setProgress(0, 0, true)
                 .setTicker(title)
                 .setSmallIcon(R.drawable.ic_action_upload_dark)
@@ -75,7 +76,7 @@ public class UploadPhotoTaskQueueService extends AbstractTaskQueueService {
     }
 
     private void clearStartedNotification() {
-        Notification.Builder notification = new Notification.Builder(this)
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
                 .setProgress(0, 0, false)
                 .setSmallIcon(R.drawable.ic_action_upload_dark)
                 .setAutoCancel(true);

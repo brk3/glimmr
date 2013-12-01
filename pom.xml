@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bourke</groupId>
     <artifactId>glimmr</artifactId>
-    <version>2.20-SNAPSHOT</version>
+    <version>2.21-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>glimmr</name>
 
@@ -55,12 +55,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.googlecode.android-query</groupId>
-            <artifactId>android-query</artifactId>
-            <version>0.24.3</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.commonsware.cwac</groupId>
             <artifactId>adapter</artifactId>
             <version>1.0</version>
@@ -86,21 +80,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-android</artifactId>
-            <version>1.6.1-RC1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-android</artifactId>
-            <version>1.6.1-RC1</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.googlecode.flickrj-android</groupId>
             <artifactId>flickrj-android</artifactId>
-            <version>2.0.8</version>
+            <version>2.0.9-401b946</version>
         </dependency>
 
         <dependency>
@@ -151,6 +133,12 @@
             <artifactId>android-styled-dialogs</artifactId>
             <version>1.0.1</version>
             <type>apklib</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.picasso</groupId>
+            <artifactId>picasso</artifactId>
+            <version>2.1.1</version>
         </dependency>
 
     </dependencies>

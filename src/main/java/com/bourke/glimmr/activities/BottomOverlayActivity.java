@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
-import com.androidquery.AQuery;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.TextUtils;
@@ -25,6 +25,7 @@ public abstract class BottomOverlayActivity extends BaseActivity {
 
     protected View mBottomOverlayView;
     protected TextView mBottomOverlayPrimaryText;
+    protected ImageView mOverlayImage;
 
     protected abstract void handleIntent(Intent intent);
     protected abstract void updateBottomOverlay();
@@ -35,11 +36,11 @@ public abstract class BottomOverlayActivity extends BaseActivity {
 
         setContentView(R.layout.main_activity);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mAq = new AQuery(this);
         mBottomOverlayView =
-            (RelativeLayout) findViewById(R.id.bottomOverlay);
+                findViewById(R.id.bottomOverlay);
         mBottomOverlayPrimaryText =
             (TextView) findViewById(R.id.overlayPrimaryText);
+        mOverlayImage = (ImageView) findViewById(R.id.overlayImage);
         initBottomOverlayFont();
         handleIntent(getIntent());
     }

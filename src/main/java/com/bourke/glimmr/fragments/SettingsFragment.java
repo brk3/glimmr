@@ -1,5 +1,7 @@
 package com.bourke.glimmr.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -9,8 +11,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.androidquery.callback.BitmapAjaxCallback;
-import com.androidquery.util.AQUtility;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
@@ -106,8 +106,12 @@ public class SettingsFragment extends PreferenceFragment
         } else if (Constants.KEY_SLIDESHOW_INTERVAL.equals(key)) {
             updateSlideshowIntervalSummary();
         } else if (Constants.KEY_HIGH_QUALITY_THUMBNAILS.equals(key)) {
-            BitmapAjaxCallback.clearCache();
-            AQUtility.getCacheDir(getActivity()).delete();
+            /* Restart the main activity to clear the memory cache */
+            Context baseContext = getActivity().getBaseContext();
+            Intent i = baseContext.getPackageManager().getLaunchIntentForPackage(
+                    baseContext.getPackageName() );
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
         }
     }
 

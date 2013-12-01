@@ -44,7 +44,7 @@ public class AddToPhotosetDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = "Glimmr/AddToPhotosetDialogFragment";
 
-    public static final String KEY_PHOTOSET =
+    private static final String KEY_PHOTOSET =
             "com.bourke.glimmr.AddToPhotosetDialogFragment.KEY_PHOTOSET";
 
     private Photoset mPhotoset;

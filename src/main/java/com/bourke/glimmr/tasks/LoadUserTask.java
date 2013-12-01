@@ -69,9 +69,4 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
         }
         mListener.onUserReady(result, mException);
     }
-
-    @Override
-    protected void onCancelled(final User result) {
-        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
-    }
 }

@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -14,8 +13,15 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import com.androidquery.AQuery;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
@@ -27,6 +33,7 @@ import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.PhotoItemLongClickDialogListener;
 import com.commonsware.cwac.endless.EndlessAdapter;
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +50,10 @@ public abstract class PhotoGridFragment extends BaseFragment
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
     protected GridView mGridView;
-    protected EndlessGridAdapter mAdapter;
+    private EndlessGridAdapter mAdapter;
 
     protected final List<Photo> mPhotos = new ArrayList<Photo>();
-    protected List<Photo> mNewPhotos = new ArrayList<Photo>();
+    private List<Photo> mNewPhotos = new ArrayList<Photo>();
     protected int mPage = 1;
     protected boolean mMorePages = true;
     protected boolean mShowDetailsOverlay = true;
@@ -68,7 +75,6 @@ public abstract class PhotoGridFragment extends BaseFragment
         }
         mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
                 container, false);
-        mAq = new AQuery(mActivity, mLayout);
         mNoConnectionLayout =
             (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
         initGridView();
@@ -133,7 +139,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         SparseBooleanArray checkArray = mGridView.getCheckedItemPositions();
         for (int i=0; i < checkArray.size(); i++) {
             if (checkArray.valueAt(i)) {
-                ret.add(mPhotos.get(i));
+                ret.add(mPhotos.get(checkArray.keyAt(i)));
             }
         }
         if (Constants.DEBUG) Log.d(TAG, "getSelectedPhotos: " + ret.size());
@@ -147,23 +153,17 @@ public abstract class PhotoGridFragment extends BaseFragment
         mGridView.setAdapter(mAdapter);
         mGridView.setChoiceMode(getGridChoiceMode());
 
-        mGridView.setOnItemClickListener(
-                new GridView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new GridView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                    int position, long id) {
-                if (mGridView.getChoiceMode() ==
-                        ListView.CHOICE_MODE_MULTIPLE) {
-                    SparseBooleanArray checkArray =
-                        mGridView.getCheckedItemPositions();
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                if (mGridView.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE) {
+                    SparseBooleanArray checkArray = mGridView.getCheckedItemPositions();
                     if (checkArray != null) {
-                        BusProvider.getInstance().post(
-                            new PhotoGridItemClickedEvent(
+                        BusProvider.getInstance().post(new PhotoGridItemClickedEvent(
                                 checkArray.get(position)));
                     }
                 } else {
-                    PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
-                        position);
+                    PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos, position);
                 }
                 mGridView.invalidateViews();
             }
@@ -291,7 +291,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     class GridAdapter extends ArrayAdapter<Photo> {
 
-        private boolean mHighQualityThumbnails;
+        private final boolean mHighQualityThumbnails;
 
         public GridAdapter(List<Photo> items) {
             super(mActivity, R.layout.gridview_item, android.R.id.text1,
@@ -326,78 +326,68 @@ public abstract class PhotoGridFragment extends BaseFragment
 
             final Photo photo = getItem(position);
 
-            /* Don't load image if flinging past it */
-            if (mAq.shouldDelay(position, convertView, parent,
-                        photo.getLargeSquareUrl())) {
-                Bitmap placeholder = mAq.getCachedImage(R.drawable.blank);
-                mAq.id(holder.image).image(placeholder);
-                holder.imageOverlay.setVisibility(View.INVISIBLE);
+            if (mShowDetailsOverlay) {
+                holder.imageOverlay.setVisibility(View.VISIBLE);
             } else {
-                if (mShowDetailsOverlay) {
-                    holder.imageOverlay.setVisibility(View.VISIBLE);
-                } else {
-                    holder.imageOverlay.setVisibility(View.INVISIBLE);
-                }
+                holder.imageOverlay.setVisibility(View.INVISIBLE);
+            }
 
-                mTextUtils.setFont(holder.ownerText,
-                        TextUtils.FONT_ROBOTOBOLD);
+            mTextUtils.setFont(holder.ownerText,
+                    TextUtils.FONT_ROBOTOBOLD);
 
-                /* Fetch the main photo */
-                String thumbnailUrl = photo.getLargeSquareUrl();
-                if (mHighQualityThumbnails) {
-                    thumbnailUrl = photo.getMediumUrl();
-                }
+            /* Fetch the main photo */
+            String thumbnailUrl = photo.getLargeSquareUrl();
+            if (mHighQualityThumbnails) {
+                thumbnailUrl = photo.getMediumUrl();
+            }
 
-                mAq.id(holder.image).image(thumbnailUrl,
-                        Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
-                        0, 0, null, AQuery.FADE_IN_NETWORK);
+            Picasso.with(mActivity).load(thumbnailUrl).into(holder.image);
 
-                /* Set the overlay views and owner info */
-                String viewsText = String.format("%s: %s",
-                        mActivity.getString(R.string.views),
-                        String.valueOf(photo.getViews()));
-                holder.viewsText.setText(viewsText);
-                if (photo.getOwner() != null) {
-                    holder.ownerText.setText(photo.getOwner().getUsername());
-                    holder.imageOverlay.setOnClickListener(
-                            new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent profileViewer = new Intent(mActivity,
-                                    ProfileViewerActivity.class);
-                            profileViewer.putExtra(
-                                    ProfileViewerActivity.KEY_PROFILE_ID,
-                                    photo.getOwner().getId());
-                            profileViewer.setAction(ProfileViewerActivity.ACTION_VIEW_USER_BY_ID);
-                            startActivity(profileViewer);
-                        }
-                    });
-                }
+            /* Set the overlay views and owner info */
+            String viewsText = String.format("%s: %s",
+                    mActivity.getString(R.string.views),
+                    String.valueOf(photo.getViews()));
+            holder.viewsText.setText(viewsText);
+            if (photo.getOwner() != null) {
+                holder.ownerText.setText(photo.getOwner().getUsername());
+                holder.imageOverlay.setOnClickListener(
+                        new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent profileViewer = new Intent(mActivity,
+                                ProfileViewerActivity.class);
+                        profileViewer.putExtra(
+                                ProfileViewerActivity.KEY_PROFILE_ID,
+                                photo.getOwner().getId());
+                        profileViewer.setAction(ProfileViewerActivity.ACTION_VIEW_USER_BY_ID);
+                        startActivity(profileViewer);
+                    }
+                });
+            }
 
-                /* Show ribbon in corner if photo is new */
-                holder.imageNewRibbon.setVisibility(View.INVISIBLE);
-                if (mNewPhotos != null) {
-                    for (Photo p : mNewPhotos) {
-                        if (p.getId().equals(photo.getId())) {
-                            holder.imageNewRibbon.setVisibility(View.VISIBLE);
-                        }
+            /* Show ribbon in corner if photo is new */
+            holder.imageNewRibbon.setVisibility(View.INVISIBLE);
+            if (mNewPhotos != null) {
+                for (Photo p : mNewPhotos) {
+                    if (p.getId().equals(photo.getId())) {
+                        holder.imageNewRibbon.setVisibility(View.VISIBLE);
                     }
                 }
+            }
 
-                /* If in multiple choice mode, set tint on selected items */
-                if (mGridView.getChoiceMode() ==
-                        ListView.CHOICE_MODE_MULTIPLE) {
-                    SparseBooleanArray checkArray =
-                        mGridView.getCheckedItemPositions();
+            /* If in multiple choice mode, set tint on selected items */
+            if (mGridView.getChoiceMode() ==
+                    ListView.CHOICE_MODE_MULTIPLE) {
+                SparseBooleanArray checkArray =
+                    mGridView.getCheckedItemPositions();
 
-                    if (checkArray != null) {
-                        if (checkArray.get(position)) {
-                            int highlightColor = mActivity.getResources()
-                                .getColor(R.color.transparent_flickr_pink);
-                            holder.image.setColorFilter(highlightColor);
-                        } else {
-                            holder.image.setColorFilter(null);
-                        }
+                if (checkArray != null) {
+                    if (checkArray.get(position)) {
+                        int highlightColor = mActivity.getResources()
+                            .getColor(R.color.transparent_flickr_pink);
+                        holder.image.setColorFilter(highlightColor);
+                    } else {
+                        holder.image.setColorFilter(null);
                     }
                 }
             }

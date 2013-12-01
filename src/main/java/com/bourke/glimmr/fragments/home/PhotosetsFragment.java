@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -13,8 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import com.androidquery.AQuery;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
@@ -31,6 +37,7 @@ import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photosets.Photosets;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +91,7 @@ public class PhotosetsFragment extends BaseFragment
         }
 
         mLayoutNoConnection =
-            (LinearLayout) mLayout.findViewById(R.id.no_connection_layout);
-        mAq = new AQuery(mActivity, mLayout);
+                mLayout.findViewById(R.id.no_connection_layout);
 
         initAdapterView();
 
@@ -242,25 +248,15 @@ public class PhotosetsFragment extends BaseFragment
 
             final Photoset photoset = mPhotosets.get(position);
 
-            /* Don't load image if flinging past it */
-            if (mAq.shouldDelay(position, convertView, parent,
-                        photoset.getPrimaryPhoto().getMediumUrl())) {
-                Bitmap placeholder = mAq.getCachedImage(R.drawable.blank);
-                mAq.id(holder.imageItem).image(placeholder);
-                holder.imageOverlay.setVisibility(View.INVISIBLE);
-            } else {
-                /* Fetch the set cover photo */
-                holder.imageOverlay.setVisibility(View.VISIBLE);
-                mAq.id(holder.imageItem).image(
-                        photoset.getPrimaryPhoto().getMediumUrl(),
-                        Constants.USE_MEMORY_CACHE, Constants.USE_FILE_CACHE,
-                        0, 0, null, AQuery.FADE_IN_NETWORK);
+            /* Fetch the set cover photo */
+            Picasso.with(mActivity).load(photoset.getPrimaryPhoto().getMediumUrl())
+                    .into(holder.imageItem);
 
-                holder.photosetNameText.setText(
-                        photoset.getTitle().toUpperCase(Locale.getDefault()));
-                holder.numImagesInSetText.setText(
-                        ""+photoset.getPhotoCount());
-            }
+            holder.photosetNameText.setText(
+                    photoset.getTitle().toUpperCase(Locale.getDefault()));
+            holder.numImagesInSetText.setText(
+                    ""+photoset.getPhotoCount());
+
             return convertView;
         }
 

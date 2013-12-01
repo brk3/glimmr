@@ -1,5 +1,7 @@
 package com.bourke.glimmr.event;
 
+import android.graphics.Bitmap;
+
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -110,5 +112,9 @@ public class Events {
 
     public interface IProfileIdReadyListener {
         public void onProfileIdReady(String profileId, Exception e);
+    }
+
+    public interface IPhotoDownloadedListener {
+        public void onPhotoDownloaded(Bitmap bitmap, Exception e);
     }
 }

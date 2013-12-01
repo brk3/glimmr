@@ -1,6 +1,5 @@
 package com.bourke.glimmr.appwidget;
 
-import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -9,11 +8,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
+
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.common.Constants;
 
-@TargetApi(11)
 public class StackWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "Glimmr/StackWidgetProvider";
@@ -80,7 +79,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
                     R.layout.stackview_widget_layout);
             rv.setEmptyView(R.id.stack_view, R.id.empty_view);
 
-            rv.setRemoteAdapter(appWidgetId, R.id.stack_view, intent);
+            rv.setRemoteAdapter(R.id.stack_view, intent);
 
             /* Intent for clicking on an item */
             Intent photoViewerIntent = new Intent(context,
