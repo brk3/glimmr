@@ -12,7 +12,7 @@
             android:layout_height="fill_parent" />
 
     <fragment
-            android:name="com.bourke.glimmr.fragments.upload.PhotoUploadFragment"
+            android:name="com.bourke.glimmrpro.fragments.upload.PhotoUploadFragment"
             android:id="@+id/photoUploadFragment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
