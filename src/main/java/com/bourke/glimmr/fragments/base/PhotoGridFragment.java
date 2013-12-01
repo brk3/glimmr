@@ -139,7 +139,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         SparseBooleanArray checkArray = mGridView.getCheckedItemPositions();
         for (int i=0; i < checkArray.size(); i++) {
             if (checkArray.valueAt(i)) {
-                ret.add(mPhotos.get(i));
+                ret.add(mPhotos.get(checkArray.keyAt(i)));
             }
         }
         if (Constants.DEBUG) Log.d(TAG, "getSelectedPhotos: " + ret.size());
@@ -153,23 +153,17 @@ public abstract class PhotoGridFragment extends BaseFragment
         mGridView.setAdapter(mAdapter);
         mGridView.setChoiceMode(getGridChoiceMode());
 
-        mGridView.setOnItemClickListener(
-                new GridView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new GridView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                    int position, long id) {
-                if (mGridView.getChoiceMode() ==
-                        ListView.CHOICE_MODE_MULTIPLE) {
-                    SparseBooleanArray checkArray =
-                        mGridView.getCheckedItemPositions();
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                if (mGridView.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE) {
+                    SparseBooleanArray checkArray = mGridView.getCheckedItemPositions();
                     if (checkArray != null) {
-                        BusProvider.getInstance().post(
-                            new PhotoGridItemClickedEvent(
+                        BusProvider.getInstance().post(new PhotoGridItemClickedEvent(
                                 checkArray.get(position)));
                     }
                 } else {
-                    PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos,
-                        position);
+                    PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos, position);
                 }
                 mGridView.invalidateViews();
             }
