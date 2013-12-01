@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
-import com.androidquery.AQuery;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.common.Constants;
@@ -40,7 +39,6 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
     protected OAuth mOAuth;
 
     protected ActionBar mActionBar;
-    protected AQuery mAq;
     protected ViewGroup mLayout;
     protected TextUtils mTextUtils;
     protected SharedPreferences mDefaultSharedPrefs;
@@ -55,7 +53,6 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
         mActivity = (BaseActivity) getActivity();
         mActionBar = mActivity.getActionBar();
         mTextUtils = new TextUtils(mActivity.getAssets());
-        mAq = new AQuery(mActivity);
         mDefaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
 
         setRetainInstance(shouldRetainInstance());

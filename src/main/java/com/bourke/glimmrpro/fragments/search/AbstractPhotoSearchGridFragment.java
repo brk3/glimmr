@@ -2,8 +2,13 @@ package com.bourke.glimmrpro.fragments.search;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.*;
-import android.widget.RelativeLayout;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmrpro.fragments.base.PhotoGridFragment;
@@ -60,8 +65,7 @@ public abstract class AbstractPhotoSearchGridFragment extends PhotoGridFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        mNoResultsLayout = (RelativeLayout)
-            mLayout.findViewById(R.id.no_search_results_layout);
+        mNoResultsLayout = mLayout.findViewById(R.id.no_search_results_layout);
         return mLayout;
     }
 

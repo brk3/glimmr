@@ -11,15 +11,15 @@ import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxCallback;
-import com.androidquery.callback.AjaxStatus;
+
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.PhotoViewerActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GsonHelper;
+import com.bourke.glimmrpro.event.Events;
 import com.bourke.glimmrpro.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
+import com.bourke.glimmrpro.tasks.DownloadPhotoTask;
 import com.bourke.glimmrpro.tasks.LoadFlickrActivityTask;
 import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
@@ -165,17 +165,14 @@ public class ActivityNotificationHandler
         new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
             @Override
             public void onPhotoInfoReady(final Photo photo, Exception e) {
-                /* fetch the photo bitmap to be shown in the notication */
+                /* fetch the photo bitmap to be shown in the notification */
                 String url = photo.getMediumUrl();
-                new AQuery(mContext).ajax(url, Bitmap.class,
-                        new AjaxCallback<Bitmap>() {
+                new DownloadPhotoTask(mContext, new Events.IPhotoDownloadedListener() {
                     @Override
-                    public void callback(final String url, final Bitmap bitmap,
-                            final AjaxStatus status) {
-                        /* we now have enough info to show the notification */
+                    public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
                         onItemPhotoReady(item, photo, bitmap, eventOffset);
                     }
-                });
+                }, url).execute();
             }
         }, item.getId(), item.getSecret()).execute(mOAuth);
     }

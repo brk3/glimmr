@@ -5,7 +5,7 @@ Release Checklist
 Release Workflow
 ================
 ```
-    bash scripts/update_pro_branch.sh
+    scripts/update_pro_branch.sh
     mvn release:clean release:prepare release:perform
     # Now manually bump versionCode and versionName in AndroidManifest.xml
     # (maven bumps them as part of release but doesn't retain the changes)

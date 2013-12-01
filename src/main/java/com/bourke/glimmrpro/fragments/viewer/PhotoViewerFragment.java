@@ -17,38 +17,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxStatus;
-import com.androidquery.callback.BitmapAjaxCallback;
-import com.androidquery.util.AQUtility;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.ProfileViewerActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
 import com.bourke.glimmrpro.event.BusProvider;
+import com.bourke.glimmrpro.event.Events;
 import com.bourke.glimmrpro.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmrpro.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmrpro.event.Events.IPhotoSizesReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.tasks.DownloadPhotoTask;
 import com.bourke.glimmrpro.tasks.LoadPhotoInfoTask;
 import com.bourke.glimmrpro.tasks.LoadPhotoSizesTask;
 import com.bourke.glimmrpro.tasks.SetFavoriteTask;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.Size;
 import com.squareup.otto.Subscribe;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -73,6 +70,8 @@ public final class PhotoViewerFragment extends BaseFragment
     private PhotoViewAttacher mAttacher;
     private TextView mTextViewTitle;
     private TextView mTextViewAuthor;
+    private ImageView mImageView;
+    private ProgressBar mProgress;
 
     /**
      * Returns a new instance of PhotoViewerFragment.
@@ -121,13 +120,13 @@ public final class PhotoViewerFragment extends BaseFragment
         if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
-        ImageView mImageView = (ImageView) mLayout.findViewById(R.id.image);
         mVideoButton = (ImageView) mLayout.findViewById(
                 R.id.play_video_overlay);
+        mImageView = (ImageView) mLayout.findViewById(R.id.image);
         mAttacher = new PhotoViewAttacher(mImageView);
         mTextViewTitle = (TextView) mLayout.findViewById(R.id.textViewTitle);
         mTextViewAuthor = (TextView) mLayout.findViewById(R.id.textViewAuthor);
-        mAq = new AQuery(mActivity, mLayout);
+        mProgress = (ProgressBar) mLayout.findViewById(R.id.progress);
 
         mAttacher.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
@@ -169,11 +168,6 @@ public final class PhotoViewerFragment extends BaseFragment
         shareActionProvider.setShareHistoryFileName(
                 ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
         shareActionProvider.setShareIntent(createShareIntent());
-
-        /* configure the wallpaper button */
-        if (Constants.PRO_VERSION) {
-            mWallpaperButton.setVisible(true);
-        }
     }
 
     /**
@@ -199,7 +193,7 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     /* NOTE: duplicate onOptionsItemSelected here and in parent activity, see
-     * comments in photoviweer_activity_menu.xml */
+     * comments in photoviewer_activity_menu.xml */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -227,40 +221,44 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     private void onWallpaperButtonClick() {
+        Toast.makeText(mActivity, mActivity.getString(R.string.setting_wallpaper),
+                Toast.LENGTH_SHORT).show();
         if (mBasePhoto != null) {
-            File imageFile = mAq.getCachedFile(mBasePhoto.getLargeUrl());
-            if (imageFile != null) {
-                InputStream is;
-                try {
-                    is = new FileInputStream(imageFile);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    return;
+            String url = getLargestUrlAvailable(mBasePhoto);
+            new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
+                @Override
+                public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
+                    if (e == null) {
+                        WallpaperManager wallpaperManager = WallpaperManager.getInstance(mActivity);
+                        try {
+                            wallpaperManager.setBitmap(bitmap);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    } else {
+                        Log.e(TAG, "Error setting wallpaper");
+                        e.printStackTrace();
+                    }
                 }
-                WallpaperManager wallpaperManager =
-                        WallpaperManager.getInstance(mActivity);
-                try {
-                    wallpaperManager.setStream(is);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                }
-                Toast.makeText(mActivity,
-                        mActivity.getString(R.string.setting_wallpaper),
-                        Toast.LENGTH_SHORT).show();
-            }
+            }, url).execute();
         }
     }
 
-
     private void saveImageToExternalStorage() {
         String url = getLargestUrlAvailable(mBasePhoto);
-        File file = mAq.makeSharedFile(url, mBasePhoto.getTitle() + ".jpg");
-        if (file != null) {
-            createExternalStoragePublicPicture(file);
-        } else {
-            Log.e(TAG, "Couldn't save image, makeSharedFile returned null");
-        }
+        new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
+            @Override
+            public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
+                String filename = mBasePhoto.getTitle() + ".jpg";
+                if (e == null && createExternalStoragePublicPicture(bitmap, filename) != null) {
+                    Toast.makeText(mActivity, getString(R.string.image_saved), Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(mActivity, getString(R.string.storage_error), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        }, url).execute();
     }
 
     public void onFavoriteButtonClick() {
@@ -415,16 +413,18 @@ public final class PhotoViewerFragment extends BaseFragment
         /* Fetch the main image */
         if (mBasePhoto != null) {
             String urlToFetch = getLargestUrlAvailable(mBasePhoto);
-            mAq.id(R.id.image).progress(R.id.progress).image(
-                    urlToFetch, Constants.USE_MEMORY_CACHE,
-                    Constants.USE_FILE_CACHE, 0, 0, new BitmapAjaxCallback(){
-                        @Override
-                        public void callback(String url, ImageView iv,
-                                Bitmap bm, AjaxStatus status) {
-                            iv.setImageBitmap(bm);
-                            mAttacher.update();
-                        }
-                    });
+            Picasso.with(mActivity).load(urlToFetch).into(mImageView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    mAttacher.update();
+                    mProgress.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
 
             /* Set the photo title and author text.  If sw600dp then the parent
              * activity will handle adding them to the actionbar instead */
@@ -476,20 +476,19 @@ public final class PhotoViewerFragment extends BaseFragment
 
     /**
      * Save an image to external storage.
+     * Returns full path on success or null on failure.
      *
      * http://developer.android.com/reference/android/os/Environment.html
      */
-    private void createExternalStoragePublicPicture(File image) {
-        File path = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File file = new File(path, image.getName());
+    private File createExternalStoragePublicPicture(Bitmap bitmap, String filename) {
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File file = new File(path, filename);
         try {
             path.mkdirs();
 
-            /* copy the file from cache to external storage */
-            InputStream fis = new FileInputStream(image);
-            OutputStream fos = new FileOutputStream(file);
-            AQUtility.copy(fis, fos);
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.close();
 
             /* Tell the media scanner about the new file so that it is
              * immediately available to the user. */
@@ -502,15 +501,14 @@ public final class PhotoViewerFragment extends BaseFragment
                         }
                     });
 
-            Toast.makeText(mActivity, getString(R.string.image_saved),
-                    Toast.LENGTH_SHORT).show();
+            return file;
         } catch (IOException e) {
             /* Unable to create file, likely because external storage is not
              * currently mounted. */
             Log.e("ExternalStorage", "Error writing " + file, e);
-            Toast.makeText(mActivity, getString(R.string.storage_error),
-                    Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override

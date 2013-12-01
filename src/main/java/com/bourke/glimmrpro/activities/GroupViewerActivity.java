@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import com.androidquery.AQuery;
+
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.FlickrHelper;
@@ -19,6 +19,7 @@ import com.bourke.glimmrpro.tasks.LoadGroupIdTask;
 import com.bourke.glimmrpro.tasks.LoadGroupInfoTask;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.groups.Group;
+import com.squareup.picasso.Picasso;
 
 public class GroupViewerActivity extends BottomOverlayActivity
         implements Events.IGroupInfoReadyListener {
@@ -124,9 +125,7 @@ public class GroupViewerActivity extends BottomOverlayActivity
     protected void updateBottomOverlay() {
         mBottomOverlayView.setVisibility(View.VISIBLE);
         mBottomOverlayPrimaryText.setText(mGroup.getName());
-        mAq.id(R.id.overlayImage).image(
-                mGroup.getBuddyIconUrl(), Constants.USE_MEMORY_CACHE,
-                Constants.USE_FILE_CACHE, 0, 0, null, AQuery.FADE_IN_NETWORK);
+        Picasso.with(this).load(mGroup.getBuddyIconUrl()).into(mOverlayImage);
     }
 
     @Override

@@ -23,9 +23,6 @@ import android.view.Window;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.BitmapAjaxCallback;
-import com.androidquery.util.AQUtility;
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.GlimmrAbCustomTitle;
@@ -55,7 +52,6 @@ public abstract class BaseActivity extends FragmentActivity {
      */
     protected User mUser;
 
-    protected AQuery mAq;
     protected ActionBar mActionBar;
     protected TextUtils mTextUtils;
 
@@ -89,16 +85,6 @@ public abstract class BaseActivity extends FragmentActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         if (isTaskRoot()) {
-            /* Tune the aquery cache */
-            BitmapAjaxCallback.setCacheLimit(Constants.IMAGE_CACHE_LIMIT);
-            BitmapAjaxCallback.setMaxPixelLimit(Constants.MEM_CACHE_PX_SIZE);
-            if (Constants.DEBUG) {
-                Log.d(getLogTag(), "IMAGE_CACHE_LIMIT: " +
-                        Constants.IMAGE_CACHE_LIMIT);
-                Log.d(getLogTag(), "MEM_CACHE_PX_SIZE: " +
-                        Constants.MEM_CACHE_PX_SIZE);
-            }
-
             startTapeQueues();
         }
     }
@@ -125,11 +111,6 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (Constants.DEBUG) Log.d(getLogTag(), "onDestroy");
-        if (isTaskRoot()) {
-            if (Constants.DEBUG) Log.d(getLogTag(), "Trimming file cache");
-            AQUtility.cleanCacheAsync(this, Constants.CACHE_TRIM_TRIGGER_SIZE,
-                   Constants.CACHE_TRIM_TARGET_SIZE);
-        }
         Crouton.cancelAllCroutons();
     }
 
@@ -174,7 +155,7 @@ public abstract class BaseActivity extends FragmentActivity {
                             LocalPhotosActivity.class);
                     startActivity(localPhotosActivity);
                 } else {
-                    new BuyProDialog().show(this);
+                    BuyProDialog.show(this);
                 }
                 return true;
 
@@ -184,14 +165,6 @@ public abstract class BaseActivity extends FragmentActivity {
 
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onLowMemory() {
-        if (Constants.DEBUG) {
-            Log.d(getLogTag(), "onLowMemory: clearing mem cache");
-        }
-        BitmapAjaxCallback.clearCache();
     }
 
     @Override
@@ -254,9 +227,10 @@ public abstract class BaseActivity extends FragmentActivity {
             String versionString = String.format("Version: %s", getAppVersion());
             message.setText(versionString + "\n\n" + aboutText);
             message.setTextSize(16);
-            message.setPadding(10, 10, 10, 10);
             Linkify.addLinks(message, Linkify.ALL);
-            builder.setView(message, 5, 5, 5, 5);
+            int padding = (int) getActivity().getResources()
+                    .getDimension(R.dimen.dialog_message_padding);
+            builder.setView(message, padding, padding, padding, padding);
 
             /* set buttons (only add the "go pro" button to free version) */
             if (mPackageInfo != null && !mPackageInfo.packageName.contains("glimmrpro")) {

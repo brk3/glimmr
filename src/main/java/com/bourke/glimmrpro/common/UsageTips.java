@@ -4,21 +4,22 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 public class UsageTips {
 
-    public static final String TAG = "Glimmr/UsageTips";
+    private static final String TAG = "Glimmr/UsageTips";
 
     private static final UsageTips SINGLETON = new UsageTips();
     private UsageTips() {
     }
 
-    private static Set<String> mShownTips = new HashSet<String>();
+    private static final Set<String> mShownTips = new HashSet<String>();
 
     public static UsageTips getInstance() {
         return SINGLETON;
@@ -31,7 +32,7 @@ public class UsageTips {
      * @param tip
      * @param force
      */
-    public static void show(Activity activity, String tip, boolean force) {
+    public void show(Activity activity, String tip, boolean force) {
         SharedPreferences defaultSharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(activity);
         boolean enable = defaultSharedPrefs.getBoolean(Constants.KEY_ENABLE_USAGE_TIPS, false);

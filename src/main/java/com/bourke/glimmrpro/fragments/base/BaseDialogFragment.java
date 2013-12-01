@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.ViewGroup;
-import com.androidquery.AQuery;
+
 import com.bourke.glimmrpro.activities.BaseActivity;
 import com.bourke.glimmrpro.common.Constants;
 import com.bourke.glimmrpro.common.OAuthUtils;
@@ -22,7 +22,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
      */
     protected OAuth mOAuth;
 
-    protected AQuery mAq;
     protected ViewGroup mLayout;
     protected TextUtils mTextUtils;
 
@@ -34,7 +33,11 @@ public abstract class BaseDialogFragment extends DialogFragment {
         mActivity = (BaseActivity) getActivity();
         mTextUtils = new TextUtils(mActivity.getAssets());
         mOAuth = OAuthUtils.loadAccessToken(mActivity);
+
         setRetainInstance(true);
+        
+        /* prevents parent from losing it's menu items */
+        setHasOptionsMenu(true);
     }
 
     @Override

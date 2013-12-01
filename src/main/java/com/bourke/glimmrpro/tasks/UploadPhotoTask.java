@@ -29,8 +29,8 @@ public class UploadPhotoTask implements Task<ITaskQueueServiceListener> {
     private static final String FLICKR_UNKNOWN_FILETYPE = "5";
     private static final String FLICKR_UPLOAD_LIMIT_REACHED = "6";
 
-    private LocalPhotosGridFragment.LocalPhoto mPhoto;
-    private UploadMetaData mMetadata;
+    private final LocalPhotosGridFragment.LocalPhoto mPhoto;
+    private final UploadMetaData mMetadata;
     private final OAuth mOAuth;
 
     public UploadPhotoTask(OAuth oauth, LocalPhotosGridFragment.LocalPhoto photo) {

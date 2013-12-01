@@ -9,8 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
-import com.androidquery.AQuery;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.ProfileViewerActivity;
 import com.bourke.glimmrpro.common.Constants;
@@ -19,33 +26,30 @@ import com.bourke.glimmrpro.common.GsonHelper;
 import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.ICommentAddedListener;
 import com.bourke.glimmrpro.event.Events.ICommentsReadyListener;
-import com.bourke.glimmrpro.event.Events.IUserReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseDialogFragment;
 import com.bourke.glimmrpro.tasks.AddCommentTask;
 import com.bourke.glimmrpro.tasks.LoadCommentsTask;
-import com.bourke.glimmrpro.tasks.LoadUserTask;
 import com.google.gson.Gson;
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
+import com.googlecode.flickrjandroid.util.UrlUtilities;
+import com.squareup.picasso.Picasso;
+
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public final class CommentsFragment extends BaseDialogFragment
-        implements ICommentsReadyListener, ICommentAddedListener,
-                   IUserReadyListener {
+        implements ICommentsReadyListener, ICommentAddedListener {
 
     private static final String TAG = "Glimmr/CommentsFragment";
 
-    private static final String KEY_PHOTO =
-            "com.bourke.glimmrpro.CommentsFragment.KEY_PHOTO";
+    private static final String KEY_PHOTO = "com.bourke.glimmrpro.CommentsFragment.KEY_PHOTO";
 
     private LoadCommentsTask mTask;
     private ArrayAdapter<Comment> mAdapter;
-    private final Map<String, UserItem> mUsers = Collections.synchronizedMap(
-            new HashMap<String, UserItem>());
-    private final List<LoadUserTask> mLoadUserTasks = new ArrayList<LoadUserTask>();
     private PrettyTime mPrettyTime;
     private ProgressBar mProgressBar;
     private ListView mListView;
@@ -87,9 +91,8 @@ public final class CommentsFragment extends BaseDialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (LinearLayout) inflater.inflate(
+        mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.comments_fragment, container, false);
-        mAq = new AQuery(mActivity, mLayout);
 
         ImageButton submitButton = (ImageButton)
                 mLayout.findViewById(R.id.submitButton);
@@ -100,17 +103,14 @@ public final class CommentsFragment extends BaseDialogFragment
             }
         });
 
-        mProgressBar =
-            (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
-        mProgressBar.setVisibility(View.VISIBLE);
-
+        mProgressBar = (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
         mListView = (ListView) mLayout.findViewById(R.id.list);
 
         /* Set title text to uppercase and roboto font */
         TextView titleText = (TextView) mLayout.findViewById(R.id.titleText);
         mTextUtils.setFont(titleText, TextUtils.FONT_ROBOTOREGULAR);
         String title = mActivity.getString(R.string.menu_view_comments);
-        titleText.setText(title.toUpperCase(Locale.getDefault()));
+        titleText.setText(title);
 
         return mLayout;
     }
@@ -156,21 +156,9 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onUserReady(User user, Exception e) {
-        if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
-            return;
-        }
-        if (user != null) {
-            mUsers.put(user.getId(), new UserItem(user, false));
-            mAdapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
     public void onCommentAdded(String commentId, Exception e) {
         if (Constants.DEBUG) {
-            Log.d(getLogTag(), "Sucessfully added comment with id: " +
-                    commentId);
+            Log.d(getLogTag(), "Sucessfully added comment with id: " + commentId);
         }
         startTask();
     }
@@ -187,16 +175,14 @@ public final class CommentsFragment extends BaseDialogFragment
             return;
         }
         if (Constants.DEBUG) {
-            Log.d(getLogTag(), "onCommentsReady, comments.size(): "
-                + comments.size());
+            Log.d(getLogTag(), "onCommentsReady, comments.size(): " + comments.size());
         }
 
-        mAdapter = new ArrayAdapter<Comment>(mActivity,
-                R.layout.comment_list_row, (ArrayList<Comment>) comments) {
+        mAdapter = new ArrayAdapter<Comment>(mActivity, R.layout.comment_list_row,
+                (ArrayList<Comment>) comments) {
             @Override
-            public View getView(final int position, View convertView,
-                    ViewGroup parent) {
-                ViewHolder holder;
+            public View getView(final int position, View convertView, ViewGroup parent) {
+                final ViewHolder holder;
 
                 if (convertView == null) {
                     convertView = mActivity.getLayoutInflater().inflate(
@@ -226,39 +212,23 @@ public final class CommentsFragment extends BaseDialogFragment
                 }
                 holder.textViewCommentDate.setText(pTime);
 
-                holder.textViewCommentText.setText(
-                    Html.fromHtml(comment.getText()));
+                holder.textViewCommentText.setText(Html.fromHtml(comment.getText()));
 
-                final UserItem author = mUsers.get(comment.getAuthor());
-                if (author == null) {
-                    mUsers.put(comment.getAuthor(), new UserItem(null, true));
-                    LoadUserTask loadUserTask = new LoadUserTask(mActivity,
-                            CommentsFragment.this, comment.getAuthor());
-                    loadUserTask.execute(mOAuth);
-                    mLoadUserTasks.add(loadUserTask);
-                } else {
-                    if (!author.isLoading) {
-                        mAq.id(holder.imageViewUserIcon).image(
-                                author.user.getBuddyIconUrl(),
-                                Constants.USE_MEMORY_CACHE,
-                                Constants.USE_FILE_CACHE, 0, 0, null,
-                                AQuery.FADE_IN_NETWORK);
-                        holder.imageViewUserIcon.setOnClickListener(
-                                new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent profileViewer = new Intent(mActivity,
-                                        ProfileViewerActivity.class);
-                                profileViewer.putExtra(
-                                        ProfileViewerActivity.KEY_PROFILE_ID,
-                                        author.user.getId());
-                                profileViewer.setAction(
-                                        ProfileViewerActivity.ACTION_VIEW_USER_BY_ID);
-                                startActivity(profileViewer);
-                            }
-                        });
-                    }
-                }
+                String authorIcon = UrlUtilities.createBuddyIconUrl(comment.getIconFarm(),
+                        comment.getIconServer(), comment.getAuthor());
+                Picasso.with(mActivity).load(authorIcon).into(holder.imageViewUserIcon);
+                    holder.imageViewUserIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent profileViewer = new Intent(mActivity,
+                                    ProfileViewerActivity.class);
+                            profileViewer.putExtra(
+                                    ProfileViewerActivity.KEY_PROFILE_ID, comment.getAuthor());
+                            profileViewer.setAction(
+                                    ProfileViewerActivity.ACTION_VIEW_USER_BY_ID);
+                            startActivity(profileViewer);
+                        }
+                    });
                 return convertView;
             }
         };
@@ -284,15 +254,5 @@ public final class CommentsFragment extends BaseDialogFragment
         TextView textViewCommentDate;
         TextView textViewCommentText;
         ImageView imageViewUserIcon;
-    }
-
-    class UserItem {
-        public final User user;
-        public boolean isLoading = true;
-
-        public UserItem(User user, boolean isLoading) {
-            this.user = user;
-            this.isLoading = isLoading;
-        }
     }
 }

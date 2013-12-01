@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bourke.glimmrpro.R;
 import com.bourke.glimmrpro.activities.MainActivity;
 import com.bourke.glimmrpro.common.Constants;
@@ -22,10 +23,12 @@ import com.bourke.glimmrpro.common.TextUtils;
 import com.bourke.glimmrpro.event.Events.IAccessTokenReadyListener;
 import com.bourke.glimmrpro.event.Events.IRequestTokenReadyListener;
 import com.bourke.glimmrpro.fragments.base.BaseFragment;
+import com.bourke.glimmrpro.fragments.dialogs.LoginErrorDialog;
 import com.bourke.glimmrpro.tasks.GetRequestToken;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
+
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 /**
@@ -94,6 +97,10 @@ public final class LoginFragment extends BaseFragment
 
     @Override
     public void onAccessTokenReady(OAuth accessToken) {
+        if (accessToken == null) {
+            LoginErrorDialog.show(mActivity);
+            return;
+        }
         persistAccessToken(accessToken);
         if (Constants.DEBUG) {
             Log.d(TAG, "Got token, saved to disk, good to start MainActivity");
