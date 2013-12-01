@@ -33,7 +33,11 @@ public abstract class BaseDialogFragment extends DialogFragment {
         mActivity = (BaseActivity) getActivity();
         mTextUtils = new TextUtils(mActivity.getAssets());
         mOAuth = OAuthUtils.loadAccessToken(mActivity);
+
         setRetainInstance(true);
+        
+        /* prevents parent from losing it's menu items */
+        setHasOptionsMenu(true);
     }
 
     @Override

@@ -36,7 +36,6 @@ public class PhotoInfoFragment extends BaseDialogFragment {
         super.onCreate(savedInstanceState);
         CONTENT = new String[] { "Overview", "More" };
         setStyle(STYLE_NO_TITLE, 0);
-        setHasOptionsMenu(true);
     }
 
     @Override
