@@ -12,9 +12,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,7 +91,7 @@ public final class CommentsFragment extends BaseDialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (LinearLayout) inflater.inflate(
+        mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.comments_fragment, container, false);
 
         ImageButton submitButton = (ImageButton)
@@ -104,15 +104,13 @@ public final class CommentsFragment extends BaseDialogFragment
         });
 
         mProgressBar = (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
-        mProgressBar.setVisibility(View.VISIBLE);
-
         mListView = (ListView) mLayout.findViewById(R.id.list);
 
         /* Set title text to uppercase and roboto font */
         TextView titleText = (TextView) mLayout.findViewById(R.id.titleText);
         mTextUtils.setFont(titleText, TextUtils.FONT_ROBOTOREGULAR);
         String title = mActivity.getString(R.string.menu_view_comments);
-        titleText.setText(title.toUpperCase(Locale.getDefault()));
+        titleText.setText(title);
 
         return mLayout;
     }
