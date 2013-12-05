@@ -62,8 +62,8 @@ public class Constants {
 
     /* Tape managed task queues */
     public static final String PHOTOSET_QUEUE = "photoset_task_queue.json";
-    public static final String GROUP_QUEUE = "photoset_task_queue.json";
-    public static final String UPLOAD_QUEUE = "photoset_task_queue.json";
+    public static final String GROUP_QUEUE = "group_task_queue.json";
+    public static final String UPLOAD_QUEUE = "upload_task_queue.json";
 
     public static final String PRO_MARKET_LINK =
         "market://details?id=com.bourke.glimmrpro";
