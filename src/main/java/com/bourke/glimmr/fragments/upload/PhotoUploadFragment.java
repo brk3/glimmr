@@ -133,9 +133,10 @@ public class PhotoUploadFragment extends BaseFragment {
         StringBuilder tagDisplay = new StringBuilder();
         for (String tag : tags) {
             tagDisplay.append(tag);
+            tagDisplay.append(",");
         }
         if (tagDisplay.length() > 0) {
-            return tagDisplay.substring(0, tagDisplay.length()-2);
+            return tagDisplay.substring(0, tagDisplay.length() - 1);
         }
         return "";
     }
