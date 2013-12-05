@@ -2,6 +2,7 @@ package com.bourke.glimmr.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,7 +31,6 @@ import com.bourke.glimmr.tape.UploadPhotoTaskQueueService;
 import com.bourke.glimmr.tasks.UploadPhotoTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
 import com.squareup.tape.TaskQueue;
 
 import java.lang.reflect.Type;
@@ -192,7 +192,7 @@ public class PhotoUploadActivity extends BaseActivity {
             image.setLayoutParams(layoutParams);
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            Picasso.with(getActivity()).load(mImageUri).into(image);
+            image.setImageBitmap(BitmapFactory.decodeFile(mImageUri));
 
             LinearLayout layout = new LinearLayout(getActivity());
             layout.addView(image);
