@@ -1,52 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Loco xml export: Android string resources
+ Project: Glimmr
+ Release: Working copy
+ Locale: de_DE, German
+ Exported by: Paul Bourke
+ Exported at: Sat, 14 Dec 2013 15:56:32 +0000
+-->
 <resources>
-    <string name="activity">Aktivität</string>
     <string name="about">Über</string>
     <string name="about_text">Danke, dass Sie Glimmr unterstützen!\n\nFolgen Sie mir:http://twitter.com/brk3\nKontakt: pauldbourke@gmail.com\n\nÜbersetzer:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
+    <string name="activity">Aktivität</string>
+    <string name="add">Add</string>
+    <string name="add_description_hint">Tap to add a description</string>
+    <string name="add_photos">Add photos</string>
+    <string name="add_remove_sets_hint">Tap to add/remove sets</string>
+    <string name="add_remove_tags_hint">Tap to add/remove tags (comma separated)</string>
+    <string name="add_tags_tip">Tip: separate each tag with a comma</string>
+    <string name="add_title_hint">Tap to add a title</string>
+    <string name="add_to_sets">Add To Sets</string>
+    <string name="added_a_comment">added a comment</string>
     <string name="aperture">BLENDE</string>
     <string name="app_name">Glimmr</string>
+    <string name="basic_info">Basic Info</string>
+    <string name="browse">browse</string>
+    <string name="buy_pro_2">I\'m Paul, the creator of Glimmr.\n\nRight now this feature is reserved for pro users, as a means of me making a few bucks off my hobby.\n\nHelp support me in making the best Flickr app possible, and in return, you\'ll get:\n\n ★ Ability to upload photos through Glimmr\n ★ Higher quality thumbnails\n ★ Email support from myself\n \n Thank you.</string>
     <string name="by">von</string>
+    <string name="cb_enable_activity_notifications_summary">Notify about activity on your photos</string>
+    <string name="cb_enable_activity_notifications_title">Flickr Activity</string>
+    <string name="cb_enable_contacts_notifications_summary">Benachrichtigen, sobald Kontakte neue Fotos hochladen</string>
+    <string name="cb_enable_contacts_notifications_title">Uploads von Kontakten</string>
+    <string name="cb_enable_notifications_title">Benachrichtigungen aktivieren</string>
+    <string name="cb_high_quality_thumbnails_summary">Looks better, but may be slower</string>
+    <string name="cb_high_quality_thumbnails_title">High Quality Thumbnails (Pro Only)</string>
+    <string name="cb_show_usage_tips_summary">Show tips about how to use Glimmr</string>
     <string name="comment_sent">Durchsuchen</string>
+    <string name="commented_on">commented on</string>
     <string name="contacts">Kontakte</string>
+    <string name="couldnt_load_video">Couldn\'t load this video, try again later?</string>
+    <string name="description">Description:</string>
     <string name="edit_text_hint">Kommentar hinzufügen…</string>
     <string name="exif_info">Exif Informationen</string>
     <string name="explore">Durchsuchen</string>
+    <string name="favorited">favorited</string>
     <string name="favorites">Favoriten</string>
+    <string name="flickr_unavailable">Flickr is down right now, please try again later!</string>
+    <string name="focal_length">Focal Length</string>
     <string name="four_hours">4 Stunden</string>
+    <string name="group_info_fetch_error">Problem fetching group.  Please try again.</string>
+    <string name="group_limit_reached">You\'ve reached the limit for this group.</string>
     <string name="groups">Gruppen</string>
+    <string name="hi">Hi!</string>
+    <string name="hmm">Hmm</string>
+    <string name="ill_try_again_later">Glimmr will try again later</string>
+    <string name="image_saved">Image saved to gallery!</string>
+    <string name="interestingness">Interestingness</string>
     <string name="iso">ISO</string>
     <string name="just_a_moment">Einen Moment…</string>
+    <string name="location">Location</string>
     <string name="logged_in">Angemeldet!</string>
     <string name="login">Einloggen</string>
+    <string name="login_error">We\'re having trouble logging you in at the moment.\n\nPlease try again later, if you still can\'t login, drop me a mail at pauldbourke@gmail.com</string>
+    <string name="login_later">You can login anytime from the menu!</string>
+    <string name="login_problem">Could not log in</string>
+    <string name="login_required">You need to login to do that!</string>
+    <string name="login_to_flickr">LOGIN TO FLICKR</string>
+    <string name="logout">Logout</string>
     <string name="menu_favorite">Als Favorit markieren</string>
     <string name="menu_preferences">Einstellungen</string>
     <string name="menu_refresh">Aktualisieren</string>
+    <string name="menu_search">Suche</string>
     <string name="menu_share">Freigeben</string>
     <string name="menu_view_comments">Kommentare</string>
     <string name="menu_view_exif">Exif-Infos anzeigen</string>
+    <string name="more">More</string>
+    <string name="most_recent">Most Recent</string>
+    <string name="my_photos">My Photos</string>
+    <string name="new_activity">New activity on your photo</string>
+    <string name="no_connection">Something went wrong.\nTry refreshing?</string>
+    <string name="no_exif_permission">The owner of the photo does not want to share EXIF data.</string>
+    <string name="no_photos">No photos available.\nClick to retry.</string>
     <string name="no_search_results">Keine Ergebnisse gefunden.</string>
+    <string name="none">None</string>
+    <string name="not_now">or, just browse some photos…</string>
     <string name="notification_contacts_content">Ihrer Kontakte.</string>
     <string name="notification_contacts_ticker">Deine Flickr Kontakte haben neue Fotos veröffentlicht</string>
     <string name="notification_contacts_title">Neue Fotos</string>
     <string name="once_a_day">Einmal täglich</string>
     <string name="one_hour">1 Stunde</string>
-    <string name="photoset">Fotoalbum</string>
+    <string name="people">People</string>
     <string name="photos">Fotos</string>
+    <string name="photos_uploaded">Photos Uploaded</string>
+    <string name="photos_will_be_added">Your photos will be added shortly!</string>
+    <string name="photoset">Fotoalbum</string>
+    <string name="play_store_description">\"Eine neue, schnelle, moderne und spaßige Flickr App für Android!\n\n* Wischen Sie sich durch Ihre Fotos und die Ihrer Kontakte.\n\n* Unterstützt Gruppen.\n\n* Kommentieren Sie Fotos und sehen Sie sich detaillierte Exif-Informationen an.\n\n* Und in Zukunft noch vieles mehr.\n\nDie Pro Version wird schneller neue Funktionen erhalten und es mir somit ermöglichen die beste Flickr App anzubieten.\n\nAusschlussklausel: Glimmr ist in keinster Weise an Yahoo oder Flickr angeschlossen.\"</string>
     <string name="please_wait">Bitte warten…</string>
     <string name="pool">Pool</string>
+    <string name="pref_category_general">General</string>
     <string name="pref_category_notifications">Benachrichtigungen</string>
-    <string name="cb_enable_contacts_notifications_title">Uploads von Kontakten</string>
-    <string name="cb_enable_contacts_notifications_summary">Benachrichtigen, sobald Kontakte neue Fotos hochladen</string>
-    <string name="cb_enable_notifications_title">Benachrichtigungen aktivieren</string>
+    <string name="pref_category_photoviewer">Photo Viewer</string>
     <string name="pref_notification_intervals_title">Synchronisationsintervall</string>
     <string name="pro_donate">Pro/Spenden</string>
-    <string name="menu_search">Suche</string>
+    <string name="public_photos">Public</string>
+    <string name="relevance">Relevance</string>
+    <string name="remaining">remaining</string>
+    <string name="retry">Retry</string>
+    <string name="save_image">Save Image</string>
+    <string name="search_hint">Search images and people</string>
+    <string name="set_initial_tab">Set Initial Tab</string>
+    <string name="set_location">Set Location</string>
+    <string name="set_location_tip">Tip: Touch and hold map to set location</string>
     <string name="set_preferences">Einstellungen</string>
+    <string name="set_wallpaper">Set Wallpaper</string>
     <string name="sets">Alben</string>
+    <string name="setting_wallpaper">Setting Wallpaper…</string>
+    <string name="show_usage_tips">Show Usage Tips</string>
     <string name="shutter">VERSCHLUSS</string>
+    <string name="slideshow">Slideshow</string>
+    <string name="slideshow_interval">Slideshow Interval (seconds)</string>
+    <string name="sort_by">Sort by</string>
+    <string name="storage_error">Problem accessing storage</string>
+    <string name="tags">Tags:</string>
+    <string name="tap_for_photostream">Tap to go to photostream</string>
     <string name="thirty_mins">30 Minuten</string>
+    <string name="timezone_message">Are your clock and timezone set correctly?</string>
+    <string name="tip_add_to_group">Tip: Tap and hold a group to add photos</string>
+    <string name="tip_add_to_set">Tip: Tap and hold a set to add photos</string>
+    <string name="tip_glimmr_pro">Tip: Get Glimmr Pro for high quality thumbnails and wallpapers</string>
+    <string name="tip_view_profile">Tip: Tap and hold an image to view author\'s profile</string>
+    <string name="title">Title:</string>
+    <string name="to">to</string>
     <string name="untitled">Unbenannt</string>
-    <string name="views">Ansichten</string>
+    <string name="upload">Upload</string>
+    <string name="upload_photos">Upload Photos</string>
+    <string name="upload_photos_tip">Tip: tap and hold photos to select for upload</string>
+    <string name="upload_problem">Problem uploading photos</string>
+    <string name="upload_tip">Tip: Swipe photo left and right to add info</string>
+    <string name="uploading_photos">Uploading %d photos to Flickr</string>
     <string name="view_profile">Profil Anzeigen</string>
+    <string name="views">Ansichten</string>
     <string name="welcome">Willkommen</string>
     <string name="you">Sie</string>
 </resources>

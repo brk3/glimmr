@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Loco xml export: Android string resources
+ Project: Glimmr
+ Release: Working copy
+ Locale: cs_CZ, Czech
+ Exported by: Paul Bourke
+ Exported at: Sat, 14 Dec 2013 15:56:32 +0000
+-->
+<resources>
+    <string name="about">O aplikaci</string>
+    <string name="about_text">\"Děkuji za podporu Glimmru!\n\nSledujte mě: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nPřeklad:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar \nThorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António \nCascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim \nBastiansen\n*Sébastien Croes\n*Giadrossi Filippo\"</string>
+    <string name="activity">Aktivita</string>
+    <string name="add">Add</string>
+    <string name="add_description_hint">Tap to add a description</string>
+    <string name="add_photos">Přidat fotky</string>
+    <string name="add_remove_sets_hint">Tap to add/remove sets</string>
+    <string name="add_remove_tags_hint">Tap to add/remove tags (comma separated)</string>
+    <string name="add_tags_tip">Tip: separate each tag with a comma</string>
+    <string name="add_title_hint">Tap to add a title</string>
+    <string name="add_to_sets">Add To Sets</string>
+    <string name="added_a_comment">přidal(a) komentář</string>
+    <string name="aperture">CLONA</string>
+    <string name="app_name">Glimmr</string>
+    <string name="basic_info">Basic Info</string>
+    <string name="browse">procházet</string>
+    <string name="buy_pro_2">I\'m Paul, the creator of Glimmr.\n\nRight now this feature is reserved for pro users, as a means of me making a few bucks off my hobby.\n\nHelp support me in making the best Flickr app possible, and in return, you\'ll get:\n\n ★ Ability to upload photos through Glimmr\n ★ Higher quality thumbnails\n ★ Email support from myself\n \n Thank you.</string>
+    <string name="by">od</string>
+    <string name="cb_enable_activity_notifications_summary">Upozornit na aktivitu u vašich fotek</string>
+    <string name="cb_enable_activity_notifications_title">Aktivita na Flickeru</string>
+    <string name="cb_enable_contacts_notifications_summary">Upozornit pokud váš kontakt nahraje nové fotky</string>
+    <string name="cb_enable_contacts_notifications_title">Nahrávky od kontaktů</string>
+    <string name="cb_enable_notifications_title">Zapnout upozornění</string>
+    <string name="cb_high_quality_thumbnails_summary">Looks better, but may be slower</string>
+    <string name="cb_high_quality_thumbnails_title">Náhledy ve vysoké kvlaitě</string>
+    <string name="cb_show_usage_tips_summary">Zobrazovat tipy jak používat Glimmr</string>
+    <string name="comment_sent">Komentář odeslán!</string>
+    <string name="commented_on">okomentoval(a)</string>
+    <string name="contacts">Kontakty</string>
+    <string name="couldnt_load_video">Video nebylo možné nahrát, zkusit později?</string>
+    <string name="description">Popis</string>
+    <string name="edit_text_hint">&lt;p&gt;&lt;span&gt;Přidat koment&amp;aacute;ř...&lt;/span&gt;&lt;/p&gt;</string>
+    <string name="exif_info">EXIF informace</string>
+    <string name="explore">Procházet</string>
+    <string name="favorited">si přidal(a) do oblíbených</string>
+    <string name="favorites">Oblíbené</string>
+    <string name="flickr_unavailable">Flickr is down right now, please try again later!</string>
+    <string name="focal_length">Ohnisková vzdálenost</string>
+    <string name="four_hours">4 hodiny</string>
+    <string name="group_info_fetch_error">Problém při načítání skupiny. Prosím zkuste znovu.</string>
+    <string name="group_limit_reached">Dosáhli jste limitu pro tuto skupinu.</string>
+    <string name="groups">Skupiny</string>
+    <string name="hi">Hi!</string>
+    <string name="hmm">Hmm</string>
+    <string name="ill_try_again_later">Glimmr will try again later</string>
+    <string name="image_saved">Image saved to gallery!</string>
+    <string name="interestingness">Podle zájmu</string>
+    <string name="iso">ISO</string>
+    <string name="just_a_moment">&lt;p&gt;&lt;span&gt;Chv&amp;iacute;li strpen&amp;iacute;...&lt;/span&gt;&lt;/p&gt;</string>
+    <string name="location">Location</string>
+    <string name="logged_in">Přihlášen!</string>
+    <string name="login">Přihlásit se</string>
+    <string name="login_error">We\'re having trouble logging you in at the moment.\n\nPlease try again later, if you still can\'t login, drop me a mail at pauldbourke@gmail.com</string>
+    <string name="login_later">Můžete se kdykoli přihlásit z nabídky aplikace!</string>
+    <string name="login_problem">Chyba v přihlašování.</string>
+    <string name="login_required">Pro tuto akci musíte být přihlášeni!</string>
+    <string name="login_to_flickr">PŘIHLÁSIT SE DO FLICKRu</string>
+    <string name="logout">Logout</string>
+    <string name="menu_favorite">Označit jako oblíbené</string>
+    <string name="menu_preferences">Předvolby</string>
+    <string name="menu_refresh">Obnovit</string>
+    <string name="menu_search">Hledat</string>
+    <string name="menu_share">Sdílet</string>
+    <string name="menu_view_comments">Komentáře</string>
+    <string name="menu_view_exif">Zobrazit EXIF informace</string>
+    <string name="more">More</string>
+    <string name="most_recent">Nedávné</string>
+    <string name="my_photos">Moje fotky</string>
+    <string name="new_activity">Nová aktivita u vaší fotky</string>
+    <string name="no_connection">Něco se pokazilo.\nZkuste obnovit.</string>
+    <string name="no_exif_permission">Majitel této fotky nesdílí EXIF informace.</string>
+    <string name="no_photos">Žádné fotky k dispozici.\nKlikněte pro návrat.</string>
+    <string name="no_search_results">Žádné výsledky nenalezeny.</string>
+    <string name="none">Nic</string>
+    <string name="not_now">&lt;p&gt;&lt;span&gt;nebo prostě proch&amp;aacute;zejte jin&amp;eacute; fotky...&lt;/span&gt;&lt;/p&gt;</string>
+    <string name="notification_contacts_content">od vašich kontaktů.</string>
+    <string name="notification_contacts_ticker">Někdo z vašich kontaktů zveřejnil nové fotky na Flickru</string>
+    <string name="notification_contacts_title">Nové fotky</string>
+    <string name="once_a_day">Jednou denně</string>
+    <string name="one_hour">1 hodina</string>
+    <string name="people">Lidé</string>
+    <string name="photos">Fotky</string>
+    <string name="photos_uploaded">Photos Uploaded</string>
+    <string name="photos_will_be_added">Vaše fotky budou brzy přidány!</string>
+    <string name="photoset">Fotoalbum</string>
+    <string name="play_store_description">\"&lt;b&gt; V poslední verzi prohlížeče Chrome se vyskytuje problém s přihlášením.  Prosím použijte jiný prohlížeč (např. Firefox), pokud se tyto potíže týkají i vás.&lt;/b&gt;\n\n*Nové!* Hlasujte pro nové funkce na http://glimmr.uservoice.com\n\nNová, zábavná, moderní a rychlá Flickr aplikace pro vaše telefony a tablety.\n\n\"\"Dělá prohlížení Flickeru opět zábavým\"\" - lifehacker.com\n\n* Velice jednoduše procházejte mezi svými fotkami i fotkami svých přátel a kontaktů táhnutím prstu.\n* Podpora skupin.\n* Widget pro Android 3.0 a novější.\n* Variabliní upozornění na aktivitu u vašich fotek.\n* Komentujte fotky a prohlížejte EXIF záznamy.\n* Žádné reklamy.\n\nPokud máte rádi Glimmr, zvažte zakoupení verze Pro:\n★ Umožňuje nastavit obrázky jako tapetu.\n★ Možnost zobrazit náhledy ve vysoké kvalitě (obzvláště hezké na velkých obrazovkách a tabletech)\n★ Podpora vývoje za cenu dvou piv :)\n\n** Překlad pro Glimmr je tak jednoduchý! Zašlete mi email, pokud máte zájem přeložit Glimmr do svého jazyka.\n\nUpozornění: Glimmr nemá žádný vztah k Yahoo nebo službě Flickr.\"</string>
+    <string name="please_wait">&lt;p&gt;&lt;span&gt;Čekejte pros&amp;iacute;m...&lt;/span&gt;&lt;/p&gt;</string>
+    <string name="pool">Skupina</string>
+    <string name="pref_category_general">Obecné (poue verze Pro)</string>
+    <string name="pref_category_notifications">Oznámení</string>
+    <string name="pref_category_photoviewer">Photo Viewer</string>
+    <string name="pref_notification_intervals_title">Interval synchronizace</string>
+    <string name="pro_donate">Pro/Darovat</string>
+    <string name="public_photos">Věřejné</string>
+    <string name="relevance">Relevantnost</string>
+    <string name="remaining">zbývá</string>
+    <string name="retry">Retry</string>
+    <string name="save_image">Save Image</string>
+    <string name="search_hint">Hledat obrázky a lidi</string>
+    <string name="set_initial_tab">Set Initial Tab</string>
+    <string name="set_location">Set Location</string>
+    <string name="set_location_tip">Tip: Touch and hold map to set location</string>
+    <string name="set_preferences">Nastavit předvolby</string>
+    <string name="set_wallpaper">Nastavit jako tapetu</string>
+    <string name="sets">Fotoalba</string>
+    <string name="setting_wallpaper">&lt;p&gt;&lt;span&gt;Nastavuji tapetu...&lt;/span&gt;&lt;/p&gt;</string>
+    <string name="show_usage_tips">Zobrazit tipy k používání</string>
+    <string name="shutter">ZÁVĚRKA</string>
+    <string name="slideshow">Slideshow</string>
+    <string name="slideshow_interval">Slideshow Interval (seconds)</string>
+    <string name="sort_by">Řadit podle</string>
+    <string name="storage_error">Problem accessing storage</string>
+    <string name="tags">Tagy</string>
+    <string name="tap_for_photostream">Tap to go to photostream</string>
+    <string name="thirty_mins">30 minut</string>
+    <string name="timezone_message">Máte správně nastavený čas a časovou zónu?</string>
+    <string name="tip_add_to_group">Tip: Klikněte a podržte skupinu pro přidání fotek</string>
+    <string name="tip_add_to_set">Tip: Klikněte a podržte album pro přidání fotek</string>
+    <string name="tip_glimmr_pro">Tip: Zakupte si Glimmr pro náhledy ve vysoké kvalitě a podporu tapet</string>
+    <string name="tip_view_profile">Tip: Klikněte a podržte obrázek pro zobrazení autorova porfilu</string>
+    <string name="title">Název:</string>
+    <string name="to">v</string>
+    <string name="untitled">Bez názvu</string>
+    <string name="upload">Upload</string>
+    <string name="upload_photos">Upload Photos</string>
+    <string name="upload_photos_tip">Tip: tap and hold photos to select for upload</string>
+    <string name="upload_problem">Problem uploading photos</string>
+    <string name="upload_tip">Tip: Swipe photo left and right to add info</string>
+    <string name="uploading_photos">Uploading %d photos to Flickr</string>
+    <string name="view_profile">Zobrazit profil</string>
+    <string name="views">Zobrazení</string>
+    <string name="welcome">Vítejte</string>
+    <string name="you">Vítejte</string>
+</resources>

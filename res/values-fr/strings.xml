@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Loco xml export: Android string resources
+ Project: Glimmr
+ Release: Working copy
+ Locale: fr_FR, French
+ Exported by: Paul Bourke
+ Exported at: Sat, 14 Dec 2013 15:56:32 +0000
+-->
+<resources>
+    <string name="about">A propos</string>
+    <string name="about_text">Merci de supporter Glimmr!\n\nSuivez moi : http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nTraducteurs:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
+    <string name="activity">Activité</string>
+    <string name="add">Ajouter</string>
+    <string name="add_description_hint">Taper pour ajouter une description</string>
+    <string name="add_photos">Ajouter des photos</string>
+    <string name="add_remove_sets_hint">Taper pour ajouter/supprimer des albums</string>
+    <string name="add_remove_tags_hint">Taper pour ajouter/supprimer des tags (séparés par une virgule)</string>
+    <string name="add_tags_tip">Astuce : séparer chaque tag par une virgule</string>
+    <string name="add_title_hint">Taper pour ajouter un titre</string>
+    <string name="add_to_sets">Ajouter aux albums</string>
+    <string name="added_a_comment">a ajouté un commentaire</string>
+    <string name="aperture">OUVERTURE</string>
+    <string name="app_name">Glimmr</string>
+    <string name="basic_info">Information de base</string>
+    <string name="browse">parcourir</string>
+    <string name="buy_pro_2">Je suis Paul, le créateur de Glimmr.\n\nActuellement, cette fonctionnalité est réservés aux utilisateur de la version PRO, qui est un moyen de me faire un peu d\'argent avec mon passe-temps.\n   M\'aider à faire la meilleure application Flickr possible, et en retour, vous aurez: \n\n ★ la possibilité de télécharger les photos avec Glimmr\n ★ des miniatures en haute qualité\n ★ assistance par courrier électronique\n\nMerci.\n</string>
+    <string name="by">par</string>
+    <string name="cb_enable_activity_notifications_summary">Notifier sur l\'activité sur vos photos</string>
+    <string name="cb_enable_activity_notifications_title">Activité Flickr</string>
+    <string name="cb_enable_contacts_notifications_summary">Notifier quand les contacts ajoutent de nouvelles photos</string>
+    <string name="cb_enable_contacts_notifications_title">Ajouts des contacts</string>
+    <string name="cb_enable_notifications_title">Activer les notifications</string>
+    <string name="cb_high_quality_thumbnails_summary">Meilleur rendu, mais peut être plus lent </string>
+    <string name="cb_high_quality_thumbnails_title">Miniatures en Haute Qualité</string>
+    <string name="cb_show_usage_tips_summary">Montrer des astuces sur comment utiliser Glimmr</string>
+    <string name="comment_sent">Commentaire envoyé !</string>
+    <string name="commented_on">a commenté</string>
+    <string name="contacts">Contacts</string>
+    <string name="couldnt_load_video">Impossible de charger la vidéo, essayer à nouveau plus tard ?</string>
+    <string name="description">Description :</string>
+    <string name="edit_text_hint">Ajouter votre commentaire…</string>
+    <string name="exif_info">Informations Exif</string>
+    <string name="explore">Explorer</string>
+    <string name="favorited">a ajouté en favori</string>
+    <string name="favorites">Favoris</string>
+    <string name="flickr_unavailable">Flickr est inacessible, essayer plus tard !</string>
+    <string name="focal_length">Longueur focale</string>
+    <string name="four_hours">4 heures</string>
+    <string name="group_info_fetch_error">Problème avec le groupe. Merci d\'essayer à nouveau.</string>
+    <string name="group_limit_reached">Vous avez atteint la limite de ce groupe.</string>
+    <string name="groups">Groupes</string>
+    <string name="hi">Salut !</string>
+    <string name="hmm">Humm</string>
+    <string name="ill_try_again_later">Glimmr essayera à nouveau plus tard</string>
+    <string name="image_saved">Image sauvegardée dans la gallerie !</string>
+    <string name="interestingness">Intéressant</string>
+    <string name="iso">ISO</string>
+    <string name="just_a_moment">Juste un moment…</string>
+    <string name="location">Localisation</string>
+    <string name="logged_in">Connecté !</string>
+    <string name="login">Connexion</string>
+    <string name="login_error">Nous rencontrons actuellement des problèmes à vous connecter.\n\nMerci d\'essayer plus tard, si vous ne pouvez vous connecter, envoyez un e-mail à pauldbourke@gmail.com</string>
+    <string name="login_later">Vous pouvez vous connecter à tout moment depuis le menu !</string>
+    <string name="login_problem">Impossible de se connecter</string>
+    <string name="login_required">Vous devez être connecté pour faire cela !</string>
+    <string name="login_to_flickr">CONNEXION A FLICKR</string>
+    <string name="logout">Déconnexion</string>
+    <string name="menu_favorite">Marquer comme Favori</string>
+    <string name="menu_preferences">Préférences</string>
+    <string name="menu_refresh">Rafraîchir</string>
+    <string name="menu_search">Rechercher</string>
+    <string name="menu_share">Partager</string>
+    <string name="menu_view_comments">Commentaires et Favoris</string>
+    <string name="menu_view_exif">Voir les informations Exif</string>
+    <string name="more">Plus</string>
+    <string name="most_recent">Le plus récent</string>
+    <string name="my_photos">Mes Photos</string>
+    <string name="new_activity">Nouvelle activité sur votre photo</string>
+    <string name="no_connection">Quelque chose ne tourne pas rond.\nEssayez de rafraîchir ?</string>
+    <string name="no_exif_permission">Le propriétaire de la photo ne souhaite pas partager les données EXIF</string>
+    <string name="no_photos">Pas de photos disponibles.\nCliquer pour réessayer.</string>
+    <string name="no_search_results">Pas de résultats trouvés.</string>
+    <string name="none">Aucun</string>
+    <string name="not_now">ou, parcourez simplement quelques photos…</string>
+    <string name="notification_contacts_content">de vos contacts</string>
+    <string name="notification_contacts_ticker">Vos contacts Flirck ont ajouté de nouvelles photos</string>
+    <string name="notification_contacts_title">Nouvelles photos</string>
+    <string name="once_a_day">Une fois par jour</string>
+    <string name="one_hour">1 heure</string>
+    <string name="people">Personnes</string>
+    <string name="photos">Photos</string>
+    <string name="photos_uploaded">Photos téléchargées</string>
+    <string name="photos_will_be_added">Vos photos vont être ajoutés sous peu !</string>
+    <string name="photoset">Album</string>
+    <string name="play_store_description">\"Une nouvelle, rapide, moderne et amusante application Flickr pour téléphones et tablettes Android.\n\n\"\"Makes Browsing Flickr on Your Phone Fun Again\"\" - lifehacker.com\n\n* Parcourez vos photos et celles de vos contacts en toute simplicité.\n* Support des groupes\n* Widget pour Android 3.0 et plus.\n* Riches notifications pour l\'activité sur vos photos.\n* Commenter des photos et visualisez les informations exif de façon détaillée.\n* Pas de pubs.\n\n★ La version Pro/Donate recevra de nouvelles fonctions plus rapidement, et m\'aider à me soutenir permettra de vous apporter une application Flickr la meilleure possible.\n\nDans la version pro :\n★ Définir les images comme papier-peint.\n★ Option pour utiliser des miniatures de haute qualité (intéressant sur tablettes et écrans larges)\n\n** Traduire Glimmr est facile! Envoyez-moi une email si vous le voulez dans votre langue.\n\nNote : Glimmr n\'est pas affilié à Yahoo ou Flickr.\"</string>
+    <string name="please_wait">Merci de patienter…</string>
+    <string name="pool">Pool</string>
+    <string name="pref_category_general">Général (Pro uniquement)</string>
+    <string name="pref_category_notifications">Notifications</string>
+    <string name="pref_category_photoviewer">Visualiseur Photos</string>
+    <string name="pref_notification_intervals_title">Intervalle de synchronisation</string>
+    <string name="pro_donate">Pro/Faire un don</string>
+    <string name="public_photos">Publique</string>
+    <string name="relevance">Pertinence</string>
+    <string name="remaining">restant</string>
+    <string name="retry">Réessayer</string>
+    <string name="save_image">Sauvegarder l\'image</string>
+    <string name="search_hint">Rechercher des images et des personnes</string>
+    <string name="set_initial_tab">Paraméter l\'onglet initial</string>
+    <string name="set_location">Définir la localisation</string>
+    <string name="set_location_tip">Astuce : Toucher et maintenir la carte pour définir une localisation</string>
+    <string name="set_preferences">Définir les préférences</string>
+    <string name="set_wallpaper">Choisir comme papier-peint</string>
+    <string name="sets">Albums</string>
+    <string name="setting_wallpaper">Choix du papier-peint en cours… </string>
+    <string name="show_usage_tips">Montrer des astuces sur l\'usage</string>
+    <string name="shutter">Obturateur</string>
+    <string name="slideshow">Diaporama</string>
+    <string name="slideshow_interval">Intervalle Diaporama (secondes)</string>
+    <string name="sort_by">Trier par</string>
+    <string name="storage_error">Problème d\'accès au stockage</string>
+    <string name="tags">Tags</string>
+    <string name="tap_for_photostream">Taper pour aller au photostream</string>
+    <string name="thirty_mins">30 minutes</string>
+    <string name="timezone_message">Votre horloge et votre fuseau horaires sont-ils bien définis ?</string>
+    <string name="tip_add_to_group">Astuce : taper et maintenir un groupe pour ajouter des photos</string>
+    <string name="tip_add_to_set">Astuce : taper et maintenir un album pour ajouter des photos</string>
+    <string name="tip_glimmr_pro">Astuce : Passer à Glimmr Pro pour des miniatures HQ et des papiers-peints</string>
+    <string name="tip_view_profile">Info : taper et maintenir l\'image pour visualiser le profil de l\'auteur</string>
+    <string name="title">Titre :</string>
+    <string name="to">sur</string>
+    <string name="untitled">Sans titre</string>
+    <string name="upload">Télécharger</string>
+    <string name="upload_photos">Télécharger des photos</string>
+    <string name="upload_photos_tip">Asutce : taper et maintenir des photos pour les sélectionner pour un téléchargement</string>
+    <string name="upload_problem">Problème de téléchargement des photos</string>
+    <string name="upload_tip">Astuce : Glisser la photo de gauche à droite pour ajouter de l\'information</string>
+    <string name="uploading_photos">Téléchargement %d des photos sur Flickr</string>
+    <string name="view_profile">Voir le profil</string>
+    <string name="views">Vues</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="you">Vous</string>
+</resources>

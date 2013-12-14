@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Loco xml export: Android string resources
+ Project: Glimmr
+ Release: Working copy
+ Locale: nl_NL, Dutch
+ Exported by: Paul Bourke
+ Exported at: Sat, 14 Dec 2013 15:56:32 +0000
+-->
+<resources>
+    <string name="about">Over</string>
+    <string name="about_text">Dank je wel voor het ondersteunen van Glimmr!\n\nVolg mij: http://twitter.com/brk3\nContact: pauldbourke@gmail.com\n\nVertalers:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
+    <string name="activity">Activiteit</string>
+    <string name="add">Toevoegen</string>
+    <string name="add_description_hint">Druk om een omschrijving toe te voegen</string>
+    <string name="add_photos">Voeg foto\'s toe</string>
+    <string name="add_remove_sets_hint">Druk om sets toe te voegen of verwijderen</string>
+    <string name="add_remove_tags_hint">Druk om tags toe te voegen of te verwijderen (komma gescheiden)</string>
+    <string name="add_tags_tip">Tip: Scheidt elke tag met een komma</string>
+    <string name="add_title_hint">Druk om een titel toe te voegen\n\n</string>
+    <string name="add_to_sets">Voeg toe aan sets</string>
+    <string name="added_a_comment">commentaar toegevoegd</string>
+    <string name="aperture">APERTURE</string>
+    <string name="app_name">Glimmr</string>
+    <string name="basic_info">Basis info</string>
+    <string name="browse">navigeren</string>
+    <string name="buy_pro_2">Ik ben Paul, de ontwikkelaar van Glimmr.\n\nOp dit moment is deze functie gereserveerd voor Pro gebruikers, zodat mijn hobby nog iets opbrengt.\n\nHelp mij te ondersteunen met het maken van de beste Flickr app die er is, and daarvoor in de plaats krijg je:\n\n*Mogelijkheid om foto\'s te uploaden via Glimmr\n*Hogere kwaliteit miniaturen\n*E-mail ondersteuning van mijzelf\n\nDank je.\n</string>
+    <string name="by">door</string>
+    <string name="cb_enable_activity_notifications_summary">Hou mij op de hoogte over activiteiten op mijn foto\'s</string>
+    <string name="cb_enable_activity_notifications_title">Flickr activiteit</string>
+    <string name="cb_enable_contacts_notifications_summary">Hou mij op de hoogte als contacten nieuwe foto\'s uploaden</string>
+    <string name="cb_enable_contacts_notifications_title">Contacten uploads</string>
+    <string name="cb_enable_notifications_title">Notificaties aanzetten</string>
+    <string name="cb_high_quality_thumbnails_summary">Ziet er beter uit maar misschien trager</string>
+    <string name="cb_high_quality_thumbnails_title">Hoge kwaliteit voorbeeldweergaven</string>
+    <string name="cb_show_usage_tips_summary">Laat tips zien over hoe je Glimmr kunt gebruiken</string>
+    <string name="comment_sent">Commentaar verzonden!</string>
+    <string name="commented_on">gereageerd op</string>
+    <string name="contacts">Contacten</string>
+    <string name="couldnt_load_video">Kan video niet laden</string>
+    <string name="description">Omschrijving</string>
+    <string name="edit_text_hint">Voeg commentaar toe</string>
+    <string name="exif_info">Exif informatie</string>
+    <string name="explore">Ontdekken</string>
+    <string name="favorited">aan favorieten toegevoegd</string>
+    <string name="favorites">Favorieten</string>
+    <string name="flickr_unavailable">Flickr is niet beschikbaar</string>
+    <string name="focal_length">Focal lengte</string>
+    <string name="four_hours">4 uur</string>
+    <string name="group_info_fetch_error">Fout bij het ophalen van informatie over de groep</string>
+    <string name="group_limit_reached">Groep limiet bereikt</string>
+    <string name="groups">Groepen</string>
+    <string name="hi">Hoi!</string>
+    <string name="hmm">Hmm</string>
+    <string name="ill_try_again_later">Glimmr zal het later opnieuw proberen</string>
+    <string name="image_saved">Afbeelding opgeslagen</string>
+    <string name="interestingness">Interessantheid </string>
+    <string name="iso">ISO</string>
+    <string name="just_a_moment">Een moment geduld…</string>
+    <string name="location">Locatie</string>
+    <string name="logged_in">Ingelogd!</string>
+    <string name="login">Inloggen</string>
+    <string name="login_error">Inlog probleem</string>
+    <string name="login_later">Je kan op ieder moment inloggen vanuit het menu!</string>
+    <string name="login_problem">Kan niet inloggen</string>
+    <string name="login_required">Je moet ingelogd zijn om dat te kunnen doen!</string>
+    <string name="login_to_flickr">INLOGGEN OP FLICKR</string>
+    <string name="logout">Uitloggen</string>
+    <string name="menu_favorite">Markeer als favoriet</string>
+    <string name="menu_preferences">Instellingen</string>
+    <string name="menu_refresh">Vernieuwen</string>
+    <string name="menu_search">Zoeken</string>
+    <string name="menu_share">Delen</string>
+    <string name="menu_view_comments">Commentaren</string>
+    <string name="menu_view_exif">Exif informatie inzien</string>
+    <string name="more">Meer</string>
+    <string name="most_recent">Meest recent</string>
+    <string name="my_photos">Mijn foto\'s</string>
+    <string name="new_activity">Nieuwe activiteit op je foto</string>
+    <string name="no_connection">Er ging iets verkeerd.\nProbeer opnieuw</string>
+    <string name="no_exif_permission">De eigenaar van deze foto wil EXIF informatie niet delen</string>
+    <string name="no_photos">Geen foto\'s beschikbaar.\nKlik hier om het opnieuw te proberen.</string>
+    <string name="no_search_results">Geen resultaten gevonden.</string>
+    <string name="none">Geen</string>
+    <string name="not_now">of, navigeer gewoon wat door wat foto\'s</string>
+    <string name="notification_contacts_content">van je contacten</string>
+    <string name="notification_contacts_ticker">Je Flickr contacten hebben nieuwe foto\'s ge-upload</string>
+    <string name="notification_contacts_title">Nieuwe foto\'s</string>
+    <string name="once_a_day">Eenmaal per dag</string>
+    <string name="one_hour">1 uur</string>
+    <string name="people">Personen</string>
+    <string name="photos">Foto\'s</string>
+    <string name="photos_uploaded">Je foto\'s zijn ge-upload</string>
+    <string name="photos_will_be_added">Foto\'s zullen toegevoegd worden</string>
+    <string name="photoset">Fotoalbum</string>
+    <string name="play_store_description">\"Een nieuwe, snelle,moderne en leuke Flickr app voor Android telefoons en tablets!\n\n\"\"Maakt surfen op Flickr op je telefoon weer leuk\"\" - lifehacker.com\n\n* Navigeer door je eigen foto\'s en die van je contacten met gemak\n* Ondersteuning van Groepen\n* Uitgebriede notificaties voor activiteit op je foto\'s\n* Geef commentaar op foto\'s en zie uitgebreide EXIF informatie\n* Geen reclame\n\n★ De Pro/Doneer versie zal sneller nieuwe functies ontvangen en helpt mij met financiele ondersteuning om de beste Flickr app aan jou te bieden!\n\nIn de pro versie:\n★ Stel foto\'s in als achtergrond.\n★ Optie om hoge kwaliteit foto thumbnails te gebruiken (werkt mooi op tablets en grote schermen)\n\n** Glimmr vertalen is heel makkelijk! Email mij als je Glimmr in jou\'n taal wilt.\n\nDisclaimer: Glimmr is op geen enkele wijze verbonden met Yahoo of Flickr.\"</string>
+    <string name="please_wait">Even wachten…</string>
+    <string name="pool">Pool</string>
+    <string name="pref_category_general">Algemeen (alleen Pro)</string>
+    <string name="pref_category_notifications">Notificaties</string>
+    <string name="pref_category_photoviewer">Photo Viewer</string>
+    <string name="pref_notification_intervals_title">Synchronisatie interval</string>
+    <string name="pro_donate">Pro/Doneren</string>
+    <string name="public_photos">Openbare foto\'s</string>
+    <string name="relevance">Relevantie</string>
+    <string name="remaining">overgebleven</string>
+    <string name="retry">Opnieuw</string>
+    <string name="save_image">afbeelding opslaan</string>
+    <string name="search_hint">Zoek foto\'s en personen</string>
+    <string name="set_initial_tab">Stel eerste tab in</string>
+    <string name="set_location">Locatie instellen</string>
+    <string name="set_location_tip">Tip: Raak aan en hou de map vast om de locatie in te stellen</string>
+    <string name="set_preferences">Instellingen aanpassen</string>
+    <string name="set_wallpaper">Achtergrond instellen</string>
+    <string name="sets">Albums</string>
+    <string name="setting_wallpaper">Bezig met instellen achtergrond…</string>
+    <string name="show_usage_tips">laat gebruikstips zien</string>
+    <string name="shutter">SHUTTER</string>
+    <string name="slideshow">diavoorstelling</string>
+    <string name="slideshow_interval">diavoorstelling interval</string>
+    <string name="sort_by">sorteer op</string>
+    <string name="storage_error">opslag probleem</string>
+    <string name="tags">Tags</string>
+    <string name="tap_for_photostream">Druk om naar je photostream te gaan</string>
+    <string name="thirty_mins">30 minuten</string>
+    <string name="timezone_message">Is je tijd en tijdzone juist ingesteld?</string>
+    <string name="tip_add_to_group">tip voeg toe aan groep</string>
+    <string name="tip_add_to_set">tip voeg toe aan set</string>
+    <string name="tip_glimmr_pro">tip Glimmr pro</string>
+    <string name="tip_view_profile">tip bekijk profiel</string>
+    <string name="title">titel</string>
+    <string name="to">naar</string>
+    <string name="untitled">Naamloos</string>
+    <string name="upload">Upload</string>
+    <string name="upload_photos">upload foto\'s</string>
+    <string name="upload_photos_tip">Tip: Druk en houdt vast om foto\'s te selecteren voor het uploaden</string>
+    <string name="upload_problem">Er is een probleem bij het uploaden van je foto\'s</string>
+    <string name="upload_tip">Tip: schuif de foto\'s naar links and rechts om info toe te voegen</string>
+    <string name="uploading_photos">Uploaden %d foto\'s naar Flickr</string>
+    <string name="view_profile">Profiel bekijken</string>
+    <string name="views">Aantal keren bekeken</string>
+    <string name="welcome">Welkom</string>
+    <string name="you">Jij</string>
+</resources>

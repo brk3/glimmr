@@ -3,14 +3,14 @@
  Loco xml export: Android string resources
  Project: Glimmr
  Release: Working copy
- Locale: sl_SI, Slovenian
+ Locale: es_ES, Spanish
  Exported by: Paul Bourke
  Exported at: Sat, 14 Dec 2013 15:56:32 +0000
 -->
 <resources>
-    <string name="about">O programu</string>
-    <string name="about_text">Hvala, ker podpirate Glimmr.!\n\nSpremljajte me: http://twitter.com/brk3\nKontakt: pauldbourke@gmail.com\n\nPrevajalci:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
-    <string name="activity">Dejavnost</string>
+    <string name="about">Acerca de Glimmr</string>
+    <string name="about_text">Gracias por vuestro apoyo a Glimmr!\n\nSígueme en Twitter: http://twitter.com/brk3\nContacto: pauldbourke@gmail.com\n\nTraductoress:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
+    <string name="activity">Actividad</string>
     <string name="add">Add</string>
     <string name="add_description_hint">Tap to add a description</string>
     <string name="add_photos">Add photos</string>
@@ -20,87 +20,87 @@
     <string name="add_title_hint">Tap to add a title</string>
     <string name="add_to_sets">Add To Sets</string>
     <string name="added_a_comment">added a comment</string>
-    <string name="aperture">APERTURE</string>
+    <string name="aperture">APERTURA</string>
     <string name="app_name">Glimmr</string>
     <string name="basic_info">Basic Info</string>
-    <string name="browse">brskaj</string>
+    <string name="browse">examinar</string>
     <string name="buy_pro_2">I\'m Paul, the creator of Glimmr.\n\nRight now this feature is reserved for pro users, as a means of me making a few bucks off my hobby.\n\nHelp support me in making the best Flickr app possible, and in return, you\'ll get:\n\n ★ Ability to upload photos through Glimmr\n ★ Higher quality thumbnails\n ★ Email support from myself\n \n Thank you.</string>
-    <string name="by">od</string>
+    <string name="by">Por</string>
     <string name="cb_enable_activity_notifications_summary">Notify about activity on your photos</string>
     <string name="cb_enable_activity_notifications_title">Flickr Activity</string>
-    <string name="cb_enable_contacts_notifications_summary">Obvesti, ko kdo izmed mojih stikov prenese sliko</string>
-    <string name="cb_enable_contacts_notifications_title">Stiki objavljajo</string>
-    <string name="cb_enable_notifications_title">Omogoči obvestila</string>
+    <string name="cb_enable_contacts_notifications_summary">Notificarme cuando los contactos carguen fotos nuevas</string>
+    <string name="cb_enable_contacts_notifications_title">Cargas de contactos</string>
+    <string name="cb_enable_notifications_title">Habilitar notificaciones</string>
     <string name="cb_high_quality_thumbnails_summary">Looks better, but may be slower</string>
     <string name="cb_high_quality_thumbnails_title">High Quality Thumbnails (Pro Only)</string>
     <string name="cb_show_usage_tips_summary">Show tips about how to use Glimmr</string>
-    <string name="comment_sent">Komentar poslan!</string>
+    <string name="comment_sent">Comentario enviado</string>
     <string name="commented_on">commented on</string>
-    <string name="contacts">Stik</string>
+    <string name="contacts">Contactos</string>
     <string name="couldnt_load_video">Couldn\'t load this video, try again later?</string>
     <string name="description">Description:</string>
-    <string name="edit_text_hint">Dodaj svoj komentar…</string>
-    <string name="exif_info">Exif podatki</string>
-    <string name="explore">Raziskuj</string>
+    <string name="edit_text_hint">Añadir comentario…</string>
+    <string name="exif_info">Información Exif</string>
+    <string name="explore">Explorar</string>
     <string name="favorited">favorited</string>
-    <string name="favorites">Priljubljene</string>
+    <string name="favorites">Favoritos</string>
     <string name="flickr_unavailable">Flickr is down right now, please try again later!</string>
     <string name="focal_length">Focal Length</string>
-    <string name="four_hours">4 ure</string>
+    <string name="four_hours">4 horas</string>
     <string name="group_info_fetch_error">Problem fetching group.  Please try again.</string>
     <string name="group_limit_reached">You\'ve reached the limit for this group.</string>
-    <string name="groups">Skupine</string>
+    <string name="groups">Grupos</string>
     <string name="hi">Hi!</string>
     <string name="hmm">Hmm</string>
     <string name="ill_try_again_later">Glimmr will try again later</string>
     <string name="image_saved">Image saved to gallery!</string>
     <string name="interestingness">Interestingness</string>
     <string name="iso">ISO</string>
-    <string name="just_a_moment">Trenutek…</string>
+    <string name="just_a_moment">Un momento…</string>
     <string name="location">Location</string>
-    <string name="logged_in">Prijavljen!</string>
-    <string name="login">Prijava</string>
+    <string name="logged_in">Has iniciado sesión</string>
+    <string name="login">Iniciar sesión</string>
     <string name="login_error">We\'re having trouble logging you in at the moment.\n\nPlease try again later, if you still can\'t login, drop me a mail at pauldbourke@gmail.com</string>
-    <string name="login_later">Prijava je mogoča preko menuja!</string>
+    <string name="login_later">Puedes iniciar sesión en cualquier momento a través del menú</string>
     <string name="login_problem">Could not log in</string>
-    <string name="login_required">Za to opravilo morate biti prijavljeni!</string>
-    <string name="login_to_flickr">PRIJAVA V FLICKR</string>
+    <string name="login_required">Para hacer eso, tienes que iniciar sesión</string>
+    <string name="login_to_flickr">INICIA SESIÓN EN FLICKR</string>
     <string name="logout">Logout</string>
-    <string name="menu_favorite">Označi kot priljubljen</string>
-    <string name="menu_preferences">Nastavitve</string>
-    <string name="menu_refresh">Osveži</string>
-    <string name="menu_search">Iskanje</string>
-    <string name="menu_share">Deli</string>
-    <string name="menu_view_comments">Komentarji</string>
-    <string name="menu_view_exif">Poglej Exif podatke</string>
+    <string name="menu_favorite">Marcar como favorito</string>
+    <string name="menu_preferences">Preferencias</string>
+    <string name="menu_refresh">Actualizar</string>
+    <string name="menu_search">Búsqueda</string>
+    <string name="menu_share">Compartir</string>
+    <string name="menu_view_comments">Comentarios y favoritos</string>
+    <string name="menu_view_exif">Ver información</string>
     <string name="more">More</string>
     <string name="most_recent">Most Recent</string>
     <string name="my_photos">My Photos</string>
     <string name="new_activity">New activity on your photo</string>
-    <string name="no_connection">Nekaj ni v redu.\nPoskusi osvežiti?</string>
-    <string name="no_exif_permission">Lastnik slike ne želi deliti EXIF podatkov.</string>
+    <string name="no_connection">Se ha producido un error.\n¿Has intentando actualizar de nuevo?</string>
+    <string name="no_exif_permission">El propietario de la foto no quiere compartir la información Exif.</string>
     <string name="no_photos">No photos available.\nClick to retry.</string>
-    <string name="no_search_results">Ni najdenih rezultatov.</string>
+    <string name="no_search_results">No se han encontrado resultados.</string>
     <string name="none">None</string>
-    <string name="not_now">oziroma, prebrskaj fotografije…</string>
-    <string name="notification_contacts_content">tvojih kontaktov.</string>
-    <string name="notification_contacts_ticker">Tvoji stiki na Flickrju so objavili nove fotografije</string>
-    <string name="notification_contacts_title">Nove fotografije</string>
-    <string name="once_a_day">Enkrat dnevno</string>
-    <string name="one_hour">1 ura</string>
+    <string name="not_now">o también puedes examinar algunas fotos</string>
+    <string name="notification_contacts_content">de tus contactos.</string>
+    <string name="notification_contacts_ticker">Tus contactos de Flickr han publicado fotos nuevas</string>
+    <string name="notification_contacts_title">Nuevas fotos</string>
+    <string name="once_a_day">Una vez al día</string>
+    <string name="one_hour">Una hora</string>
     <string name="people">People</string>
-    <string name="photos">Fotografije</string>
+    <string name="photos">Fotos</string>
     <string name="photos_uploaded">Photos Uploaded</string>
     <string name="photos_will_be_added">Your photos will be added shortly!</string>
-    <string name="photoset">Album</string>
-    <string name="play_store_description">\"Nova, hitra, moderna in zabavna aplikacija za Flickr na Androidu\n\n\"\"Končno je tudi brskanje po Flickrju na mobilnih napravah zabavno\"\" - lifehacker.com\n\n* Enostavno preglejuj svoje fotografije in fotografije kontaktov.\n* Podpora skupinam.\n* Komentiraj fotografije in preglejuj Exif podatke fotografij.\n* Obvestilo, ko kdo izmed kontaktov objavi fotografijo.\n* Brez reklam.\n* Prihaja še veliko več.\n\n★ Uporabniki Pro/Donate različice bodo hitreje deležni novih funkcionalnosti ter mi pomagali narediti najboljšo aplikacijo za brskanje po Flickrju.\n\nTrenutno v Pro:\n* Nastavi sliko za ozadje\n\n** Pošljite mi elektronsko sporočilo glede funkcionalnosti, ki jo pogrešate.\n** Prevajanje Glimmr-ja je enostavno! Pošljite elektronsko sporočilo, če ga želite v svojem jeziku.\n\nPravno obvestilo: Glimmr ni povezan z Yahoo-jem ali Flickr-jem.\"</string>
-    <string name="please_wait">Prosim počakaj…</string>
-    <string name="pool">Skupina</string>
+    <string name="photoset">Álbum de fotos</string>
+    <string name="play_store_description">\"*New!* Vote for new features at http://glimmr.uservoice.com\n\nA new, fast, modern and fun Flickr app for Android phones and tablets.\n\n\"\"Makes Browsing Flickr on Your Phone Fun Again\"\" - lifehacker.com\n\n* Swipe through you and your contacts photos with ease.\n* Group support.\n* Widget for Android 3.0 and up.\n* Rich notifications for activity on your photos.\n* Comment on photos and view detailed exif info.\n* No Ads.\n\nIf you love Glimmr, please consider checking out Pro:\n★ Upload functionality\n★ Option to use high quality thumbnails (nice on tablets and large screens)\n★ Support development for less than the price of a coffee :)\n\n** Translating Glimmr is easy! Email me if you would like it in your language.\n\nDisclaimer: Glimmr is in no way affiliated with Yahoo or Flickr.\"</string>
+    <string name="please_wait">Por favor, espere…</string>
+    <string name="pool">Grupo</string>
     <string name="pref_category_general">General</string>
-    <string name="pref_category_notifications">Obvestila</string>
+    <string name="pref_category_notifications">Notificaciones</string>
     <string name="pref_category_photoviewer">Photo Viewer</string>
-    <string name="pref_notification_intervals_title">Interval sinhronizacije</string>
-    <string name="pro_donate">Pro/Doniraj</string>
+    <string name="pref_notification_intervals_title">Periodo de sincronización</string>
+    <string name="pro_donate">Pro/Donar</string>
     <string name="public_photos">Public</string>
     <string name="relevance">Relevance</string>
     <string name="remaining">remaining</string>
@@ -110,35 +110,35 @@
     <string name="set_initial_tab">Set Initial Tab</string>
     <string name="set_location">Set Location</string>
     <string name="set_location_tip">Tip: Touch and hold map to set location</string>
-    <string name="set_preferences">Nastavi nastavitve</string>
-    <string name="set_wallpaper">Nastavi kot sliko ozadja</string>
-    <string name="sets">Albumi</string>
-    <string name="setting_wallpaper">Nastavljam sliko ozadja…</string>
+    <string name="set_preferences">Configurar preferencias</string>
+    <string name="set_wallpaper">Configurar como fondo de pantalla</string>
+    <string name="sets">Álbumes</string>
+    <string name="setting_wallpaper">Configurando fondo de pantalla…</string>
     <string name="show_usage_tips">Show Usage Tips</string>
-    <string name="shutter">ZASLONKA</string>
+    <string name="shutter">OBTURADOR</string>
     <string name="slideshow">Slideshow</string>
     <string name="slideshow_interval">Slideshow Interval (seconds)</string>
     <string name="sort_by">Sort by</string>
     <string name="storage_error">Problem accessing storage</string>
     <string name="tags">Tags:</string>
     <string name="tap_for_photostream">Tap to go to photostream</string>
-    <string name="thirty_mins">30 minut</string>
+    <string name="thirty_mins">30 minutos</string>
     <string name="timezone_message">Are your clock and timezone set correctly?</string>
     <string name="tip_add_to_group">Tip: Tap and hold a group to add photos</string>
     <string name="tip_add_to_set">Tip: Tap and hold a set to add photos</string>
     <string name="tip_glimmr_pro">Tip: Get Glimmr Pro for high quality thumbnails and wallpapers</string>
     <string name="tip_view_profile">Tip: Tap and hold an image to view author\'s profile</string>
     <string name="title">Title:</string>
-    <string name="to">za</string>
-    <string name="untitled">Nepoimenovano</string>
+    <string name="to">a</string>
+    <string name="untitled">Sin título</string>
     <string name="upload">Upload</string>
     <string name="upload_photos">Upload Photos</string>
     <string name="upload_photos_tip">Tip: tap and hold photos to select for upload</string>
     <string name="upload_problem">Problem uploading photos</string>
     <string name="upload_tip">Tip: Swipe photo left and right to add info</string>
     <string name="uploading_photos">Uploading %d photos to Flickr</string>
-    <string name="view_profile">Ogled Profila</string>
-    <string name="views">Pogledi</string>
-    <string name="welcome">Dobrodošel</string>
-    <string name="you">Ti</string>
+    <string name="view_profile">Ver Perfil</string>
+    <string name="views">Vistas</string>
+    <string name="welcome">Bienvenido</string>
+    <string name="you">Tú</string>
 </resources>
