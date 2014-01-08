@@ -1,8 +1,8 @@
-![Header](https://raw.github.com/brk3/glimmr/master/res/drawable-xxxhdpi/ic_launcher.png)
-
 Glimmr
 ======
 Glimmr is a popular and fully working Flickr app for Android.
+
+![](http://i.imgur.com/Izk0Z46.jpg)
 
 Building
 ========
