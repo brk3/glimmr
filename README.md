@@ -5,7 +5,7 @@ Glimmr is a popular and fully working Flickr app for Android.
 ![](http://i.imgur.com/Izk0Z46.jpg)
 
 Building
-========
+--------
 You need to populate `src/main/java/com/bourke/glimmr/common/Keys.java` with a
 [Flickr API Key](http://www.flickr.com/services/api/misc.api_keys.html).
 
@@ -15,8 +15,16 @@ scripts/populate_local_repo.sh
 mvn clean install
 ```
 
+**Regarding flickrj-android**  
+Glimmr uses this library for API calls to Flickr.  Sometimes I depend on versions
+that haven't yet been released to Maven Central.
+
+If `pom.xml` refers to a SNAPSHOT or build ending in a SHA1, please clone
+https://github.com/yuyang226/FlickrjApi4Android and install it by running
+`maven clean install`.
+
 Contributing
-============
+------------
 Pull requests are of course welcome, all I ask is that you follow the existing
 style of the code and as set out by
 http://source.android.com/source/code-style.html
