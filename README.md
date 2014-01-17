@@ -21,7 +21,7 @@ that haven't yet been released to Maven Central.
 
 If `pom.xml` refers to a SNAPSHOT or build ending in a SHA1, please clone
 https://github.com/yuyang226/FlickrjApi4Android and install it by running
-`maven clean install`.
+`mvn clean install`.
 
 Contributing
 ------------
