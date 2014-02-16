@@ -9,9 +9,7 @@
     </string-array>
 
     <string-array
-            name="pref_notification_intervals_values"
-            xmlns:tools="http://schemas.android.com/tools"
-            tools:ignore="MissingTranslation">
+      name="pref_notification_intervals_values">
         <item>30</item>
         <item>60</item>
         <item>240</item>

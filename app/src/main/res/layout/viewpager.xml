@@ -4,7 +4,6 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
@@ -12,8 +11,7 @@
     <com.viewpagerindicator.TitlePageIndicator
         android:id="@+id/indicator"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        tools:ignore="InconsistentLayout" />
+        android:layout_width="fill_parent" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"

@@ -12,8 +12,6 @@
         style="@style/MenuDrawer.Widget.ActivityItem" />
 
     <View
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:ignore="PxUsage"
         android:id="@+id/separator"
         android:background="@color/flickr_pink"
         android:layout_marginLeft="4dip"

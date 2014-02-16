@@ -1,0 +1,41 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.0"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode 40
+        versionName "2.23-SNAPSHOT"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    lintOptions {
+      abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    compile 'com.android.support:support-v4:19.0.0'
+    compile 'eu.inmite.android.lib:android-styled-dialogs:1.1.2@aar'
+    compile 'com.viewpagerindicator:library:2.4.1@aar'
+    compile 'net.simonvt.menudrawer:menudrawer:3.0.5@aar'
+    compile 'com.commonsware.cwac:endless:1.2.3'
+    compile 'com.commonsware.cwac:wakeful:1.0.1'
+    compile 'com.squareup.picasso:picasso:2.2.0'
+    compile 'com.squareup:tape:1.2.0'
+    compile 'com.squareup:otto:1.3.4'
+    compile 'com.github.chrisbanes.photoview:library:1.2.2'
+    compile 'de.keyboardsurfer.android.widget:crouton:1.8.3'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'org.ocpsoft.prettytime:prettytime:3.2.4.Final'
+    /*https://github.com/yuyang226/FlickrjApi4Android/issues/17*/
+    compile 'org.slf4j:slf4j-api:1.6.2'
+}
