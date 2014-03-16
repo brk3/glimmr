@@ -94,8 +94,8 @@ public class Events {
      *                      queued for retry.
      */
     public interface ITaskQueueServiceListener {
-        public void onSuccess(final String itemId);
-        public void onFailure(final String itemId, final boolean retry);
+        public <T> void onSuccess(final T item);
+        public <T> void onFailure(final T item, final boolean retry);
     }
 
     public interface IPhotoSizesReadyListener {

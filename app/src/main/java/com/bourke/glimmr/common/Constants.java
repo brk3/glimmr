@@ -59,11 +59,13 @@ public class Constants {
     public static final int NOTIFICATION_NEW_CONTACTS_PHOTOS = 0;
     public static final int NOTIFICATION_NEW_ACTIVITY = 1;
     public static final int NOTIFICATION_PHOTOS_UPLOADING = 2;
+    public static final int NOTIFICATION_PHOTO_DOWNLOADING = 3;
 
     /* Tape managed task queues */
     public static final String PHOTOSET_QUEUE = "photoset_task_queue.json";
     public static final String GROUP_QUEUE = "group_task_queue.json";
     public static final String UPLOAD_QUEUE = "upload_task_queue.json";
+    public static final String DOWNLOAD_IMAGE_QUEUE = "download_image_task_queue.json";
 
     public static final String PRO_MARKET_LINK =
         "market://details?id=com.bourke.glimmrpro";

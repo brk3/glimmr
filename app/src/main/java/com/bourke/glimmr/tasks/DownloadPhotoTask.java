@@ -2,49 +2,77 @@ package com.bourke.glimmr.tasks;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.bourke.glimmr.event.Events;
 import com.squareup.picasso.Picasso;
+import com.squareup.tape.Task;
 
 import java.io.IOException;
 
-public class DownloadPhotoTask extends AsyncTask<Void, Void, Bitmap> {
+public class DownloadPhotoTask implements Task<Events.ITaskQueueServiceListener> {
 
-    private static final String TAG = "Glimmr/AddCommentTask";
+    private static final String TAG = "Glimmr/DownloadPhotoTask";
 
-    private final Events.IPhotoDownloadedListener mListener;
-    private Context mContext;
+    private static final Handler MAIN_THREAD = new Handler(Looper.getMainLooper());
+
     private final String mUrl;
-    private Exception mException;
+    private final Context mContext;
+    private Bitmap mBitmap = null;
 
-    public DownloadPhotoTask(Context context, Events.IPhotoDownloadedListener listener,
-                             String url) {
+    public DownloadPhotoTask(Context context, String url) {
         mContext = context;
-        mListener = listener;
         mUrl = url;
     }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
+    public void execute(final Events.ITaskQueueServiceListener listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    try {
+                        /* get the image synchronously */
+                        mBitmap = Picasso.with(mContext).load(mUrl).get();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    /* success */
+                    postToMainThread(listener, true, false);
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                    /* shouldn't get here, don't retry */
+                    postToMainThread(listener, false, false);
+                }
+            }
+        }).start();
     }
 
-    @Override
-    protected Bitmap doInBackground(Void... params) {
-        Bitmap bitmap = null;
-        try {
-            /* get the image synchronously */
-            bitmap = Picasso.with(mContext).load(mUrl).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-            mException = e;
-        }
-        return bitmap;
+    private void postSuccessToMainThread(final Events.ITaskQueueServiceListener listener) {
+        MAIN_THREAD.post(new Runnable() {
+            @Override
+            public void run() {
+                    listener.onSuccess(mBitmap);
+            }
+        });
     }
 
-    @Override
-    protected void onPostExecute(final Bitmap result) {
-        mListener.onPhotoDownloaded(result, mException);
+    /**
+     * Calls to callback functions must be made on the main thread.
+     */
+    private void postToMainThread(final Events.ITaskQueueServiceListener listener,
+                                  final boolean success, final boolean retry) {
+//        MAIN_THREAD.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (success) {
+//                    listener.onSuccess(mPhoto.getUri());
+//                } else {
+//                    listener.onFailure(mPhoto.getUri(), retry);
+//                }
+//            }
+//        });
     }
 }

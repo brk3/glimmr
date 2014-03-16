@@ -31,6 +31,7 @@ import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.fragments.dialogs.BuyProDialog;
 import com.bourke.glimmr.tape.AddToGroupTaskQueueService;
 import com.bourke.glimmr.tape.AddToPhotosetTaskQueueService;
+import com.bourke.glimmr.tape.DownloadPhotoTaskQueueService;
 import com.bourke.glimmr.tape.UploadPhotoTaskQueueService;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.people.User;
@@ -186,6 +187,10 @@ public abstract class BaseActivity extends FragmentActivity {
             if (!UploadPhotoTaskQueueService.IS_RUNNING) {
                 if (Constants.DEBUG) Log.d(TAG, "Starting UploadPhotoTaskQueueService");
                 startService(new Intent(this, UploadPhotoTaskQueueService.class));
+            }
+            if (!DownloadPhotoTaskQueueService.IS_RUNNING) {
+                if (Constants.DEBUG) Log.d(TAG, "Starting DownloadPhotoTaskQueueService");
+                startService(new Intent(this, DownloadPhotoTaskQueueService.class));
             }
         }
     }

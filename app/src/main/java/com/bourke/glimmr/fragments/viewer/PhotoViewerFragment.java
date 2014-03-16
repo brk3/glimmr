@@ -1,7 +1,6 @@
 package com.bourke.glimmr.fragments.viewer;
 
 import android.annotation.SuppressLint;
-import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
@@ -27,8 +26,8 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.TaskQueueDelegateFactory;
 import com.bourke.glimmr.event.BusProvider;
-import com.bourke.glimmr.event.Events;
 import com.bourke.glimmr.event.Events.IFavoriteReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoSizesReadyListener;
@@ -42,6 +41,7 @@ import com.googlecode.flickrjandroid.photos.Size;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.tape.TaskQueue;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,6 +72,7 @@ public final class PhotoViewerFragment extends BaseFragment
     private TextView mTextViewAuthor;
     private ImageView mImageView;
     private ProgressBar mProgress;
+    private TaskQueue mQueue;
 
     /**
      * Returns a new instance of PhotoViewerFragment.
@@ -111,6 +112,10 @@ public final class PhotoViewerFragment extends BaseFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (Constants.DEBUG) Log.d(TAG, "onCreate");
+        TaskQueueDelegateFactory<DownloadPhotoTask> factory =
+                new TaskQueueDelegateFactory<DownloadPhotoTask>(mActivity);
+        mQueue = new TaskQueue(factory.get(
+                Constants.DOWNLOAD_IMAGE_QUEUE, DownloadPhotoTask.class));
         super.onCreate(savedInstanceState);
     }
 
@@ -225,40 +230,41 @@ public final class PhotoViewerFragment extends BaseFragment
                 Toast.LENGTH_SHORT).show();
         if (mBasePhoto != null) {
             String url = getLargestUrlAvailable(mBasePhoto);
-            new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
-                @Override
-                public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
-                    if (e == null) {
-                        WallpaperManager wallpaperManager = WallpaperManager.getInstance(mActivity);
-                        try {
-                            wallpaperManager.setBitmap(bitmap);
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    } else {
-                        Log.e(TAG, "Error setting wallpaper");
-                        e.printStackTrace();
-                    }
-                }
-            }, url).execute();
+
+//            new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
+//                @Override
+//                public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
+//                    if (e == null) {
+//                        WallpaperManager wallpaperManager = WallpaperManager.getInstance(mActivity);
+//                        try {
+//                            wallpaperManager.setBitmap(bitmap);
+//                        } catch (IOException e1) {
+//                            e1.printStackTrace();
+//                        }
+//                    } else {
+//                        Log.e(TAG, "Error setting wallpaper");
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }, url).execute();
         }
     }
 
     private void saveImageToExternalStorage() {
         String url = getLargestUrlAvailable(mBasePhoto);
-        new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
-            @Override
-            public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
-                String filename = mBasePhoto.getTitle() + ".jpg";
-                if (e == null && createExternalStoragePublicPicture(bitmap, filename) != null) {
-                    Toast.makeText(mActivity, getString(R.string.image_saved), Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    Toast.makeText(mActivity, getString(R.string.storage_error), Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
-        }, url).execute();
+//        new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
+//            @Override
+//            public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
+//                String filename = mBasePhoto.getTitle() + ".jpg";
+//                if (e == null && createExternalStoragePublicPicture(bitmap, filename) != null) {
+//                    Toast.makeText(mActivity, getString(R.string.image_saved), Toast.LENGTH_SHORT)
+//                            .show();
+//                } else {
+//                    Toast.makeText(mActivity, getString(R.string.storage_error), Toast.LENGTH_SHORT)
+//                            .show();
+//                }
+//            }
+//        }, url).execute();
     }
 
     public void onFavoriteButtonClick() {

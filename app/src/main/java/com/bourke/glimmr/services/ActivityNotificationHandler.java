@@ -16,10 +16,8 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
-import com.bourke.glimmr.event.Events;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
-import com.bourke.glimmr.tasks.DownloadPhotoTask;
 import com.bourke.glimmr.tasks.LoadFlickrActivityTask;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
@@ -167,12 +165,12 @@ public class ActivityNotificationHandler
             public void onPhotoInfoReady(final Photo photo, Exception e) {
                 /* fetch the photo bitmap to be shown in the notification */
                 String url = photo.getMediumUrl();
-                new DownloadPhotoTask(mContext, new Events.IPhotoDownloadedListener() {
-                    @Override
-                    public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
-                        onItemPhotoReady(item, photo, bitmap, eventOffset);
-                    }
-                }, url).execute();
+//                new DownloadPhotoTask(mContext, new Events.IPhotoDownloadedListener() {
+//                    @Override
+//                    public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
+//                        onItemPhotoReady(item, photo, bitmap, eventOffset);
+//                    }
+//                }, url).execute();
             }
         }, item.getId(), item.getSecret()).execute(mOAuth);
     }
