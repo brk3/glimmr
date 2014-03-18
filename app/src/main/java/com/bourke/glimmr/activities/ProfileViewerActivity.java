@@ -8,8 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.GsonHelper;

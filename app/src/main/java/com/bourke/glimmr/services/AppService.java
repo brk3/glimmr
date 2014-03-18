@@ -3,7 +3,8 @@ package com.bourke.glimmr.services;
 import com.bourke.glimmr.BuildConfig;
 import android.content.Intent;
 import android.util.Log;
-import com.bourke.glimmr.common.Constants;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.googlecode.flickrjandroid.oauth.OAuth;

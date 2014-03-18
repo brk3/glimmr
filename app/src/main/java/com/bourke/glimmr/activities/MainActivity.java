@@ -15,28 +15,40 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.*;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.GlimmrPagerAdapter;
+import com.bourke.glimmr.common.MenuListView;
+import com.bourke.glimmr.common.OAuthUtils;
+import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.common.UsageTips;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
-import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
-import com.bourke.glimmr.fragments.home.*;
+import com.bourke.glimmr.fragments.home.ContactsGridFragment;
+import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
+import com.bourke.glimmr.fragments.home.GroupListFragment;
+import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
+import com.bourke.glimmr.fragments.home.PhotosetsFragment;
 import com.bourke.glimmr.services.ActivityNotificationHandler;
 import com.bourke.glimmr.services.AppListener;
 import com.bourke.glimmr.services.AppService;
 import com.bourke.glimmr.tasks.LoadFlickrActivityTask;
-import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.people.User;
-import com.googlecode.flickrjandroid.photos.Photo;
-//import com.sbstrm.appirater.Appirater;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
+
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
+
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.io.File;
@@ -44,6 +56,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+//import com.sbstrm.appirater.Appirater;
 
 public class MainActivity extends BaseActivity {
 
@@ -172,26 +186,27 @@ public class MainActivity extends BaseActivity {
 
     private void initPageItems() {
         mContent = new ArrayList<PageItem>();
-        mPageTitles = Arrays.asList(
-                getResources().getStringArray(R.array.pageTitles));
-
-        mContent.add(new PageItem(getString(R.string.contacts),
-                R.drawable.ic_action_social_person_dark));
+        mPageTitles = Arrays.asList(new String[]{"Photos"});
+//        mPageTitles = Arrays.asList(
+//                getResources().getStringArray(R.array.pageTitles));
+//
+//        mContent.add(new PageItem(getString(R.string.contacts),
+//                R.drawable.ic_action_social_person_dark));
 
         mContent.add(new PageItem(getString(R.string.photos),
                 R.drawable.ic_content_picture_dark));
 
-        mContent.add(new PageItem(getString(R.string.favorites),
-                R.drawable.ic_action_rating_important_dark));
-
-        mContent.add(new PageItem(getString(R.string.sets),
-                R.drawable.collections_collection_dark));
-
-        mContent.add(new PageItem(getString(R.string.groups),
-                R.drawable.ic_action_social_group_dark));
-
-        mContent.add(new PageItem(getString(R.string.explore),
-                R.drawable.ic_action_av_shuffle_dark));
+//        mContent.add(new PageItem(getString(R.string.favorites),
+//                R.drawable.ic_action_rating_important_dark));
+//
+//        mContent.add(new PageItem(getString(R.string.sets),
+//                R.drawable.collections_collection_dark));
+//
+//        mContent.add(new PageItem(getString(R.string.groups),
+//                R.drawable.ic_action_social_group_dark));
+//
+//        mContent.add(new PageItem(getString(R.string.explore),
+//                R.drawable.ic_action_av_shuffle_dark));
     }
 
     public void updateMenuListItems(boolean forceRefresh) {
@@ -386,25 +401,24 @@ public class MainActivity extends BaseActivity {
         List<Item> items = ActivityNotificationHandler
             .loadItemList(MainActivity.this);
         Item item = items.get(itemPos);
-        new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
-            @Override
-            public void onPhotoInfoReady(final Photo photo, Exception e) {
+//        new LoadPhotoInfoTask(new IPhotoInfoReadyListener() {
+//            @Override
+//            public void onPhotoInfoReady(final Photo photo, Exception e) {
+//                setProgressBarIndeterminateVisibility(Boolean.FALSE);
+//                if (FlickrHelper.getInstance().handleFlickrUnavailable(MainActivity.this, e)) {
+//                    return;
+//                }
+//                if (photo == null) {
+//                    Log.e(TAG, "onPhotoInfoReady: photo is null, " +
+//                            "can't start viewer");
+//                    return;
+//                }
+//                List<Photo> photos = new ArrayList<Photo>();
+//                photos.add(photo);
                 setProgressBarIndeterminateVisibility(Boolean.FALSE);
-                if (FlickrHelper.getInstance().handleFlickrUnavailable(MainActivity.this, e)) {
-                    return;
-                }
-                if (photo == null) {
-                    Log.e(TAG, "onPhotoInfoReady: photo is null, " +
-                        "can't start viewer");
-                    return;
-                }
-                List<Photo> photos = new ArrayList<Photo>();
-                photos.add(photo);
-                setProgressBarIndeterminateVisibility(Boolean.FALSE);
-                PhotoViewerActivity.startPhotoViewer(
-                    MainActivity.this, photos, 0);
-            }
-        }, item.getId(), item.getSecret()).execute(mOAuth);
+//                PhotoViewerActivity.startPhotoViewer(
+//                    MainActivity.this, photos, 0);
+//        }, item.getId(), item.getSecret()).execute(mOAuth);
     }
 
     private void initNotificationAlarms() {

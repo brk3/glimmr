@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
@@ -32,6 +33,7 @@ import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.PhotoItemLongClickDialogListener;
+import com.bourke.glimmr.model.DataModel;
 import com.commonsware.cwac.endless.EndlessAdapter;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.squareup.picasso.Picasso;
@@ -53,7 +55,6 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected GridView mGridView;
     private EndlessGridAdapter mAdapter;
 
-    protected final List<Photo> mPhotos = new ArrayList<Photo>();
     private List<Photo> mNewPhotos = new ArrayList<Photo>();
     protected int mPage = 1;
     protected boolean mMorePages = true;
@@ -67,6 +68,8 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     protected abstract String getNewestPhotoId();
     protected abstract void storeNewestPhotoId(Photo photo);
+
+    protected DataModel mDataModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,12 +86,18 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mDataModel.save();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (BuildConfig.DEBUG) {
             Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
         }
-        if (!mPhotos.isEmpty()) {
+        if (!mDataModel.isEmpty()) {
             GridView gridView = (GridView) mLayout.findViewById(R.id.gridview);
             gridView.setVisibility(View.VISIBLE);
         }
@@ -112,17 +121,15 @@ public abstract class PhotoGridFragment extends BaseFragment
         mNoConnectionLayout.setVisibility(View.GONE);
         mGridView.setVisibility(View.VISIBLE);
         checkForNewPhotos(photos);
-        mPhotos.addAll(photos);
         mAdapter.onDataReady();
     }
 
     @Override
     protected void refresh() {
         if (BuildConfig.DEBUG) Log.d(getLogTag(), "refresh");
-        mPage = 1;
         mMorePages = true;
-        if (mPhotos.size() > 0) {
-            mPhotos.clear();
+        if (!mDataModel.isEmpty()) {
+            mDataModel.clear();
             cacheInBackground();
         }
     }
@@ -140,7 +147,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         SparseBooleanArray checkArray = mGridView.getCheckedItemPositions();
         for (int i=0; i < checkArray.size(); i++) {
             if (checkArray.valueAt(i)) {
-                ret.add(mPhotos.get(checkArray.keyAt(i)));
+                ret.add(mDataModel.getPhotos().get(checkArray.keyAt(i)));
             }
         }
         if (BuildConfig.DEBUG) Log.d(TAG, "getSelectedPhotos: " + ret.size());
@@ -148,7 +155,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     }
 
     protected void initGridView() {
-        mAdapter = new EndlessGridAdapter(mPhotos);
+        mAdapter = new EndlessGridAdapter(mDataModel.getPhotos());
         mAdapter.setRunInBackground(false);
         mGridView = (GridView) mLayout.findViewById(R.id.gridview);
         mGridView.setAdapter(mAdapter);
@@ -164,7 +171,8 @@ public abstract class PhotoGridFragment extends BaseFragment
                                 checkArray.get(position)));
                     }
                 } else {
-                    PhotoViewerActivity.startPhotoViewer(mActivity, mPhotos, position);
+                    PhotoViewerActivity.startPhotoViewer(mActivity, DataModel.TYPE_PHOTOSTREAM,
+                            position);
                 }
                 mGridView.invalidateViews();
             }
@@ -183,10 +191,10 @@ public abstract class PhotoGridFragment extends BaseFragment
                         ListView.CHOICE_MODE_MULTIPLE) {
                     return false;
                 }
-                if (position < mPhotos.size()) {
+                if (position < mDataModel.getPhotos().size()) {
                     DialogFragment d =
                         PhotoItemLongClickDialog.newInstance(mActivity,
-                            PhotoGridFragment.this, mPhotos.get(position));
+                            PhotoGridFragment.this, mDataModel.getPhotos().get(position));
                     d.show(mActivity.getSupportFragmentManager(),
                         "photo_item_long_click");
                     /* True indicates we're finished with event and triggers

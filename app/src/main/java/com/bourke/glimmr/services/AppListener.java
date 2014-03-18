@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.Constants;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 

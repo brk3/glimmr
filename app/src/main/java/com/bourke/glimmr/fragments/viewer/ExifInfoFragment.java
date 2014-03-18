@@ -11,8 +11,9 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;

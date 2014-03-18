@@ -4,6 +4,8 @@ import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.tasks.LoadContactsPhotosTask;

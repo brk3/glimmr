@@ -4,7 +4,8 @@ import com.bourke.glimmr.BuildConfig;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.bourke.glimmr.common.Constants;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IUserReadyListener;
 import com.googlecode.flickrjandroid.Flickr;

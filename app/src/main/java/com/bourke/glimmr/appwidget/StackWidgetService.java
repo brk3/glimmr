@@ -10,11 +10,10 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
-import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -124,8 +123,8 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
          * StackWidgetProvider. */
         Bundle extras = new Bundle();
         extras.putInt(StackWidgetProvider.VIEW_INDEX, position);
-        extras.putString(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,
-                PhotoViewerActivity.PHOTO_LIST_FILE);
+//        extras.putString(PhotoViewerActivity.KEY_PHOTO_LIST_FILE,
+//                PhotoViewerActivity.PHOTO_LIST_FILE);
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);
         rv.setOnClickFillInIntent(R.id.image_layout, fillInIntent);
@@ -205,8 +204,8 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
             e.printStackTrace();
             return;
         }
-        new GsonHelper(mContext).marshallObject(mPhotos,
-                PhotoViewerActivity.PHOTO_LIST_FILE);
+//        new GsonHelper(mContext).marshallObject(mPhotos,
+//                PhotoViewerActivity.PHOTO_LIST_FILE);
     }
 
     private List<Photo> getExplorePhotos() throws Exception {

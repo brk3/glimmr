@@ -3,8 +3,9 @@ package com.bourke.glimmr.activities;
 import com.bourke.glimmr.BuildConfig;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.UsageTips;
 
 public class LocalPhotosActivity extends BaseActivity {

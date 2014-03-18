@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.BuildConfig;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -14,24 +13,35 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.*;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.BusProvider;
+import com.bourke.glimmr.event.Events;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoInfoFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment.PhotoViewerVisibilityChangeEvent;
+import com.bourke.glimmr.model.DataModel;
+import com.bourke.glimmr.model.PhotoStreamModel;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.squareup.otto.Subscribe;
 
-import java.lang.reflect.Type;
-import java.util.*;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Activity for viewing fullscreen photos in a ViewPager.
@@ -60,8 +70,8 @@ public class PhotoViewerActivity extends BaseActivity
 
     public static final String KEY_PHOTO_LIST_FILE =
         "com.bourke.glimmr.PhotoViewerActivity.KEY_PHOTO_LIST_FILE";
-    public static final String PHOTO_LIST_FILE =
-        "PhotoViewerActivity_photolist.json";
+    public static final String KEY_MODEL_TYPE =
+            "com.bourke.glimmr.PhotoViewerActivity.KEY_MODEL_TYPE";
 
     /* intent actions */
     public static final String ACTION_VIEW_PHOTO_BY_ID =
@@ -69,7 +79,6 @@ public class PhotoViewerActivity extends BaseActivity
     public static final String ACTION_VIEW_PHOTOLIST =
         "com.bourke.glimmr.ACTION_VIEW_PHOTOLIST";
 
-    private List<Photo> mPhotos = new ArrayList<Photo>();
     private PhotoViewerPagerAdapter mAdapter;
     private ViewPager mPager;
     private int mCurrentAdapterIndex = 0;
@@ -79,26 +88,20 @@ public class PhotoViewerActivity extends BaseActivity
     private boolean mPhotoInfoFragmentShowing = false;
     private ActionBarTitle mActionbarTitle;
     private Timer mTimer;
+    private DataModel mDataModel;
 
     /**
      * Start PhotoViewerActivity to view a list of photos, starting at a
      * specific index.
      * @param context
-     * @param photos
      * @param index
      */
-    public static void startPhotoViewer(Context context, List<Photo> photos,
-            int index) {
-        if (new GsonHelper(context).marshallObject(photos, PHOTO_LIST_FILE)) {
-            Intent photoViewer =
-                    new Intent(context, PhotoViewerActivity.class);
-            photoViewer.setAction(ACTION_VIEW_PHOTOLIST);
-            photoViewer.putExtra(KEY_START_INDEX, index);
-            photoViewer.putExtra(KEY_PHOTO_LIST_FILE, PHOTO_LIST_FILE);
-            context.startActivity(photoViewer);
-        } else {
-            Log.e(TAG, "Error marshalling photo list, cannot start viewer");
-        }
+    public static void startPhotoViewer(Context context, int modelType, int index) {
+        Intent photoViewer = new Intent(context, PhotoViewerActivity.class);
+        photoViewer.setAction(ACTION_VIEW_PHOTOLIST);
+        photoViewer.putExtra(KEY_MODEL_TYPE, modelType);
+        photoViewer.putExtra(KEY_START_INDEX, index);
+        context.startActivity(photoViewer);
     }
 
     /**
@@ -133,17 +136,15 @@ public class PhotoViewerActivity extends BaseActivity
                 Log.d(TAG, "Received ACTION_VIEW_PHOTOLIST intent");
             }
             intent.putExtra(KEY_INTENT_CONSUMED, true);
-            String photoListFile = intent.getStringExtra(KEY_PHOTO_LIST_FILE);
-            GsonHelper gsonHelper = new GsonHelper(this);
-            String json = gsonHelper.loadJson(photoListFile);
-            if (json.length() > 0) {
-                Type collectionType =
-                        new TypeToken<Collection<Photo>>(){}.getType();
-                mPhotos = new Gson().fromJson(json, collectionType);
-                initViewPager(startIndex, true);
-            } else {
-                Log.e(TAG, String.format("Error reading '%s'", photoListFile));
+            int modelType = intent.getIntExtra(KEY_MODEL_TYPE, -1);
+            switch (modelType) {
+                case DataModel.TYPE_PHOTOSTREAM:
+                    mDataModel = PhotoStreamModel.getInstance(this);
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown model type");
             }
+            initViewPager(startIndex, true);
         } else {
             Log.e(TAG, "Unknown intent action: " + intent.getAction());
         }
@@ -246,28 +247,13 @@ public class PhotoViewerActivity extends BaseActivity
                 mPhotoInfoFragmentShowing);
         savedInstanceState.putBoolean(KEY_SLIDESHOW_RUNNING,
                 (mTimer != null));
-        if (mPhotos != null) {
-            if (!new GsonHelper(this)
-                    .marshallObject(mPhotos, PHOTO_LIST_FILE)) {
-                Log.e(TAG, "onSaveInstanceState: Error marshalling mPhotos");
-            }
-        }
+        mDataModel.save();
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (mPhotos.isEmpty()) {
-            String json = new GsonHelper(this).loadJson(PHOTO_LIST_FILE);
-            if (json.length() == 0) {
-                Log.e(TAG, String.format("Error reading '%s'",
-                        PHOTO_LIST_FILE));
-            } else {
-                Type collectionType =
-                        new TypeToken<Collection<Photo>>(){}.getType();
-                mPhotos = new Gson().fromJson(json, collectionType);
-            }
-        }
+        mDataModel.load();
         boolean overlayOn = savedInstanceState.getBoolean(
                 KEY_ACTIONBAR_SHOW, true);
         if (overlayOn) {
@@ -291,7 +277,7 @@ public class PhotoViewerActivity extends BaseActivity
         mPhotoInfoFragmentShowing = savedInstanceState.getBoolean(
                 KEY_INFO_SHOWING, false);
         boolean animateTransition = true;
-        Photo photo = mPhotos.get(pagerIndex);
+        Photo photo = mDataModel.getPhotos().get(pagerIndex);
         if (mCommentsFragmentShowing) {
             setCommentsFragmentVisibility(photo, true, animateTransition);
         } else if (mPhotoInfoFragmentShowing) {
@@ -416,7 +402,7 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Photo currentlyShowing = mPhotos.get(mCurrentAdapterIndex);
+        Photo currentlyShowing = mDataModel.getPhotos().get(mCurrentAdapterIndex);
         switch (item.getItemId()) {
             case R.id.menu_view_comments:
                 onCommentsButtonClick(currentlyShowing);
@@ -473,7 +459,7 @@ public class PhotoViewerActivity extends BaseActivity
             return;
         }
         if (photo != null) {
-            mPhotos.add(photo);
+            mDataModel.getPhotos().add(photo);
             initViewPager(0, false);
         } else {
             Log.e(TAG, "null result received");
@@ -493,7 +479,15 @@ public class PhotoViewerActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int position) {
-            return PhotoViewerFragment.newInstance(mPhotos.get(position),
+            if (position == getCount()-1) {
+                mDataModel.fetchNextPage(new Events.IPhotoListReadyListener() {
+                    @Override
+                    public void onPhotosReady(List<Photo> photos, Exception e) {
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+            return PhotoViewerFragment.newInstance(mDataModel.getPhotos().get(position),
                     mFetchExtraInfo);
         }
 
@@ -511,7 +505,7 @@ public class PhotoViewerActivity extends BaseActivity
                 getSupportFragmentManager().popBackStack();
                 boolean animateTransition = false;
                 boolean show = true;
-                setCommentsFragmentVisibility(mPhotos.get(position), show,
+                setCommentsFragmentVisibility(mDataModel.getPhotos().get(position), show,
                         animateTransition);
             /* Likewise for info */
             } else if (mPhotoInfoFragment != null &&
@@ -519,14 +513,14 @@ public class PhotoViewerActivity extends BaseActivity
                 getSupportFragmentManager().popBackStack();
                 boolean animateTransition = false;
                 boolean show = true;
-                setPhotoInfoFragmentVisibility(mPhotos.get(position), show,
+                setPhotoInfoFragmentVisibility(mDataModel.getPhotos().get(position), show,
                         animateTransition);
             }
             mCurrentAdapterIndex = position;
 
             /* If sw600dp then show the title/author in the actionbar,
              * otherwise the fragment will overlay them on the photo */
-            Photo currentlyShowing = mPhotos.get(mCurrentAdapterIndex);
+            Photo currentlyShowing = mDataModel.getPhotos().get(mCurrentAdapterIndex);
             if (getResources().getBoolean(R.bool.sw600dp)) {
                 String photoTitle = currentlyShowing.getTitle();
                 if (photoTitle == null || photoTitle.length() == 0) {
@@ -546,7 +540,7 @@ public class PhotoViewerActivity extends BaseActivity
 
         @Override
         public int getCount() {
-            return mPhotos.size();
+            return mDataModel.getPhotos().size();
         }
     }
 

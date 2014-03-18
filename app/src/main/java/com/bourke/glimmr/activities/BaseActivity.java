@@ -24,6 +24,7 @@ import android.view.Window;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrAbCustomTitle;

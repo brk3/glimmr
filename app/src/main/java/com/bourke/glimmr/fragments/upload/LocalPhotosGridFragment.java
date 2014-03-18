@@ -25,9 +25,9 @@ import android.widget.LinearLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoUploadActivity;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.UsageTips;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.googlecode.flickrjandroid.photos.GeoData;

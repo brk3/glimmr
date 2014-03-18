@@ -6,8 +6,8 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.googlecode.flickrjandroid.oauth.OAuth;

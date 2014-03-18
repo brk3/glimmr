@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadPhotostreamTask;
+import com.bourke.glimmr.model.PhotoStreamModel;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -45,6 +47,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        mDataModel = PhotoStreamModel.getInstance(mActivity, mOAuth, mUserToView);
         super.onCreateView(inflater, container, savedInstanceState);
         return mLayout;
     }
@@ -99,8 +102,7 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
     private void startTask(int page) {
         super.startTask();
         mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
-        mTask = new LoadPhotostreamTask(this, mUserToView, page)
-                .execute(mOAuth);
+        PhotoStreamModel.getInstance(mActivity, mOAuth, mUserToView).fetchNextPage(this);
     }
 
     @Override

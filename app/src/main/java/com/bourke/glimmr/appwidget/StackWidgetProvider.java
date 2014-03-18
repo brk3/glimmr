@@ -10,9 +10,9 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
-import com.bourke.glimmr.common.Constants;
 
 public class StackWidgetProvider extends AppWidgetProvider {
 

@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.bourke.glimmr.BuildConfig;
+
 import java.util.HashSet;
 import java.util.Set;
 

@@ -22,10 +22,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TextUtils;

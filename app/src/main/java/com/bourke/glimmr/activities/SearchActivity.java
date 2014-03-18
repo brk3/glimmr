@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.fragments.search.AbstractPhotoSearchGridFragment;

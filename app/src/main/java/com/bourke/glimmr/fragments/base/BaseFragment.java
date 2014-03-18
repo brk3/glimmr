@@ -15,9 +15,9 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
 import com.bourke.glimmr.common.TextUtils;
 import com.googlecode.flickrjandroid.oauth.OAuth;
