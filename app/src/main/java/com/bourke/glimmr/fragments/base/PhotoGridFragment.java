@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.base;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -70,7 +71,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d("(PhotoGridFragment)" + getLogTag(), "onCreateView");
         }
         mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
@@ -84,7 +85,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
         }
         if (!mPhotos.isEmpty()) {
@@ -117,7 +118,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     @Override
     protected void refresh() {
-        if (Constants.DEBUG) Log.d(getLogTag(), "refresh");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "refresh");
         mPage = 1;
         mMorePages = true;
         if (mPhotos.size() > 0) {
@@ -142,7 +143,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                 ret.add(mPhotos.get(checkArray.keyAt(i)));
             }
         }
-        if (Constants.DEBUG) Log.d(TAG, "getSelectedPhotos: " + ret.size());
+        if (BuildConfig.DEBUG) Log.d(TAG, "getSelectedPhotos: " + ret.size());
         return ret;
     }
 
@@ -219,7 +220,7 @@ public abstract class PhotoGridFragment extends BaseFragment
      */
     protected void checkForNewPhotos(List<Photo> photos) {
         if (photos == null || photos.isEmpty()) {
-            if (Constants.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(getLogTag(), "checkForNewPhotos: photos null or empty");
             return;
         }
@@ -231,7 +232,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                 Photo p = photos.get(i);
                 if (p.getId().equals(newestId)) {
                     mNewPhotos = photos.subList(0, i);
-                    if (Constants.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(getLogTag(), String.format("Found %d new photos",
                                 mNewPhotos.size()));
                     break;
@@ -242,7 +243,7 @@ public abstract class PhotoGridFragment extends BaseFragment
         if (mNewPhotos != null && !mNewPhotos.isEmpty()) {
             storeNewestPhotoId(mNewPhotos.get(0));
         } else {
-            if (Constants.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(getLogTag(), "mNewPhotos null or empty, using most " +
                     "recent fetched photo as newest");
             storeNewestPhotoId(photos.get(0));

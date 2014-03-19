@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -43,7 +44,7 @@ public class LoadPhotosetPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> 
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return f.getPhotosetsInterface().getPhotos(
                         ""+mPhotoset.getId(), Constants.EXTRAS,
@@ -54,8 +55,8 @@ public class LoadPhotosetPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> 
                 mException = e;
             }
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
-            if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Making unauthenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return FlickrHelper.getInstance().getPhotosetsInterface()
                     .getPhotos(""+mPhotoset.getId(), Constants.EXTRAS,
@@ -72,7 +73,7 @@ public class LoadPhotosetPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> 
     @Override
     protected void onPostExecute(List<Photo> result) {
         if (result == null) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.e(TAG, "Error fetching photolist, result is null");
             }
             result = Collections.EMPTY_LIST;
@@ -82,6 +83,6 @@ public class LoadPhotosetPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> 
 
     @Override
     protected void onCancelled(final List<Photo> result) {
-        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

@@ -1,5 +1,6 @@
 package com.bourke.glimmr.appwidget;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -61,7 +62,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
      * more than 20 seconds in this call will result in an ANR.
      */
     public void onCreate() {
-        if (Constants.DEBUG) Log.d(TAG, "onCreate");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
 
         mOAuth = OAuthUtils.loadAccessToken(mContext);
         mUser = null;
@@ -148,7 +149,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
      */
     @Override
     public void onDataSetChanged() {
-        if (Constants.DEBUG) Log.d(TAG, "onDataSetChanged");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onDataSetChanged");
         updatePhotos();
     }
 

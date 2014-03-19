@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -130,7 +131,7 @@ public class GroupViewerActivity extends BottomOverlayActivity
 
     @Override
     public void onGroupInfoReady(Group group, Exception e) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onGroupInfoReady");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onGroupInfoReady");
         if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
             return;
         }

@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.viewer;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -59,7 +60,7 @@ public final class ExifInfoFragment extends BaseFragment
     @Override
     protected void startTask() {
         super.startTask();
-        if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "startTask()");
         mTask = new LoadExifInfoTask(this, mPhoto);
         mTask.execute(mOAuth);
     }
@@ -117,7 +118,7 @@ public final class ExifInfoFragment extends BaseFragment
             mTextViewErrorMessage.setVisibility(View.VISIBLE);
             if (exc instanceof FlickrException) {
                 String errCode = ((FlickrException) exc).getErrorCode();
-                if (Constants.DEBUG) Log.d(getLogTag(), "errCode: " + errCode);
+                if (BuildConfig.DEBUG) Log.d(getLogTag(), "errCode: " + errCode);
                 if (errCode != null && ERR_PERMISSION_DENIED.equals(errCode)) {
                     mTextViewErrorMessage.setText(
                             mActivity.getString(R.string.no_exif_permission));

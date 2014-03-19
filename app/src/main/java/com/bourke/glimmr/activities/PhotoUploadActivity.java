@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -72,7 +73,7 @@ public class PhotoUploadActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreate");
 
         setContentView(R.layout.photo_upload_activity);
         mPhotoUploadFragment = (PhotoUploadFragment)

@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -42,7 +43,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, List<Photo>> {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Fetching page " + mPage);
 
             try {
                 return f.getPeopleInterface().getPhotos(mUser.getId(),
@@ -60,7 +61,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, List<Photo>> {
     @Override
     protected void onPostExecute(final List<Photo> result) {
         if (result == null) {
-            if (Constants.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.e(TAG, "Error fetching photolist, result is null");
         }
         mListener.onPhotosReady(result, mException);
@@ -68,7 +69,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     @Override
     protected void onCancelled(final List<Photo> result) {
-        if (Constants.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "onCancelled");
     }
 }

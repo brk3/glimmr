@@ -1,5 +1,6 @@
 package com.bourke.glimmr.common;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +18,7 @@ public class OAuthUtils {
     public static boolean isLoggedIn(Context context) {
         OAuth oauth = loadAccessToken(context);
         boolean isLoggedIn = (oauth != null && oauth.getUser() != null);
-        if (Constants.DEBUG) Log.d(TAG, "isLoggedIn: " + isLoggedIn);
+        if (BuildConfig.DEBUG) Log.d(TAG, "isLoggedIn: " + isLoggedIn);
         return isLoggedIn;
     }
 

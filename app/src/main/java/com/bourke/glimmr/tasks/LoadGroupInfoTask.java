@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -26,10 +27,10 @@ public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
 
     @Override
     protected Group doInBackground(OAuth... params) {
-        if (Constants.DEBUG) Log.d(TAG, "Starting LoadGroupInfoTask");
+        if (BuildConfig.DEBUG) Log.d(TAG, "Starting LoadGroupInfoTask");
         OAuth oauth = params[0];
         if (oauth != null) {
-            if (Constants.DEBUG) Log.d(TAG, "Authenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Authenticated call");
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
@@ -40,7 +41,7 @@ public class LoadGroupInfoTask extends AsyncTask<OAuth, Void, Group> {
                 mException = e;
             }
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Unauthenticated call");
             try {
                 return FlickrHelper.getInstance().getGroupsInterface()
                     .getInfo(mGroupId);

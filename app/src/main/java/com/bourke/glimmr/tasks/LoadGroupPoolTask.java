@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -42,7 +43,7 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return f.getPoolsInterface().getPhotos(mGroup.getId(), null,
                         Constants.EXTRAS, Constants.FETCH_PER_PAGE, mPage);
@@ -51,8 +52,8 @@ public class LoadGroupPoolTask extends AsyncTask<OAuth, Void, List<Photo>> {
                 mException = e;
             }
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
-            if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Making unauthenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return FlickrHelper.getInstance().getPoolsInterface()
                     .getPhotos(mGroup.getId(), null, Constants.EXTRAS,

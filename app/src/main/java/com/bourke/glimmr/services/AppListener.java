@@ -1,5 +1,6 @@
 package com.bourke.glimmr.services;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -25,7 +26,7 @@ public class AppListener implements WakefulIntentService.AlarmListener {
         boolean enableNotifications =
             prefs.getBoolean(Constants.KEY_ENABLE_NOTIFICATIONS, false);
         if (!enableNotifications) {
-            if (Constants.DEBUG) Log.d(TAG, "Cancelling alarms");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Cancelling alarms");
             AppService.cancelAlarms(context);
             return;
         }
@@ -34,7 +35,7 @@ public class AppListener implements WakefulIntentService.AlarmListener {
         mgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime()+mMinutes*60*1000,
                 mMinutes*60*1000, pendingIntent);
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, String.format("Set alarms for %d minute intervals",
                     mMinutes));
         }

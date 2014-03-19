@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.base;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
@@ -48,7 +49,7 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreate");
 
         mActivity = (BaseActivity) getActivity();
         mActionBar = mActivity.getActionBar();
@@ -62,7 +63,7 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
     @Override
     public void onResume() {
         super.onResume();
-        if (Constants.DEBUG) Log.d(getLogTag(), "onResume");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onResume");
 
         /* Update our reference to the activity as it may have changed */
         mActivity = (BaseActivity) getActivity();
@@ -92,7 +93,7 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (Constants.DEBUG) Log.d(TAG, "onOptionsItemSelected");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
             case R.id.menu_refresh:
                 refresh();
@@ -124,7 +125,7 @@ public abstract class BaseFragment extends Fragment implements ISimpleDialogList
     }
 
     protected void startTask() {
-        if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "startTask()");
         if (mOAuth == null || mOAuth.getUser() == null) {
             mOAuth = OAuthUtils.loadAccessToken(mActivity);
         }

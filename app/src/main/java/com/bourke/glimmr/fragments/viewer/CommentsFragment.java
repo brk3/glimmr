@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.viewer;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -131,13 +132,13 @@ public final class CommentsFragment extends BaseDialogFragment
         TextView editText = (TextView) mLayout.findViewById(R.id.editText);
         String commentText = editText.getText().toString();
         if ("".equals(commentText)) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(getLogTag(), "Comment text empty, do nothing");
             }
             return;
         }
 
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(getLogTag(), "Starting AddCommentTask: " + commentText);
         }
         new AddCommentTask(this, mPhoto, commentText).execute(mOAuth);
@@ -157,7 +158,7 @@ public final class CommentsFragment extends BaseDialogFragment
 
     @Override
     public void onCommentAdded(String commentId, Exception e) {
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(getLogTag(), "Sucessfully added comment with id: " + commentId);
         }
         startTask();
@@ -174,7 +175,7 @@ public final class CommentsFragment extends BaseDialogFragment
             Log.e(TAG, "onCommentsReady: comments are null");
             return;
         }
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(getLogTag(), "onCommentsReady, comments.size(): " + comments.size());
         }
 

@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -48,7 +49,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
                 mException = e;
             }
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Making unauthenticated call");
             try {
                 return FlickrHelper.getInstance().getPeopleInterface()
                     .getInfo(mUserId);
@@ -63,7 +64,7 @@ public class LoadUserTask extends AsyncTask<OAuth, Void, User> {
     @Override
     protected void onPostExecute(final User result) {
         if (result == null) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.e(TAG, "Error fetching user info, result is null");
             }
         }

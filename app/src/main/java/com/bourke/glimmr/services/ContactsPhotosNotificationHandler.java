@@ -1,5 +1,6 @@
 package com.bourke.glimmr.services;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -70,7 +71,7 @@ public class ContactsPhotosNotificationHandler
      */
     @Override
     public void onPhotosReady(List<Photo> photos, Exception e) {
-        if (Constants.DEBUG) Log.d(TAG, "onPhotosReady");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onPhotosReady");
         if (photos != null) {
             List<Photo> newPhotos = checkForNewPhotos(photos);
             if (newPhotos != null && !newPhotos.isEmpty()) {
@@ -110,7 +111,7 @@ public class ContactsPhotosNotificationHandler
      */
     private List<Photo> checkForNewPhotos(List<Photo> photos) {
         if (photos == null || photos.isEmpty()) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "checkForNewPhotos: photos null or empty");
             }
             return Collections.EMPTY_LIST;
@@ -125,7 +126,7 @@ public class ContactsPhotosNotificationHandler
                 break;
             }
         }
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, String.format("Found %d new photos", newPhotos.size()));
         }
         return newPhotos;
@@ -137,7 +138,7 @@ public class ContactsPhotosNotificationHandler
     private String getLatestViewedId() {
         String newestId = mPrefs.getString(
                 ContactsGridFragment.KEY_NEWEST_CONTACT_PHOTO_ID, "");
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "getLatestViewedId: " + newestId);
         }
         return newestId;
@@ -151,7 +152,7 @@ public class ContactsPhotosNotificationHandler
     public String getLatestIdNotifiedAbout() {
         String newestId = mPrefs.getString(
                 KEY_NOTIFICATION_NEWEST_CONTACT_PHOTO_ID, "");
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "getLatestIdNotifiedAbout: " + newestId);
         }
         return newestId;
@@ -162,7 +163,7 @@ public class ContactsPhotosNotificationHandler
         mPrefsEditor.putString(KEY_NOTIFICATION_NEWEST_CONTACT_PHOTO_ID,
                 photo.getId());
         mPrefsEditor.commit();
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "Updated most recent contact photo id to " +
                     photo.getId() + " (notification)");
         }

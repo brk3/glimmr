@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
@@ -97,7 +98,7 @@ public abstract class BaseActivity extends FragmentActivity {
         final boolean isFirstRun = prefs.getBoolean(
                 Constants.KEY_IS_FIRST_RUN, true);
         if (isFirstRun) {
-            if (Constants.DEBUG) Log.d(TAG, "onPause: set isFirstRun=false");
+            if (BuildConfig.DEBUG) Log.d(TAG, "onPause: set isFirstRun=false");
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(Constants.KEY_IS_FIRST_RUN, false);
             editor.commit();
@@ -110,7 +111,7 @@ public abstract class BaseActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (Constants.DEBUG) Log.d(getLogTag(), "onDestroy");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onDestroy");
         Crouton.cancelAllCroutons();
     }
 
@@ -176,15 +177,15 @@ public abstract class BaseActivity extends FragmentActivity {
     private void startTapeQueues() {
         if (OAuthUtils.isLoggedIn(this)) {
             if (!AddToGroupTaskQueueService.IS_RUNNING) {
-                if (Constants.DEBUG) Log.d(TAG, "Starting AddToGroupTaskQueueService");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Starting AddToGroupTaskQueueService");
                 startService(new Intent(this, AddToGroupTaskQueueService.class));
             }
             if (!AddToPhotosetTaskQueueService.IS_RUNNING) {
-                if (Constants.DEBUG) Log.d(TAG, "Starting AddToPhotosetTaskQueueService");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Starting AddToPhotosetTaskQueueService");
                 startService(new Intent(this, AddToPhotosetTaskQueueService.class));
             }
             if (!UploadPhotoTaskQueueService.IS_RUNNING) {
-                if (Constants.DEBUG) Log.d(TAG, "Starting UploadPhotoTaskQueueService");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Starting UploadPhotoTaskQueueService");
                 startService(new Intent(this, UploadPhotoTaskQueueService.class));
             }
         }

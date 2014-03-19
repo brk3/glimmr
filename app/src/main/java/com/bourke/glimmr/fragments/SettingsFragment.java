@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -95,7 +96,7 @@ public class SettingsFragment extends PreferenceFragment
             boolean enableNotifications = sharedPreferences.getBoolean(
                     Constants.KEY_ENABLE_NOTIFICATIONS, false);
             if (!enableNotifications) {
-                if (Constants.DEBUG) Log.d(TAG, "Cancelling alarms");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Cancelling alarms");
                 AppService.cancelAlarms(getActivity());
             } else {
                 WakefulIntentService.scheduleAlarms(new AppListener(),

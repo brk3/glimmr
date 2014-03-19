@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.home;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -79,7 +80,7 @@ public class FavoritesGridFragment extends PhotoGridFragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(KEY_NEWEST_FAVORITES_PHOTO_ID, photo.getId());
         editor.commit();
-        if (Constants.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(getLogTag(), "Updated most recent favorites photo id to " +
                 photo.getId());
     }

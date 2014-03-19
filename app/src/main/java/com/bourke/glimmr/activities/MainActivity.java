@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -194,7 +195,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void updateMenuListItems(boolean forceRefresh) {
-        if (Constants.DEBUG) Log.d(TAG, "updateMenuListItems");
+        if (BuildConfig.DEBUG) Log.d(TAG, "updateMenuListItems");
 
         final List<Object> menuItems = new ArrayList<Object>();
 
@@ -255,7 +256,7 @@ public class MainActivity extends BaseActivity {
                 .ACTIVITY_ITEMLIST_FILE);
         boolean isStale = (mActivityListVersion < lastUpdate);
         boolean ret = (isStale || !f.exists());
-        if (Constants.DEBUG) Log.d(TAG, "activityItemsNeedsUpdate: " + ret);
+        if (BuildConfig.DEBUG) Log.d(TAG, "activityItemsNeedsUpdate: " + ret);
         return ret;
     }
 
@@ -352,7 +353,7 @@ public class MainActivity extends BaseActivity {
         final boolean isFirstRun = mPrefs.getBoolean(
                 Constants.KEY_IS_FIRST_RUN, true);
         if (isFirstRun) {
-            if (Constants.DEBUG) Log.d(TAG, "First run");
+            if (BuildConfig.DEBUG) Log.d(TAG, "First run");
             mMenuDrawer.peekDrawer();
         }
 
@@ -412,11 +413,11 @@ public class MainActivity extends BaseActivity {
         boolean enableNotifications = defaultSharedPrefs.getBoolean(
                 Constants.KEY_ENABLE_NOTIFICATIONS, false);
         if (enableNotifications) {
-            if (Constants.DEBUG) Log.d(TAG, "Scheduling alarms");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Scheduling alarms");
             WakefulIntentService.scheduleAlarms(
                     new AppListener(), this, false);
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Cancelling alarms");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Cancelling alarms");
             AppService.cancelAlarms(this);
         }
     }

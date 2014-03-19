@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.upload;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
@@ -157,7 +158,7 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
                 break;
             }
         }
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "getSelectedPhotos: " + selectedImages.size());
         }
         if (selectedImages.size() > 0) {

@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,7 +23,7 @@ public class LinkInterceptorActivity extends Activity {
     private void handleIntent(Intent intent) {
         Uri uri = intent.getData();
         List<String> params = uri.getPathSegments();
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, String.format("Received URI: '%s', params: %d",
                     uri.toString(), params.size()));
         }

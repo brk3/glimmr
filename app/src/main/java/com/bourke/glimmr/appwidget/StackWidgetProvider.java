@@ -1,5 +1,6 @@
 package com.bourke.glimmr.appwidget;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -26,7 +27,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Constants.DEBUG) Log.d(TAG, "onReceive");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onReceive");
 
         AppWidgetManager mgr = AppWidgetManager.getInstance(context);
 
@@ -49,7 +50,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
             photoViewer.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(photoViewer);
         } else if (intent.getAction().equals(ACTION_REFRESH)) {
-            if (Constants.DEBUG) Log.d(TAG, "got action_refresh");
+            if (BuildConfig.DEBUG) Log.d(TAG, "got action_refresh");
             int appWidgetId = intent.getIntExtra(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -67,7 +68,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
             int[] appWidgetIds) {
-        if (Constants.DEBUG) Log.d(TAG, "onUpdate: " + appWidgetIds.length);
+        if (BuildConfig.DEBUG) Log.d(TAG, "onUpdate: " + appWidgetIds.length);
 
         for (int appWidgetId : appWidgetIds) {
             /* Intent for creating the collection's views */

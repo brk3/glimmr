@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,20 +51,20 @@ public final class LoginFragment extends BaseFragment
     private IOnNotNowClicked mNotNowListener;
 
     public static LoginFragment newInstance() {
-        if (Constants.DEBUG) Log.d(TAG, "newInstance");
+        if (BuildConfig.DEBUG) Log.d(TAG, "newInstance");
         return new LoginFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Constants.DEBUG) Log.d(TAG, "onCreate");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreateView");
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.login_fragment, container, false);
 
@@ -102,7 +103,7 @@ public final class LoginFragment extends BaseFragment
             return;
         }
         persistAccessToken(accessToken);
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "Got token, saved to disk, good to start MainActivity");
         }
         Toast.makeText(mActivity, getString(R.string.logged_in),

@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -50,7 +51,7 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
                 mException = e;
             }
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Making unauthenticated call");
             try {
                 return FlickrHelper.getInstance()
                     .getPhotosetsInterface().getList(mUser.getId());
@@ -65,7 +66,7 @@ public class LoadPhotosetsTask extends AsyncTask<OAuth, Void, Photosets> {
     @Override
     protected void onPostExecute(final Photosets result) {
         if (result == null) {
-            if (Constants.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.e(TAG, "Error fetching photosets, result is null");
         }
         mListener.onPhotosetsReady(result, mException);

@@ -1,5 +1,6 @@
 package com.bourke.glimmr.services;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -76,7 +77,7 @@ public class ActivityNotificationHandler
     @Override
     public void onItemListReady(List<Item> items, Exception e) {
         if (items != null && !items.isEmpty()) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "onItemListReady: items.size: " + items.size());
             }
             checkForNewItemEvents(items);
@@ -97,7 +98,7 @@ public class ActivityNotificationHandler
      * either new, or has updated events.
      */
     private void checkForNewItemEvents(List<Item> fetchedItems) {
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "Loading existing item list and comparing it against " +
                     "the ones we just fetched");
         }
@@ -107,7 +108,7 @@ public class ActivityNotificationHandler
         }
         List<Item> currentItems = loadItemList(mContext);
         if (currentItems == null || currentItems.isEmpty()) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "checkForNewItemEvents: couldn't load any " +
                         "existing items to compare against");
             }
@@ -131,7 +132,7 @@ public class ActivityNotificationHandler
                 List<Event> curEvents = (List<Event>)curItem.getEvents();
                 if (newEvents.size() > curEvents.size()) {
                     /* we have new events */
-                    if (Constants.DEBUG) {
+                    if (BuildConfig.DEBUG) {
                         Log.d(TAG, "Found update to existing item " +
                                 fetchedItem.getTitle());
                     }
@@ -145,7 +146,7 @@ public class ActivityNotificationHandler
         }
 
         if (isNewItem) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "Found new item " + fetchedItem.getTitle());
             }
             if (!latestIdNotifiedAbout.equals(latestEventId)) {
@@ -156,7 +157,7 @@ public class ActivityNotificationHandler
     }
 
     private void showNotification(final Item item, final int eventOffset) {
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "showNotification for " + item.getTitle() +
                     ", starting ajax task to fetch the item image");
         }
@@ -179,7 +180,7 @@ public class ActivityNotificationHandler
 
     private void onItemPhotoReady(Item item, Photo photo, Bitmap bitmap,
             int eventOffset) {
-        if (Constants.DEBUG) Log.d(TAG, "onItemPhotoReady");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onItemPhotoReady");
 
         String tickerText = String.format("%s %s",
                 mContext.getString(R.string.new_activity), item.getTitle());
@@ -189,7 +190,7 @@ public class ActivityNotificationHandler
         StringBuilder contentText = new StringBuilder();
         List<Event> events = (List<Event>) item.getEvents();
         List<Event> newEvents = events.subList(eventOffset, events.size());
-        if (Constants.DEBUG) Log.d(TAG, "newEvents.size: " + newEvents.size());
+        if (BuildConfig.DEBUG) Log.d(TAG, "newEvents.size: " + newEvents.size());
         for (int i=0; i<newEvents.size(); i++) {
             Event e = newEvents.get(i);
             if ("comment".equals(e.getType())) {
@@ -263,7 +264,7 @@ public class ActivityNotificationHandler
     public String getLatestIdNotifiedAbout() {
         String newestId = mPrefs.getString(
                 KEY_NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID, "");
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "getLatestIdNotifiedAbout: " + newestId);
         }
         return newestId;
@@ -274,7 +275,7 @@ public class ActivityNotificationHandler
         mPrefsEditor.putString(KEY_NOTIFICATION_NEWEST_ACTIVITY_EVENT_ID,
                 eventId);
         mPrefsEditor.commit();
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "Updated most event id notified about to " + eventId);
         }
     }
@@ -301,7 +302,7 @@ public class ActivityNotificationHandler
                 (System.currentTimeMillis() / 1000L));
         prefsEditor.commit();
 
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, String.format("Sucessfully wrote %d items to %s",
                     items.size(), ACTIVITY_ITEMLIST_FILE));
         }
@@ -320,7 +321,7 @@ public class ActivityNotificationHandler
         Type collectionType = new TypeToken<Collection<Item>>(){}.getType();
         ret = new Gson().fromJson(json, collectionType);
 
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, String.format("Sucessfully read %d items from %s",
                     ret.size(), ACTIVITY_ITEMLIST_FILE));
         }

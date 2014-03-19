@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -128,7 +129,7 @@ public class PhotosetViewerActivity extends BottomOverlayActivity
 
     @Override
     public void onPhotosetReady(Photoset photoset, Exception e) {
-        if (Constants.DEBUG) Log.d(TAG, "onPhotosetReady");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onPhotosetReady");
         if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
             return;
         }
@@ -145,7 +146,7 @@ public class PhotosetViewerActivity extends BottomOverlayActivity
 
     @Override
     public void onUserReady(User user, Exception e) {
-        if (Constants.DEBUG) Log.d(TAG, "onUserReady");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onUserReady");
         if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
             return;
         }

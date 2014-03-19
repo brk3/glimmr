@@ -1,5 +1,6 @@
 package com.bourke.glimmr.services;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Intent;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -27,12 +28,12 @@ public class AppService extends WakefulIntentService {
      */
     @Override
     protected void doWakefulWork(Intent intent) {
-        if (Constants.DEBUG) Log.d(TAG, "doWakefulWork");
+        if (BuildConfig.DEBUG) Log.d(TAG, "doWakefulWork");
 
         /* Fetch the oauth token from storage */
         OAuth oauth = OAuthUtils.loadAccessToken(this);
         if (oauth == null) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "doWakefulWork: no stored oauth token found, " +
                         "doing nothing");
             }

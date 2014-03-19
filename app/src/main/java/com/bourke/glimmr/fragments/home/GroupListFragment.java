@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.home;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -115,7 +116,7 @@ public class GroupListFragment extends BaseFragment
 
     @Override
     public void onGroupListReady(List<Group> groups, Exception e) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onGroupListReady");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onGroupListReady");
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e) ||
                 groups == null) {
             mNoConnectionLayout.setVisibility(View.VISIBLE);

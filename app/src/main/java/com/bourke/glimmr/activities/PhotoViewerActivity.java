@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -115,20 +116,20 @@ public class PhotoViewerActivity extends BaseActivity
     private void handleIntent(Intent intent) {
         if (intent.getBooleanExtra(KEY_INTENT_CONSUMED, false)) {
             /* prevent the intent getting executed twice on rotate */
-            if (Constants.DEBUG) Log.d(TAG, "KEY_INTENT_CONSUMED true");
+            if (BuildConfig.DEBUG) Log.d(TAG, "KEY_INTENT_CONSUMED true");
             return;
         }
         final int startIndex =
                 intent.getIntExtra(KEY_START_INDEX, 0);
         if (intent.getAction().equals(ACTION_VIEW_PHOTO_BY_ID)) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "Received ACTION_VIEW_PHOTO_BY_ID intent");
             }
             intent.putExtra(KEY_INTENT_CONSUMED, true);
             String photoId = intent.getStringExtra(KEY_PHOTO_ID);
             new LoadPhotoInfoTask(this, photoId).execute(mOAuth);
         } else if (intent.getAction().equals(ACTION_VIEW_PHOTOLIST)) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "Received ACTION_VIEW_PHOTOLIST intent");
             }
             intent.putExtra(KEY_INTENT_CONSUMED, true);
@@ -162,7 +163,7 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreate");
 
         /* Must be called before adding content */
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
@@ -201,7 +202,7 @@ public class PhotoViewerActivity extends BaseActivity
             PreferenceManager.getDefaultSharedPreferences(this);
         final int delay_m = Integer.parseInt(defaultSharedPrefs.getString(
                 Constants.KEY_SLIDESHOW_INTERVAL, "3")) * 1000;
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "slideshow delay: " + delay_m);
         }
         mTimer = new Timer();
@@ -439,7 +440,7 @@ public class PhotoViewerActivity extends BaseActivity
     @Subscribe
     public void onVisibilityChanged(
             final PhotoViewerVisibilityChangeEvent event) {
-        if (Constants.DEBUG) Log.d(TAG, "onVisibilityChanged");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onVisibilityChanged");
 
         /* If overlay is being switched off and info/comments fragments are
          * showing, dismiss(hide) these and return */
@@ -457,7 +458,7 @@ public class PhotoViewerActivity extends BaseActivity
             mTimer.cancel();
             mTimer = null;  /* ensure timer isn't wrongly restarted
                                onSaveInstanceState */
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "stopping slideshow");
             }
             getWindow().clearFlags(
@@ -467,7 +468,7 @@ public class PhotoViewerActivity extends BaseActivity
 
     @Override
     public void onPhotoInfoReady(Photo photo, Exception e) {
-        if (Constants.DEBUG) Log.d(TAG, "onPhotoInfoReady");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onPhotoInfoReady");
         if (FlickrHelper.getInstance().handleFlickrUnavailable(this, e)) {
             return;
         }

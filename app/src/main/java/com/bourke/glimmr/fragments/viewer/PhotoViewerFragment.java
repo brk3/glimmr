@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.viewer;
 
+import com.bourke.glimmr.BuildConfig;
 import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
 import android.content.Intent;
@@ -84,7 +85,7 @@ public final class PhotoViewerFragment extends BaseFragment
      */
     public static PhotoViewerFragment newInstance(Photo photo,
             boolean fetchExtraInfo) {
-        if (Constants.DEBUG) Log.d(TAG, "newInstance");
+        if (BuildConfig.DEBUG) Log.d(TAG, "newInstance");
 
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
         photoFragment.mBasePhoto = photo;
@@ -110,14 +111,14 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (Constants.DEBUG) Log.d(TAG, "onCreate");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreateView");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreateView");
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
         mVideoButton = (ImageView) mLayout.findViewById(
@@ -148,7 +149,7 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreateOptionsMenu");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreateOptionsMenu");
 
         inflater.inflate(R.menu.photoviewer_menu, menu);
         mFavoriteButton = menu.findItem(R.id.menu_favorite);
@@ -268,13 +269,13 @@ public final class PhotoViewerFragment extends BaseFragment
             return;
         }
         if (mIsFavoriting.get()) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(getLogTag(), "Favorite operation currently in progress");
             }
             return;
         }
         if (mPhotoExtendedInfo != null) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(getLogTag(), "Starting SetFavoriteTask for photo: "
                         + mPhotoExtendedInfo.getId());
             }
@@ -294,7 +295,7 @@ public final class PhotoViewerFragment extends BaseFragment
         if (e != null) {
             return;
         } else {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(getLogTag(), "Successfully favorited/unfavorited photo");
             }
             mPhotoExtendedInfo.setFavorite(!mPhotoExtendedInfo.isFavorite());
@@ -307,7 +308,7 @@ public final class PhotoViewerFragment extends BaseFragment
      * photo.
      */
     public void updateFavoriteButtonIcon(boolean favorite) {
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(getLogTag(), "updateFavoriteButtonIcon: " + favorite);
         }
         if (mFavoriteButton != null) {
@@ -318,7 +319,7 @@ public final class PhotoViewerFragment extends BaseFragment
                         R.drawable.ic_rating_not_important_dark);
             }
         } else {
-            if (Constants.DEBUG) Log.d(getLogTag(), "mFavoriteButton null");
+            if (BuildConfig.DEBUG) Log.d(getLogTag(), "mFavoriteButton null");
         }
     }
 
@@ -339,7 +340,7 @@ public final class PhotoViewerFragment extends BaseFragment
 
     @Override
     public void onPhotoInfoReady(Photo photo, Exception e) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onPhotoInfoReady");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onPhotoInfoReady");
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
             return;
         }
@@ -409,7 +410,7 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     private void displayImage() {
-        if (Constants.DEBUG) Log.d(TAG, "displayImage()");
+        if (BuildConfig.DEBUG) Log.d(TAG, "displayImage()");
         /* Fetch the main image */
         if (mBasePhoto != null) {
             String urlToFetch = getLargestUrlAvailable(mBasePhoto);
@@ -447,7 +448,7 @@ public final class PhotoViewerFragment extends BaseFragment
     @Subscribe
     public void onVisibilityChanged(
             final PhotoViewerVisibilityChangeEvent event) {
-        if (Constants.DEBUG) Log.d(TAG, "onVisibilityChanged");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onVisibilityChanged");
         setOverlayVisibility(event.visible);
     }
 

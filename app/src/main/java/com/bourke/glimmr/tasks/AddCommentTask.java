@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -55,7 +56,7 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
     @Override
     protected void onPostExecute(final String result) {
         if (result == null) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.e(TAG, "Error adding comment, result is null");
             }
         }
@@ -64,6 +65,6 @@ public class AddCommentTask extends AsyncTask<OAuth, Void, String> {
 
     @Override
     protected void onCancelled(final String result) {
-        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

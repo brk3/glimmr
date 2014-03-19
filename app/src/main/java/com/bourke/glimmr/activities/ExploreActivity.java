@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,7 +43,7 @@ public class ExploreActivity extends BaseActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreate");
 
         CONTENT = new String[] { "Last 7 Days" };
 
@@ -125,7 +126,7 @@ public class ExploreActivity extends BaseActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (Constants.DEBUG) Log.d(getLogTag(), "onNewIntent");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onNewIntent");
 
         setIntent(intent);
         handleIntent(intent);
@@ -148,13 +149,13 @@ public class ExploreActivity extends BaseActivity
                 new GetAccessTokenTask(mLoginFragment).execute(oauthToken,
                         oAuthSecret, oauthVerifier);
             } else {
-                if (Constants.DEBUG) {
+                if (BuildConfig.DEBUG) {
                     Log.d(TAG, "Received intent but unknown scheme: " +
                             scheme);
                 }
             }
         } else {
-            if (Constants.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Started with null intent");
         }
     }

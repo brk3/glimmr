@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -52,7 +53,7 @@ public class LoadPhotoInfoTask extends AsyncTask<OAuth, Void, Photo> {
                 mException = e;
             }
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Unauthenticated call");
             try {
                 if (mSecret != null) {
                     return FlickrHelper.getInstance().getPhotosInterface()

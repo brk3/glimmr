@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.home;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -159,7 +160,7 @@ public class PhotosetsFragment extends BaseFragment
 
     @Override
     public void onPhotosetsReady(Photosets photoSets, Exception e) {
-        if (Constants.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onPhotosetListReady");
         mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e) ||
                 photoSets == null) {

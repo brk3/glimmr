@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -62,6 +63,6 @@ public class LoadFlickrActivityTask
 
     @Override
     protected void onCancelled(final List<Item> result) {
-        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

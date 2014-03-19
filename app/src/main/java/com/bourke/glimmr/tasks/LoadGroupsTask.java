@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -63,7 +64,7 @@ public class LoadGroupsTask extends AsyncTask<OAuth, Void, Collection<Group>> {
 
     @Override
     protected void onCancelled(final Collection<Group> result) {
-        if (Constants.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "onCancelled");
     }
 }

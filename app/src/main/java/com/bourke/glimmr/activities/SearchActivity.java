@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class SearchActivity extends BottomOverlayActivity {
     protected void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String searchQuery = intent.getStringExtra(SearchManager.QUERY);
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, String.format("Got search query: '%s'",
                             searchQuery));
             }

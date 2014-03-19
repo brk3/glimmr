@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -23,7 +24,7 @@ public class LoadProfileIdTask extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... params) {
         try {
-            if (Constants.DEBUG) Log.d(TAG, "Fetching id for " + mUrl);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Fetching id for " + mUrl);
             return FlickrHelper.getInstance().getUrlsInterface()
                     .lookupUser(mUrl).getId();
         } catch (Exception e) {

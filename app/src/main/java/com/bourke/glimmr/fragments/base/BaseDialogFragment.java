@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.base;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -28,7 +29,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Constants.DEBUG) Log.d(getLogTag(), "onCreate");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreate");
 
         mActivity = (BaseActivity) getActivity();
         mTextUtils = new TextUtils(mActivity.getAssets());
@@ -64,7 +65,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     }
 
     protected void startTask() {
-        if (Constants.DEBUG) Log.d(getLogTag(), "startTask()");
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "startTask()");
     }
 
     protected String getLogTag() {

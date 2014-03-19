@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -60,15 +61,15 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
         }
         switch (mSortType) {
             case AbstractPhotoSearchGridFragment.SORT_TYPE_RECENT:
-                if (Constants.DEBUG) Log.d(TAG, "Search type:RECENT");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Search type:RECENT");
                 sp.setSort(SearchParameters.DATE_POSTED_DESC);
                 break;
             case AbstractPhotoSearchGridFragment.SORT_TYPE_INTERESTING:
-                if (Constants.DEBUG) Log.d(TAG, "Search type:INTERESTINGNESS");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Search type:INTERESTINGNESS");
                 sp.setSort(SearchParameters.INTERESTINGNESS_DESC);
                 break;
             case AbstractPhotoSearchGridFragment.SORT_TYPE_RELAVANCE:
-                if (Constants.DEBUG) Log.d(TAG, "Search type:RELAVANCE");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Search type:RELAVANCE");
                 sp.setSort(SearchParameters.RELEVANCE);
                 break;
             default:
@@ -80,7 +81,7 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
             OAuthToken token = oauth.getToken();
             Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
                     token.getOauthToken(), token.getOauthTokenSecret());
-            if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return f.getPhotosInterface().search(
                         sp, Constants.FETCH_PER_PAGE, mPage);
@@ -89,8 +90,8 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
                 mException = e;
             }
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
-            if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Making unauthenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Fetching page " + mPage);
             try {
                 return FlickrHelper.getInstance().getPhotosInterface()
                     .search(sp, Constants.FETCH_PER_PAGE, mPage);
@@ -113,6 +114,6 @@ public class SearchPhotosTask extends AsyncTask<OAuth, Void, List<Photo>> {
 
     @Override
     protected void onCancelled(final List<Photo> result) {
-        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCancelled");
     }
 }

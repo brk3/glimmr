@@ -10,7 +10,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-import com.bourke.glimmr.common.Constants;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.event.Events.ITaskQueueServiceListener;
 import com.squareup.tape.Task;
 import com.squareup.tape.TaskQueue;
@@ -31,14 +32,14 @@ public abstract class AbstractTaskQueueService extends Service
 
     @Override
     public void onCreate() {
-        if (Constants.DEBUG) Log.d(TAG, "onCreate");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         super.onCreate();
         initTaskQueue();
     }
 
     @Override
     public void onDestroy() {
-        if (Constants.DEBUG) Log.d(TAG, "onDestroy");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onDestroy");
         super.onDestroy();
         mRunning = false;
     }
@@ -58,19 +59,19 @@ public abstract class AbstractTaskQueueService extends Service
 
         Task task = mQueue.peek();
         if (task != null) {
-            if (Constants.DEBUG) Log.d(TAG, "Attempt: " + mNumRetries);
+            if (BuildConfig.DEBUG) Log.d(TAG, "Attempt: " + mNumRetries);
             mRunning = true;
             task.execute(this);
         } else {
             /* No more tasks are present. Stop. */
-            if (Constants.DEBUG) Log.d(TAG, "Queue empty, service stopping");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Queue empty, service stopping");
             stopSelf();
         }
     }
 
     @Override
     public void onSuccess(final String itemId) {
-        if (Constants.DEBUG) Log.d(TAG, "onSuccess: " + itemId);
+        if (BuildConfig.DEBUG) Log.d(TAG, "onSuccess: " + itemId);
         mRunning = false;
         mQueue.remove();
         mNumRetries = 0;
@@ -79,11 +80,11 @@ public abstract class AbstractTaskQueueService extends Service
 
     @Override
     public void onFailure(final String itemId, final boolean retry) {
-        if (Constants.DEBUG) Log.d(TAG, "onFailure: " + itemId);
+        if (BuildConfig.DEBUG) Log.d(TAG, "onFailure: " + itemId);
         mNumRetries++;
         mRunning = false;
         if (mNumRetries >= MAX_RETRIES) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "Max retries reached, service stopping");
             }
             stopSelf();

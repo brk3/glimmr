@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -42,7 +43,7 @@ public class AddItemToPhotosetTask
 
     @Override
     public void execute(final ITaskQueueServiceListener listener) {
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, String.format(
                     "Processing photo id %s for photoset %s", mItemId,
                     mPhotosetId));

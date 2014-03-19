@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -49,7 +50,7 @@ public class LoadExifInfoTask
                 e.printStackTrace();
             }
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Making unauthenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Making unauthenticated call");
             try {
                 return FlickrHelper.getInstance().getPhotosInterface()
                     .getExif(mPhoto.getId(), mPhoto.getSecret());

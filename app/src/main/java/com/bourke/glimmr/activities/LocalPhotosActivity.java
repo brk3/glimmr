@@ -1,5 +1,6 @@
 package com.bourke.glimmr.activities;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.Bundle;
 import android.util.Log;
 import com.bourke.glimmr.R;
@@ -13,7 +14,7 @@ public class LocalPhotosActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Constants.DEBUG) Log.d(TAG, "onCreate");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
 
         setContentView(R.layout.local_photos_activity);
         mActionBar.setDisplayHomeAsUpEnabled(true);

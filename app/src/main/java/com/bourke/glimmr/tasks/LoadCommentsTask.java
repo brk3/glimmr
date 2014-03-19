@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -38,7 +39,7 @@ public class LoadCommentsTask
     protected List<Comment> doInBackground(OAuth... params) {
         OAuth oauth = params[0];
         if (oauth != null) {
-            if (Constants.DEBUG) Log.d(TAG, "Authenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Authenticated call");
             OAuthToken token = oauth.getToken();
             try {
                 Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
@@ -49,7 +50,7 @@ public class LoadCommentsTask
                 mException = e;
             }
         } else {
-            if (Constants.DEBUG) Log.d(TAG, "Unauthenticated call");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Unauthenticated call");
             try {
                 return FlickrHelper.getInstance().getCommentsInterface()
                         .getList(mPhoto.getId(), null, null);
@@ -64,7 +65,7 @@ public class LoadCommentsTask
     @Override
     protected void onPostExecute(final List<Comment> result) {
         if (result == null) {
-            if (Constants.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.e(TAG, "Error fetching comments, result is null");
         }
         mListener.onCommentsReady(result, mException);
@@ -72,7 +73,7 @@ public class LoadCommentsTask
 
     @Override
     protected void onCancelled(final List<Comment> result) {
-        if (Constants.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "onCancelled");
     }
 }

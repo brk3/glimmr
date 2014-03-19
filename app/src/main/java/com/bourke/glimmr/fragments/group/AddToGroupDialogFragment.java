@@ -1,5 +1,6 @@
 package com.bourke.glimmr.fragments.group;
 
+import com.bourke.glimmr.BuildConfig;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -107,7 +108,7 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
     @Override
     public void onPause() {
         super.onPause();
-        if (Constants.DEBUG) Log.d(TAG, "onPause");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onPause");
         BusProvider.getInstance().unregister(this);
     }
 
@@ -179,7 +180,7 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
 
     @Override
     public void onGroupInfoReady(Group group, Exception e) {
-        if (Constants.DEBUG) Log.d(TAG, "onGroupInfoReady");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onGroupInfoReady");
         mProgressBar.setVisibility(View.GONE);
 
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
@@ -215,7 +216,7 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
                 getString(R.string.remaining));
         mTitleView.setText(title);
 
-        if (Constants.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, String.format("Remaining: %d, Mode: %s, Count: %d",
                     throttle.getRemaining(), throttle.getMode(),
                     throttle.getCount()));

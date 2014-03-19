@@ -1,5 +1,6 @@
 package com.bourke.glimmr.common;
 
+import com.bourke.glimmr.BuildConfig;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -37,7 +38,7 @@ public class UsageTips {
                 PreferenceManager.getDefaultSharedPreferences(activity);
         boolean enable = defaultSharedPrefs.getBoolean(Constants.KEY_ENABLE_USAGE_TIPS, false);
         if (!enable) {
-            if (Constants.DEBUG) Log.d(TAG, "Usage tips disabled in preferences");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Usage tips disabled in preferences");
             return;
         }
         if (!force && !mShownTips.contains(tip)) {

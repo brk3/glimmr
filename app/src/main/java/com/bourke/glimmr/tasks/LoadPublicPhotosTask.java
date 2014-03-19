@@ -1,5 +1,6 @@
 package com.bourke.glimmr.tasks;
 
+import com.bourke.glimmr.BuildConfig;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.bourke.glimmr.common.Constants;
@@ -31,7 +32,7 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
 
     @Override
     protected List<Photo> doInBackground(Void... arg0) {
-        if (Constants.DEBUG) Log.d(TAG, "Fetching page " + mPage);
+        if (BuildConfig.DEBUG) Log.d(TAG, "Fetching page " + mPage);
 
         /* A specific date to return interesting photos for. */
         Date day = null;
@@ -51,7 +52,7 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
     @Override
     protected void onPostExecute(final List<Photo> result) {
         if (result == null) {
-            if (Constants.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.e(TAG, "Error fetching photolist, result is null");
             }
         }
@@ -60,6 +61,6 @@ public class LoadPublicPhotosTask extends AsyncTask<Void, Void, List<Photo>> {
 
     @Override
     protected void onCancelled(final List<Photo> result) {
-        if (Constants.DEBUG) Log.d(TAG, "onCancelled");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCancelled");
     }
 }
