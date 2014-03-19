@@ -1,14 +1,14 @@
 package com.bourke.glimmr.fragments.home;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadContactsPhotosTask;
+import com.bourke.glimmr.model.ContactsStreamModel;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 public class ContactsGridFragment extends PhotoGridFragment {
@@ -22,21 +22,22 @@ public class ContactsGridFragment extends PhotoGridFragment {
         return new ContactsGridFragment();
     }
 
+    @Override
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDataModel = ContactsStreamModel.getInstance(mActivity, mOAuth);
+    }
+
     /**
      * Once the parent binds the adapter it will trigger cacheInBackground
-     * for us as it will be empty when first bound.  So we don't need to
-     * override startTask().
+     * for us as it will be empty when first bound.
      */
     @Override
     protected boolean cacheInBackground() {
-        startTask(mPage++);
-        return mMorePages;
-    }
-
-    private void startTask(int page) {
         super.startTask();
         mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
-        new LoadContactsPhotosTask(this, page).execute(mOAuth);
+        ContactsStreamModel.getInstance(mActivity, mOAuth).fetchNextPage(this);
+        return mMorePages;
     }
 
     @Override

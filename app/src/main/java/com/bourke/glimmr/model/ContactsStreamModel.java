@@ -6,11 +6,10 @@ import android.util.Log;
 import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.event.Events;
-import com.bourke.glimmr.tasks.LoadPhotostreamTask;
+import com.bourke.glimmr.tasks.LoadContactsPhotosTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.googlecode.flickrjandroid.oauth.OAuth;
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.lang.reflect.Type;
@@ -18,40 +17,33 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PhotoStreamModel implements IDataModel {
+public class ContactsStreamModel implements IDataModel {
 
-    private static PhotoStreamModel ourInstance = new PhotoStreamModel();
+    private static ContactsStreamModel ourInstance = new ContactsStreamModel();
 
-    public static final String TAG = "Glimmr/PhotoStreamModel";
+    public static final String TAG = "Glimmr/ContactsStreamModel";
 
-    public static final String PHOTO_LIST_FILE = "PhotoStreamModel_photolist.json";
+    public static final String PHOTO_LIST_FILE = "ContactsStreamModel_photolist.json";
 
-    private static User mUserToView;
     private static List<Photo> mPhotos = new ArrayList<Photo>();
     private static int mPage = 1;
     private static OAuth mOAuth = null;
     private static Context mContext = null;
 
-    public static PhotoStreamModel getInstance(Context context, OAuth oauth, User userToView) {
+    public static ContactsStreamModel getInstance(Context context, OAuth oauth) {
         mContext = context;
         mOAuth = oauth;
-        mUserToView = userToView;
-        return ourInstance;
-    }
-
-    public static PhotoStreamModel getInstance(Context context) {
-        mContext = context;
         ourInstance.load();
         return ourInstance;
     }
 
-    private PhotoStreamModel() {
+    private ContactsStreamModel() {
     }
 
     @Override
     public synchronized void fetchNextPage(final Events.IPhotoListReadyListener listener) {
         if (BuildConfig.DEBUG) { Log.d(TAG, "fetchNextPage: mPage=" + mPage); }
-        new LoadPhotostreamTask(new Events.IPhotoListReadyListener() {
+        new LoadContactsPhotosTask(new Events.IPhotoListReadyListener() {
             /* update our list before calling the original callback */
             @Override
             public void onPhotosReady(List<Photo> photos, Exception e) {
@@ -60,7 +52,7 @@ public class PhotoStreamModel implements IDataModel {
                 }
                 listener.onPhotosReady(photos, e);
             }
-        }, mUserToView, mPage++).execute(mOAuth);
+        }, mPage++).execute(mOAuth);
     }
 
     @Override

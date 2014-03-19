@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.BuildConfig;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -186,12 +185,12 @@ public class MainActivity extends BaseActivity {
 
     private void initPageItems() {
         mContent = new ArrayList<PageItem>();
-        mPageTitles = Arrays.asList(new String[]{"Photos"});
+        mPageTitles = Arrays.asList(new String[]{"Contacts", "Photos"});
 //        mPageTitles = Arrays.asList(
 //                getResources().getStringArray(R.array.pageTitles));
 //
-//        mContent.add(new PageItem(getString(R.string.contacts),
-//                R.drawable.ic_action_social_person_dark));
+        mContent.add(new PageItem(getString(R.string.contacts),
+                R.drawable.ic_action_social_person_dark));
 
         mContent.add(new PageItem(getString(R.string.photos),
                 R.drawable.ic_content_picture_dark));

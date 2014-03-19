@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.home;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -90,19 +89,14 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
 
     /**
      * Once the parent binds the adapter it will trigger cacheInBackground
-     * for us as it will be empty when first bound.  So we don't need to
-     * override startTask().
+     * for us as it will be empty when first bound.
      */
     @Override
     protected boolean cacheInBackground() {
-        startTask(mPage++);
-        return mMorePages;
-    }
-
-    private void startTask(int page) {
         super.startTask();
         mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         PhotoStreamModel.getInstance(mActivity, mOAuth, mUserToView).fetchNextPage(this);
+        return mMorePages;
     }
 
     @Override

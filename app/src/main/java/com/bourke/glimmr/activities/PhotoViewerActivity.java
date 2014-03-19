@@ -33,7 +33,7 @@ import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoInfoFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment.PhotoViewerVisibilityChangeEvent;
-import com.bourke.glimmr.model.DataModel;
+import com.bourke.glimmr.model.IDataModel;
 import com.bourke.glimmr.model.PhotoStreamModel;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -88,7 +88,7 @@ public class PhotoViewerActivity extends BaseActivity
     private boolean mPhotoInfoFragmentShowing = false;
     private ActionBarTitle mActionbarTitle;
     private Timer mTimer;
-    private DataModel mDataModel;
+    private IDataModel mDataModel;
 
     /**
      * Start PhotoViewerActivity to view a list of photos, starting at a
@@ -138,7 +138,7 @@ public class PhotoViewerActivity extends BaseActivity
             intent.putExtra(KEY_INTENT_CONSUMED, true);
             int modelType = intent.getIntExtra(KEY_MODEL_TYPE, -1);
             switch (modelType) {
-                case DataModel.TYPE_PHOTOSTREAM:
+                case IDataModel.TYPE_PHOTOSTREAM:
                     mDataModel = PhotoStreamModel.getInstance(this);
                     break;
                 default:

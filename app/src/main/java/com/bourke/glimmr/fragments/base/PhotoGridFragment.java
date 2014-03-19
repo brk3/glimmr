@@ -1,12 +1,10 @@
 package com.bourke.glimmr.fragments.base;
 
-import com.bourke.glimmr.BuildConfig;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -33,7 +31,7 @@ import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.event.Events.PhotoItemLongClickDialogListener;
-import com.bourke.glimmr.model.DataModel;
+import com.bourke.glimmr.model.IDataModel;
 import com.commonsware.cwac.endless.EndlessAdapter;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.squareup.picasso.Picasso;
@@ -59,7 +57,6 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected int mPage = 1;
     protected boolean mMorePages = true;
     protected boolean mShowDetailsOverlay = true;
-    protected AsyncTask mTask;
 
     protected boolean mRetainInstance = true;
     protected int mGridChoiceMode = ListView.CHOICE_MODE_SINGLE;
@@ -69,7 +66,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected abstract String getNewestPhotoId();
     protected abstract void storeNewestPhotoId(Photo photo);
 
-    protected DataModel mDataModel;
+    protected IDataModel mDataModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -171,7 +168,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                                 checkArray.get(position)));
                     }
                 } else {
-                    PhotoViewerActivity.startPhotoViewer(mActivity, DataModel.TYPE_PHOTOSTREAM,
+                    PhotoViewerActivity.startPhotoViewer(mActivity, IDataModel.TYPE_PHOTOSTREAM,
                             position);
                 }
                 mGridView.invalidateViews();
