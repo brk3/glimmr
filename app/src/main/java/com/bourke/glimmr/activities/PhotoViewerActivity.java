@@ -35,6 +35,7 @@ import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment.PhotoViewerVisibilityChangeEvent;
 import com.bourke.glimmr.model.ContactsStreamModel;
 import com.bourke.glimmr.model.FavoritesStreamModel;
+import com.bourke.glimmr.model.GroupPoolModel;
 import com.bourke.glimmr.model.IDataModel;
 import com.bourke.glimmr.model.PhotoStreamModel;
 import com.bourke.glimmr.model.PhotosetStreamModel;
@@ -155,6 +156,8 @@ public class PhotoViewerActivity extends BaseActivity
                 return ContactsStreamModel.getInstance(this, mOAuth);
             case IDataModel.TYPE_FAVORITES:
                 return FavoritesStreamModel.getInstance(this);
+            case IDataModel.TYPE_GROUPPOOL:
+                return GroupPoolModel.getInstance(this);
             case IDataModel.TYPE_PHOTOSET:
                 return PhotosetStreamModel.getInstance(this);
             default:

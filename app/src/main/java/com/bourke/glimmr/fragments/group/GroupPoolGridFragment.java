@@ -15,7 +15,8 @@ import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadGroupPoolTask;
+import com.bourke.glimmr.model.GroupPoolModel;
+import com.bourke.glimmr.model.IDataModel;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.photos.Photo;
 
@@ -34,6 +35,12 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
         GroupPoolGridFragment newFragment = new GroupPoolGridFragment();
         newFragment.mGroup = group;
         return newFragment;
+    }
+
+    @Override
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDataModel = GroupPoolModel.getInstance(mActivity, mOAuth, mGroup);
     }
 
     @Override
@@ -68,19 +75,14 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
 
     /**
      * Once the parent binds the adapter it will trigger cacheInBackground
-     * for us as it will be empty when first bound.  So we don't need to
-     * override startTask().
+     * for us as it will be empty when first bound.
      */
     @Override
     protected boolean cacheInBackground() {
-        startTask(mPage++);
-        return mMorePages;
-    }
-
-    private void startTask(int page) {
         super.startTask();
         mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
-        new LoadGroupPoolTask(this, mGroup, page).execute(mOAuth);
+        mDataModel.fetchNextPage(this);
+        return mMorePages;
     }
 
     @Override
@@ -123,10 +125,9 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
                 photo.getId());
     }
 
-    // TODO
     @Override
     protected int getModelType() {
-        throw new UnsupportedOperationException();
+        return IDataModel.TYPE_GROUPPOOL;
     }
 
     @Override

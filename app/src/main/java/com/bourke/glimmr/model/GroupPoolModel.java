@@ -6,11 +6,11 @@ import android.util.Log;
 import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.event.Events;
-import com.bourke.glimmr.tasks.LoadFavoritesTask;
+import com.bourke.glimmr.tasks.LoadGroupPoolTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.lang.reflect.Type;
@@ -18,41 +18,42 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class FavoritesStreamModel implements IDataModel {
+public class GroupPoolModel implements IDataModel {
 
-    private static FavoritesStreamModel ourInstance = new FavoritesStreamModel();
+    private static GroupPoolModel ourInstance = new GroupPoolModel();
 
-    public static final String TAG = "Glimmr/FavoritesStreamModel";
+    public static final String TAG = "Glimmr/GroupPoolModel";
 
-    public static final String PHOTO_LIST_FILE = "FavoritesStreamModel_photolist.json";
+    public static final String PHOTO_LIST_FILE = "GroupPoolModel_photolist.json";
 
-    private static User mUserToView;
     private static List<Photo> mPhotos = new ArrayList<Photo>();
     private static int mPage = 1;
     private static OAuth mOAuth;
     private static Context mContext;
+    private static Group mGroup;
 
-    public static FavoritesStreamModel getInstance(Context context, OAuth oauth,
-                                                   User userToView) {
+    public static GroupPoolModel getInstance(Context context, OAuth oauth, Group group) {
         mContext = context;
         mOAuth = oauth;
-        mUserToView = userToView;
+        mGroup = group;
+        ourInstance.load();
         return ourInstance;
     }
 
-    public static FavoritesStreamModel getInstance(Context context) {
+
+    public static GroupPoolModel getInstance(Context context) {
         mContext = context;
         ourInstance.load();
         return ourInstance;
     }
 
-    private FavoritesStreamModel() {
+    private GroupPoolModel() {
     }
 
     @Override
     public synchronized void fetchNextPage(final Events.IPhotoListReadyListener listener) {
         if (BuildConfig.DEBUG) { Log.d(TAG, "fetchNextPage: mPage=" + mPage); }
-        new LoadFavoritesTask(new Events.IPhotoListReadyListener() {
+        new LoadGroupPoolTask(new Events.IPhotoListReadyListener() {
             /* update our list before calling the original callback */
             @Override
             public void onPhotosReady(List<Photo> photos, Exception e) {
@@ -61,7 +62,7 @@ public class FavoritesStreamModel implements IDataModel {
                 }
                 listener.onPhotosReady(photos, e);
             }
-        }, mUserToView, mPage++).execute(mOAuth);
+        }, mGroup, mPage++).execute(mOAuth);
     }
 
     @Override
