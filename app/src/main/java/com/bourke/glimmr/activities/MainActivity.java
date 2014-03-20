@@ -185,7 +185,7 @@ public class MainActivity extends BaseActivity {
 
     private void initPageItems() {
         mContent = new ArrayList<PageItem>();
-        mPageTitles = Arrays.asList(new String[]{"Contacts", "Photos"});
+        mPageTitles = Arrays.asList(new String[]{"Contacts", "Photos", "Favorites"});
 //        mPageTitles = Arrays.asList(
 //                getResources().getStringArray(R.array.pageTitles));
 //
@@ -195,9 +195,9 @@ public class MainActivity extends BaseActivity {
         mContent.add(new PageItem(getString(R.string.photos),
                 R.drawable.ic_content_picture_dark));
 
-//        mContent.add(new PageItem(getString(R.string.favorites),
-//                R.drawable.ic_action_rating_important_dark));
-//
+        mContent.add(new PageItem(getString(R.string.favorites),
+                R.drawable.ic_action_rating_important_dark));
+
 //        mContent.add(new PageItem(getString(R.string.sets),
 //                R.drawable.collections_collection_dark));
 //

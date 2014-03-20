@@ -9,6 +9,7 @@ import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
 import com.bourke.glimmr.model.ContactsStreamModel;
+import com.bourke.glimmr.model.IDataModel;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 public class ContactsGridFragment extends PhotoGridFragment {
@@ -57,6 +58,11 @@ public class ContactsGridFragment extends PhotoGridFragment {
         if (BuildConfig.DEBUG)
             Log.d(getLogTag(), "Updated most recent contact photo id to " +
                 photo.getId());
+    }
+
+    @Override
+    protected int getModelType() {
+        return IDataModel.TYPE_CONTACTS;
     }
 
     @Override

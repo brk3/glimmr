@@ -33,6 +33,8 @@ import com.bourke.glimmr.fragments.viewer.CommentsFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoInfoFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment;
 import com.bourke.glimmr.fragments.viewer.PhotoViewerFragment.PhotoViewerVisibilityChangeEvent;
+import com.bourke.glimmr.model.ContactsStreamModel;
+import com.bourke.glimmr.model.FavoritesStreamModel;
 import com.bourke.glimmr.model.IDataModel;
 import com.bourke.glimmr.model.PhotoStreamModel;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
@@ -137,16 +139,23 @@ public class PhotoViewerActivity extends BaseActivity
             }
             intent.putExtra(KEY_INTENT_CONSUMED, true);
             int modelType = intent.getIntExtra(KEY_MODEL_TYPE, -1);
-            switch (modelType) {
-                case IDataModel.TYPE_PHOTOSTREAM:
-                    mDataModel = PhotoStreamModel.getInstance(this);
-                    break;
-                default:
-                    throw new IllegalStateException("Unknown model type");
-            }
+            mDataModel = getModel(modelType);
             initViewPager(startIndex, true);
         } else {
             Log.e(TAG, "Unknown intent action: " + intent.getAction());
+        }
+    }
+
+    private IDataModel getModel(final int modelType) {
+        switch (modelType) {
+            case IDataModel.TYPE_PHOTOSTREAM:
+                return PhotoStreamModel.getInstance(this);
+            case IDataModel.TYPE_CONTACTS:
+                return ContactsStreamModel.getInstance(this, mOAuth);
+            case IDataModel.TYPE_FAVORITES:
+                return FavoritesStreamModel.getInstance(this);
+            default:
+                throw new IllegalStateException("Unknown model type");
         }
     }
 

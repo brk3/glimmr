@@ -17,6 +17,12 @@ public class PublicPhotoSearchGridFragment
         return fragment;
     }
 
+    // TODO
+    @Override
+    protected int getModelType() {
+        throw new UnsupportedOperationException();
+    }
+
     @Override
     protected boolean cacheInBackground() {
         Log.d(getLogTag(), "cacheInBackground");

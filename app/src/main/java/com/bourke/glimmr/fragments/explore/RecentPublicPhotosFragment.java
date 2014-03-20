@@ -45,6 +45,12 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment {
     public void storeNewestPhotoId(Photo photo) {
     }
 
+    // TODO
+    @Override
+    protected int getModelType() {
+        throw new UnsupportedOperationException();
+    }
+
     @Override
     protected String getLogTag() {
         return TAG;

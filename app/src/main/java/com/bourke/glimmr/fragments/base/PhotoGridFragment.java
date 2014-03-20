@@ -65,6 +65,7 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     protected abstract String getNewestPhotoId();
     protected abstract void storeNewestPhotoId(Photo photo);
+    protected abstract int getModelType();
 
     protected IDataModel mDataModel;
 
@@ -168,8 +169,7 @@ public abstract class PhotoGridFragment extends BaseFragment
                                 checkArray.get(position)));
                     }
                 } else {
-                    PhotoViewerActivity.startPhotoViewer(mActivity, IDataModel.TYPE_PHOTOSTREAM,
-                            position);
+                    PhotoViewerActivity.startPhotoViewer(mActivity, getModelType(), position);
                 }
                 mGridView.invalidateViews();
             }

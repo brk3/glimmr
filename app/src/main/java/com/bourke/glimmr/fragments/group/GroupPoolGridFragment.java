@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.group;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -122,6 +121,12 @@ public class GroupPoolGridFragment extends PhotoGridFragment {
         if (BuildConfig.DEBUG)
             Log.d(getLogTag(), "Updated most recent grouppool photo id to " +
                 photo.getId());
+    }
+
+    // TODO
+    @Override
+    protected int getModelType() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

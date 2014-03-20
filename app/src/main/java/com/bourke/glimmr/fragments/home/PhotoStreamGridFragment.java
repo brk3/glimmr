@@ -12,6 +12,7 @@ import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
+import com.bourke.glimmr.model.IDataModel;
 import com.bourke.glimmr.model.PhotoStreamModel;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
@@ -117,6 +118,11 @@ public class PhotoStreamGridFragment extends PhotoGridFragment {
         if (BuildConfig.DEBUG)
             Log.d(getLogTag(), "Updated most recent photostream photo id to " +
                 photo.getId());
+    }
+
+    @Override
+    protected int getModelType() {
+        return IDataModel.TYPE_PHOTOSTREAM;
     }
 
     @Override

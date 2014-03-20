@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.upload;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
@@ -186,6 +185,12 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
 
     @Override
     protected void storeNewestPhotoId(Photo photo) {
+    }
+
+    // TODO
+    @Override
+    protected int getModelType() {
+        throw new UnsupportedOperationException();
     }
 
     public class LocalPhoto {

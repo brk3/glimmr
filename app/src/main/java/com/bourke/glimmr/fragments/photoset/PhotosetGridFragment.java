@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.photoset;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -154,6 +153,12 @@ public class PhotosetGridFragment extends PhotoGridFragment
         if (BuildConfig.DEBUG)
             Log.d(getLogTag(), "Updated most recent photoset photo id to " +
                 photo.getId());
+    }
+
+    // TODO
+    @Override
+    protected int getModelType() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

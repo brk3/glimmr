@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.home;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,7 +9,8 @@ import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadFavoritesTask;
+import com.bourke.glimmr.model.FavoritesStreamModel;
+import com.bourke.glimmr.model.IDataModel;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -30,6 +30,12 @@ public class FavoritesGridFragment extends PhotoGridFragment {
         FavoritesGridFragment f = new FavoritesGridFragment();
         f.mUserToView = userToView;
         return f;
+    }
+
+    @Override
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDataModel = FavoritesStreamModel.getInstance(mActivity, mOAuth, mUserToView);
     }
 
     @Override
@@ -54,18 +60,14 @@ public class FavoritesGridFragment extends PhotoGridFragment {
 
     /**
      * Once the parent binds the adapter it will trigger cacheInBackground
-     * for us as it will be empty when first bound.  So we don't need to
-     * override startTask().
+     * for us as it will be empty when first bound.
      */
     @Override
     protected boolean cacheInBackground() {
-        startTask(mPage++);
-        return mMorePages;
-    }
-
-    private void startTask(int page) {
         super.startTask();
-        new LoadFavoritesTask(this, mUserToView, page).execute(mOAuth);
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
+        FavoritesStreamModel.getInstance(mActivity, mOAuth, mUserToView).fetchNextPage(this);
+        return mMorePages;
     }
 
     @Override
@@ -85,6 +87,11 @@ public class FavoritesGridFragment extends PhotoGridFragment {
         if (BuildConfig.DEBUG)
             Log.d(getLogTag(), "Updated most recent favorites photo id to " +
                 photo.getId());
+    }
+
+    @Override
+    protected int getModelType() {
+        return IDataModel.TYPE_FAVORITES;
     }
 
     @Override
