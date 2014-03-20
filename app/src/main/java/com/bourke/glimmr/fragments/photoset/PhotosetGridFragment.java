@@ -15,9 +15,9 @@ import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
-import com.bourke.glimmr.event.Events.IPhotoListReadyListener;
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadPhotosetPhotosTask;
+import com.bourke.glimmr.model.IDataModel;
+import com.bourke.glimmr.model.PhotosetStreamModel;
 import com.google.gson.Gson;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -25,8 +25,7 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
 
 import java.util.List;
 
-public class PhotosetGridFragment extends PhotoGridFragment
-        implements IPhotoListReadyListener {
+public class PhotosetGridFragment extends PhotoGridFragment {
 
     private static final String TAG = "Glimmr/PhotosetGridFragment";
 
@@ -76,24 +75,19 @@ public class PhotosetGridFragment extends PhotoGridFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDataModel = PhotosetStreamModel.getInstance(mActivity, mOAuth, mPhotoset);
         mShowDetailsOverlay = false;
     }
 
     /**
      * Once the parent binds the adapter it will trigger cacheInBackground
-     * for us as it will be empty when first bound.  So we don't need to
-     * override startTask().
+     * for us as it will be empty when first bound.
      */
     @Override
     protected boolean cacheInBackground() {
-        startTask(mPage++);
-        return mMorePages;
-    }
-
-    private void startTask(int page) {
-        super.startTask();
         mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
-        new LoadPhotosetPhotosTask(this, mPhotoset, page).execute(mOAuth);
+        PhotosetStreamModel.getInstance(mActivity, mOAuth, mPhotoset).fetchNextPage(this);
+        return mMorePages;
     }
 
     @Override
@@ -155,10 +149,9 @@ public class PhotosetGridFragment extends PhotoGridFragment
                 photo.getId());
     }
 
-    // TODO
     @Override
     protected int getModelType() {
-        throw new UnsupportedOperationException();
+        return IDataModel.TYPE_PHOTOSET;
     }
 
     @Override

@@ -66,7 +66,7 @@ public class FavoritesGridFragment extends PhotoGridFragment {
     protected boolean cacheInBackground() {
         super.startTask();
         mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
-        FavoritesStreamModel.getInstance(mActivity, mOAuth, mUserToView).fetchNextPage(this);
+        mDataModel.fetchNextPage(this);
         return mMorePages;
     }
 

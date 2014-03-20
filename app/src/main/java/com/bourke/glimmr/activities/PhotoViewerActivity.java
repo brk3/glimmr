@@ -37,6 +37,7 @@ import com.bourke.glimmr.model.ContactsStreamModel;
 import com.bourke.glimmr.model.FavoritesStreamModel;
 import com.bourke.glimmr.model.IDataModel;
 import com.bourke.glimmr.model.PhotoStreamModel;
+import com.bourke.glimmr.model.PhotosetStreamModel;
 import com.bourke.glimmr.tasks.LoadPhotoInfoTask;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.squareup.otto.Subscribe;
@@ -154,6 +155,8 @@ public class PhotoViewerActivity extends BaseActivity
                 return ContactsStreamModel.getInstance(this, mOAuth);
             case IDataModel.TYPE_FAVORITES:
                 return FavoritesStreamModel.getInstance(this);
+            case IDataModel.TYPE_PHOTOSET:
+                return PhotosetStreamModel.getInstance(this);
             default:
                 throw new IllegalStateException("Unknown model type");
         }

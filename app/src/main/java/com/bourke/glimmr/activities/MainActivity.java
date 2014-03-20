@@ -185,10 +185,9 @@ public class MainActivity extends BaseActivity {
 
     private void initPageItems() {
         mContent = new ArrayList<PageItem>();
-        mPageTitles = Arrays.asList(new String[]{"Contacts", "Photos", "Favorites"});
-//        mPageTitles = Arrays.asList(
-//                getResources().getStringArray(R.array.pageTitles));
-//
+        mPageTitles = Arrays.asList(
+                getResources().getStringArray(R.array.pageTitles));
+
         mContent.add(new PageItem(getString(R.string.contacts),
                 R.drawable.ic_action_social_person_dark));
 
@@ -198,14 +197,14 @@ public class MainActivity extends BaseActivity {
         mContent.add(new PageItem(getString(R.string.favorites),
                 R.drawable.ic_action_rating_important_dark));
 
-//        mContent.add(new PageItem(getString(R.string.sets),
-//                R.drawable.collections_collection_dark));
-//
-//        mContent.add(new PageItem(getString(R.string.groups),
-//                R.drawable.ic_action_social_group_dark));
-//
-//        mContent.add(new PageItem(getString(R.string.explore),
-//                R.drawable.ic_action_av_shuffle_dark));
+        mContent.add(new PageItem(getString(R.string.sets),
+                R.drawable.collections_collection_dark));
+
+        mContent.add(new PageItem(getString(R.string.groups),
+                R.drawable.ic_action_social_group_dark));
+
+        mContent.add(new PageItem(getString(R.string.explore),
+                R.drawable.ic_action_av_shuffle_dark));
     }
 
     public void updateMenuListItems(boolean forceRefresh) {

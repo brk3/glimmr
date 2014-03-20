@@ -1,8 +1,10 @@
 package com.bourke.glimmr.fragments.explore;
 
 import android.os.Bundle;
+
 import com.bourke.glimmr.fragments.base.PhotoGridFragment;
-import com.bourke.glimmr.tasks.LoadPublicPhotosTask;
+import com.bourke.glimmr.model.IDataModel;
+import com.bourke.glimmr.model.RecentPublicPhotoStreamModel;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 public class RecentPublicPhotosFragment extends PhotoGridFragment {
@@ -16,6 +18,7 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDataModel = RecentPublicPhotoStreamModel.getInstance(mActivity);
         mShowDetailsOverlay = false;
     }
 
@@ -25,14 +28,10 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment {
      */
     @Override
     protected boolean cacheInBackground() {
-        startTask(mPage++);
-        return mMorePages;
-    }
-
-    private void startTask(int page) {
         super.startTask();
         mActivity.setProgressBarIndeterminateVisibility(Boolean.TRUE);
-        new LoadPublicPhotosTask(this, page).execute();
+        mDataModel.fetchNextPage(this);
+        return mMorePages;
     }
 
     @Override
@@ -45,10 +44,9 @@ public class RecentPublicPhotosFragment extends PhotoGridFragment {
     public void storeNewestPhotoId(Photo photo) {
     }
 
-    // TODO
     @Override
     protected int getModelType() {
-        throw new UnsupportedOperationException();
+        return IDataModel.TYPE_RECENT_PUBLIC;
     }
 
     @Override

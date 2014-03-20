@@ -10,6 +10,8 @@ public interface IDataModel {
     public static final int TYPE_PHOTOSTREAM = 0;
     public static final int TYPE_CONTACTS = 1;
     public static final int TYPE_FAVORITES = 2;
+    public static final int TYPE_PHOTOSET = 3;
+    public static final int TYPE_RECENT_PUBLIC = 4;
 
     public abstract void fetchNextPage(final Events.IPhotoListReadyListener listener);
 
