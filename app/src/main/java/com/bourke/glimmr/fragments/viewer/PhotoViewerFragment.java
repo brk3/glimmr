@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import com.bourke.glimmr.BuildConfig;
 import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -24,9 +22,9 @@ import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events;
@@ -113,6 +111,20 @@ public final class PhotoViewerFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        /* if user swipes down from immersive mode we need to know to reshow photo title etc. */
+        View decorView = mActivity.getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener
+                (new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                            BusProvider.getInstance().post(
+                                    new PhotoViewerVisibilityChangeEvent(
+                                            true, PhotoViewerFragment.this));
+                        }
+                    }
+                });
     }
 
     @Override
@@ -457,20 +469,21 @@ public final class PhotoViewerFragment extends BaseFragment
         if (on) {
             mTextViewTitle.setVisibility(View.VISIBLE);
             mTextViewAuthor.setVisibility(View.VISIBLE);
-            mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            mActivity.getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            mActivity.getWindow().clearFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            mLayout.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             mActionBar.show();
         } else {
             mTextViewTitle.setVisibility(View.INVISIBLE);
             mTextViewAuthor.setVisibility(View.INVISIBLE);
-            mActivity.getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            mActivity.getWindow().clearFlags(
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            mLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+            mLayout.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE);
             mActionBar.hide();
         }
     }

@@ -15,19 +15,15 @@
         android:layout_width="400dip"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
-        android:paddingTop="5dp"
-        android:layout_marginTop="?android:attr/actionBarSize"
-        android:layout_marginBottom="15dip"
-        android:layout_marginRight="15dip" />
+        android:fitsSystemWindows="true"
+        android:layout_margin="15dip" />
 
     <FrameLayout
         android:id="@+id/photoInfoFragment"
         android:layout_width="400dip"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
-        android:paddingTop="5dp"
-        android:layout_marginTop="?android:attr/actionBarSize"
-        android:layout_marginBottom="15dip"
-        android:layout_marginRight="15dip" />
+        android:fitsSystemWindows="true"
+        android:layout_margin="15dip" />
 
 </RelativeLayout>

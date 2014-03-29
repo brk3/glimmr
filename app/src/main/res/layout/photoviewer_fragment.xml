@@ -33,7 +33,7 @@
         android:textSize="@dimen/text_size_medium"
         android:textColor="@android:color/white"
         android:paddingLeft="12dp"
-        android:paddingTop="12dp"
+        android:paddingTop="28dp"
         android:layout_marginTop="?android:attr/actionBarSize"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />

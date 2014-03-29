@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.BuildConfig;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +13,20 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.*;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.GsonHelper;
+import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.BusProvider;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.viewer.CommentsFragment;
@@ -31,7 +40,11 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import com.squareup.otto.Subscribe;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Activity for viewing fullscreen photos in a ViewPager.
@@ -268,21 +281,14 @@ public class PhotoViewerActivity extends BaseActivity
                 mPhotos = new Gson().fromJson(json, collectionType);
             }
         }
-        boolean overlayOn = savedInstanceState.getBoolean(
-                KEY_ACTIONBAR_SHOW, true);
+
+        boolean overlayOn = savedInstanceState.getBoolean(KEY_ACTIONBAR_SHOW, true);
         if (overlayOn) {
             mActionBar.show();
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            getWindow().clearFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
             mActionBar.hide();
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            getWindow().clearFlags(
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         }
+
         int pagerIndex = savedInstanceState.getInt(
                 KEY_CURRENT_INDEX, 0);
         initViewPager(pagerIndex, false);
@@ -297,6 +303,7 @@ public class PhotoViewerActivity extends BaseActivity
         } else if (mPhotoInfoFragmentShowing) {
             setPhotoInfoFragmentVisibility(photo, true, animateTransition);
         }
+
         if (savedInstanceState.getBoolean(
                 KEY_SLIDESHOW_RUNNING, false)) {
             startSlideshow();
