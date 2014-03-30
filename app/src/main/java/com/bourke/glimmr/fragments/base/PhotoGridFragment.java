@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.base;
 
-import com.bourke.glimmr.BuildConfig;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.PhotoViewerActivity;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
@@ -46,7 +47,8 @@ import java.util.List;
  * photostreams, favorites, contacts photos, etc.
  */
 public abstract class PhotoGridFragment extends BaseFragment
-        implements IPhotoListReadyListener, PhotoItemLongClickDialogListener {
+        implements IPhotoListReadyListener, PhotoItemLongClickDialogListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
@@ -65,6 +67,8 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private ViewGroup mNoConnectionLayout;
 
+    private SwipeRefreshLayout mSwipeLayout;
+
     protected abstract String getNewestPhotoId();
     protected abstract void storeNewestPhotoId(Photo photo);
 
@@ -74,11 +78,18 @@ public abstract class PhotoGridFragment extends BaseFragment
         if (BuildConfig.DEBUG) {
             Log.d("(PhotoGridFragment)" + getLogTag(), "onCreateView");
         }
-        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment,
-                container, false);
-        mNoConnectionLayout =
-            (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
+        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment, container,
+                false);
+
+        mSwipeLayout = (SwipeRefreshLayout) mLayout.findViewById(R.id.swipe_container);
+        mSwipeLayout.setColorScheme(R.color.flickr_pink, R.color.flickr_blue, R.color.flickr_pink,
+                R.color.flickr_blue);
+        mSwipeLayout.setOnRefreshListener(this);
+
+        mNoConnectionLayout = (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
+
         initGridView();
+
         return mLayout;
     }
 
@@ -97,6 +108,7 @@ public abstract class PhotoGridFragment extends BaseFragment
     @Override
     public void onPhotosReady(List<Photo> photos, Exception e) {
         mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
+        mSwipeLayout.setRefreshing(false);
 
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
             return;
@@ -114,6 +126,12 @@ public abstract class PhotoGridFragment extends BaseFragment
         checkForNewPhotos(photos);
         mPhotos.addAll(photos);
         mAdapter.onDataReady();
+    }
+
+    @Override
+    public void onRefresh() {
+        mSwipeLayout.setRefreshing(true);
+        refresh();
     }
 
     @Override

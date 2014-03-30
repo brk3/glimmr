@@ -42,7 +42,7 @@ android {
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    compile 'com.android.support:support-v4:19.0.0'
+    compile 'com.android.support:support-v4:19.1.0'
     compile 'eu.inmite.android.lib:android-styled-dialogs:1.1.2@aar'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'net.simonvt.menudrawer:menudrawer:3.0.5@aar'
