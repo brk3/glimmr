@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import com.bourke.glimmr.BuildConfig;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,8 +10,9 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.event.Events.IExifInfoReadyListener;
 import com.bourke.glimmr.fragments.base.BaseFragment;
@@ -54,6 +54,9 @@ public final class ExifInfoFragment extends BaseFragment
                 R.layout.exif_info_fragment, container, false);
         mTextViewErrorMessage =
             (TextView) mLayout.findViewById(R.id.textViewErrorMessage);
+
+        setHasOptionsMenu(false);
+
         return mLayout;
     }
 

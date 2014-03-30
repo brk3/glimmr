@@ -123,6 +123,8 @@ public final class PhotoOverviewFragment extends BaseFragment
             textviewDescription.setText(Html.fromHtml(description));
         }
 
+        setHasOptionsMenu(false);
+
         return mLayout;
     }
 

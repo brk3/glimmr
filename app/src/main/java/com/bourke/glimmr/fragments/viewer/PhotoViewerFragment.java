@@ -52,19 +52,21 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 
 public final class PhotoViewerFragment extends BaseFragment
-        implements IPhotoInfoReadyListener, IFavoriteReadyListener,
-                   IPhotoSizesReadyListener {
+        implements IPhotoInfoReadyListener, IFavoriteReadyListener, IPhotoSizesReadyListener {
 
     private final static String TAG = "Glimmr/PhotoViewerFragment";
 
     private static final String KEY_BASEPHOTO = "glimmr_photoviewer_basephoto";
+    private final AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
 
     private Photo mBasePhoto;
     private Photo mPhotoExtendedInfo;
+
     private MenuItem mFavoriteButton;
     private MenuItem mWallpaperButton;
+
     private LoadPhotoInfoTask mTask;
-    private final AtomicBoolean mIsFavoriting = new AtomicBoolean(false);
+
     private ImageView mVideoButton;
     private PhotoViewAttacher mAttacher;
     private TextView mTextViewTitle;
@@ -72,17 +74,9 @@ public final class PhotoViewerFragment extends BaseFragment
     private ImageView mImageView;
     private ProgressBar mProgress;
 
-    /**
-     * Returns a new instance of PhotoViewerFragment.
-     *
-     * @param photo             Basic Photo object as returned by say
-     *                          flickr.people.getPhotos
-     * @param fetchExtraInfo    Set to false to disable a call to
-     *                          flickr.photos.getInfo if photo already has this
-     *                          info.
-     */
-    public static PhotoViewerFragment newInstance(Photo photo,
-            boolean fetchExtraInfo) {
+    private int mNum;
+
+    public static PhotoViewerFragment newInstance(Photo photo, boolean fetchExtraInfo, int num) {
         if (BuildConfig.DEBUG) Log.d(TAG, "newInstance");
 
         PhotoViewerFragment photoFragment = new PhotoViewerFragment();
@@ -92,71 +86,29 @@ public final class PhotoViewerFragment extends BaseFragment
             photoFragment.mPhotoExtendedInfo = photo;
         }
 
+        Bundle args = new Bundle();
+        args.putInt("num", num);
+        photoFragment.setArguments(args);
+
         return photoFragment;
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mNum = savedInstanceState.getInt("mNum", 0);
+            mBasePhoto = (Photo) savedInstanceState.getSerializable(mNum + "_basePhoto");
+        }
+
+        initUIVisibilityChangeListener();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
-
-        /* if user swipes down from immersive mode we need to know to reshow photo title etc. */
-        View decorView = mActivity.getWindow().getDecorView();
-        decorView.setOnSystemUiVisibilityChangeListener
-                (new View.OnSystemUiVisibilityChangeListener() {
-                    @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                            BusProvider.getInstance().post(
-                                    new PhotoViewerVisibilityChangeEvent(
-                                            true, PhotoViewerFragment.this));
-                        }
-                    }
-                });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreateView");
-        mLayout = (RelativeLayout) inflater.inflate(
-                R.layout.photoviewer_fragment, container, false);
-        mVideoButton = (ImageView) mLayout.findViewById(
-                R.id.play_video_overlay);
-        mImageView = (ImageView) mLayout.findViewById(R.id.image);
-        mAttacher = new PhotoViewAttacher(mImageView);
-        mTextViewTitle = (TextView) mLayout.findViewById(R.id.textViewTitle);
-        mTextViewAuthor = (TextView) mLayout.findViewById(R.id.textViewAuthor);
-        mProgress = (ProgressBar) mLayout.findViewById(R.id.progress);
-
-        mAttacher.setOnPhotoTapListener(new OnPhotoTapListener() {
-            @Override
-            public void onPhotoTap(View view, float x, float y) {
-                BusProvider.getInstance().post(
-                    new PhotoViewerVisibilityChangeEvent(
-                        !mActionBar.isShowing(), PhotoViewerFragment.this));
-            }
-        });
-
-        /* If this fragment is new as part of a set, update it's overlay
-         * visibility based on the state of the actionbar */
-        setOverlayVisibility(mActionBar.isShowing());
-
-        displayImage();
-
-        return mLayout;
     }
 
     @Override
@@ -177,32 +129,10 @@ public final class PhotoViewerFragment extends BaseFragment
          * intent. */
         MenuItem shareActionItem = menu.findItem(R.id.menu_share);
         ShareActionProvider shareActionProvider =
-            (ShareActionProvider) shareActionItem.getActionProvider();
+                (ShareActionProvider) shareActionItem.getActionProvider();
         shareActionProvider.setShareHistoryFileName(
                 ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
         shareActionProvider.setShareIntent(createShareIntent());
-    }
-
-    /**
-     * Creates a sharing {@link Intent}.
-     *
-     * @return The sharing intent.
-     */
-    private Intent createShareIntent() {
-        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        String text = "";
-        try {
-            text = String.format("\"%s\" %s %s: %s", mBasePhoto.getTitle(),
-                    mActivity.getString(R.string.by),
-                    mBasePhoto.getOwner().getUsername(),
-                    mBasePhoto.getUrl());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        return intent;
     }
 
     /* NOTE: duplicate onOptionsItemSelected here and in parent activity, see
@@ -233,45 +163,50 @@ public final class PhotoViewerFragment extends BaseFragment
         }
     }
 
-    private void onWallpaperButtonClick() {
-        Toast.makeText(mActivity, mActivity.getString(R.string.setting_wallpaper),
-                Toast.LENGTH_SHORT).show();
-        if (mBasePhoto != null) {
-            String url = getLargestUrlAvailable(mBasePhoto);
-            new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
-                @Override
-                public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
-                    if (e == null) {
-                        WallpaperManager wallpaperManager = WallpaperManager.getInstance(mActivity);
-                        try {
-                            wallpaperManager.setBitmap(bitmap);
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    } else {
-                        Log.e(TAG, "Error setting wallpaper");
-                        e.printStackTrace();
-                    }
-                }
-            }, url).execute();
-        }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreateView");
+        mLayout = (RelativeLayout) inflater.inflate(
+                R.layout.photoviewer_fragment, container, false);
+        mVideoButton = (ImageView) mLayout.findViewById(
+                R.id.play_video_overlay);
+        mImageView = (ImageView) mLayout.findViewById(R.id.image);
+        mAttacher = new PhotoViewAttacher(mImageView);
+        mTextViewTitle = (TextView) mLayout.findViewById(R.id.textViewTitle);
+        mTextViewAuthor = (TextView) mLayout.findViewById(R.id.textViewAuthor);
+        mProgress = (ProgressBar) mLayout.findViewById(R.id.progress);
+
+        mAttacher.setOnPhotoTapListener(new OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(View view, float x, float y) {
+                BusProvider.getInstance().post(
+                        new PhotoViewerVisibilityChangeEvent(
+                                !mActionBar.isShowing(), PhotoViewerFragment.this)
+                );
+            }
+        });
+
+        /* If this fragment is new as part of a set, update it's overlay
+         * visibility based on the state of the actionbar */
+        setOverlayVisibility(mActionBar.isShowing());
+
+        displayImage();
+
+        return mLayout;
     }
 
-    private void saveImageToExternalStorage() {
-        String url = getLargestUrlAvailable(mBasePhoto);
-        new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
-            @Override
-            public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
-                String filename = mBasePhoto.getTitle() + ".jpg";
-                if (e == null && createExternalStoragePublicPicture(bitmap, filename) != null) {
-                    Toast.makeText(mActivity, getString(R.string.image_saved), Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    Toast.makeText(mActivity, getString(R.string.storage_error), Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
-        }, url).execute();
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt("mNum", mNum);
+        savedInstanceState.putSerializable(mNum + "_basePhoto", mBasePhoto);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
     public void onFavoriteButtonClick() {
@@ -336,21 +271,6 @@ public final class PhotoViewerFragment extends BaseFragment
     }
 
     @Override
-    protected void startTask() {
-        super.startTask();
-        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
-        /* Start a task to fetch more detailed info about the photo if we don't
-         * already have it (required for favorite status) */
-        if (mPhotoExtendedInfo == null) {
-            mTask = new LoadPhotoInfoTask(this, mBasePhoto.getId(),
-                    mBasePhoto.getSecret());
-            mTask.execute(mOAuth);
-        } else {
-            onPhotoInfoReady(mPhotoExtendedInfo, null);
-        }
-    }
-
-    @Override
     public void onPhotoInfoReady(Photo photo, Exception e) {
         if (BuildConfig.DEBUG) Log.d(getLogTag(), "onPhotoInfoReady");
         if (FlickrHelper.getInstance().handleFlickrUnavailable(mActivity, e)) {
@@ -369,9 +289,9 @@ public final class PhotoViewerFragment extends BaseFragment
                     @Override
                     public void onClick(View v) {
                         mActivity.setProgressBarIndeterminateVisibility(
-                            Boolean.TRUE);
+                                Boolean.TRUE);
                         new LoadPhotoSizesTask(PhotoViewerFragment.this,
-                            mBasePhoto.getId()).execute();
+                                mBasePhoto.getId()).execute();
                     }
                 });
             }
@@ -404,21 +324,152 @@ public final class PhotoViewerFragment extends BaseFragment
         }
     }
 
+    @Subscribe
+    public void onVisibilityChanged(
+            final PhotoViewerVisibilityChangeEvent event) {
+        if (BuildConfig.DEBUG) Log.d(TAG, "onVisibilityChanged");
+        setOverlayVisibility(event.visible);
+    }
+
+    @SuppressLint("NewApi")
+    public void setOverlayVisibility(final boolean on) {
+        if (on) {
+            mTextViewTitle.setVisibility(View.VISIBLE);
+            mTextViewAuthor.setVisibility(View.VISIBLE);
+            mLayout.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            );
+            mActionBar.show();
+        } else {
+            mTextViewTitle.setVisibility(View.INVISIBLE);
+            mTextViewAuthor.setVisibility(View.INVISIBLE);
+            mLayout.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE
+            );
+            mActionBar.hide();
+        }
+    }
+
+    @Override
+    protected void startTask() {
+        super.startTask();
+        mActivity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
+        /* Start a task to fetch more detailed info about the photo if we don't
+         * already have it (required for favorite status) */
+        if (mPhotoExtendedInfo == null) {
+            mTask = new LoadPhotoInfoTask(this, mBasePhoto.getId(),
+                    mBasePhoto.getSecret());
+            mTask.execute(mOAuth);
+        } else {
+            onPhotoInfoReady(mPhotoExtendedInfo, null);
+        }
+    }
+
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
+
+    private void initUIVisibilityChangeListener() {
+    /* if user swipes down from immersive mode we need to know to reshow photo title etc. */
+        View decorView = mActivity.getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener
+                (new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                            BusProvider.getInstance().post(
+                                    new PhotoViewerVisibilityChangeEvent(
+                                            true, PhotoViewerFragment.this)
+                            );
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Creates a sharing {@link Intent}.
+     *
+     * @return The sharing intent.
+     */
+    private Intent createShareIntent() {
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        String text = "";
+        try {
+            text = String.format("\"%s\" %s %s: %s", mBasePhoto.getTitle(),
+                    mActivity.getString(R.string.by),
+                    mBasePhoto.getOwner().getUsername(),
+                    mBasePhoto.getUrl());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        return intent;
+    }
+
+    private void onWallpaperButtonClick() {
+        Toast.makeText(mActivity, mActivity.getString(R.string.setting_wallpaper),
+                Toast.LENGTH_SHORT).show();
+        if (mBasePhoto != null) {
+            String url = getLargestUrlAvailable(mBasePhoto);
+            new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
+                @Override
+                public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
+                    if (e == null) {
+                        WallpaperManager wallpaperManager = WallpaperManager.getInstance(mActivity);
+                        try {
+                            wallpaperManager.setBitmap(bitmap);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    } else {
+                        Log.e(TAG, "Error setting wallpaper");
+                        e.printStackTrace();
+                    }
+                }
+            }, url).execute();
+        }
+    }
+
+    private void saveImageToExternalStorage() {
+        String url = getLargestUrlAvailable(mBasePhoto);
+        new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
+            @Override
+            public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
+                String filename = mBasePhoto.getTitle() + ".jpg";
+                if (e == null && createExternalStoragePublicPicture(bitmap, filename) != null) {
+                    Toast.makeText(mActivity, getString(R.string.image_saved), Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(mActivity, getString(R.string.storage_error), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        }, url).execute();
+    }
+
     /**
      * Return the largest size available for a given photo.
-     *
+     * <p/>
      * All should have medium, but not all have large.
      */
     private String getLargestUrlAvailable(Photo photo) {
-        String url = "";
         Size size = photo.getLargeSize();
         if (size != null) {
-            url = photo.getLargeUrl();
+            return photo.getLargeUrl();
         } else {
             /* No large size available, fall back to medium */
-            url = photo.getMediumUrl();
+            return photo.getMediumUrl();
         }
-        return url;
     }
 
     private void displayImage() {
@@ -435,7 +486,7 @@ public final class PhotoViewerFragment extends BaseFragment
 
                 @Override
                 public void onError() {
-
+                    Log.e(TAG, "displayImage -> Picasso -> onError");
                 }
             });
 
@@ -457,41 +508,10 @@ public final class PhotoViewerFragment extends BaseFragment
         }
     }
 
-    @Subscribe
-    public void onVisibilityChanged(
-            final PhotoViewerVisibilityChangeEvent event) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onVisibilityChanged");
-        setOverlayVisibility(event.visible);
-    }
-
-    @SuppressLint("NewApi")
-    public void setOverlayVisibility(final boolean on) {
-        if (on) {
-            mTextViewTitle.setVisibility(View.VISIBLE);
-            mTextViewAuthor.setVisibility(View.VISIBLE);
-            mLayout.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            mActionBar.show();
-        } else {
-            mTextViewTitle.setVisibility(View.INVISIBLE);
-            mTextViewAuthor.setVisibility(View.INVISIBLE);
-            mLayout.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE);
-            mActionBar.hide();
-        }
-    }
-
     /**
      * Save an image to external storage.
      * Returns full path on success or null on failure.
-     *
+     * <p/>
      * http://developer.android.com/reference/android/os/Environment.html
      */
     private File createExternalStoragePublicPicture(Bitmap bitmap, String filename) {
@@ -507,13 +527,14 @@ public final class PhotoViewerFragment extends BaseFragment
             /* Tell the media scanner about the new file so that it is
              * immediately available to the user. */
             MediaScannerConnection.scanFile(mActivity,
-                    new String[] { file.toString() }, null,
+                    new String[]{file.toString()}, null,
                     new MediaScannerConnection.OnScanCompletedListener() {
                         public void onScanCompleted(String path, Uri uri) {
                             Log.i("ExternalStorage", "Scanned " + path + ":");
                             Log.i("ExternalStorage", "-> uri=" + uri);
                         }
-                    });
+                    }
+            );
 
             return file;
         } catch (IOException e) {
@@ -525,20 +546,14 @@ public final class PhotoViewerFragment extends BaseFragment
         return null;
     }
 
-    @Override
-    protected String getLogTag() {
-        return TAG;
-    }
-
     /**
      * Event published when the main photo is clicked.
      */
     public static class PhotoViewerVisibilityChangeEvent<T> {
         public final boolean visible;
         public final T sender;
-
         public PhotoViewerVisibilityChangeEvent(final boolean visible,
-                final T sender) {
+                                                final T sender) {
             this.visible = visible;
             this.sender = sender;
         }
