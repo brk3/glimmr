@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class PhotoUploadFragment extends BaseFragment {
 
     public static final String TAG = "Glimmr/PhotoUploadFragment";
@@ -29,10 +32,11 @@ public class PhotoUploadFragment extends BaseFragment {
     private static final String KEY_PHOTO = "com.bourke.glimmr.PhotoUploadFragment.KEY_PHOTO";
 
     private LocalPhotosGridFragment.LocalPhoto mPhoto;
-    private EditText mEditTextTitle;
-    private EditText mEditTextDescription;
-    private Switch mSwitchIsPublic;
-    private EditText mEditTextTags;
+
+    @InjectView(R.id.editTextTitle) EditText mEditTextTitle;
+    @InjectView(R.id.editTextDescription) EditText mEditTextDescription;
+    @InjectView(R.id.switchIsPublic) Switch mSwitchIsPublic;
+    @InjectView(R.id.editTextTags) EditText mEditTextTags;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -53,11 +57,11 @@ public class PhotoUploadFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mLayout = (ScrollView) inflater.inflate(R.layout.photo_upload_fragment, container, false);
+        ButterKnife.inject(this, mLayout);
 
-        TextView basicSectionTitle = (TextView) mLayout.findViewById(R.id.textViewBasicSection);
+        TextView basicSectionTitle = ButterKnife.findById(mLayout, R.id.textViewBasicSection);
         mTextUtils.setFont(basicSectionTitle, TextUtils.FONT_ROBOTOTHIN);
 
-        mEditTextTitle = (EditText) mLayout.findViewById(R.id.editTextTitle);
         mEditTextTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
@@ -66,7 +70,6 @@ public class PhotoUploadFragment extends BaseFragment {
             }
         });
 
-        mEditTextDescription = (EditText) mLayout.findViewById(R.id.editTextDescription);
         mEditTextDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
@@ -75,18 +78,15 @@ public class PhotoUploadFragment extends BaseFragment {
             }
         });
 
-        TextView advancedSectionTitle = (TextView)
-                mLayout.findViewById(R.id.textViewAdvancedSection);
+        TextView advancedSectionTitle = ButterKnife.findById(mLayout, R.id.textViewAdvancedSection);
         mTextUtils.setFont(advancedSectionTitle, TextUtils.FONT_ROBOTOTHIN);
 
-        mSwitchIsPublic = (Switch) mLayout.findViewById(R.id.switchIsPublic);
         mSwitchIsPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mPhoto.getMetadata().setPublicFlag(isChecked);
             }
         });
 
-        mEditTextTags = (EditText) mLayout.findViewById(R.id.editTextTags);
         mEditTextTags.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {

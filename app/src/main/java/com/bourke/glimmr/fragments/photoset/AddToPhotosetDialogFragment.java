@@ -27,6 +27,7 @@ import com.squareup.tape.TaskQueue;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -92,12 +93,9 @@ public class AddToPhotosetDialogFragment extends BaseDialogFragment {
         mLayout = (LinearLayout) inflater.inflate(
                 R.layout.add_to_photoset_fragment, container, false);
 
-        TextView titleTextView = (TextView)
-                mLayout.findViewById(R.id.titleText);
+        TextView titleTextView = ButterKnife.findById(mLayout, R.id.titleText);
         titleTextView.setText(R.string.add_photos);
         mTextUtils.setFont(titleTextView, TextUtils.FONT_ROBOTOBOLD);
-        //ProgressBar progressBar = (ProgressBar)
-        //        mLayout.findViewById(R.id.progressIndicator);
 
         /* Nested fragments have to be added this way, not from xml */
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();

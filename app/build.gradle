@@ -57,4 +57,5 @@ dependencies {
     compile 'org.ocpsoft.prettytime:prettytime:3.2.4.Final'
     /*https://github.com/yuyang226/FlickrjApi4Android/issues/17*/
     compile 'org.slf4j:slf4j-api:1.6.2'
+    compile 'com.jakewharton:butterknife:4.0.1'
 }

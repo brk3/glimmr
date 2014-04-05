@@ -14,18 +14,21 @@ import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.TextUtils;
 import com.viewpagerindicator.TitlePageIndicator;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public abstract class BottomOverlayActivity extends BaseActivity {
 
     private static final String TAG = "Glimmr/BottomOverlayActivity";
 
     public static String[] CONTENT;
 
-    protected ViewPager mViewPager;
+    @InjectView(R.id.viewPager) public ViewPager mViewPager;
     protected GlimmrPagerAdapter mAdapter;
 
-    protected View mBottomOverlayView;
-    protected TextView mBottomOverlayPrimaryText;
-    protected ImageView mOverlayImage;
+    @InjectView(R.id.bottomOverlay) View mBottomOverlayView;
+    @InjectView(R.id.overlayPrimaryText) TextView mBottomOverlayPrimaryText;
+    @InjectView(R.id.overlayImage) ImageView mOverlayImage;
 
     protected abstract void handleIntent(Intent intent);
     protected abstract void updateBottomOverlay();
@@ -35,19 +38,14 @@ public abstract class BottomOverlayActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main_activity);
+        ButterKnife.inject(this);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mBottomOverlayView =
-                findViewById(R.id.bottomOverlay);
-        mBottomOverlayPrimaryText =
-            (TextView) findViewById(R.id.overlayPrimaryText);
-        mOverlayImage = (ImageView) findViewById(R.id.overlayImage);
         initBottomOverlayFont();
         handleIntent(getIntent());
     }
 
     private void initBottomOverlayFont() {
-        TextView overlayPrimaryText =
-            (TextView) findViewById(R.id.overlayPrimaryText);
+        TextView overlayPrimaryText = ButterKnife.findById(this, R.id.overlayPrimaryText);
         mTextUtils.setFont(overlayPrimaryText, TextUtils.FONT_ROBOTOLIGHT);
     }
 
@@ -58,8 +56,7 @@ public abstract class BottomOverlayActivity extends BaseActivity {
             return;
         }
         mViewPager.setAdapter(mAdapter);
-        TitlePageIndicator indicator =
-            (TitlePageIndicator) findViewById(R.id.indicator);
+        TitlePageIndicator indicator = ButterKnife.findById(this, R.id.indicator);
         if (indicator != null) {
             indicator.setViewPager(mViewPager);
         } else {

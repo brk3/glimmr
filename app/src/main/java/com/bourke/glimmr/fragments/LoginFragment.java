@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.MainActivity;
 import com.bourke.glimmr.common.Constants;
@@ -30,6 +30,7 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 
+import butterknife.ButterKnife;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 /**
@@ -145,7 +146,7 @@ public final class LoginFragment extends BaseFragment
         mTextUtils.setFont((TextView) mLayout.findViewById(R.id.textNotNow),
                 TextUtils.FONT_ROBOTOTHIN);
 
-        Button buttonLogin = (Button) mLayout.findViewById(R.id.btnLogin);
+        Button buttonLogin = ButterKnife.findById(mLayout, R.id.btnLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,8 +154,7 @@ public final class LoginFragment extends BaseFragment
             }
         });
 
-        final TextView tvNotNow = (TextView) mLayout.findViewById(
-                R.id.textNotNow);
+        final TextView tvNotNow = ButterKnife.findById(mLayout, R.id.textNotNow);
         mTextUtils.colorTextViewSpan(tvNotNow, tvNotNow.getText().toString(),
                 mActivity.getString(R.string.browse),
                 mActivity.getResources().getColor(

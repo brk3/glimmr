@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.BuildConfig;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -15,13 +14,28 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.*;
+import com.bourke.glimmr.common.Constants;
+import com.bourke.glimmr.common.FlickrHelper;
+import com.bourke.glimmr.common.GlimmrPagerAdapter;
+import com.bourke.glimmr.common.MenuListView;
+import com.bourke.glimmr.common.OAuthUtils;
+import com.bourke.glimmr.common.TextUtils;
+import com.bourke.glimmr.common.UsageTips;
 import com.bourke.glimmr.event.Events.IActivityItemsReadyListener;
 import com.bourke.glimmr.event.Events.IPhotoInfoReadyListener;
 import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
-import com.bourke.glimmr.fragments.home.*;
+import com.bourke.glimmr.fragments.home.ContactsGridFragment;
+import com.bourke.glimmr.fragments.home.FavoritesGridFragment;
+import com.bourke.glimmr.fragments.home.GroupListFragment;
+import com.bourke.glimmr.fragments.home.PhotoStreamGridFragment;
+import com.bourke.glimmr.fragments.home.PhotosetsFragment;
 import com.bourke.glimmr.services.ActivityNotificationHandler;
 import com.bourke.glimmr.services.AppListener;
 import com.bourke.glimmr.services.AppService;
@@ -32,11 +46,12 @@ import com.googlecode.flickrjandroid.activity.Event;
 import com.googlecode.flickrjandroid.activity.Item;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
-//import com.sbstrm.appirater.Appirater;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
+
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
+
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.io.File;
@@ -44,6 +59,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public class MainActivity extends BaseActivity {
 
@@ -62,7 +80,7 @@ public class MainActivity extends BaseActivity {
     private List<String> mPageTitles;
     private MenuDrawer mMenuDrawer;
     private final MenuAdapter mMenuAdapter = new MenuAdapter();
-    private ViewPager mViewPager;
+    @InjectView(R.id.viewPager) ViewPager mViewPager;
     private PageIndicator mIndicator;
     private int mActivePosition = -1;
     private long mActivityListVersion = -1;
@@ -86,7 +104,6 @@ public class MainActivity extends BaseActivity {
             initViewPager();
             initNotificationAlarms();
             handleIntent();
-//            Appirater.appLaunched(this);
         }
     }
 
@@ -312,6 +329,7 @@ public class MainActivity extends BaseActivity {
         mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY,
                 Position.LEFT);
         mMenuDrawer.setContentView(R.layout.main_activity);
+        ButterKnife.inject(this);
         /* The drawable that replaces the up indicator in the action bar */
         mMenuDrawer.setSlideDrawable(R.drawable.ic_drawer);
         mMenuDrawer.setDrawerIndicatorEnabled(true);
@@ -433,8 +451,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initViewPager() {
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
-
         /* create adapter and bind to viewpager */
         GlimmrPagerAdapter glimmrPagerAdapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager(), mViewPager, mActionBar,

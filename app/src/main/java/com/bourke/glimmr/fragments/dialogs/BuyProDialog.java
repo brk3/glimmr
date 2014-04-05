@@ -11,6 +11,7 @@ import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.TextUtils;
 
+import butterknife.ButterKnife;
 import eu.inmite.android.lib.dialogs.BaseDialogFragment;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
@@ -29,7 +30,7 @@ public class BuyProDialog extends SimpleDialogFragment {
         mTextUtils = new TextUtils(getActivity().getAssets());
         View layout = LayoutInflater.from(getActivity()).inflate(
                 R.layout.buy_pro_dialog_fragment, null);
-        TextView tvPart1 = (TextView) layout.findViewById(R.id.buyProPart1);
+        TextView tvPart1 = ButterKnife.findById(layout, R.id.buyProPart1);
         mTextUtils.setFont(tvPart1, TextUtils.FONT_ROBOTOLIGHT);
         builder.setView(layout);
         builder.setPositiveButton("Buy Pro", new View.OnClickListener() {

@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.group;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +12,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
@@ -36,6 +36,8 @@ import com.squareup.tape.TaskQueue;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -64,8 +66,9 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
 
     private Group mGroup;
     private TaskQueue mQueue;
-    private ProgressBar mProgressBar;
-    private TextView mTitleView;
+
+    @InjectView(R.id.progressIndicator) ProgressBar mProgressBar;
+    @InjectView(R.id.titleText) TextView mTitleView;
 
     private int mCount = 0;
     private int mRemaining = 0;
@@ -137,11 +140,9 @@ public class AddToGroupDialogFragment extends BaseDialogFragment
             Bundle savedInstanceState) {
         mLayout = (LinearLayout) inflater.inflate(
                 R.layout.add_to_group_fragment, container, false);
+        ButterKnife.inject(this, mLayout);
 
-        mTitleView = (TextView) mLayout.findViewById(R.id.titleText);
         mTextUtils.setFont(mTitleView, TextUtils.FONT_ROBOTOBOLD);
-        mProgressBar =
-            (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
         mProgressBar.setVisibility(View.VISIBLE);
 
         /* Nested fragments have to be added this way, not from xml */

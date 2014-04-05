@@ -29,6 +29,9 @@ import com.googlecode.flickrjandroid.tags.Tag;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public final class PhotoOverviewFragment extends BaseFragment
         implements IExifInfoReadyListener, TagClickDialogListener {
 
@@ -37,10 +40,10 @@ public final class PhotoOverviewFragment extends BaseFragment
     private Photo mPhoto = new Photo();
     private LoadExifInfoTask mTask;
 
-    private TextView mTextViewISO;
-    private TextView mTextViewShutter;
-    private TextView mTextViewAperture;
-    private TextView mTextViewFocalLength;
+    @InjectView(R.id.textViewISO) TextView mTextViewISO;
+    @InjectView(R.id.textViewShutter) TextView mTextViewShutter;
+    @InjectView(R.id.textViewAperture) TextView mTextViewAperture;
+    @InjectView(R.id.textViewFocalLength) TextView mTextViewFocalLength;
 
     /* http://www.flickr.com/services/api/flickr.photos.getExif.html */
     private static final String ERR_PERMISSION_DENIED = "2";
@@ -60,24 +63,11 @@ public final class PhotoOverviewFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (ScrollView) inflater.inflate(
-                R.layout.photo_overview_fragment, container, false);
-
-        mTextViewISO = (TextView)
-            mLayout.findViewById(R.id.textViewISO);
-
-        mTextViewShutter = (TextView)
-            mLayout.findViewById(R.id.textViewShutter);
-
-        mTextViewAperture = (TextView)
-            mLayout.findViewById(R.id.textViewAperture);
-
-        mTextViewFocalLength = (TextView)
-            mLayout.findViewById(R.id.textViewFocalLength);
+        mLayout = (ScrollView) inflater.inflate(R.layout.photo_overview_fragment, container, false);
+        ButterKnife.inject(this, mLayout);
 
         /* build the title textview */
-        TextView titleTextView = (TextView)
-                mLayout.findViewById(R.id.textViewTitle);
+        TextView titleTextView = ButterKnife.findById(mLayout, R.id.textViewTitle);
         String title = mPhoto.getTitle();
         if ("".equals(title)) {
             titleTextView.setText("‘" + getString(R.string.none) + "’");
@@ -86,7 +76,7 @@ public final class PhotoOverviewFragment extends BaseFragment
         }
 
         /* build the tags textview */
-        TextView mTextTags = (TextView) mLayout.findViewById(R.id.textViewTags);
+        TextView mTextTags = ButterKnife.findById(mLayout, R.id.textViewTags);
         StringBuilder tags = new StringBuilder();
         final Collection<Tag> allTags = mPhoto.getTags();
         int count = 0;
@@ -114,8 +104,7 @@ public final class PhotoOverviewFragment extends BaseFragment
         }
 
         /* build the description textview */
-        TextView textviewDescription = (TextView)
-                mLayout.findViewById(R.id.textViewDescription);
+        TextView textviewDescription = ButterKnife.findById(mLayout, R.id.textViewDescription);
         String description = mPhoto.getDescription();
         if ("".equals(description)) {
             textviewDescription.setText("‘" + getString(R.string.none) + "’");

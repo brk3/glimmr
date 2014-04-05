@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.home;
 
-import com.bourke.glimmr.BuildConfig;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -21,10 +20,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.GroupViewerActivity;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.TextUtils;
 import com.bourke.glimmr.event.Events.GroupItemLongClickDialogListener;
@@ -38,6 +37,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class GroupListFragment extends BaseFragment
         implements IGroupListReadyListener, GroupItemLongClickDialogListener {
 
@@ -45,9 +47,10 @@ public class GroupListFragment extends BaseFragment
 
     private final List<Group> mGroups = new ArrayList<Group>();
     private LoadGroupsTask mTask;
-    private ViewGroup mNoConnectionLayout;
-    private AdapterView mListView;
     private GroupListAdapter mAdapter;
+
+    @InjectView(R.id.no_connection_layout) ViewGroup mNoConnectionLayout;
+    @InjectView(R.id.list) AdapterView mListView;
 
     public static GroupListFragment newInstance() {
         return new GroupListFragment();
@@ -58,9 +61,7 @@ public class GroupListFragment extends BaseFragment
             Bundle savedInstanceState) {
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.group_list_fragment, container, false);
-        mNoConnectionLayout =
-            (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
-        mListView = (AdapterView) mLayout.findViewById(R.id.list);
+        ButterKnife.inject(this, mLayout);
         initAdapterView();
         return mLayout;
     }
@@ -175,19 +176,11 @@ public class GroupListFragment extends BaseFragment
         }
 
         @Override
-        public View getView(final int position, View convertView,
-                ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
-                convertView = mActivity.getLayoutInflater().inflate(
-                        R.layout.group_list_row, null);
-                holder = new ViewHolder();
-                holder.textViewGroupName = (TextView)
-                    convertView.findViewById(R.id.groupName);
-                holder.textViewNumImages = (TextView)
-                    convertView.findViewById(R.id.numImagesText);
-                holder.imageViewGroupIcon = (ImageView)
-                    convertView.findViewById(R.id.groupIcon);
+                convertView = mActivity.getLayoutInflater().inflate(R.layout.group_list_row, null);
+                holder = new ViewHolder(convertView);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -196,8 +189,7 @@ public class GroupListFragment extends BaseFragment
             final Group group = getItem(position);
 
             holder.textViewGroupName.setText(group.getName());
-            mTextUtils.setFont(holder.textViewGroupName,
-                    TextUtils.FONT_ROBOTOBOLD);
+            mTextUtils.setFont(holder.textViewGroupName, TextUtils.FONT_ROBOTOBOLD);
 
             holder.textViewNumImages.setText("" + group.getPhotoCount());
             Picasso.with(mActivity).load(group.getBuddyIconUrl()).into(holder.imageViewGroupIcon);
@@ -207,9 +199,13 @@ public class GroupListFragment extends BaseFragment
     }
 
     static class ViewHolder {
-        TextView textViewGroupName;
-        TextView textViewNumImages;
-        ImageView imageViewGroupIcon;
+        @InjectView(R.id.groupName) TextView textViewGroupName;
+        @InjectView(R.id.numImagesText) TextView textViewNumImages;
+        @InjectView(R.id.groupIcon) ImageView imageViewGroupIcon;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 
     static class GroupItemLongClickDialog extends DialogFragment {

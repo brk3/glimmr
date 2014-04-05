@@ -40,6 +40,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Base Fragment that contains a GridView of photos.
  *
@@ -52,7 +55,6 @@ public abstract class PhotoGridFragment extends BaseFragment
 
     private static final String TAG = "Glimmr/PhotoGridFragment";
 
-    protected GridView mGridView;
     private EndlessGridAdapter mAdapter;
 
     protected final List<Photo> mPhotos = new ArrayList<Photo>();
@@ -65,9 +67,9 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected boolean mRetainInstance = true;
     protected int mGridChoiceMode = ListView.CHOICE_MODE_SINGLE;
 
-    private ViewGroup mNoConnectionLayout;
-
-    private SwipeRefreshLayout mSwipeLayout;
+    @InjectView(R.id.no_connection_layout) ViewGroup mNoConnectionLayout;
+    @InjectView(R.id.gridview) public GridView mGridView;
+    @InjectView(R.id.swipe_container) SwipeRefreshLayout mSwipeLayout;
 
     protected abstract String getNewestPhotoId();
     protected abstract void storeNewestPhotoId(Photo photo);
@@ -78,15 +80,12 @@ public abstract class PhotoGridFragment extends BaseFragment
         if (BuildConfig.DEBUG) {
             Log.d("(PhotoGridFragment)" + getLogTag(), "onCreateView");
         }
-        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment, container,
-                false);
+        mLayout = (RelativeLayout) inflater.inflate(R.layout.gridview_fragment, container, false);
+        ButterKnife.inject(this, mLayout);
 
-        mSwipeLayout = (SwipeRefreshLayout) mLayout.findViewById(R.id.swipe_container);
         mSwipeLayout.setColorScheme(R.color.flickr_pink, R.color.flickr_blue, R.color.flickr_pink,
                 R.color.flickr_blue);
         mSwipeLayout.setOnRefreshListener(this);
-
-        mNoConnectionLayout = (ViewGroup) mLayout.findViewById(R.id.no_connection_layout);
 
         initGridView();
 
@@ -100,8 +99,7 @@ public abstract class PhotoGridFragment extends BaseFragment
             Log.d("(PhotoGridFragment)" + getLogTag(), "onResume");
         }
         if (!mPhotos.isEmpty()) {
-            GridView gridView = (GridView) mLayout.findViewById(R.id.gridview);
-            gridView.setVisibility(View.VISIBLE);
+            mGridView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -168,7 +166,6 @@ public abstract class PhotoGridFragment extends BaseFragment
     protected void initGridView() {
         mAdapter = new EndlessGridAdapter(mPhotos);
         mAdapter.setRunInBackground(false);
-        mGridView = (GridView) mLayout.findViewById(R.id.gridview);
         mGridView.setAdapter(mAdapter);
         mGridView.setChoiceMode(getGridChoiceMode());
 

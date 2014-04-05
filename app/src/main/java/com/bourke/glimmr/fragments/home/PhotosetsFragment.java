@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.home;
 
-import com.bourke.glimmr.BuildConfig;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -22,10 +21,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.activities.PhotosetViewerActivity;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TextUtils;
@@ -44,6 +43,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class PhotosetsFragment extends BaseFragment
         implements IPhotosetsReadyListener,
                    PhotosetItemLongClickDialogListener {
@@ -56,9 +58,10 @@ public class PhotosetsFragment extends BaseFragment
     private LoadPhotosetsTask mTask;
     private final List<Photoset> mPhotosets = new ArrayList<Photoset>();
 
+    /* Will either be a GridView or ListView depending on screen size */
     private View mLayoutNoConnection;
-    private AdapterView mAdapterView;  /* Will either be a GridView or ListView
-                                          depending on screen size */
+    private AdapterView mAdapterView;
+
     private SetListAdapter mAdapter;
 
     private User mUserToView;
@@ -90,9 +93,7 @@ public class PhotosetsFragment extends BaseFragment
                     R.layout.listview_fragment, container, false);
             mAdapterView = (ListView) mLayout.findViewById(R.id.list);
         }
-
-        mLayoutNoConnection =
-                mLayout.findViewById(R.id.no_connection_layout);
+        mLayoutNoConnection = mLayout.findViewById(R.id.no_connection_layout);
 
         initAdapterView();
 
@@ -226,19 +227,10 @@ public class PhotosetsFragment extends BaseFragment
             ViewHolder holder;
 
             if (convertView == null) {
-                convertView = mActivity.getLayoutInflater().inflate(
-                        R.layout.photoset_cover_item, null);
-                holder = new ViewHolder();
-                holder.imageItem = (ImageView)
-                    convertView.findViewById(R.id.imageItem);
-                holder.imageOverlay = (LinearLayout)
-                    convertView.findViewById(R.id.imageOverlay);
-                holder.photosetNameText = (TextView)
-                    convertView.findViewById(R.id.photosetNameText);
-                holder.numImagesInSetText = (TextView)
-                    convertView.findViewById(R.id.numImagesInSetText);
-                holder.numImagesIcon = (ImageView)
-                    convertView.findViewById(R.id.numImagesIcon);
+                convertView = mActivity.getLayoutInflater().inflate(R.layout.photoset_cover_item,
+                        null);
+                holder = new ViewHolder(convertView);
+                assert convertView != null;
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -262,11 +254,15 @@ public class PhotosetsFragment extends BaseFragment
         }
 
         class ViewHolder {
-            ImageView imageItem;
-            ImageView numImagesIcon;
-            TextView photosetNameText;
-            TextView numImagesInSetText;
-            LinearLayout imageOverlay;
+            @InjectView(R.id.imageItem) ImageView imageItem;
+            @InjectView(R.id.numImagesIcon) ImageView numImagesIcon;
+            @InjectView(R.id.photosetNameText) TextView photosetNameText;
+            @InjectView(R.id.numImagesInSetText) TextView numImagesInSetText;
+            @InjectView(R.id.imageOverlay) LinearLayout imageOverlay;
+
+            public ViewHolder(View view) {
+                ButterKnife.inject(this, view);
+            }
         }
     }
 

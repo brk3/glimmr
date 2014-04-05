@@ -48,6 +48,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 
@@ -67,12 +69,13 @@ public final class PhotoViewerFragment extends BaseFragment
 
     private LoadPhotoInfoTask mTask;
 
-    private ImageView mVideoButton;
     private PhotoViewAttacher mAttacher;
-    private TextView mTextViewTitle;
-    private TextView mTextViewAuthor;
-    private ImageView mImageView;
-    private ProgressBar mProgress;
+
+    @InjectView(R.id.play_video_overlay) ImageView mVideoButton;
+    @InjectView(R.id.textViewTitle) TextView mTextViewTitle;
+    @InjectView(R.id.textViewAuthor) TextView mTextViewAuthor;
+    @InjectView(R.id.image) ImageView mImageView;
+    @InjectView(R.id.progress) ProgressBar mProgress;
 
     private int mNum;
 
@@ -169,14 +172,8 @@ public final class PhotoViewerFragment extends BaseFragment
         if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreateView");
         mLayout = (RelativeLayout) inflater.inflate(
                 R.layout.photoviewer_fragment, container, false);
-        mVideoButton = (ImageView) mLayout.findViewById(
-                R.id.play_video_overlay);
-        mImageView = (ImageView) mLayout.findViewById(R.id.image);
+        ButterKnife.inject(this, mLayout);
         mAttacher = new PhotoViewAttacher(mImageView);
-        mTextViewTitle = (TextView) mLayout.findViewById(R.id.textViewTitle);
-        mTextViewAuthor = (TextView) mLayout.findViewById(R.id.textViewAuthor);
-        mProgress = (ProgressBar) mLayout.findViewById(R.id.progress);
-
         mAttacher.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {

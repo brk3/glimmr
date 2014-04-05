@@ -1,15 +1,13 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.common.GsonHelper;
@@ -105,7 +103,6 @@ public class GroupViewerActivity extends BottomOverlayActivity
 
     @Override
     protected void initViewPager() {
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mAdapter = new GlimmrPagerAdapter(getSupportFragmentManager(),
                 mViewPager, mActionBar, CONTENT) {
             @Override

@@ -68,8 +68,7 @@ public class PhotoInfoFragment extends BaseDialogFragment {
             }
         };
         viewPager.setAdapter(adapter);
-        PageIndicator indicator =
-            (TabPageIndicator) mLayout.findViewById(R.id.indicator);
+        PageIndicator indicator = (TabPageIndicator) mLayout.findViewById(R.id.indicator);
         indicator.setViewPager(viewPager);
     }
 }

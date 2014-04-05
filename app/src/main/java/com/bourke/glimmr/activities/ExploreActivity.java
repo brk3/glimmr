@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,12 +12,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GlimmrPagerAdapter;
 import com.bourke.glimmr.fragments.LoginFragment;
 import com.bourke.glimmr.fragments.explore.RecentPublicPhotosFragment;
 import com.bourke.glimmr.tasks.GetAccessTokenTask;
+
+import butterknife.ButterKnife;
 
 /**
  * Hosts fragments that don't require log in.
@@ -94,7 +96,7 @@ public class ExploreActivity extends BaseActivity
     }
 
     private void initViewPager() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        ViewPager viewPager = ButterKnife.findById(this, R.id.viewPager);
         GlimmrPagerAdapter adapter = new GlimmrPagerAdapter(
                 getSupportFragmentManager(), viewPager, mActionBar, CONTENT) {
             @Override
@@ -107,20 +109,6 @@ public class ExploreActivity extends BaseActivity
             }
         };
         viewPager.setAdapter(adapter);
-
-        //TitlePageIndicator indicator =
-            //(TitlePageIndicator) findViewById(R.id.indicator);
-        //if (indicator != null) {
-            //indicator.setViewPager(viewPager);
-        //} else {
-            //mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            //viewPager.setOnPageChangeListener(adapter);
-            //for (String title : CONTENT) {
-                //ActionBar.Tab newTab = mActionBar.newTab().setText(title);
-                //newTab.setTabListener(adapter);
-                //mActionBar.addTab(newTab);
-            //}
-        //}
     }
 
     @Override

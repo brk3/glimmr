@@ -1,6 +1,5 @@
 package com.bourke.glimmr.fragments.viewer;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.activities.ProfileViewerActivity;
-import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.FlickrHelper;
 import com.bourke.glimmr.common.GsonHelper;
 import com.bourke.glimmr.common.TextUtils;
@@ -42,6 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public final class CommentsFragment extends BaseDialogFragment
         implements ICommentsReadyListener, ICommentAddedListener {
 
@@ -52,8 +54,9 @@ public final class CommentsFragment extends BaseDialogFragment
     private LoadCommentsTask mTask;
     private ArrayAdapter<Comment> mAdapter;
     private PrettyTime mPrettyTime;
-    private ProgressBar mProgressBar;
-    private ListView mListView;
+
+    @InjectView(R.id.progressIndicator) ProgressBar mProgressBar;
+    @InjectView(R.id.list) ListView mListView;
 
     private Photo mPhoto;
 
@@ -92,11 +95,10 @@ public final class CommentsFragment extends BaseDialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (RelativeLayout) inflater.inflate(
-                R.layout.comments_fragment, container, false);
+        mLayout = (RelativeLayout) inflater.inflate(R.layout.comments_fragment, container, false);
+        ButterKnife.inject(this, mLayout);
 
-        ImageButton submitButton = (ImageButton)
-                mLayout.findViewById(R.id.submitButton);
+        ImageButton submitButton = ButterKnife.findById(mLayout, R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,11 +106,8 @@ public final class CommentsFragment extends BaseDialogFragment
             }
         });
 
-        mProgressBar = (ProgressBar) mLayout.findViewById(R.id.progressIndicator);
-        mListView = (ListView) mLayout.findViewById(R.id.list);
-
         /* Set title text to uppercase and roboto font */
-        TextView titleText = (TextView) mLayout.findViewById(R.id.titleText);
+        TextView titleText = ButterKnife.findById(mLayout, R.id.titleText);
         mTextUtils.setFont(titleText, TextUtils.FONT_ROBOTOREGULAR);
         String title = mActivity.getString(R.string.menu_view_comments);
         titleText.setText(title);
@@ -129,7 +128,7 @@ public final class CommentsFragment extends BaseDialogFragment
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        TextView editText = (TextView) mLayout.findViewById(R.id.editText);
+        TextView editText = ButterKnife.findById(mLayout, R.id.editText);
         String commentText = editText.getText().toString();
         if ("".equals(commentText)) {
             if (BuildConfig.DEBUG) {
@@ -186,17 +185,9 @@ public final class CommentsFragment extends BaseDialogFragment
                 final ViewHolder holder;
 
                 if (convertView == null) {
-                    convertView = mActivity.getLayoutInflater().inflate(
-                            R.layout.comment_list_row, null);
-                    holder = new ViewHolder();
-                    holder.textViewUsername = (TextView)
-                        convertView.findViewById(R.id.userName);
-                    holder.textViewCommentDate = (TextView)
-                        convertView.findViewById(R.id.commentDate);
-                    holder.textViewCommentText = (TextView)
-                        convertView.findViewById(R.id.commentText);
-                    holder.imageViewUserIcon = (ImageView)
-                        convertView.findViewById(R.id.userIcon);
+                    convertView = mActivity.getLayoutInflater().inflate(R.layout.comment_list_row,
+                            null);
+                    holder = new ViewHolder(convertView);
                     convertView.setTag(holder);
                 } else {
                     holder = (ViewHolder) convertView.getTag();
@@ -251,9 +242,13 @@ public final class CommentsFragment extends BaseDialogFragment
     }
 
     class ViewHolder {
-        TextView textViewUsername;
-        TextView textViewCommentDate;
-        TextView textViewCommentText;
-        ImageView imageViewUserIcon;
+        @InjectView(R.id.userName) TextView textViewUsername;
+        @InjectView(R.id.commentDate) TextView textViewCommentDate;
+        @InjectView(R.id.commentText) TextView textViewCommentText;
+        @InjectView(R.id.userIcon) ImageView imageViewUserIcon;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

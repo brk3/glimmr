@@ -17,6 +17,8 @@ import com.bourke.glimmr.activities.BaseActivity;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.OAuthUtils;
 
+import butterknife.ButterKnife;
+
 public class StackViewWidgetConfigure extends BaseActivity {
 
     private static final String TAG = "Glimmr/StackViewWidgetConfigure";
@@ -65,7 +67,7 @@ public class StackViewWidgetConfigure extends BaseActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1,
                 widgetTypes);
-        ListView list = (ListView) findViewById(R.id.list);
+        ListView list = ButterKnife.findById(this, R.id.list);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

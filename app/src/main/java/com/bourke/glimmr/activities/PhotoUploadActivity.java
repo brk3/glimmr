@@ -1,6 +1,5 @@
 package com.bourke.glimmr.activities;
 
-import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -20,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bourke.glimmr.BuildConfig;
 import com.bourke.glimmr.R;
 import com.bourke.glimmr.common.Constants;
 import com.bourke.glimmr.common.GsonHelper;
@@ -39,6 +39,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Contains a ViewPager to display each image to be uploaded.
  *
@@ -54,7 +57,7 @@ public class PhotoUploadActivity extends BaseActivity {
 
     private List<LocalPhotosGridFragment.LocalPhoto> mUploadImages;
     private ImagePagerAdapter mAdapter;
-    private ViewPager mPager;
+    @InjectView(R.id.viewPager) ViewPager mPager;
     private TaskQueue mUploadQueue;
     private PhotoUploadFragment mPhotoUploadFragment;
 
@@ -74,6 +77,8 @@ public class PhotoUploadActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (BuildConfig.DEBUG) Log.d(getLogTag(), "onCreate");
+
+        ButterKnife.inject(this);
 
         setContentView(R.layout.photo_upload_activity);
         mPhotoUploadFragment = (PhotoUploadFragment)
@@ -104,7 +109,6 @@ public class PhotoUploadActivity extends BaseActivity {
 
     private void initViewPager() {
         mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), mUploadImages);
-        mPager = (ViewPager) findViewById(R.id.viewPager);
         mPager.setOnPageChangeListener(mAdapter);
         mPager.setAdapter(mAdapter);
     }

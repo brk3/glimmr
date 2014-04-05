@@ -17,6 +17,9 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public abstract class AbstractPhotoSearchGridFragment extends PhotoGridFragment
         implements IPhotoListReadyListener {
 
@@ -33,7 +36,7 @@ public abstract class AbstractPhotoSearchGridFragment extends PhotoGridFragment
     protected int mSortType;
     protected SearchPhotosTask mTask;
 
-    private View mNoResultsLayout;
+    @InjectView(R.id.no_search_results_layout) View mNoResultsLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public abstract class AbstractPhotoSearchGridFragment extends PhotoGridFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        mNoResultsLayout = mLayout.findViewById(R.id.no_search_results_layout);
+        ButterKnife.inject(this, mLayout);
         return mLayout;
     }
 

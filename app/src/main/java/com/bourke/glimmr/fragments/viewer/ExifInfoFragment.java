@@ -23,6 +23,8 @@ import com.googlecode.flickrjandroid.photos.Photo;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 public final class ExifInfoFragment extends BaseFragment
         implements IExifInfoReadyListener {
 
@@ -50,10 +52,8 @@ public final class ExifInfoFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mLayout = (ScrollView) inflater.inflate(
-                R.layout.exif_info_fragment, container, false);
-        mTextViewErrorMessage =
-            (TextView) mLayout.findViewById(R.id.textViewErrorMessage);
+        mLayout = (ScrollView) inflater.inflate(R.layout.exif_info_fragment, container, false);
+        mTextViewErrorMessage = ButterKnife.findById(mLayout, R.id.textViewErrorMessage);
 
         setHasOptionsMenu(false);
 
@@ -74,7 +74,7 @@ public final class ExifInfoFragment extends BaseFragment
      */
     @SuppressWarnings("deprecation")
     private void addKeyValueRow(String key, String value) {
-        TableLayout tl = (TableLayout)mLayout.findViewById(R.id.extraExifInfo);
+        TableLayout tl = ButterKnife.findById(mLayout, R.id.extraExifInfo);
 
         /* Create the TableRow */
         TableRow tr = new TableRow(mActivity);
