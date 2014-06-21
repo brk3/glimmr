@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitCenter"
+            android:background="@android:color/black" />
+
+        <ImageView
+            android:id="@+id/play_video_overlay"
+            android:layout_width="52dip"
+            android:layout_height="52dip"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:src="@drawable/av_play_over_video_dark" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        style="@style/glimmr_ShadowedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
+        android:textColor="@android:color/white"
+        android:paddingLeft="12dp"
+        android:paddingTop="28dp"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/textViewAuthor"
+        style="@style/glimmr_ShadowedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_small"
+        android:textColor="@android:color/white"
+        android:paddingLeft="12dp"
+        android:layout_below="@id/textViewTitle"
+        android:layout_alignParentLeft="true" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_centerInParent="true" />
+</RelativeLayout>

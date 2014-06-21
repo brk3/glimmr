@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Loco xml export: Android string resources
+ Project: Glimmr
+ Release: Working copy
+ Locale: da_DK, Danish
+ Exported by: Paul Bourke
+ Exported at: Sat, 14 Dec 2013 15:56:32 +0000
+-->
+<resources>
+    <string name="about">Om Glimmr</string>
+    <string name="about_text">Tak fordi du støtter Glimmr!\n\nFølg mig: http://twitter.com/brk3\nKontakt:pauldbourke@gmail.com\n\nOversættere:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
+    <string name="activity">Aktivitet</string>
+    <string name="add">Tilføj</string>
+    <string name="add_description_hint">Tryk for at tilføje beskrivelse</string>
+    <string name="add_photos">Tilføj billeder</string>
+    <string name="add_remove_sets_hint">Tryk for at tilføje/fjerne sæt</string>
+    <string name="add_remove_tags_hint">Tryk for at tilføje/fjerne tags (kommasepareret)</string>
+    <string name="add_tags_tip">Tip: separer hver tag med komma</string>
+    <string name="add_title_hint">Tryk for at tilføj titel</string>
+    <string name="add_to_sets">Tilføj til sæt</string>
+    <string name="added_a_comment">Kommentar tilføjet</string>
+    <string name="aperture">BLÆNDE</string>
+    <string name="app_name">Glimmr-L</string>
+    <string name="basic_info">Grundlæggende info</string>
+    <string name="browse">bladre</string>
+    <string name="buy_pro_2">Jeg hedder Paul, skaber af Glimmr.\n\nLige nu er denne funktion forbeholdt pro-brugere, som en måde for mig at lave et par kr. på min hobby.\n\nHjælp mig med at lave den bedste Flickr app, og som tak får du:\n\n ★ Mulighed for at uploade billeder via Glimmr\n ★ Miniature/preview-billeder i høj kvalitet\n ★ E-mailsupport fra mig\n \nMange tak.</string>
+    <string name="by">af</string>
+    <string name="cb_enable_activity_notifications_summary">Notificer ved aktiviteter omkring dine billeder</string>
+    <string name="cb_enable_activity_notifications_title">Flickr aktivitet</string>
+    <string name="cb_enable_contacts_notifications_summary">Notificer når kontakter uploader nye billeder</string>
+    <string name="cb_enable_contacts_notifications_title">Uploads fra kontakter</string>
+    <string name="cb_enable_notifications_title">Aktiver notifikationer</string>
+    <string name="cb_high_quality_thumbnails_summary">Ser bedre ud, men kan være langsommere</string>
+    <string name="cb_high_quality_thumbnails_title">Miniaturebilleder i høj kvalitet (kun Pro)</string>
+    <string name="cb_show_usage_tips_summary">Vis tips om hvordan du briger Glimmr</string>
+    <string name="comment_sent">Kommentar sendt!</string>
+    <string name="commented_on">kommenterede på</string>
+    <string name="contacts">Kontakter</string>
+    <string name="couldnt_load_video">Kunne ikke uploade video, prøv igen senere?</string>
+    <string name="description">Beskrivelse:</string>
+    <string name="edit_text_hint">Tilføj din kommentar…</string>
+    <string name="exif_info">Exif information</string>
+    <string name="explore">Stifinder</string>
+    <string name="favorited">Gjort til favorit</string>
+    <string name="favorites">Favoritter</string>
+    <string name="flickr_unavailable">Flickr er nede i øjeblikket, venligst prøv igen senere!</string>
+    <string name="focal_length">Længde på brændevidde</string>
+    <string name="four_hours">4 timer</string>
+    <string name="group_info_fetch_error">Problem med at hente gruppe. Venligst prøv igen.</string>
+    <string name="group_limit_reached">Du har ramt begrænsingen for denne gruppe.</string>
+    <string name="groups">Grupper</string>
+    <string name="hi">Hi!</string>
+    <string name="hmm">Hmmm</string>
+    <string name="ill_try_again_later">Glimmr prøver igen senere</string>
+    <string name="image_saved">Billede gemt til galleriet!</string>
+    <string name="interestingness">Hvor interessant</string>
+    <string name="iso">ISO</string>
+    <string name="just_a_moment">Lige et øjeblik…</string>
+    <string name="location">Placering</string>
+    <string name="logged_in">Logget ind!</string>
+    <string name="login">Login</string>
+    <string name="login_error">Vi har problemer med at logge dig ind i øjeblikket.\n\nVenligst prøv igen senere og hvis du stadig ikke kan logge ind, så skriv til pauldbourke@gmail.com</string>
+    <string name="login_later">Du kan til hver en tid logge ind fra menuen!</string>
+    <string name="login_problem">Kunne ikke logge ind</string>
+    <string name="login_required">Du skal logge ind for at kunne dette!</string>
+    <string name="login_to_flickr">LOGIN TIL FLICKR</string>
+    <string name="logout">Log ud</string>
+    <string name="menu_favorite">Marker som favorit</string>
+    <string name="menu_preferences">Præferencer</string>
+    <string name="menu_refresh">Opdater</string>
+    <string name="menu_search">Søgning</string>
+    <string name="menu_share">Dele</string>
+    <string name="menu_view_comments">Kommentarer og favoritter</string>
+    <string name="menu_view_exif">Se Exit info</string>
+    <string name="more">Mere</string>
+    <string name="most_recent">Seneste</string>
+    <string name="my_photos">Mine billeder</string>
+    <string name="new_activity">Ny aktiviteter omkring dit billede</string>
+    <string name="no_connection">Noget gik galt.\nPrøv at opdatere?</string>
+    <string name="no_exif_permission">Ejeren af billedet ønsker ikke at dele EXIT-data.</string>
+    <string name="no_photos">Ingen billeder til rådighed.\nTryk for at prøve igen.\n</string>
+    <string name="no_search_results">Der blev ikke fundet nogen resultater.</string>
+    <string name="none">Ingen</string>
+    <string name="not_now">eller bladre efter billeder...</string>
+    <string name="notification_contacts_content">fra dine kontakter</string>
+    <string name="notification_contacts_ticker">Dine Flickr-kontakter har postet nye billeder</string>
+    <string name="notification_contacts_title">Nye billeder</string>
+    <string name="once_a_day">En gang om dagen</string>
+    <string name="one_hour">1 time</string>
+    <string name="people">Mennesker</string>
+    <string name="photos">Billeder</string>
+    <string name="photos_uploaded">Billeder uploaded</string>
+    <string name="photos_will_be_added">Dine billeder vil blive tilføjet om et øjeblik!</string>
+    <string name="photoset">Album</string>
+    <string name="play_store_description">\"En ny, hurtig, moderne og sjov Flickr-app til Android!\n\n* Swipe igennem dine og dine kontakters billeder med lethed.\n* Understøttelse af grupper.\n* Kommenter på billeder og se detaljerede Exit-info.\n* Få notifikationer når dine kontakter poster nye billeder.\n* Ingen reklamer.\n* Meget mere på vej.\n\n★ Pro-/Doneringsversion vil få nye funktioner hurtigere og hjælpe med at understøtte mig i at give dig den bedst mulige Flickr-app.\n\nNuværende funktioner i Pro:\n* Sæt billeder som wallpaper\n\n** Venligst mail mig de features du ønsker at se i næste version!\n** At oversætte Glimmr er let! Email mig, hvis du gerne vil have appen på dit eget sprog\n\"</string>
+    <string name="please_wait">Vent venligst…</string>
+    <string name="pool">Gruppe</string>
+    <string name="pref_category_general">Generelt</string>
+    <string name="pref_category_notifications">Notifikationer</string>
+    <string name="pref_category_photoviewer">Photo viewer</string>
+    <string name="pref_notification_intervals_title">Synkroniseringsinterval</string>
+    <string name="pro_donate">Pro/Donér</string>
+    <string name="public_photos">Offentlig</string>
+    <string name="relevance">Relevans</string>
+    <string name="remaining">Resterende</string>
+    <string name="retry">Prøv igen</string>
+    <string name="save_image">Gem billede</string>
+    <string name="search_hint">Søg billeder og mennesker</string>
+    <string name="set_initial_tab">Sæt primære fanblad</string>
+    <string name="set_location">Angiv placering</string>
+    <string name="set_location_tip">Tip: Tryk og hold kort for at angive placering</string>
+    <string name="set_preferences">Sæt præferencer</string>
+    <string name="set_wallpaper">Sæt wallpaper</string>
+    <string name="sets">Albums</string>
+    <string name="setting_wallpaper">Sætter wallpaper…</string>
+    <string name="show_usage_tips">Vis tips til brug</string>
+    <string name="shutter">LUKKER</string>
+    <string name="slideshow">Slideshow</string>
+    <string name="slideshow_interval">Slideshow interval (sekunder)</string>
+    <string name="sort_by">Sorter efter</string>
+    <string name="storage_error">Problem med at tilgang lagring</string>
+    <string name="tags">Tags:</string>
+    <string name="tap_for_photostream">Tryk for at gå til billedstrøm</string>
+    <string name="thirty_mins">30 minutter</string>
+    <string name="timezone_message">Er dit ur og tidszone sat korrekt?</string>
+    <string name="tip_add_to_group">Tip: Tryk og hold på en gruppe for at tilføje billeder</string>
+    <string name="tip_add_to_set">Tip: Tryk og hold på et sæt for at tilføje billeder</string>
+    <string name="tip_glimmr_pro">Tip: Køb Glimmr Pro for miniaturebilleder og baggrundsbilleder i høj kvalitet</string>
+    <string name="tip_view_profile">Tip: Tryk og hold på et billede for at se forfatterens profil</string>
+    <string name="title">Titel:</string>
+    <string name="to">til</string>
+    <string name="untitled">Unavngivet</string>
+    <string name="upload">upload</string>
+    <string name="upload_photos">Upload billeder</string>
+    <string name="upload_photos_tip">Tip: tryk og hold på billeder for at vælge til upload</string>
+    <string name="upload_problem">Problem med at uploade billeder</string>
+    <string name="upload_tip">Tip: Swipe billeder højre og venstre for at tilføje info</string>
+    <string name="uploading_photos">Uploader %d billeder til Flickr</string>
+    <string name="view_profile">Vis Profil</string>
+    <string name="views">Gange set</string>
+    <string name="welcome">Velkommen</string>
+    <string name="you">Dig</string>
+</resources>

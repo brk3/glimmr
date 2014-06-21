@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:columnWidth="@dimen/gridview_item_size"
+            android:numColumns="auto_fit"
+            android:horizontalSpacing="1dp"
+            android:fastScrollEnabled="true"
+            android:verticalSpacing="1dp"
+            android:stretchMode="columnWidth"
+            android:visibility="gone"
+            android:listSelector="@drawable/selectable_background_glimmrdark"
+            android:drawSelectorOnTop="true"
+            android:gravity="center" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include
+        layout="@layout/no_connection"
+        android:id="@+id/no_connection_layout"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/no_search_results"
+        android:id="@+id/no_search_results_layout"
+        android:visibility="gone" />
+
+</RelativeLayout>

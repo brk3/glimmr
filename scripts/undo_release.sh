@@ -9,8 +9,8 @@ fi
 
 VERSION=$1
 
-git checkout dev
-git reset --hard origin/dev
+git checkout master
+git reset --hard origin/master
 
 git checkout glimmr-l
 git reset --hard origin/glimmr-l
@@ -18,6 +18,6 @@ git reset --hard origin/glimmr-l
 git tag -d glimmrpro-$VERSION glimmr-$VERSION
 git push origin :refs/tags/glimmrpro-$VERSION :refs/tags/glimmr-$VERSION
 
-git push origin dev glimmr-l -f
+git push origin master glimmr-l -f
 
 echo "OK"

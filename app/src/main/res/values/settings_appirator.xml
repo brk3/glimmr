@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="app_title">@string/app_name</string>
+
+    <string name="days_until_prompt">2</string>
+    <string name="launches_until_prompt">5</string>
+
+    <!-- Change to 1 to show every time, for testing -->
+    <string name="test_mode">0</string>
+</resources>

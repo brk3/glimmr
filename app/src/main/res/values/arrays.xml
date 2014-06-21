@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="pref_notification_intervals">
+        <item>@string/thirty_mins</item>
+        <item>@string/one_hour</item>
+        <item>@string/four_hours</item>
+        <item>@string/once_a_day</item>
+    </string-array>
+
+    <string-array
+      name="pref_notification_intervals_values">
+        <item>30</item>
+        <item>60</item>
+        <item>240</item>
+        <item>1440</item>
+    </string-array>
+
+    <string-array name="photo_item_long_click_dialog_items">
+        <item>@string/view_profile</item>
+    </string-array>
+
+    <string-array name="group_list_item_long_click_dialog_items">
+        <item>@string/add_photos</item>
+    </string-array>
+
+    <string-array name="photoset_item_long_click_dialog_items">
+        <item>@string/add_photos</item>
+    </string-array>
+
+    <string-array name="pageTitles">
+        <item>@string/contacts</item>
+        <item>@string/photos</item>
+        <item>@string/favorites</item>
+        <item>@string/sets</item>
+        <item>@string/groups</item>
+        <item>@string/explore</item>
+    </string-array>
+
+</resources>

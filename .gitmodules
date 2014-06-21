@@ -1,0 +1,3 @@
+[submodule "gh_wiki"]
+	path = gh_wiki
+	url = git@github.com:brk3/glimmr.wiki.git

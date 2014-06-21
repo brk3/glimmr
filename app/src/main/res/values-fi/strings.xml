@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Loco xml export: Android string resources
+ Project: Glimmr
+ Release: Working copy
+ Locale: fi_FI, Finnish
+ Exported by: Paul Bourke
+ Exported at: Sat, 14 Dec 2013 15:56:32 +0000
+-->
+<resources>
+    <string name="about">Lähellä tapahtuu</string>
+    <string name="about_text">Kiitos että autat Glimmriä!\n\nSeuraa minua: http://twitter.com/brk3\nKontakti:pauldbourke@gmail.com/nKääntäjät:\n*Lars Gellrich\n*Kuźniarski Jacek\n*Giuliano Ribeiro\n*Vidar Thorlaksson\n*Oliver Carreira\n*Dejan Mauer\n*António Cascalheira\n*Niels Radstaat\n*Niko Henriksson\n*Tim Bastiansen\n*Sébastien Croes\n*Giadrossi Filippo</string>
+    <string name="activity">Toiminta</string>
+    <string name="add">Lisää</string>
+    <string name="add_description_hint">Lisää kuvauksen vihje</string>
+    <string name="add_photos">Lisää kuvia</string>
+    <string name="add_remove_sets_hint">Napauta lisätäksesi/poistaaksesi sarjat</string>
+    <string name="add_remove_tags_hint">Vinkki: Napauta lisätäksesi/poistaaksesi tageja</string>
+    <string name="add_tags_tip">Vinkki: Erota jokainen tagisi pilkulla</string>
+    <string name="add_title_hint">Napauta lisätäksesi otsikon</string>
+    <string name="add_to_sets">Lisää sarjaasi</string>
+    <string name="added_a_comment">Kommentti lisätty</string>
+    <string name="aperture">Tila</string>
+    <string name="app_name">Glimmr-L</string>
+    <string name="basic_info">Perustiedot</string>
+    <string name="browse">Selaa</string>
+    <string name="buy_pro_2">Olen Paul, Glimmrin luoja.\n\nJuuri nyt tämä ominaisuus on varattu pro-käyttäjille, että voin tehdä muutaman euron harrastuksestani.\n\nAuta minua tekemään parhaan Flickr-sovelluksen kuin mahdollista, ja vastineeksi saat:\n\n ★ Kyky lähettää kuvia Glimmrin kautta\n ★ Korkealaatuisia taustakuvia\n ★ E-Mail tuki minulta itseltäni\n\nKiitos.</string>
+    <string name="by">luonut</string>
+    <string name="cb_enable_activity_notifications_summary">Ilmoita kuviesi toiminnasta</string>
+    <string name="cb_enable_activity_notifications_title">Flickr toimintaa</string>
+    <string name="cb_enable_contacts_notifications_summary">Ilmoita kun kontaktit lataavat uusia kuvia</string>
+    <string name="cb_enable_contacts_notifications_title">Kontaktien lähetykset</string>
+    <string name="cb_enable_notifications_title">Ilmoitukset päällä</string>
+    <string name="cb_high_quality_thumbnails_summary">Näyttää paremmalta mutta voi olla hitaampi</string>
+    <string name="cb_high_quality_thumbnails_title">Korkealaatuiset thumbnailit</string>
+    <string name="cb_show_usage_tips_summary">Näytä vinkkejä miten Glimmriä käytetään</string>
+    <string name="comment_sent">Kommentti lähetetty!</string>
+    <string name="commented_on">kommentoi</string>
+    <string name="contacts">Kontaktit</string>
+    <string name="couldnt_load_video">Videon lataaminen epäonnistui</string>
+    <string name="description">Kuvaus</string>
+    <string name="edit_text_hint">Lisää kommenttisi…</string>
+    <string name="exif_info">EXIF-tieto</string>
+    <string name="explore">Tutki</string>
+    <string name="favorited">lisätty suosikiksi</string>
+    <string name="favorites">Suosikit</string>
+    <string name="flickr_unavailable">Flickr on kaatunut, kokeile myöhemmin uudelleen!</string>
+    <string name="focal_length">focal length</string>
+    <string name="four_hours">4 tuntia</string>
+    <string name="group_info_fetch_error">group info fetch error</string>
+    <string name="group_limit_reached">You\'ve reached the limit of this group.</string>
+    <string name="groups">Ryhmät</string>
+    <string name="hi">Hei!</string>
+    <string name="hmm">Hmm</string>
+    <string name="ill_try_again_later">Glimmr yrittää myöhemmin uudelleen</string>
+    <string name="image_saved">Kuva tallennettu galleriaan!</string>
+    <string name="interestingness">Kiinnostavuus</string>
+    <string name="iso">ISO</string>
+    <string name="just_a_moment">Pieni hetki…</string>
+    <string name="location">Sijainti</string>
+    <string name="logged_in">Kirjauduit sisään!</string>
+    <string name="login">Kirjaudu sisään    </string>
+    <string name="login_error">Kirjautumisessa on ongelma.\n\n\nYritä myöhemmin uudelleen, jos et siltikään pääse kirjautumaan lähetä minulle sähköposti pauldbourke@gmail.com</string>
+    <string name="login_later">Voit kirjautua sisälle milloin vain menusta!</string>
+    <string name="login_problem">Kirjautumisongelma</string>
+    <string name="login_required">Sinun täytyy olla kirjautunut sisään!</string>
+    <string name="login_to_flickr">KIRJAUDU FLICKRIIN</string>
+    <string name="logout">Kirjaudu ulos</string>
+    <string name="menu_favorite">Merkkaa Suosikkeihin</string>
+    <string name="menu_preferences">Asetukset</string>
+    <string name="menu_refresh">Päivitä</string>
+    <string name="menu_search">Etsi</string>
+    <string name="menu_share">Jaa</string>
+    <string name="menu_view_comments">Kommentit</string>
+    <string name="menu_view_exif">Näe EXIF-Info</string>
+    <string name="more">Lisää</string>
+    <string name="most_recent">viimeisimmät</string>
+    <string name="my_photos">Minun kuvat</string>
+    <string name="new_activity">Uutta toimintaa sinun kuvassasi</string>
+    <string name="no_connection">Jotain meni vikaan.\nKokeile päivittämistä?</string>
+    <string name="no_exif_permission">Kuvan omistaja ei halua jakaa EXIF-Tietojansa</string>
+    <string name="no_photos">Kuvia ei ole saatavilla\nKokeile uudestaan.</string>
+    <string name="no_search_results">Ei tuloksia.</string>
+    <string name="none">ei mitään</string>
+    <string name="not_now">Tai sitten selaa joitain kuvia…</string>
+    <string name="notification_contacts_content">2 uutta kuvaa yhteystiedoistasi</string>
+    <string name="notification_contacts_ticker">Sinun Flickr kontaktisi ovat julkaisseet uusia kuvia</string>
+    <string name="notification_contacts_title">Uudet kuvat</string>
+    <string name="once_a_day">Kerran päivässä</string>
+    <string name="one_hour">1 Tunti</string>
+    <string name="people">Ihmiset</string>
+    <string name="photos">Kuvat</string>
+    <string name="photos_uploaded">Ladatut kuvat</string>
+    <string name="photos_will_be_added">Sinun kuvasi lisätään pian</string>
+    <string name="photoset">Kuva-albumi</string>
+    <string name="play_store_description">\"&lt;b&gt; Meillä on ongelma uuden Chromen kanssa joka aiheuttaa kirjautumisongelmia. Käytä muita selaimia kuten Firefox jotta voit kirjautua jos sinulla on ongelmia &lt;b&gt; \n*Uutta!* Äänestä uusia päivityksiä http://glimmr.uservoice.com*\n* Nappaa sinun ja kontaktisi kuvat helposti \n* Ryhmätuki \n* Rikkaat ilmoitukset jos kuvillasi on toimintaa. \n* Kommentoi kuviin ja näe yksityiskohtaiset EXIF-Tiedot. \n* Ei mainoksia. \n* Pro/Lahjoitus versio saa uudet ominaisuudet nopeammin, ja auttaa minua tekemään sinulle parhaimman Flickr-sovelluksen! Pro-versiossa: \n* Aseta kuvia taustakuvaksi \n* Mahdollisuus käyttää korkealaatuisia thumbnaileja (hieno tableteilla ja isoilla näytöillä) \n\n** Glimmrin kääntäminen on helppoa! Lähetä sähköpostia jos haluat sovelluksen juuri sinun kielellesi! Vastuuvapauslauseke: Glimmr ei ole millään tavalla sidoksissa Yahoon tai Flickrin kanssa.\"</string>
+    <string name="please_wait">Odota…</string>
+    <string name="pool">Ryhmä</string>
+    <string name="pref_category_general">Yleinen (Pro)</string>
+    <string name="pref_category_notifications">Ilmoitukset</string>
+    <string name="pref_category_photoviewer">Valokuvien katselu</string>
+    <string name="pref_notification_intervals_title">Synkronisaation aikaväli</string>
+    <string name="pro_donate">Pro/Lahjoita</string>
+    <string name="public_photos">Julkiset kuvat</string>
+    <string name="relevance">Relevance</string>
+    <string name="remaining">jäljellä</string>
+    <string name="retry">Yritä uudelleen</string>
+    <string name="save_image">Tallenna kuva</string>
+    <string name="search_hint">Etsi kuvia ja ihmisiä</string>
+    <string name="set_initial_tab">Set initial tab</string>
+    <string name="set_location">Aseta sijainti</string>
+    <string name="set_location_tip">Vinkki: Kosketa ja pidätä karttaa asettaaksesi sijaintisi\n\nTip: Touch and hold map to set location</string>
+    <string name="set_preferences">Aseta asetukset</string>
+    <string name="set_wallpaper">Aseta juliste</string>
+    <string name="sets">Albumit</string>
+    <string name="setting_wallpaper">&lt;p&gt;Asetetaan taustakuvaa...&lt;/p&gt;</string>
+    <string name="show_usage_tips">Näytä käyttövinkkejä</string>
+    <string name="shutter">SULJIN</string>
+    <string name="slideshow">Diaesitys</string>
+    <string name="slideshow_interval">Diaesityksen aikaväli (sekunnit)</string>
+    <string name="sort_by">Järjestä</string>
+    <string name="storage_error">Problem accessing storage</string>
+    <string name="tags">Tagit</string>
+    <string name="tap_for_photostream">Napauta valokuvavirtaan</string>
+    <string name="thirty_mins">30 minuuttia</string>
+    <string name="timezone_message">Onko kellosi ja aikavyöhykkeesi asetettu oikein?</string>
+    <string name="tip_add_to_group">Vinkki: Napauta ja pidätä ryhmää jotta voit lisätä kuvia\n\nTip: Tap and hold a group to add photos</string>
+    <string name="tip_add_to_set">Tip: Tap and hold a set to add photos</string>
+    <string name="tip_glimmr_pro">Vinkki: Hanki Glimmr Pro jotta saat korkealaatuisia taustakuvia\n\nTip: Get Glimmr Pro for high quality thumbnails and wallpapers</string>
+    <string name="tip_view_profile">Vinkki: Napauta ja pidätä kuvaa jotta näet tekijän profiilin\n\nTap and hold an image to view author\'s profile</string>
+    <string name="title">Otsikko</string>
+    <string name="to">to</string>
+    <string name="untitled">Nimetön</string>
+    <string name="upload">Lataa</string>
+    <string name="upload_photos">Lataa kuvia</string>
+    <string name="upload_photos_tip">Vinkki: Napauta ja pidätä kuvia ladataksesi ne\n\nTip: tap and hold photos to select for upload</string>
+    <string name="upload_problem">Ongelma kuvia ladattaessa</string>
+    <string name="upload_tip">Vinkki: Huitaise kuvaa vasemmalle ja oikealle lisätäksesi tiedot\n\nTip: Swipe photo left and right to add info</string>
+    <string name="uploading_photos">Ladataan kuvia</string>
+    <string name="view_profile">Katso profiili</string>
+    <string name="views">Katselua</string>
+    <string name="welcome">Tervetuloa</string>
+    <string name="you">Sinä</string>
+</resources>

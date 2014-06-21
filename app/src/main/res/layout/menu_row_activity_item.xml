@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text"
+        style="@style/MenuDrawer.Widget.ActivityItem" />
+
+    <View
+        android:id="@+id/separator"
+        android:background="@color/flickr_pink"
+        android:layout_marginLeft="4dip"
+        android:layout_marginRight="4dip"
+        android:layout_width = "fill_parent"
+        android:layout_height="1px" />
+
+</LinearLayout>

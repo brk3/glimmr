@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ab_bg_black"
+    android:padding="20dip">
+
+    <TextView
+        android:id="@+id/textWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/loginPrimaryTextSize"
+        android:textColor="@android:color/white"
+        android:text="@string/welcome" />
+
+    <TextView
+        android:id="@+id/textTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textWelcome"
+        android:textSize="@dimen/loginPrimaryTextSize"
+        android:layout_marginRight="8dip"
+        android:textColor="@android:color/white"
+        android:text="@string/to" />
+
+    <TextView
+        android:id="@+id/textGlimmr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textWelcome"
+        android:layout_toRightOf="@id/textTo"
+        android:textSize="@dimen/loginPrimaryTextSize"
+        android:textColor="@android:color/white"
+        android:text="@string/app_name" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="250dip"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textGlimmr"
+        android:layout_marginTop="@dimen/loginButtonTopMargin"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textSize="@dimen/loginButtonTextSize"
+        android:padding="16dip"
+        android:background="@drawable/login_button"
+        android:textColor="@android:color/white"
+        android:text="@string/login_to_flickr" />
+
+    <TextView
+        android:id="@+id/textNotNow"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/btnLogin"
+        android:layout_marginTop="@dimen/secondaryTextTopMargin"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:textSize="@dimen/secondaryTextSize"
+        android:textColor="@android:color/white"
+        android:text="@string/not_now" />
+
+</RelativeLayout>
