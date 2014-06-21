@@ -2,5 +2,5 @@
 
 <resources>
 
-    <string name="callback_scheme">glimmr-oauth-callback</string>
+    <string name="callback_scheme">glimmrpro-oauth-callback</string>
 </resources>
