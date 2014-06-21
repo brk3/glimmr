@@ -108,10 +108,6 @@
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="TextAppearance.TabPageIndicator" parent="Widget">
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="glimmr_TitlePageIndicator" parent="Widget">
         <item name="android:background">@drawable/bg_tint</item>
         <item name="android:textColor">@color/flickr_pink</item>
