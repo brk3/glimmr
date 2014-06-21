@@ -11,14 +11,6 @@ android {
     versionName "2.23-SNAPSHOT"
   }
 
-  productFlavors {
-    free {
-    }
-
-    pro {
-    }
-  }
-
   lintOptions {
     abortOnError false
   }
@@ -42,6 +34,7 @@ android {
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    compile 'com.googlecode.flickrj-android:flickrj-android:2.1.0'
     compile 'com.android.support:support-v4:19.1.0'
     compile 'eu.inmite.android.lib:android-styled-dialogs:1.1.2@aar'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
@@ -55,6 +48,5 @@ dependencies {
     compile 'de.keyboardsurfer.android.widget:crouton:1.8.3'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.ocpsoft.prettytime:prettytime:3.2.4.Final'
-    /*https://github.com/yuyang226/FlickrjApi4Android/issues/17*/
     compile 'org.slf4j:slf4j-api:1.6.2'
 }
