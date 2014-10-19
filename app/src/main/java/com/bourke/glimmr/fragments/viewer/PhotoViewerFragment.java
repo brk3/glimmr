@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -444,15 +445,25 @@ public final class PhotoViewerFragment extends BaseFragment
         String url = getLargestUrlAvailable(mBasePhoto);
         new DownloadPhotoTask(mActivity, new Events.IPhotoDownloadedListener() {
             @Override
-            public void onPhotoDownloaded(Bitmap bitmap, Exception e) {
-                String filename = mBasePhoto.getTitle() + ".jpg";
-                if (e == null && createExternalStoragePublicPicture(bitmap, filename) != null) {
-                    Toast.makeText(mActivity, getString(R.string.image_saved), Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    Toast.makeText(mActivity, getString(R.string.storage_error), Toast.LENGTH_SHORT)
-                            .show();
-                }
+            public void onPhotoDownloaded(final Bitmap bitmap, final Exception e) {
+                final String filename = mBasePhoto.getTitle() + ".jpg";
+                new AsyncTask<Void, Void, File>() {
+                    @Override
+                    protected File doInBackground(Void... args) {
+                        return createExternalStoragePublicPicture(bitmap, filename);
+                    }
+
+                    @Override
+                    protected void onPostExecute(File file) {
+                        if (e == null && file != null) {
+                            Toast.makeText(mActivity, getString(R.string.image_saved), Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            Toast.makeText(mActivity, getString(R.string.storage_error), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                }.execute();
             }
         }, url).execute();
     }
