@@ -174,7 +174,7 @@ public class PhotoViewerActivity extends BaseActivity
         if (mPhotos.isEmpty()) {
             new AsyncTask<Void, Void, String>() {
                 @Override
-                protected String doInBackground(Void... params) {
+                protected String doInBackground(Void... args) {
                     String json = new GsonHelper(PhotoViewerActivity.this).loadJson(PHOTO_LIST_FILE);
                     return json;
                 }
