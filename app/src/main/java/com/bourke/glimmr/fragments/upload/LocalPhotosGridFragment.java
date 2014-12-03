@@ -274,7 +274,7 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
 
             if(thumbCursor.moveToFirst()){
                 int thCulumnIndex = thumbCursor.getColumnIndex(THUMB_DATA);
-                String thumbPath = thumbCursor.getString(thCulumnIndex);
+                final String thumbPath = thumbCursor.getString(thCulumnIndex);
                 new AsyncTask<Void, Void, Bitmap>() {
                     @Override
                     protected Bitmap doInBackground(Void... args) {
