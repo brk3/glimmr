@@ -3,6 +3,7 @@ package com.bourke.glimmr.activities;
 import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
