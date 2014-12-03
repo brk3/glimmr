@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -172,23 +171,13 @@ public class PhotoViewerActivity extends BaseActivity
         super.onRestoreInstanceState(savedInstanceState);
 
         if (mPhotos.isEmpty()) {
-            new AsyncTask<Void, Void, String>() {
-                @Override
-                protected String doInBackground(Void... args) {
-                    String json = new GsonHelper(PhotoViewerActivity.this).loadJson(PHOTO_LIST_FILE);
-                    return json;
-                }
-                
-                @Override
-                protected void onPostExecute(String json) {
-                    if (json.length() == 0) {
-                        Log.e(TAG, String.format("Error reading '%s'", PHOTO_LIST_FILE));
-                    } else {
-                        Type collectionType = new TypeToken<Collection<Photo>>(){}.getType();
-                        mPhotos = new Gson().fromJson(json, collectionType);
-                    }
-                }
-            }.execute();
+            String json = new GsonHelper(this).loadJson(PHOTO_LIST_FILE);
+            if (json.length() == 0) {
+                Log.e(TAG, String.format("Error reading '%s'", PHOTO_LIST_FILE));
+            } else {
+                Type collectionType = new TypeToken<Collection<Photo>>(){}.getType();
+                mPhotos = new Gson().fromJson(json, collectionType);
+            }
         }
 
         boolean overlayOn = savedInstanceState.getBoolean(KEY_ACTIONBAR_SHOW, true);
@@ -312,26 +301,17 @@ public class PhotoViewerActivity extends BaseActivity
         } else if (intent.getAction().equals(ACTION_VIEW_PHOTOLIST)) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Received ACTION_VIEW_PHOTOLIST intent");
             intent.putExtra(KEY_INTENT_CONSUMED, true);
-            final String photoListFile = intent.getStringExtra(KEY_PHOTO_LIST_FILE);
-            new AsyncTask<Void, Void, String>() {
-                @Override
-                protected String doInBackground(Void... args) {
-                    GsonHelper gsonHelper = new GsonHelper(PhotoViewerActivity.this);
-                    String json = gsonHelper.loadJson(photoListFile);
-                    return json;
-                }
-                
-                @Override
-                protected void onPostExecute(String json) {
-                    if (json.length() > 0) {
-                        Type collectionType =new TypeToken<Collection<Photo>>(){}.getType();
-                        mPhotos = new Gson().fromJson(json, collectionType);
-                        initViewPager(startIndex, true);
-                    } else {
-                        Log.e(TAG, String.format("Error reading '%s'", photoListFile));
-                    }
-                }
-            }.execute();
+            String photoListFile = intent.getStringExtra(KEY_PHOTO_LIST_FILE);
+            GsonHelper gsonHelper = new GsonHelper(this);
+            String json = gsonHelper.loadJson(photoListFile);
+
+            if (json.length() > 0) {
+                Type collectionType =new TypeToken<Collection<Photo>>(){}.getType();
+                mPhotos = new Gson().fromJson(json, collectionType);
+                initViewPager(startIndex, true);
+            } else {
+                Log.e(TAG, String.format("Error reading '%s'", photoListFile));
+            }
         } else {
             Log.e(TAG, "Unknown intent action: " + intent.getAction());
         }
