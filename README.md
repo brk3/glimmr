@@ -2,6 +2,9 @@ Glimmr
 ======
 Glimmr is a popular and fully working Flickr app for Android.
 
+*NOTE: I am not actively working on this project, though will look at pull requests*
+*if submitted. (Jul 14th 2015)*
+
 ![](http://i.imgur.com/Izk0Z46.jpg)
 
 Building
@@ -25,7 +28,7 @@ http://source.android.com/source/code-style.html
 
 ## License
 
-    Copyright 2014 Paul Bourke
+    Copyright 2015 Paul Bourke
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
