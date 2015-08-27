@@ -53,7 +53,13 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, List<Photo>> {
                 mException = e;
             }
         } else {
-            Log.e(TAG, "LoadPhotostreamTask requires authentication");
+            try {
+                return FlickrHelper.getInstance().getPeopleInterface().getPublicPhotos(mUser.getId(),
+                        Constants.EXTRAS, Constants.FETCH_PER_PAGE, mPage);
+            } catch (Exception e) {
+                e.printStackTrace();
+                mException = e;
+            }
         }
         return null;
     }
