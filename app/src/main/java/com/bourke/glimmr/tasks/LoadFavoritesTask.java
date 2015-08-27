@@ -55,7 +55,14 @@ public class LoadFavoritesTask extends AsyncTask<OAuth, Void, List<Photo>> {
                 mException = e;
             }
         } else {
-            Log.e(TAG, "LoadFavoritesTask requires authentication");
+            try {
+                return FlickrHelper.getInstance().getFavoritesInterface().getPublicList(
+                    mUser.getId(), null, null,
+                    Constants.FETCH_PER_PAGE, mPage, Constants.EXTRAS);
+            } catch (Exception e) {
+                e.printStackTrace();
+                mException = e;
+            }
         }
         return null;
     }
