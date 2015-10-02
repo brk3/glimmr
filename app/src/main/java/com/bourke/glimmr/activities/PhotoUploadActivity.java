@@ -3,7 +3,9 @@ package com.bourke.glimmr.activities;
 import com.bourke.glimmr.BuildConfig;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -186,14 +188,24 @@ public class PhotoUploadActivity extends BaseActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
-            ImageView image = new ImageView(getActivity());
+            final ImageView image = new ImageView(getActivity());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.MATCH_PARENT);
             image.setLayoutParams(layoutParams);
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            image.setImageBitmap(BitmapFactory.decodeFile(mImageUri));
+            new AsyncTask<Void, Void, Bitmap>() {
+                @Override
+                protected Bitmap doInBackground(Void... args) {
+                    return BitmapFactory.decodeFile(mImageUri);
+                }
+
+                @Override
+                protected void onPostExecute(Bitmap bitmap) {
+                    image.setImageBitmap(bitmap);
+                }
+            }.execute();
 
             LinearLayout layout = new LinearLayout(getActivity());
             layout.addView(image);

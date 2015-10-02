@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
@@ -240,7 +241,7 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
         @Override
         public View getView(final int position, View convertView,
                 ViewGroup parent) {
-            ViewHolder holder;
+            final ViewHolder holder;
             if (convertView == null) {
                 convertView = mActivity.getLayoutInflater().inflate(
                         R.layout.gridview_item, null);
@@ -271,12 +272,20 @@ public class LocalPhotosGridFragment extends PhotoGridFragment
                     null);
             Cursor thumbCursor = thumbCursorLoader.loadInBackground();
 
-            Bitmap myBitmap = null;
             if(thumbCursor.moveToFirst()){
                 int thCulumnIndex = thumbCursor.getColumnIndex(THUMB_DATA);
-                String thumbPath = thumbCursor.getString(thCulumnIndex);
-                myBitmap = BitmapFactory.decodeFile(thumbPath);
-                holder.image.setImageBitmap(myBitmap);
+                final String thumbPath = thumbCursor.getString(thCulumnIndex);
+                new AsyncTask<Void, Void, Bitmap>() {
+                    @Override
+                    protected Bitmap doInBackground(Void... args) {
+                        return BitmapFactory.decodeFile(thumbPath);
+                    }
+
+                    @Override
+                    protected void onPostExecute(Bitmap myBitmap) {
+                        holder.image.setImageBitmap(myBitmap);
+                    }
+                }.execute();
             }
 
             /* Set tint on selected items */
